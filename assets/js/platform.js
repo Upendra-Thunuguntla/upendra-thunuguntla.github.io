@@ -11,12 +11,18 @@ document.addEventListener('DOMContentLoaded', function () {
     if (hamburger && navLinks) {
         hamburger.addEventListener('click', function () {
             const isOpen = navLinks.classList.toggle('open');
+            hamburger.classList.toggle('open', isOpen);
             hamburger.setAttribute('aria-expanded', isOpen);
+            document.body.style.overflow = isOpen ? 'hidden' : '';
         });
 
         // Close on link click
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => navLinks.classList.remove('open'));
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+                hamburger.classList.remove('open');
+                document.body.style.overflow = '';
+            });
         });
     }
 

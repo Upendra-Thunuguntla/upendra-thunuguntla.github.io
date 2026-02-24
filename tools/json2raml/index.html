@@ -73,12 +73,12 @@
             <!-- Options -->
             <div class="options-bar" style="margin-bottom:var(--space-lg);">
                 <div class="option-row">
-                    <input type="checkbox" id="areKeysOptional">
+                    <input type="checkbox" id="areKeysOptional" onchange="convert()">
                     <label for="areKeysOptional">Make all keys <strong>Optional</strong> — outputs
                         <code>key?: string</code> instead of <code>key: string</code></label>
                 </div>
                 <div class="option-row">
-                    <input type="checkbox" id="areKeysCamelCased">
+                    <input type="checkbox" id="areKeysCamelCased" onchange="convert()">
                     <label for="areKeysCamelCased">Make all keys <strong>CamelCase</strong> — converts
                         <code>my_key</code> to <code>myKey</code></label>
                 </div>
@@ -95,7 +95,7 @@
                             <button class="btn btn-ghost btn-sm" onclick="clearContents()">🗑 Clear</button>
                         </div>
                     </div>
-                    <textarea id="json-input" class="code-textarea"
+                    <textarea id="json-input" class="code-textarea" oninput="convert()"
                         placeholder='Paste your JSON here…&#10;&#10;{&#10;  "name": "John",&#10;  "age": 30,&#10;  "active": true&#10;}'></textarea>
                     <div class="action-row">
                         <button class="btn btn-primary" onclick="convert()">
@@ -213,7 +213,7 @@
             const input = document.getElementById('json-input').value.trim();
             const output = document.getElementById('raml-output');
 
-            if (!input) { output.value = "Input is empty 🙄"; return; }
+            if (!input) { output.value = ""; return; }
             let parsed;
             try { parsed = JSON.parse(input); } catch (e) { output.value = "❌ Invalid JSON — please check your input.\n\n" + e.message; return; }
 

@@ -93,23 +93,24 @@
                                 style="position:absolute;opacity:0;width:0;height:0;">
                         </label>
 
-                        <textarea id="yamlTextarea" class="code-textarea"
+                        <textarea id="yamlTextarea" class="code-textarea" oninput="y2p_convert()"
                             placeholder="Paste YAML content here&#10;&#10;database:&#10;  host: &quot;localhost&quot;&#10;  port: 5432"></textarea>
 
                         <!-- Options -->
                         <div class="options-bar">
                             <div class="option-row">
-                                <input type="checkbox" id="keysOnly" onclick="checkCheckboxes('keysOnly')">
+                                <input type="checkbox" id="keysOnly"
+                                    onclick="checkCheckboxes('keysOnly'); y2p_convert()">
                                 <label for="keysOnly">Get <strong>Keys only</strong> (no values)</label>
                             </div>
                             <div class="option-row" style="padding-left:1.5rem;">
-                                <input type="checkbox" id="addGenericProp" onclick="checkCheckboxes('addGenericProp')"
-                                    disabled>
+                                <input type="checkbox" id="addGenericProp"
+                                    onclick="checkCheckboxes('addGenericProp'); y2p_convert()" disabled>
                                 <label for="addGenericProp">Enclose in <code>${<!-- -->key}</code></label>
                             </div>
                             <div class="option-row" style="padding-left:1.5rem;">
-                                <input type="checkbox" id="addMuleProp" onclick="checkCheckboxes('addMuleProp')"
-                                    disabled>
+                                <input type="checkbox" id="addMuleProp"
+                                    onclick="checkCheckboxes('addMuleProp'); y2p_convert()" disabled>
                                 <label for="addMuleProp">Enclose in <code>Mule::p("key")</code></label>
                             </div>
                         </div>
@@ -182,7 +183,7 @@
                                 onchange="p2y_openFile(event)" style="position:absolute;opacity:0;width:0;height:0;">
                         </label>
 
-                        <textarea id="propTextarea" class="code-textarea"
+                        <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()"
                             placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"></textarea>
 
                         <div class="action-row" style="margin-top:var(--space-sm);">
@@ -281,7 +282,10 @@
             const file = event.target.files[0]; if (!file) return;
             document.getElementById('yaml-file-label').textContent = file.name;
             const reader = new FileReader();
-            reader.onload = e => document.getElementById('yamlTextarea').value = e.target.result;
+            reader.onload = e => {
+                document.getElementById('yamlTextarea').value = e.target.result;
+                y2p_convert();
+            };
             reader.readAsText(file);
             track_event('file_upload', { tool: 'yaml_tools', file_type: 'yaml' });
         }
@@ -326,7 +330,7 @@
 
         function y2p_convert() {
             const yamlInput = document.getElementById('yamlTextarea').value.trim();
-            if (!yamlInput) { showToast('Please paste YAML or upload a file.', 'error'); return; }
+            if (!yamlInput) { document.getElementById('propertiesOutput').value = ''; return; }
             const keysOnly = document.getElementById('keysOnly').checked;
             if (document.getElementById('addGenericProp').checked) { keyPrefix = "${"; keySuffix = "}"; }
             else if (document.getElementById('addMuleProp').checked) { keyPrefix = 'Mule::p("'; keySuffix = '")'; }
@@ -404,13 +408,16 @@
             const file = event.target.files[0]; if (!file) return;
             document.getElementById('prop-file-label').textContent = file.name;
             const reader = new FileReader();
-            reader.onload = e => document.getElementById('propTextarea').value = e.target.result;
+            reader.onload = e => {
+                document.getElementById('propTextarea').value = e.target.result;
+                p2y_convert();
+            };
             reader.readAsText(file);
         }
 
         function p2y_convert() {
             const input = document.getElementById('propTextarea').value.trim();
-            if (!input) { showToast('Please paste Properties content.', 'error'); return; }
+            if (!input) { document.getElementById('yamlOutput').value = ''; return; }
             try {
                 const obj = {};
                 input.split('\n').forEach(line => {

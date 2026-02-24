@@ -193,7 +193,8 @@
             const body = document.getElementById('gmail-body').value;
 
             if (!to || !subject || !body.trim()) {
-                showToast('Please fill in To, Subject and Body fields.', 'error');
+                document.getElementById('result-area').style.display = 'none';
+                document.getElementById('placeholder-area').style.display = 'block';
                 return;
             }
 
@@ -236,6 +237,10 @@
             document.getElementById('placeholder-area').style.display = 'block';
             generatedURL = '';
         }
+
+        ['gmail-to', 'gmail-cc', 'gmail-bcc', 'gmail-subject', 'gmail-body'].forEach(id => {
+            document.getElementById(id).addEventListener('input', generateURL);
+        });
     </script>
 </body>
 
