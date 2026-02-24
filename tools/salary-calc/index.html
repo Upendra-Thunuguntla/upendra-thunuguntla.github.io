@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Hike Calculator | Upendra.dev</title>
+    <meta name="description"
+        content="Instantly calculate your salary hike percentage from current and revised CTC. Simple, fast, and accurate.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-398H4FBSEH"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-398H4FBSEH');</script>
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>Salary Hike Calculator</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">💰</div>
+                <div class="tool-hero-text">
+                    <h1>Salary Hike Calculator</h1>
+                    <p>Know your hike % instantly. Enter your current and revised CTC to calculate your salary increase
+                        percentage in real-time.</p>
+                    <div style="display:flex; gap:var(--space-sm); margin-top:var(--space-md);">
+                        <span class="badge">Finance</span>
+                        <span class="badge badge-purple">Career</span>
+                        <span class="badge badge-success">Real-time</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+            <div class="grid grid-2" style="align-items:start; gap:var(--space-3xl);">
+
+                <!-- Inputs -->
+                <div>
+                    <div class="form-group">
+                        <label class="form-label" for="current-salary">Current Salary (CTC in LPA)</label>
+                        <input type="number" id="current-salary" class="form-control"
+                            style="font-family:var(--font-mono); font-size:1.1rem; font-weight:600;"
+                            placeholder="e.g. 10" min="0" step="0.01" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="revised-salary">Revised Salary (CTC in LPA)</label>
+                        <input type="number" id="revised-salary" class="form-control"
+                            style="font-family:var(--font-mono); font-size:1.1rem; font-weight:600;"
+                            placeholder="e.g. 12" min="0" step="0.01" autocomplete="off">
+                    </div>
+
+                    <div class="info-box" style="margin-top:var(--space-md);">
+                        <span class="info-box-icon">📐</span>
+                        <span>Formula: <code>((Revised − Current) ÷ Current) × 100</code></span>
+                    </div>
+                </div>
+
+                <!-- Result -->
+                <div class="card salary-result">
+                    <div class="hike-label">Your Hike Percentage</div>
+                    <div class="hike-number" id="hike-result">—</div>
+                    <div class="hike-message" id="hike-message">Enter both salary values to calculate</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Related -->
+    <div class="related-tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
+                </a>
+                <a href="/tools/yaml-tools/" class="related-tool-link"><span class="icon">⚙️</span>
+                    <div>
+                        <div class="name">YAML Tools</div>
+                        <div class="desc">YAML ↔ Properties</div>
+                    </div>
+                </a>
+                <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
+                    <div>
+                        <div class="name">Gmail URL Generator</div>
+                        <div class="desc">Pre-filled compose links</div>
+                    </div>
+                </a>
+                <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
+                    <div>
+                        <div class="name">XML SDK Helper</div>
+                        <div class="desc">Mule connector XML</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla/Simple-Salary-Hike-Calculaor" target="_blank"
+                rel="noopener">View Source on GitHub</a>
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script>
+        const currentEl = document.getElementById('current-salary');
+        const revisedEl = document.getElementById('revised-salary');
+        const resultEl = document.getElementById('hike-result');
+        const msgEl = document.getElementById('hike-message');
+
+        function calc() {
+            const cur = parseFloat(currentEl.value);
+            const rev = parseFloat(revisedEl.value);
+
+            if (!currentEl.value || !revisedEl.value) {
+                resultEl.textContent = '—';
+                msgEl.textContent = 'Enter both salary values to calculate';
+                resultEl.style.fontSize = '';
+                return;
+            }
+            if (cur <= 0 || rev < 0) {
+                resultEl.textContent = '😑';
+                msgEl.textContent = "Don't kid me — enter valid positive values!";
+                return;
+            }
+
+            const pct = ((rev - cur) / cur) * 100;
+            resultEl.textContent = pct.toFixed(2) + '%';
+
+            if (pct > 0) {
+                msgEl.textContent = '🎉 Congratulations on your hike!';
+                resultEl.style.background = 'linear-gradient(135deg, #22c55e, #00d4ff)';
+                resultEl.style.webkitBackgroundClip = 'text';
+                resultEl.style.backgroundClip = 'text';
+                resultEl.style.webkitTextFillColor = 'transparent';
+            } else if (pct === 0) {
+                msgEl.textContent = '😐 No change in salary.';
+                resultEl.style.background = 'var(--grad-primary)';
+                resultEl.style.webkitBackgroundClip = 'text';
+                resultEl.style.backgroundClip = 'text';
+                resultEl.style.webkitTextFillColor = 'transparent';
+            } else {
+                msgEl.textContent = '😢 Salary decreased — negotiate hard!';
+                resultEl.style.background = 'linear-gradient(135deg, #ef4444, #f59e0b)';
+                resultEl.style.webkitBackgroundClip = 'text';
+                resultEl.style.backgroundClip = 'text';
+                resultEl.style.webkitTextFillColor = 'transparent';
+            }
+            gtag('event', 'calculate', { tool: 'salary-calc', hike: pct.toFixed(2) });
+        }
+
+        currentEl.addEventListener('input', calc);
+        revisedEl.addEventListener('input', calc);
+        currentEl.focus();
+    </script>
+</body>
+
+</html>

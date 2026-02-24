@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON to RAML Converter | Upendra.dev</title>
+    <meta name="description"
+        content="Free online JSON to RAML DataType converter for MuleSoft API Designer. Supports optional keys, CamelCase conversion, and RAML 1.0 format.">
+    <meta name="author" content="Upendra Thunuguntla">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="canonical" href="https://upendra-thunuguntla.github.io/tools/json2raml/">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-398H4FBSEH"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-398H4FBSEH');</script>
+</head>
+
+<body class="tool-page">
+
+    <!-- NAV -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"
+                    aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TOOL HERO -->
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a>
+                <span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a>
+                <span class="tool-breadcrumb-sep">/</span>
+                <span>JSON to RAML Converter</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">🔄</div>
+                <div class="tool-hero-text">
+                    <h1>JSON to RAML Converter</h1>
+                    <p>Transform JSON examples into RAML 1.0 DataType definitions for MuleSoft API Designer. All
+                        processing happens in your browser — no data ever leaves your machine.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">RAML 1.0</span>
+                        <span class="badge">API Design</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WORKSPACE -->
+    <div class="tool-workspace">
+        <div class="container">
+
+            <!-- Options -->
+            <div class="options-bar" style="margin-bottom:var(--space-lg);">
+                <div class="option-row">
+                    <input type="checkbox" id="areKeysOptional">
+                    <label for="areKeysOptional">Make all keys <strong>Optional</strong> — outputs
+                        <code>key?: string</code> instead of <code>key: string</code></label>
+                </div>
+                <div class="option-row">
+                    <input type="checkbox" id="areKeysCamelCased">
+                    <label for="areKeysCamelCased">Make all keys <strong>CamelCase</strong> — converts
+                        <code>my_key</code> to <code>myKey</code></label>
+                </div>
+            </div>
+
+            <!-- Grid -->
+            <div class="workspace-grid">
+                <!-- Input -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Input — JSON</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" onclick="loadExample()">⚡ Load Example</button>
+                            <button class="btn btn-ghost btn-sm" onclick="clearContents()">🗑 Clear</button>
+                        </div>
+                    </div>
+                    <textarea id="json-input" class="code-textarea"
+                        placeholder='Paste your JSON here…&#10;&#10;{&#10;  "name": "John",&#10;  "age": 30,&#10;  "active": true&#10;}'></textarea>
+                    <div class="action-row">
+                        <button class="btn btn-primary" onclick="convert()">
+                            <i class="fas fa-play"></i> Convert to RAML
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Output -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Output — RAML DataType</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" id="copy-btn" onclick="copyResult()">📋 Copy</button>
+                        </div>
+                    </div>
+                    <textarea id="raml-output" class="code-output" readonly
+                        placeholder="RAML DataType will appear here after conversion…"></textarea>
+                    <div class="action-row">
+                        <button class="btn btn-outline btn-sm" onclick="downloadRAML()">
+                            <i class="fas fa-download"></i> Download .raml
+                        </button>
+                    </div>
+                    <div id="filename-wrap" style="display:none; margin-top:var(--space-sm);">
+                        <div class="flex" style="gap:var(--space-sm);">
+                            <input type="text" id="raml-filename" class="form-control"
+                                style="font-family:var(--font-body);font-size:0.9rem;"
+                                placeholder="Enter filename (without extension)">
+                            <button class="btn btn-success btn-sm" onclick="doDownload()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info box -->
+            <div class="info-box" style="margin-top:var(--space-xl);">
+                <span class="info-box-icon">💡</span>
+                <span>This tool supports JSON objects and arrays. Arrays output as <code>type: array</code> with item
+                    type detection. Nested objects generate nested <code>properties</code> blocks.</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- RELATED TOOLS -->
+    <div class="related-tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/yaml-tools/" class="related-tool-link">
+                    <span class="icon">⚙️</span>
+                    <div>
+                        <div class="name">YAML Tools</div>
+                        <div class="desc">YAML ↔ Properties converter</div>
+                    </div>
+                </a>
+                <a href="/tools/xml-sdk/" class="related-tool-link">
+                    <span class="icon">🏗️</span>
+                    <div>
+                        <div class="name">XML SDK Helper</div>
+                        <div class="desc">Mule connector XML builder</div>
+                    </div>
+                </a>
+                <a href="/tools/gmail-url/" class="related-tool-link">
+                    <span class="icon">📧</span>
+                    <div>
+                        <div class="name">Gmail URL Generator</div>
+                        <div class="desc">Pre-filled compose links</div>
+                    </div>
+                </a>
+                <a href="/tools/salary-calc/" class="related-tool-link">
+                    <span class="icon">💰</span>
+                    <div>
+                        <div class="name">Salary Hike Calc</div>
+                        <div class="desc">Calculate your hike %</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla/JSON2RAML-Converter" target="_blank" rel="noopener">View
+                Source on GitHub</a>
+        </div>
+    </footer>
+
+    <script src="/assets/js/voca.min.js"></script>
+    <script src="/assets/js/platform.js"></script>
+    <script>
+        const TAB = "  ";
+        const LE = "\n";
+        const RAML_HEADER = "#%RAML 1.0 DataType" + LE;
+
+        function loadExample() {
+            document.getElementById('json-input').value = '{\n  "string": "Hello, World!",\n  "number": 42,\n  "boolean": true,\n  "nullValue": null,\n  "array": [1, 2, 3],\n  "object": {\n    "nested": "value"\n  }\n}';
+            gtag('event', 'load_example', { tool: 'json2raml' });
+        }
+
+        function clearContents() {
+            document.getElementById('json-input').value = '';
+            document.getElementById('raml-output').value = '';
+            document.getElementById('filename-wrap').style.display = 'none';
+            gtag('event', 'clear', { tool: 'json2raml' });
+        }
+
+        function convert() {
+            const keysOptional = document.getElementById('areKeysOptional').checked;
+            const keysCamelCased = document.getElementById('areKeysCamelCased').checked;
+            const input = document.getElementById('json-input').value.trim();
+            const output = document.getElementById('raml-output');
+
+            if (!input) { output.value = "Input is empty 🙄"; return; }
+            let parsed;
+            try { parsed = JSON.parse(input); } catch (e) { output.value = "❌ Invalid JSON — please check your input.\n\n" + e.message; return; }
+
+            const result = RAML_HEADER + buildRoot(parsed, keysOptional, keysCamelCased);
+            output.value = result.replace("\n\n", "\n");
+            gtag('event', 'convert', { tool: 'json2raml', inputLen: input.length });
+        }
+
+        function buildRoot(obj, opt, cc) {
+            if (Array.isArray(obj)) return "type: array" + LE + "items:" + LE + buildArray(true, obj, 1, opt, cc);
+            if (typeof obj === 'object' && obj !== null) return "type: object" + LE + "properties:" + LE + buildObject(true, obj, 1, opt, cc);
+            return "type: " + typeof obj + LE;
+        }
+
+        function buildObject(isRoot, obj, level, opt, cc) {
+            let out = "";
+            if (!isRoot) { level++; out = getTabs(level) + "properties:"; }
+            level++;
+            for (const key in obj) {
+                out += LE + getTabs(level) + getElementType(key, obj[key], level, opt, cc);
+            }
+            return out;
+        }
+
+        function buildArray(isRoot, arr, level, opt, cc) {
+            let out = "";
+            if (arr.length > 0) {
+                if (!isRoot) { level++; out = getTabs(level) + "items:"; }
+                level++;
+                out += LE + getTabs(level) + getElementType(null, arr[0], level, opt, cc);
+            } else if (!isRoot) {
+                out = getTabs(++level) + "type: array" + LE;
+            }
+            return out;
+        }
+
+        function getElementType(key, val, level, opt, cc) {
+            if (cc && key) key = v.camelCase(key);
+            if (opt && key) key = key + "?";
+            key = key === null ? "type" : key;
+            if (Array.isArray(val)) return key + ": " + LE + buildArray(false, val, level, opt, cc);
+            if (val === null) return key + ": nil";
+            if (typeof val === 'object') return key + ":" + LE + buildObject(false, val, level, opt, cc);
+            if (typeof val === 'string') return key + ": string";
+            if (typeof val === 'number') return key + ": number";
+            if (typeof val === 'boolean') return key + ": boolean";
+            return key + ": any";
+        }
+
+        function getTabs(n) { return TAB.repeat(n); }
+
+        function copyResult() {
+            const val = document.getElementById('raml-output').value;
+            copyToClipboard(val, document.getElementById('copy-btn'));
+        }
+
+        function downloadRAML() {
+            const val = document.getElementById('raml-output').value;
+            if (!val || !val.startsWith(RAML_HEADER)) { showToast('Please convert first!', 'error'); return; }
+            const wrap = document.getElementById('filename-wrap');
+            if (wrap.style.display === 'none') { wrap.style.display = 'block'; document.getElementById('raml-filename').focus(); }
+            else doDownload();
+        }
+
+        function doDownload() {
+            const name = (document.getElementById('raml-filename').value || 'datatype').trim();
+            const content = document.getElementById('raml-output').value;
+            if (!content.startsWith(RAML_HEADER)) { showToast('Nothing to download!', 'error'); return; }
+            downloadFile(content, name + '.raml', 'text/plain;charset=utf-8');
+            gtag('event', 'download', { tool: 'json2raml' });
+        }
+    </script>
+
+</body>
+
+</html>

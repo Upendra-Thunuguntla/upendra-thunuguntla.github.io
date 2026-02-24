@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mule XML SDK Helper | Upendra.dev</title>
+    <meta name="description"
+        content="GUI-driven XML builder for Mule XML SDK connectors. Generate operation and parameter XML blocks without memorising the schema.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RQY2QMZBWX"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-RQY2QMZBWX');</script>
+
+    <style>
+        /* Minimal XML output styling */
+        #xml-output {
+            width: 100%;
+            height: 380px;
+            background: var(--bg-alt);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-md);
+            color: var(--success);
+            font-family: var(--font-mono);
+            font-size: 0.83rem;
+            line-height: 1.7;
+            resize: vertical;
+            overflow-y: auto;
+            white-space: pre;
+        }
+    </style>
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>XML SDK Helper</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">🏗️</div>
+                <div class="tool-hero-text">
+                    <h1>Mule XML SDK Helper</h1>
+                    <p>Build Mule XML SDK connector definitions visually. Add operations and parameters through a form,
+                        and get ready-to-paste XML without memorising the schema.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">XML SDK</span>
+                        <span class="badge badge-purple">Connectors</span>
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+            <div class="workspace-grid" style="grid-template-columns: 380px 1fr; align-items:start;">
+
+                <!-- Left: Form -->
+                <div class="workspace-panel">
+                    <!-- Tab Bar -->
+                    <div class="tab-bar" style="margin-bottom:var(--space-xl);">
+                        <button class="tab-btn active" id="tab-op-btn"
+                            onclick="switchTab('operation', this)">Operation</button>
+                        <button class="tab-btn" id="tab-param-btn"
+                            onclick="switchTab('parameter', this)">Parameter</button>
+                    </div>
+
+                    <!-- Operation Form -->
+                    <div id="form-operation" class="tab-panel active">
+                        <div class="form-group">
+                            <label class="form-label">Operation Name *</label>
+                            <input type="text" id="op_name" class="form-control" placeholder="my-operation"
+                                autocomplete="off" oninput="op_name_change(this.value)">
+                            <span
+                                style="font-size:0.75rem; color:var(--text-muted); margin-top:4px; display:block;">Auto-converts
+                                to kebab-case</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Description</label>
+                            <textarea id="op_description" class="form-control" style="min-height:80px;"
+                                placeholder="What does this operation do?"
+                                onchange="op_desc_change(this.value)"></textarea>
+                        </div>
+                        <div class="action-row">
+                            <button class="btn btn-primary" onclick="op_reset()"><i class="fas fa-redo"></i> Reset
+                                Operation</button>
+                        </div>
+                    </div>
+
+                    <!-- Parameter Form -->
+                    <div id="form-parameter" class="tab-panel">
+                        <div class="form-group">
+                            <label class="form-label">Is Required *</label>
+                            <select id="param_use" class="form-control" onchange="param_disable_default(this.value)">
+                                <option value="" disabled selected>Select…</option>
+                                <option value="REQUIRED">REQUIRED</option>
+                                <option value="OPTIONAL">OPTIONAL</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Name * <span
+                                    style="font-size:0.75rem;color:var(--text-muted);">(auto kebab-case)</span></label>
+                            <input type="text" id="param_name" class="form-control" placeholder="my-param"
+                                autocomplete="off" onchange="this.value = toKebab(this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Display Name *</label>
+                            <input type="text" id="param_displayName" class="form-control" placeholder="My Parameter"
+                                autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Type *</label>
+                            <select id="param_type" class="form-control" onchange="param_CheckType(this.value)">
+                                <option value="" disabled selected>Select type…</option>
+                                <option value="any">Any</option>
+                                <option value="string">String</option>
+                                <option value="number">Number</option>
+                                <option value="boolean">Boolean</option>
+                                <option value="datetime">DateTime</option>
+                                <option value="date">Date</option>
+                                <option value="time">Time</option>
+                                <option value="other">Other (custom)</option>
+                            </select>
+                            <div id="custom-type-wrap"
+                                style="display:none; margin-top:var(--space-sm); display:none; flex-direction:row; gap:var(--space-sm);">
+                                <input type="text" id="param_type_text" class="form-control"
+                                    placeholder="Custom type e.g. MyType">
+                                <button class="btn btn-ghost btn-sm" onclick="clearCustomType()">✕</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Role *</label>
+                            <select id="param_role" class="form-control">
+                                <option value="" disabled selected>Select role…</option>
+                                <option value="BEHAVIOUR">Attribute (BEHAVIOUR)</option>
+                                <option value="CONTENT">Content</option>
+                                <option value="PRIMARY">Primary</option>
+                            </select>
+                        </div>
+
+                        <!-- Optional fields toggle -->
+                        <details style="margin-bottom:var(--space-lg);">
+                            <summary
+                                style="font-size:0.85rem; font-weight:600; color:var(--text-muted); cursor:pointer; padding:var(--space-xs) 0;">
+                                Optional Fields</summary>
+                            <div
+                                style="margin-top:var(--space-md); display:flex; flex-direction:column; gap:var(--space-md);">
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label class="form-label">Order</label>
+                                    <input type="text" id="param_order" class="form-control" placeholder="1">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label class="form-label">Tab</label>
+                                    <input type="text" id="param_tab" class="form-control" placeholder="General">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label class="form-label">Default Value</label>
+                                    <input type="text" id="param_defaultValue" class="form-control" placeholder="">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label class="form-label">Summary (tooltip)</label>
+                                    <input type="text" id="param_summary" class="form-control"
+                                        placeholder="Short tooltip">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label class="form-label">Example</label>
+                                    <input type="text" id="param_example" class="form-control" placeholder="abc123">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label class="form-label">Description</label>
+                                    <textarea id="param_description" class="form-control" style="min-height:70px;"
+                                        placeholder="Full parameter description"></textarea>
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label class="form-label">Is Password?</label>
+                                    <select id="param_password" class="form-control">
+                                        <option value="">Not a password</option>
+                                        <option value="REQUIRED">Yes — Password field</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </details>
+
+                        <div id="xml-error"
+                            style="color:var(--danger); font-size:0.85rem; margin-bottom:var(--space-md); display:none;">
+                        </div>
+
+                        <div class="action-row">
+                            <button class="btn btn-primary" onclick="param_convert()"><i class="fas fa-plus"></i> Add
+                                Parameter</button>
+                            <button class="btn btn-ghost btn-sm" onclick="param_clear()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: XML Output -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">XML Output</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" id="xml-copy-btn" onclick="copyXML()">📋 Copy</button>
+                            <button class="btn btn-ghost btn-sm" onclick="resetAll()" title="Start over">🗑 Reset
+                                All</button>
+                        </div>
+                    </div>
+                    <textarea id="xml-output" readonly
+                        placeholder="&lt;!-- XML output will appear here after you set an operation name and add parameters --&gt;"></textarea>
+                    <div class="action-row" style="margin-top:var(--space-md);">
+                        <button class="btn btn-outline btn-sm" onclick="downloadXML()"><i class="fas fa-download"></i>
+                            Download .xml</button>
+                    </div>
+                    <div class="info-box" style="margin-top:var(--space-md);">
+                        <span class="info-box-icon">💡</span>
+                        <span>Set the Operation name first, then switch to the Parameter tab to add parameters. Each
+                            click of "Add Parameter" appends to the output XML.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
+                </a>
+                <a href="/tools/yaml-tools/" class="related-tool-link"><span class="icon">⚙️</span>
+                    <div>
+                        <div class="name">YAML Tools</div>
+                        <div class="desc">YAML ↔ Properties</div>
+                    </div>
+                </a>
+                <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
+                    <div>
+                        <div class="name">Gmail URL Generator</div>
+                        <div class="desc">Pre-filled compose links</div>
+                    </div>
+                </a>
+                <a href="/tools/salary-calc/" class="related-tool-link"><span class="icon">💰</span>
+                    <div>
+                        <div class="name">Salary Hike Calc</div>
+                        <div class="desc">Calculate your hike %</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla/mule-xml-sdk-tools" target="_blank" rel="noopener">View
+                Source on GitHub</a>
+        </div>
+    </footer>
+
+    <script src="/assets/js/voca.min.js"></script>
+    <script src="/assets/js/platform.js"></script>
+    <script>
+        /* ══ Model ══ */
+        const xmlSer = new XMLSerializer();
+        const xmlDoc = document.implementation.createDocument("", "", null);
+        const operation = xmlDoc.createElement("operation");
+        const params = xmlDoc.createElement("parameters");
+        operation.appendChild(params);
+
+        /* ══ Helpers ══ */
+        function toKebab(s) { return v ? v.kebabCase(s) : s.replace(/\s+/g, '-').toLowerCase(); }
+
+        function prettyXML(xmlStr) {
+            let formatted = ''; let indent = '';
+            xmlStr.replace(/>\s*</g, '>\n<').split('\n').forEach(node => {
+                if (node.match(/^<\/\w/)) indent = indent.substring(2);
+                formatted += indent + node + '\n';
+                if (node.match(/^<\w[^>]*[^/]>.*$/) && !node.match(/<.*\/>/)) indent += '  ';
+            });
+            return formatted.trim();
+        }
+
+        function displayOutput() {
+            const raw = xmlSer.serializeToString(operation);
+            document.getElementById('xml-output').value = prettyXML(raw);
+        }
+
+        /* ══ Tab ══ */
+        function switchTab(id, btn) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('form-' + id).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        /* ══ Operation ══ */
+        function op_name_change(val) {
+            const kb = toKebab(val);
+            document.getElementById('op_name').value = kb;
+            operation.setAttribute('name', kb);
+            displayOutput();
+        }
+
+        function op_desc_change(val) {
+            if (val) operation.setAttribute('doc:description', val);
+            else operation.removeAttribute('doc:description');
+            displayOutput();
+        }
+
+        function op_reset() {
+            document.getElementById('op_name').value = '';
+            document.getElementById('op_description').value = '';
+            operation.removeAttribute('name');
+            operation.removeAttribute('doc:description');
+            // Remove all params
+            while (params.firstChild) params.removeChild(params.firstChild);
+            document.getElementById('xml-output').value = '';
+        }
+
+        /* ══ Parameter ══ */
+        const param_fields = [
+            { id: 'param_order', attr: 'order', req: false },
+            { id: 'param_tab', attr: 'tab', req: false },
+            { id: 'param_use', attr: 'use', req: true },
+            { id: 'param_name', attr: 'name', req: true },
+            { id: 'param_displayName', attr: 'displayName', req: true },
+            { id: 'param_defaultValue', attr: 'defaultValue', req: false },
+            { id: 'param_summary', attr: 'summary', req: false },
+            { id: 'param_example', attr: 'example', req: false },
+            { id: 'param_description', attr: 'doc:description', req: false },
+            { id: 'param_role', attr: 'role', req: true },
+            { id: 'param_password', attr: 'password', req: false },
+        ];
+
+        function param_CheckType(val) {
+            const customWrap = document.getElementById('custom-type-wrap');
+            const dd = document.getElementById('param_type');
+            if (val === 'other') {
+                customWrap.style.display = 'flex';
+                dd.style.display = 'none';
+            } else {
+                customWrap.style.display = 'none';
+                dd.style.display = 'block';
+            }
+        }
+
+        function clearCustomType() {
+            document.getElementById('param_type').value = '';
+            document.getElementById('param_type').style.display = 'block';
+            document.getElementById('custom-type-wrap').style.display = 'none';
+            document.getElementById('param_type_text').value = '';
+        }
+
+        function param_disable_default(val) {
+            document.getElementById('param_defaultValue').disabled = (val === 'REQUIRED');
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('xml-error');
+            el.textContent = '⚠️ ' + msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 3000);
+        }
+
+        function param_convert() {
+            const name = document.getElementById('param_name').value.trim();
+            const disp = document.getElementById('param_displayName').value.trim();
+            const role = document.getElementById('param_role').value;
+            const use = document.getElementById('param_use').value;
+            // Get type
+            const typeDd = document.getElementById('param_type');
+            const typeText = document.getElementById('param_type_text').value.trim();
+            const typeVal = typeDd.style.display === 'none' ? typeText : typeDd.value;
+
+            if (!name) { showError('Parameter Name is required.'); document.getElementById('param_name').focus(); return; }
+            if (!disp) { showError('Display Name is required.'); document.getElementById('param_displayName').focus(); return; }
+            if (!role) { showError('Role is required.'); document.getElementById('param_role').focus(); return; }
+            if (!use) { showError('Is Required field is required.'); document.getElementById('param_use').focus(); return; }
+            if (!typeVal) { showError('Type is required.'); return; }
+
+            const param = xmlDoc.createElement("parameter");
+
+            param_fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el && el.value) param.setAttribute(f.attr, el.value);
+            });
+            // Override type with correct value
+            param.setAttribute('type', typeVal);
+
+            params.appendChild(param);
+            displayOutput();
+            param_clear();
+            showToast('Parameter added! ✓');
+            gtag('event', 'add_parameter', { tool: 'xml-sdk' });
+        }
+
+        function param_clear() {
+            param_fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (el) el.value = '';
+            });
+            document.getElementById('param_type_text').value = '';
+            clearCustomType();
+            document.getElementById('xml-error').style.display = 'none';
+        }
+
+        function resetAll() {
+            op_reset();
+            param_clear();
+            showToast('Reset complete.');
+        }
+
+        /* ══ Actions ══ */
+        function copyXML() { copyToClipboard(document.getElementById('xml-output').value, document.getElementById('xml-copy-btn')); }
+        function downloadXML() {
+            const content = document.getElementById('xml-output').value;
+            if (!content.trim()) { showToast('Nothing to download!', 'error'); return; }
+            const opName = operation.getAttribute('name') || 'operation';
+            downloadFile(content, opName + '.xml', 'text/xml;charset=utf-8');
+            gtag('event', 'download', { tool: 'xml-sdk' });
+        }
+    </script>
+
+</body>
+
+</html>
