@@ -139,6 +139,7 @@
     </footer>
 
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/analytics.js"></script>
     <script>
         const currentEl = document.getElementById('current-salary');
         const revisedEl = document.getElementById('revised-salary');
@@ -183,7 +184,13 @@
                 resultEl.style.backgroundClip = 'text';
                 resultEl.style.webkitTextFillColor = 'transparent';
             }
-            gtag('event', 'calculate', { tool: 'salary-calc', hike: pct.toFixed(2) });
+            track_event('calculate', {
+                tool: 'salary_calc',
+                hike_pct: pct.toFixed(2),
+                direction: pct > 0 ? 'increase' : pct < 0 ? 'decrease' : 'flat',
+                current_salary: cur,
+                revised_salary: rev,
+            });
         }
 
         currentEl.addEventListener('input', calc);

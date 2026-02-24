@@ -291,6 +291,7 @@
 
     <script src="/assets/js/voca.min.js"></script>
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/analytics.js"></script>
     <script>
         /* ══ Model ══ */
         const xmlSer = new XMLSerializer();
@@ -423,7 +424,7 @@
             displayOutput();
             param_clear();
             showToast('Parameter added! ✓');
-            gtag('event', 'add_parameter', { tool: 'xml-sdk' });
+            track_event('add_parameter', { tool: 'xml_sdk', total_params: params.children.length });
         }
 
         function param_clear() {
@@ -449,7 +450,7 @@
             if (!content.trim()) { showToast('Nothing to download!', 'error'); return; }
             const opName = operation.getAttribute('name') || 'operation';
             downloadFile(content, opName + '.xml', 'text/xml;charset=utf-8');
-            gtag('event', 'download', { tool: 'xml-sdk' });
+            track_event('download', { tool: 'xml_sdk', file_type: 'xml' });
         }
     </script>
 

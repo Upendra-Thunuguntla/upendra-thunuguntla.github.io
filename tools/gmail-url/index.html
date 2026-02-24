@@ -181,6 +181,7 @@
     </footer>
 
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/analytics.js"></script>
     <script>
         let generatedURL = '';
 
@@ -202,25 +203,31 @@
             document.getElementById('gmail-url-display').textContent = generatedURL;
             document.getElementById('result-area').style.display = 'block';
             document.getElementById('placeholder-area').style.display = 'none';
-            gtag('event', 'url_generated', { tool: 'gmail-url', su: subject });
+            track_event('url_generated', {
+                tool: 'gmail_url',
+                has_cc: !!cc,
+                has_bcc: !!bcc,
+                subject_length: subject.length,
+                body_length: body.length,
+            });
         }
 
         function openGmail() {
             if (!generatedURL) return;
             window.open(generatedURL, '_blank', 'noopener');
-            gtag('event', 'open_gmail', { tool: 'gmail-url' });
+            track_event('open_gmail', { tool: 'gmail_url' });
         }
 
         function copyURL() {
             copyToClipboard(generatedURL, document.getElementById('copy-url-btn'));
-            gtag('event', 'copy_url', { tool: 'gmail-url' });
+            track_event('copy', { tool: 'gmail_url', content_type: 'url' });
         }
 
         function loadTestValues() {
             document.getElementById('gmail-to').value = 'muralidhar.thunuguntla@gmail.com';
             document.getElementById('gmail-subject').value = 'Sending Mail from Gmail Compose URL Generator';
             document.getElementById('gmail-body').value = 'Hi Upendra,\n\nYour tool is so helpful ❤️\n\nThanks!';
-            gtag('event', 'load_test', { tool: 'gmail-url' });
+            track_event('load_example', { tool: 'gmail_url' });
         }
 
         function clearForm() {

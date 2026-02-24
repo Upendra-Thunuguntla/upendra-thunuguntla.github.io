@@ -189,6 +189,7 @@
 
     <script src="/assets/js/voca.min.js"></script>
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/analytics.js"></script>
     <script>
         const TAB = "  ";
         const LE = "\n";
@@ -196,14 +197,14 @@
 
         function loadExample() {
             document.getElementById('json-input').value = '{\n  "string": "Hello, World!",\n  "number": 42,\n  "boolean": true,\n  "nullValue": null,\n  "array": [1, 2, 3],\n  "object": {\n    "nested": "value"\n  }\n}';
-            gtag('event', 'load_example', { tool: 'json2raml' });
+            track_event('load_example', { tool: 'json2raml' });
         }
 
         function clearContents() {
             document.getElementById('json-input').value = '';
             document.getElementById('raml-output').value = '';
             document.getElementById('filename-wrap').style.display = 'none';
-            gtag('event', 'clear', { tool: 'json2raml' });
+            track_event('clear', { tool: 'json2raml' });
         }
 
         function convert() {
@@ -218,7 +219,13 @@
 
             const result = RAML_HEADER + buildRoot(parsed, keysOptional, keysCamelCased);
             output.value = result.replace("\n\n", "\n");
-            gtag('event', 'convert', { tool: 'json2raml', inputLen: input.length });
+            track_event('convert', {
+                tool: 'json2raml',
+                input_length: input.length,
+                keys_optional: keysOptional,
+                keys_camelcase: keysCamelCased,
+                success: true,
+            });
         }
 
         function buildRoot(obj, opt, cc) {
@@ -266,6 +273,7 @@
 
         function copyResult() {
             const val = document.getElementById('raml-output').value;
+            if (val) track_event('copy', { tool: 'json2raml', content_type: 'raml' });
             copyToClipboard(val, document.getElementById('copy-btn'));
         }
 
@@ -282,7 +290,7 @@
             const content = document.getElementById('raml-output').value;
             if (!content.startsWith(RAML_HEADER)) { showToast('Nothing to download!', 'error'); return; }
             downloadFile(content, name + '.raml', 'text/plain;charset=utf-8');
-            gtag('event', 'download', { tool: 'json2raml' });
+            track_event('download', { tool: 'json2raml', file_type: 'raml', filename: name });
         }
     </script>
 

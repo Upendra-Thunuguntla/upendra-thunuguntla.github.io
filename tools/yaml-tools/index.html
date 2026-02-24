@@ -256,6 +256,7 @@
 
     <script src="/assets/js/js-yaml.min.js"></script>
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/analytics.js"></script>
     <script>
         /* ══ Tab switching ══ */
         function switchTab(tabId, btn) {
@@ -273,7 +274,7 @@
         function y2p_loadExample() {
             document.getElementById('yamlTextarea').value =
                 "string: Hello, World!\nnumber: 42\nboolean: true\ndatabase:\n  host: \"localhost\"\n  port: 5432\n  name: mydb\napp:\n  name: mule-app\n  version: 1.0.0";
-            gtag('event', 'load_example', { tool: 'yaml2prop' });
+            track_event('load_example', { tool: 'yaml_tools', direction: 'yaml_to_properties' });
         }
 
         function y2p_openFile(event) {
@@ -282,7 +283,7 @@
             const reader = new FileReader();
             reader.onload = e => document.getElementById('yamlTextarea').value = e.target.result;
             reader.readAsText(file);
-            gtag('event', 'file_upload', { tool: 'yaml2prop' });
+            track_event('file_upload', { tool: 'yaml_tools', file_type: 'yaml' });
         }
 
         function checkCheckboxes(data) {
@@ -335,7 +336,7 @@
                 document.getElementById('propertiesOutput').value = op;
                 document.getElementById('filterProp').disabled = false;
                 globalY2pOp = op;
-                gtag('event', 'convert', { tool: 'yaml2prop' });
+                track_event('convert', { tool: 'yaml_tools', direction: 'yaml_to_properties', keys_only: keysOnly });
             } catch (e) {
                 document.getElementById('propertiesOutput').value = "❌ Error: " + e.message;
                 document.getElementById('filterProp').disabled = true;
@@ -355,7 +356,7 @@
                 }
                 clearVals(data);
                 document.getElementById('propertiesOutput').value = jsyaml.dump(data);
-                gtag('event', 'remove_values', { tool: 'yaml-tools' });
+                track_event('remove_values', { tool: 'yaml_tools' });
             } catch (e) { document.getElementById('propertiesOutput').value = "❌ Error: " + e.message; }
         }
 
@@ -387,7 +388,7 @@
         function y2p_doDownload() {
             const name = document.getElementById('propFileName').value.trim() || 'mule-config';
             downloadFile(document.getElementById('propertiesOutput').value, name + '.properties', 'text/plain;charset=utf-8');
-            gtag('event', 'download', { tool: 'yaml2prop' });
+            track_event('download', { tool: 'yaml_tools', file_type: 'properties' });
         }
 
         /* ══════════════════════════════════
@@ -396,6 +397,7 @@
         function p2y_loadExample() {
             document.getElementById('propTextarea').value =
                 "database.host=localhost\ndatabase.port=5432\ndatabase.name=mydb\napp.name=mule-app\napp.version=1.0.0";
+            track_event('load_example', { tool: 'yaml_tools', direction: 'prop_to_yaml' });
         }
 
         function p2y_openFile(event) {
@@ -426,7 +428,7 @@
                     });
                 });
                 document.getElementById('yamlOutput').value = jsyaml.dump(obj, { indent: 2 });
-                gtag('event', 'convert', { tool: 'prop2yaml' });
+                track_event('convert', { tool: 'yaml_tools', direction: 'prop_to_yaml' });
             } catch (e) { document.getElementById('yamlOutput').value = "❌ Error: " + e.message; }
         }
 
@@ -438,7 +440,10 @@
 
         function p2y_copy() { copyToClipboard(document.getElementById('yamlOutput').value, document.getElementById('p2y-copy-btn')); }
 
-        function p2y_download() { downloadFile(document.getElementById('yamlOutput').value, 'config.yaml', 'text/plain;charset=utf-8'); }
+        function p2y_download() {
+            downloadFile(document.getElementById('yamlOutput').value, 'config.yaml', 'text/plain;charset=utf-8');
+            track_event('download', { tool: 'yaml_tools', file_type: 'yaml' });
+        }
     </script>
 </body>
 
