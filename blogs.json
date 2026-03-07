@@ -1,0 +1,186 @@
+[
+    {
+        "id": "settings-xml-github",
+        "title": "I Stopped Storing '.m2/settings.xml' in Github Repos — Everything Got Better",
+        "url": "https://medium.com/another-integration-blog/i-stopped-storing-m2-settings-xml-in-github-repos-%EF%B8%8F-everything-got-better-e81e1a1427f3",
+        "description": "How generating settings.xml on every CI run (instead of storing it) eliminated drift across 80+ Maven repos. A GitHub Actions composite action walkthrough.",
+        "tags": [
+            "CI/CD",
+            "GitHub Actions",
+            "Maven",
+            "MuleSoft"
+        ],
+        "date": "2026-03-06",
+        "readTime": "8 min",
+        "pages": [
+            "home",
+            "xml-sdk"
+        ]
+    },
+    {
+        "id": "mulesoft-grafana-observability",
+        "title": "Enhancing Observability in MuleSoft with Grafana",
+        "url": "https://medium.com/another-integration-blog/enhancing-observability-in-mulesoft-with-grafana-ebd3cc5f5995",
+        "description": "Set up real-time dashboards for your Mule 4 APIs using Grafana. Covers log shipping, metrics collection, and alerting for production-grade observability.",
+        "tags": [
+            "MuleSoft",
+            "Grafana",
+            "Logging",
+            "Observability"
+        ],
+        "date": "2025-12-22",
+        "readTime": "6 min",
+        "pages": [
+            "home",
+            "xml-sdk",
+            "yaml-tools"
+        ]
+    },
+    {
+        "id": "mule-migration-automation",
+        "title": "Automating Mule Migration from 4.4.0 to 4.6 with JDK17: Guide for Saving Time",
+        "url": "https://medium.com/another-integration-blog/automating-mule-migration-from-4-4-0-to-4-6-with-jdk17-guide-for-saving-time-f0ee29730d38",
+        "description": "A batch script that automated Mule 4.x + Java 17 migration across dozens of projects, cutting manual effort by 50%. Includes step-by-step guide.",
+        "tags": [
+            "MuleSoft",
+            "Migration",
+            "Java 17",
+            "Automation"
+        ],
+        "date": "2024-11-12",
+        "readTime": "7 min",
+        "pages": [
+            "home",
+            "xml-sdk",
+            "yaml-tools"
+        ]
+    },
+    {
+        "id": "raml-datatype-pro",
+        "title": "Writing RAML Datatype like a PRO",
+        "url": "https://medium.com/another-integration-blog/writing-raml-datatype-like-a-pro-0a741e6e36fd",
+        "description": "A complete guide to writing clean, reusable RAML 1.0 DataTypes for MuleSoft APIs. Covers types, inheritance, optional fields, and common patterns.",
+        "tags": [
+            "RAML",
+            "MuleSoft",
+            "API Design",
+            "JSON"
+        ],
+        "date": "2024-05-08",
+        "readTime": "6 min",
+        "pages": [
+            "home",
+            "json2raml"
+        ]
+    },
+    {
+        "id": "dw-script-using-dw-script",
+        "title": "How to Create a DW Script Using DW Script",
+        "url": "https://medium.com/another-integration-blog/how-to-create-pixel-dw-script-using-dw-script-e5b8b327dc02",
+        "description": "Meta-programming in DataWeave — using DW transformations to generate other DW scripts. A creative deep-dive into DataWeave's functional capabilities.",
+        "tags": [
+            "DataWeave",
+            "MuleSoft",
+            "Transformation"
+        ],
+        "date": "2024-05-01",
+        "readTime": "5 min",
+        "pages": [
+            "home",
+            "json2raml",
+            "yaml-tools"
+        ]
+    },
+    {
+        "id": "encrypt-decrypt-script",
+        "title": "Secret Agent Script: Encrypt & Decrypt Like a PRO",
+        "url": "https://medium.com/another-integration-blog/%EF%B8%8Fsecret-agent-script-encrypt-decrypt-like-a-pro-f379190c67a6",
+        "description": "Built a local utility to encrypt and decrypt secrets without re-entering the key every time. Handy for MuleSoft secure property placeholders.",
+        "tags": [
+            "MuleSoft",
+            "Security",
+            "Encryption",
+            "Scripts"
+        ],
+        "date": "2024-02-08",
+        "readTime": "4 min",
+        "pages": [
+            "home",
+            "yaml-tools",
+            "xml-sdk"
+        ]
+    },
+    {
+        "id": "dw-special-weekdays",
+        "title": "DataWeave Magic: Identifying Special Weekdays",
+        "url": "https://medium.com/another-integration-blog/dataweave-magic-identifying-special-weekdays-b814ecf10cf5",
+        "description": "A handy DataWeave snippet to detect business days, weekends, and holidays within date ranges. Great for scheduling flows and conditional logic.",
+        "tags": [
+            "DataWeave",
+            "DateTime",
+            "MuleSoft"
+        ],
+        "date": "2023-11-13",
+        "readTime": "4 min",
+        "pages": [
+            "home",
+            "yaml-tools",
+            "json2raml"
+        ]
+    },
+    {
+        "id": "cloudhub-schedulers-secrets",
+        "title": "Unveiling the Secrets of CloudHub's Schedulers in MuleSoft",
+        "url": "https://upendra-thunuguntla.medium.com/unveiling-the-secrets-of-cloudhubs-schedulers-in-mulesoft-48729e87b803",
+        "description": "Deep dive into how CloudHub handles scheduler behaviour across workers — including the quirks most developers hit in production.",
+        "tags": [
+            "MuleSoft",
+            "CloudHub",
+            "Scheduler",
+            "Tips"
+        ],
+        "date": "2023-11-10",
+        "readTime": "5 min",
+        "pages": [
+            "home",
+            "xml-sdk",
+            "yaml-tools"
+        ]
+    },
+    {
+        "id": "disable-schedulers-anypoint",
+        "title": "How to Disable Schedulers in Anypoint Studio: A Developer's Guide",
+        "url": "https://upendra-thunuguntla.medium.com/how-to-disable-schedulers-in-anypoint-studio-a-developers-guide-4919c9703831",
+        "description": "Practical tips for disabling schedulers during local development in Anypoint Studio — no more accidental DB writes while debugging.",
+        "tags": [
+            "MuleSoft",
+            "Anypoint Studio",
+            "Tips"
+        ],
+        "date": "2023-08-25",
+        "readTime": "3 min",
+        "pages": [
+            "home",
+            "xml-sdk"
+        ]
+    },
+    {
+        "id": "clone-azure-repo-github-desktop",
+        "title": "Cloning an Azure Repo into GitHub Desktop with Single Click",
+        "url": "https://upendra-thunuguntla.medium.com/cloning-an-azure-repo-into-github-desktop-with-single-click-771925223f78",
+        "description": "A bookmarklet trick that adds a one-click 'Open in GitHub Desktop' button to Azure DevOps repo pages. Zero install, huge time saver.",
+        "tags": [
+            "Azure DevOps",
+            "GitHub",
+            "Productivity",
+            "Bookmarklet"
+        ],
+        "date": "2023-07-27",
+        "readTime": "3 min",
+        "pages": [
+            "home",
+            "gmail-url",
+            "salary-calc"
+        ]
+    }
+]
