@@ -414,3 +414,536 @@
         text-align: center;
     }
 }
+
+/* ═══════════════════════════════════════════════
+   NEW SECTIONS — How-to, Social Proof, FAQ, Blog, Support
+   ═══════════════════════════════════════════════ */
+
+/* ─── Section wrapper shared ─── */
+.tool-section {
+    padding: var(--space-3xl) 0;
+    border-top: 1px solid var(--border);
+}
+
+.tool-section-alt {
+    background: var(--surface);
+}
+
+.tool-section-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+}
+
+.tool-section-label {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+}
+
+.tool-section-header h2 {
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    margin-bottom: var(--space-sm);
+}
+
+.tool-section-header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+/* ─── Social Proof Bar ─── */
+.social-proof-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-xl);
+    padding: var(--space-xl) 0;
+}
+
+.proof-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+}
+
+.proof-number {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.proof-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ─── How-to Steps ─── */
+.how-to-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-lg);
+    counter-reset: step-counter;
+}
+
+.how-to-step {
+    position: relative;
+    padding: var(--space-xl);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    counter-increment: step-counter;
+    transition: border-color var(--transition), transform var(--transition);
+}
+
+.how-to-step:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-3px);
+}
+
+.how-to-step::before {
+    content: counter(step-counter);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--grad-primary);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-bottom: var(--space-md);
+}
+
+.how-to-step h4 {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-xs);
+    color: var(--text);
+}
+
+.how-to-step p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ─── FAQ Accordion ─── */
+.faq-list {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.faq-item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface-2);
+    transition: border-color var(--transition);
+}
+
+.faq-item:focus-within,
+.faq-item[open] {
+    border-color: var(--border-accent);
+}
+
+.faq-item summary {
+    list-style: none;
+    padding: var(--space-lg) var(--space-xl);
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    color: var(--text);
+    transition: color var(--transition);
+    user-select: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: '+';
+    font-size: 1.2rem;
+    color: var(--accent);
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    font-weight: 300;
+}
+
+.faq-item[open] summary::after {
+    transform: rotate(45deg);
+}
+
+.faq-item[open] summary {
+    color: var(--accent);
+}
+
+.faq-answer {
+    padding: 0 var(--space-xl) var(--space-lg);
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+    border-top: 1px solid var(--border);
+}
+
+.faq-answer code {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    background: var(--surface-3);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--accent);
+}
+
+/* ─── Blog Cards ─── */
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+}
+
+.blog-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-xl);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    color: var(--text);
+    transition: all var(--transition);
+}
+
+.blog-card:hover {
+    border-color: var(--border-accent);
+    background: var(--surface-3);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    color: var(--text);
+}
+
+.blog-card-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.blog-card-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.45;
+    color: var(--text);
+}
+
+.blog-card-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex: 1;
+}
+
+.blog-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-sm);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ─── Support / Buy Me a Coffee Banner ─── */
+.support-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    padding: var(--space-xl) var(--space-2xl);
+    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08) 0%, rgba(var(--accent2-rgb, 124, 58, 237), 0.08) 100%);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    border-radius: var(--radius-xl);
+    margin: var(--space-2xl) 0 0;
+}
+
+.support-banner-text h3 {
+    font-size: 1rem;
+    margin-bottom: var(--space-xs);
+}
+
+.support-banner-text p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* ─── Hire Me Section (homepage) ─── */
+.hire-me-section {
+    position: relative;
+}
+
+.hire-me-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--space-3xl);
+    align-items: start;
+}
+
+.hire-me-services {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md);
+}
+
+.service-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    transition: border-color var(--transition), background var(--transition);
+}
+
+.service-card:hover {
+    border-color: var(--border-accent);
+    background: var(--surface-3);
+}
+
+.service-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+}
+
+.service-body h4 {
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+    color: var(--text);
+}
+
+.service-body p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0;
+}
+
+.hire-me-cta-card {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-xl));
+    padding: var(--space-xl);
+    background: var(--surface);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+/* ─── Stat row inside CTA card ─── */
+.hire-stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.hire-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-align: center;
+}
+
+.hire-stat-num {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+}
+
+.hire-stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ─── Capability pills ─── */
+.hire-caps-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.hire-caps-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+}
+
+.hire-cap {
+    padding: var(--space-sm) var(--space-md);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    text-align: center;
+    transition: border-color var(--transition), background var(--transition);
+    cursor: default;
+}
+
+.hire-cap:hover {
+    border-color: var(--border-accent);
+    background: var(--surface-3);
+}
+
+/* ─── Cert badges ─── */
+.hire-certs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    padding: var(--space-sm) 0;
+    border-top: 1px solid var(--border);
+}
+
+.hire-cert-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+}
+
+.hire-cert-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+
+
+.cta-rate-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: 999px;
+    width: fit-content;
+}
+
+.hire-me-cta-card h3 {
+    font-size: 1.3rem;
+    line-height: 1.3;
+}
+
+.hire-me-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.hire-me-detail-list li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.hire-me-detail-list li::before {
+    content: '✓';
+    color: var(--success);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+    .hire-me-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hire-me-services {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hire-me-cta-card {
+        position: static;
+    }
+
+    .how-to-steps {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .social-proof-bar {
+        gap: var(--space-lg);
+    }
+}
+
+@media (max-width: 640px) {
+    .hire-me-services {
+        grid-template-columns: 1fr;
+    }
+
+    .how-to-steps {
+        grid-template-columns: 1fr;
+    }
+
+    .support-banner {
+        flex-direction: column;
+        text-align: center;
+    }
+}

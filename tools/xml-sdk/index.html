@@ -264,6 +264,171 @@
         </div>
     </div>
 
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">GUI</div>
+                    <div class="proof-label">No Schema<br>Memorizing</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">kebab</div>
+                    <div class="proof-label">Auto kebab-case<br>Name Formatting</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">7+</div>
+                    <div class="proof-label">Parameter Types<br>Supported</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Always Free<br>No Sign-up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use the Mule XML SDK Helper</h2>
+                <p>Build complete XML SDK connector definitions visually. No schema docs needed. Just fill in the form
+                    and copy the output.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Set Operation Name</h4>
+                    <p>Switch to the <strong>Operation</strong> tab. Type a name and it auto-converts to kebab-case as
+                        required by the XML SDK spec. Optionally add a description.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Add Parameters</h4>
+                    <p>Switch to the <strong>Parameter</strong> tab. Fill in use (REQUIRED/OPTIONAL), name, display
+                        name, type, and role fields for each parameter, then click <strong>Add Parameter</strong>.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Review Live XML</h4>
+                    <p>The right panel updates in real-time with every change, showing the full pretty-printed
+                        <code>&lt;operation&gt;</code> block ready for your connector module descriptor.
+                    </p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Copy or Download</h4>
+                    <p>Hit <strong>Copy</strong> to paste directly into your <code>module-info.xml</code>, or
+                        <strong>Download</strong> to save as an <code>.xml</code> file for later reference.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the Mule XML SDK?</summary>
+                    <div class="faq-answer">The Mule XML SDK is a framework for building custom MuleSoft connectors
+                        using XML descriptor files and Java code. It lets teams create reusable, published connectors
+                        for internal or public use in Anypoint Exchange, without the complexity of the older DevKit
+                        approach.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What are the Operation and Parameter tabs for?</summary>
+                    <div class="faq-answer">An <strong>Operation</strong> is a single action your connector exposes
+                        (e.g., "get-records", "send-message"). <strong>Parameters</strong> are the inputs that operation
+                        accepts (e.g., a query string, a timeout, a payload). This tool helps you configure both and
+                        generates the correct XML block for your <code>module-info.xml</code>.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What does the "Role" field mean?</summary>
+                    <div class="faq-answer">Role controls how the parameter appears in the Anypoint Studio UI:
+                        <code>BEHAVIOUR</code> makes it an attribute field (small config option), <code>CONTENT</code>
+                        makes it a content/body input (e.g., payload), and <code>PRIMARY</code> marks it as the main
+                        connector input at the top of the config panel.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I add multiple parameters to one operation?</summary>
+                    <div class="faq-answer">Yes. The tool is designed for this. Fill in and click <strong>Add
+                            Parameter</strong> for each field. Each one is appended to the live XML output. You can add
+                        as many parameters as your operation needs.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Why is my name auto-converted to kebab-case?</summary>
+                    <div class="faq-answer">The XML SDK specification requires operation and parameter names in
+                        kebab-case (e.g., <code>my-operation</code>, not <code>myOperation</code>). The tool converts
+                        your input automatically so you don't have to remember the convention.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What happens when I click Reset All?</summary>
+                    <div class="faq-answer">Reset All clears the entire operation, including its name, description, and
+                        all added parameters. The XML output is wiped so you can start fresh with a new operation
+                        definition from scratch.</div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>In-depth articles on MuleSoft connector development and integration patterns.</p>
+            </div>
+            <div class="blog-grid">
+                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
+                    <div class="blog-card-tag">MuleSoft · Connectors</div>
+                    <div class="blog-card-title">Cloning an Azure Repo into GitHub Desktop with Single Click</div>
+                    <div class="blog-card-desc">Speed up your connector development workflow by setting up seamless
+                        source control between Azure DevOps and GitHub Desktop.</div>
+                    <div class="blog-card-footer">
+                        <span>Medium · Upendra Thunuguntla</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
+                    <div class="blog-card-tag">MuleSoft · Security</div>
+                    <div class="blog-card-title">Handling Secrets with Docker and MuleSoft: A Fun and Secure Adventure
+                    </div>
+                    <div class="blog-card-desc">Best practices for managing connector credentials and secrets when
+                        running MuleSoft applications in containerized environments.</div>
+                    <div class="blog-card-footer">
+                        <span>Medium · Upendra Thunuguntla</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>Connector development is hard. This tool takes away the boring parts. If it helped, a coffee shows
+                    your support and keeps this toolkit growing!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
     <div class="related-tools">
         <div class="container">
             <h3

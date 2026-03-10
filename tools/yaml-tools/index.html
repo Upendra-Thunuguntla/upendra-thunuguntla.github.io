@@ -91,7 +91,7 @@
                     <!-- Input -->
                     <div class="workspace-panel">
                         <div class="panel-header">
-                            <span class="panel-title">Input — YAML</span>
+                            <span class="panel-title">Input: YAML</span>
                             <div class="panel-actions">
                                 <button class="btn btn-ghost btn-sm" onclick="y2p_loadExample()">⚡ Example</button>
                                 <button class="btn btn-ghost btn-sm" onclick="y2p_clear()">🗑 Clear</button>
@@ -143,7 +143,7 @@
                     <!-- Output -->
                     <div class="workspace-panel">
                         <div class="panel-header">
-                            <span class="panel-title">Output — Properties</span>
+                            <span class="panel-title">Output: Properties</span>
                             <div class="panel-actions">
                                 <button class="btn btn-ghost btn-sm" id="y2p-copy-btn" onclick="y2p_copy()">📋
                                     Copy</button>
@@ -182,7 +182,7 @@
                 <div class="workspace-grid">
                     <div class="workspace-panel">
                         <div class="panel-header">
-                            <span class="panel-title">Input — Properties</span>
+                            <span class="panel-title">Input: Properties</span>
                             <div class="panel-actions">
                                 <button class="btn btn-ghost btn-sm" onclick="p2y_loadExample()">⚡ Example</button>
                                 <button class="btn btn-ghost btn-sm" onclick="p2y_clear()">🗑 Clear</button>
@@ -211,7 +211,7 @@
 
                     <div class="workspace-panel">
                         <div class="panel-header">
-                            <span class="panel-title">Output — YAML</span>
+                            <span class="panel-title">Output: YAML</span>
                             <div class="panel-actions">
                                 <button class="btn btn-ghost btn-sm" id="p2y-copy-btn" onclick="p2y_copy()">📋
                                     Copy</button>
@@ -227,6 +227,175 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">2-Way</div>
+                    <div class="proof-label">YAML ↔ Properties<br>Conversion</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">secure::</div>
+                    <div class="proof-label">Auto-detects<br>Encrypted Values</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">2</div>
+                    <div class="proof-label">Output Formats<br>${key} & Mule::p()</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Always Free<br>No Sign-up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use Mule YAML Tools</h2>
+                <p>Two converters in one. Whether you're flattening YAML into properties or rebuilding YAML from flat
+                    keys, here's how each direction works.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Pick Your Direction</h4>
+                    <p>Use the <strong>YAML to Properties</strong> tab to flatten a config YAML. Switch to
+                        <strong>Properties to YAML</strong> to reconstruct a nested YAML from flat key=value pairs.
+                    </p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Paste or Upload Your File</h4>
+                    <p>Both tabs support pasting content directly or uploading a file from disk. Works with
+                        <code>.yaml</code>, <code>.yml</code>, and <code>.properties</code> files. No size limit, no
+                        backend.
+                    </p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Set Output Options (YAML tab)</h4>
+                    <p>Going YAML to Properties? Check <strong>Keys Only</strong> to strip values, then pick
+                        <strong>${key}</strong> or <strong>Mule::p("key")</strong> wrapping. Use the filter bar for
+                        large configs.
+                    </p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Copy or Download</h4>
+                    <p>Grab the output via Copy, or download as a <code>.properties</code> / <code>.yaml</code> file for
+                        your Mule project. No reformatting needed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What is the difference between YAML and .properties in MuleSoft?</summary>
+                    <div class="faq-answer">MuleSoft supports both YAML (<code>config.yaml</code>) and flat properties
+                        (<code>config.properties</code>) files for externalizing runtime configuration. YAML is
+                        hierarchical and easier to read; Properties files are flat key=value pairs. Mule 4 on CloudHub
+                        often uses Properties files for environment-specific overrides.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What does the "Keys Only" option do?</summary>
+                    <div class="faq-answer">Enabling <strong>Keys Only</strong> extracts just the dotted property keys
+                        (e.g., <code>database.host</code>) without the values. This is useful when you need a list of
+                        property keys to reference in DataWeave expressions or to create a Mule property placeholder
+                        template.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the Mule::p("key") format used for?</summary>
+                    <div class="faq-answer"><code>Mule::p("key")</code> is a DataWeave function that reads a Mule
+                        property at runtime. It's the recommended way to reference properties inside DataWeave scripts,
+                        replacing the older <code>${key}</code> placeholder syntax in certain contexts. This tool can
+                        auto-wrap all your keys in this format with a single click.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>How does the tool detect encrypted values?</summary>
+                    <div class="faq-answer">Values starting with <code>![</code> are recognized as Mule Secure Property
+                        encrypted values. In Keys Only mode, these keys automatically get the <code>secure::</code>
+                        prefix added (e.g., <code>secure::database.password</code>), which is required by the Mule
+                        Secure Properties Module.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I convert a .properties file back to YAML?</summary>
+                    <div class="faq-answer">Yes! Switch to the <strong>Properties → YAML</strong> tab. Paste or upload
+                        your flat <code>.properties</code> file, and the tool will reconstruct the nested YAML hierarchy
+                        from the dotted key paths, so <code>database.host=localhost</code> becomes proper nested YAML
+                        structure.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my configuration data safe?</summary>
+                    <div class="faq-answer">Completely. All processing happens 100% in your browser. No data, keys, or
+                        values are ever sent to any server. This makes it safe to use with production config files
+                        containing connection strings or encrypted secrets.</div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>Practical articles on MuleSoft configuration, DataWeave, and secure deployments.</p>
+            </div>
+            <div class="blog-grid">
+                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
+                    <div class="blog-card-tag">MuleSoft · Security</div>
+                    <div class="blog-card-title">Handling Secrets with Docker and MuleSoft: A Fun and Secure Adventure
+                    </div>
+                    <div class="blog-card-desc">Learn the right way to manage environment variables and secrets in
+                        Dockerized Mule runtimes without exposing sensitive configuration.</div>
+                    <div class="blog-card-footer">
+                        <span>Medium · Upendra Thunuguntla</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
+                    <div class="blog-card-tag">MuleSoft · Config</div>
+                    <div class="blog-card-title">Adding Two Hours in DataWeave — Mule 4 Date Manipulation</div>
+                    <div class="blog-card-desc">A quick guide to performing date and time arithmetic in DataWeave 2.0,
+                        including timezone manipulation relevant to time-sensitive configs.</div>
+                    <div class="blog-card-footer">
+                        <span>Medium · Upendra Thunuguntla</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>Built for the MuleSoft community. 100% free, always. If it saves you time on your next deployment, a
+                    coffee goes a long way!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
         </div>
     </div>
 
