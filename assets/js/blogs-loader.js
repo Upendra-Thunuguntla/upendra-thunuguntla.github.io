@@ -1,89 +1,106 @@
 /**
  * blogs-loader.js
- * Dynamically renders blog cards from /blogs.json.
- *
- * Usage — add to any page that has a container like:
- *   <div class="blog-cards-grid" data-page="json2raml"></div>
- *   <script src="/assets/js/blogs-loader.js"></script>
- *
- * The data-page attribute filters blogs to those that include
- * the page name in their "pages" array. Use "home" for the homepage.
- *
- * To add a new blog post: edit /blogs.json only. No HTML changes needed.
+ * Dynamically renders blog cards from Medium RSS feed.
+ * Uses rss2json.com API (Free tier) to bypass CORS.
  */
 
 (function () {
     'use strict';
 
-    /** Resolve the root-relative path to blogs.json from any subdirectory. */
-    function getBlogsUrl() {
-        // Walk up from current location to find the site root
-        const depth = (window.location.pathname.match(/\//g) || []).length - 1;
-        const prefix = depth > 1 ? '../'.repeat(depth - 1) : './';
-        return prefix + 'blogs.json';
+    const RSS_URL = 'https://medium.com/feed/@upendra-thunuguntla';
+    const API_URL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(RSS_URL)}`;
+
+    /** Clean HTML from a string and truncate */
+    function cleanDescription(html, limit = 120) {
+        if (!html) return "";
+        const text = html.replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ').trim();
+        if (text.length <= limit) return text;
+        return text.substring(0, limit).trim() + '...';
     }
 
-    /** Format YYYY-MM-DD → "Mar 2024" */
-    function formatDate(dateStr) {
-        const d = new Date(dateStr + 'T00:00:00');
-        return d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+    /** Format Date: "2024-03-13 10:00:00" -> "Mar 2024" or standard date */
+    function formatDate(dateStr, short = true) {
+        try {
+            const d = new Date(dateStr.replace(/-/g, "/"));
+            if (short) {
+                return d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+            }
+            return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        } catch (e) {
+            return dateStr;
+        }
     }
 
-    /** Build the HTML for a single blog card */
-    function buildCard(blog) {
-        const tagsHtml = blog.tags
-            .slice(0, 2)
+    /** Build HTML for "blog-card" style (vertical, descriptive) */
+    function buildBlogCard(item) {
+        const categories = item.categories || [];
+        const tagsHtml = categories.slice(0, 2)
             .map(t => `<span class="blog-tag">${t}</span>`)
-            .join(' · ');
+            .join(' · ') || `<span class="blog-tag">MuleSoft</span>`;
 
         return `
-      <a href="${blog.url}" target="_blank" rel="noopener" class="blog-card">
+      <a href="${item.link}" target="_blank" rel="noopener" class="blog-card">
         <div class="blog-card-tag">${tagsHtml}</div>
-        <div class="blog-card-title">${blog.title}</div>
-        <div class="blog-card-desc">${blog.description}</div>
+        <div class="blog-card-title">${item.title}</div>
+        <div class="blog-card-desc">${cleanDescription(item.description || item.content)}</div>
         <div class="blog-card-footer">
-          <span>${formatDate(blog.date)}</span>
-          <span>${blog.readTime} read &rarr;</span>
+          <span>${formatDate(item.pubDate)}</span>
+          <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
         </div>
       </a>`;
     }
 
-    /** Main — fetch, filter, render */
-    function loadBlogs() {
-        const containers = document.querySelectorAll('[data-blog-page]');
-        if (!containers.length) return;
+    /** Build HTML for "pub-card" style (horizontal row, compact) */
+    function buildPubCard(item) {
+        // Find a representative icon based on title/categories
+        let icon = "📝";
+        const title = item.title.toLowerCase();
+        if (title.includes('dataweave') || title.includes('dw')) icon = "⚡";
+        else if (title.includes('mule')) icon = "⚙️";
+        else if (title.includes('docker') || title.includes('whale')) icon = "🐳";
+        else if (title.includes('secure') || title.includes('encrypt')) icon = "🔐";
+        else if (title.includes('azure') || title.includes('github')) icon = "🐙";
+        else if (title.includes('date') || title.includes('hour')) icon = "⏰";
 
-        fetch(getBlogsUrl())
-            .then(function (res) {
-                if (!res.ok) throw new Error('Failed to load blogs.json');
-                return res.json();
-            })
-            .then(function (blogs) {
-                containers.forEach(function (container) {
-                    const page = container.dataset.blogPage;          // e.g. "json2raml"
-                    const limit = parseInt(container.dataset.blogLimit || '2', 10);
-
-                    const filtered = blogs
-                        .filter(function (b) {
-                            return !page || b.pages.includes(page);
-                        })
-                        .slice(0, limit);
-
-                    if (!filtered.length) {
-                        container.innerHTML = '<p style="color:var(--text-muted)">No articles found.</p>';
-                        return;
-                    }
-
-                    container.innerHTML = filtered.map(buildCard).join('');
-                });
-            })
-            .catch(function (err) {
-                console.warn('[blogs-loader] ' + err.message);
-                // Fail silently on the page — don't break anything
-            });
+        return `
+      <a href="${item.link}" target="_blank" rel="noopener" class="pub-card">
+        <span class="pub-icon">${icon}</span>
+        <div>
+          <div class="pub-title">${item.title}</div>
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">
+            Medium · ${item.categories.slice(0, 2).join(' / ') || 'Technical Article'}
+          </div>
+        </div>
+        <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
+      </a>`;
     }
 
-    // Run after DOM is ready
+    /** Main - fetch and render */
+    function loadBlogs() {
+        const containers = document.querySelectorAll('[data-blog-type]');
+        if (!containers.length) return;
+
+        fetch(API_URL)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status !== 'ok') return;
+                const posts = data.items || [];
+
+                containers.forEach(container => {
+                    const type = container.dataset.blogType; // "blog-card" or "pub-card"
+                    const limit = parseInt(container.dataset.blogLimit || '4', 10);
+                    const filteredPosts = posts.slice(0, limit);
+
+                    if (!filteredPosts.length) return;
+
+                    container.innerHTML = filteredPosts.map(post => {
+                        return type === 'pub-card' ? buildPubCard(post) : buildBlogCard(post);
+                    }).join('');
+                });
+            })
+            .catch(err => console.warn('[blogs-loader]', err));
+    }
+
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', loadBlogs);
     } else {

@@ -277,27 +277,9 @@
                 <h2>From the Blog</h2>
                 <p>Productivity tips and automation workflows for developers and teams.</p>
             </div>
-            <div class="blog-grid">
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">Productivity · Automation</div>
-                    <div class="blog-card-title">Cloning an Azure Repo into GitHub Desktop with Single Click</div>
-                    <div class="blog-card-desc">Productivity hacks for developers — automate repetitive tasks and reduce
-                        context switching in your daily workflow.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">MuleSoft · Integration</div>
-                    <div class="blog-card-title">Using JSON in HTTP Request and DB Query — Mule 4</div>
-                    <div class="blog-card-desc">Learn API integration patterns that pair well with notification and
-                        email workflow automation built on top of MuleSoft.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <!-- Dynamic content from blogs-loader.js -->
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
             </div>
         </div>
     </div>
@@ -329,10 +311,10 @@
                         <div class="desc">MuleSoft DataType converter</div>
                     </div>
                 </a>
-                <a href="/tools/yaml-tools/" class="related-tool-link"><span class="icon">⚙️</span>
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
                     <div>
-                        <div class="name">YAML Tools</div>
-                        <div class="desc">YAML ↔ Properties</div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
                     </div>
                 </a>
                 <a href="/tools/salary-calc/" class="related-tool-link"><span class="icon">💰</span>
@@ -360,6 +342,7 @@
     </footer>
 
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
     <script src="/assets/js/analytics.js"></script>
     <script>
         let generatedURL = '';

@@ -29,7 +29,9 @@
     var PAGE_TOOL = (function () {
         var p = window.location.pathname;
         if (p.includes('/json2raml')) return 'json2raml';
-        if (p.includes('/yaml-tools')) return 'yaml_tools';
+        if (p.includes('/yaml2props')) return 'yaml2props';
+        if (p.includes('/props2yaml')) return 'props2yaml';
+        if (p.includes('/yaml-tools')) return 'yaml_tools'; // Keep for legacy if needed, or remove
         if (p.includes('/xml-sdk')) return 'xml_sdk';
         if (p.includes('/gmail-url')) return 'gmail_url';
         if (p.includes('/salary-calc')) return 'salary_calc';

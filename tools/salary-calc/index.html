@@ -249,27 +249,9 @@
                 <h2>From the Blog</h2>
                 <p>Career tips, tech industry insights, and developer productivity resources.</p>
             </div>
-            <div class="blog-grid">
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">Career · MuleSoft</div>
-                    <div class="blog-card-title">How to Import a Function/Module in DataWeave — Mule 4</div>
-                    <div class="blog-card-desc">Level up your MuleSoft skills with modular DataWeave — the kind of
-                        expertise that directly impacts your market value and negotiation power.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">Career · DevOps</div>
-                    <div class="blog-card-title">Cloning an Azure Repo into GitHub Desktop with Single Click</div>
-                    <div class="blog-card-desc">Sharpen your developer workflow skills — the small productivity wins
-                        that add up and make you the go-to person on any team.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <!-- Dynamic content from blogs-loader.js -->
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
             </div>
         </div>
     </div>
@@ -302,10 +284,10 @@
                         <div class="desc">MuleSoft DataType converter</div>
                     </div>
                 </a>
-                <a href="/tools/yaml-tools/" class="related-tool-link"><span class="icon">⚙️</span>
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
                     <div>
-                        <div class="name">YAML Tools</div>
-                        <div class="desc">YAML ↔ Properties</div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
                     </div>
                 </a>
                 <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
@@ -333,6 +315,7 @@
     </footer>
 
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
     <script src="/assets/js/analytics.js"></script>
     <script>
         const currentEl = document.getElementById('current-salary');

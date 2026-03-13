@@ -245,7 +245,24 @@
 
       <div class="grid grid-auto reveal-stagger">
 
-        <!-- Tool 1: JSON2RAML -->
+        <!-- Tool 1: Mule2Curl -->
+        <a href="/tools/mule2curl/" class="card tool-card">
+          <div class="tool-card-icon">⚡</div>
+          <h3 class="tool-card-title">Mule2Curl</h3>
+          <p class="tool-card-desc">Paste MuleSoft HTTP debug logs → get a ready-to-use cURL command instantly.
+            Parses method, host, path, query params, headers, and body.</p>
+          <div class="tool-card-tech">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">Debugging</span>
+            <span class="badge">cURL</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Tool 2: JSON2RAML -->
         <a href="/tools/json2raml/" target="_blank" rel="noopener" class="card tool-card">
           <div class="tool-card-icon">🔄</div>
           <h3 class="tool-card-title">JSON to RAML Converter</h3>
@@ -262,13 +279,12 @@
           </div>
         </a>
 
-        <!-- Tool 2: YAML Tools -->
-        <a href="/tools/yaml-tools/" class="card tool-card">
+        <!-- Tool 3: YAML to Properties -->
+        <a href="/tools/yaml2props/" class="card tool-card">
           <div class="tool-card-icon">⚙️</div>
-          <h3 class="tool-card-title">Mule YAML Tools</h3>
-          <p class="tool-card-desc">Two-way YAML ↔ Properties converter with key extraction. Generate <code
-              style="font-size:0.8em">$&#123;key&#125;</code> or <code style="font-size:0.8em">Mule::p("key")</code>
-            expressions in one click.</p>
+          <h3 class="tool-card-title">YAML to Properties</h3>
+          <p class="tool-card-desc">Flatten nested YAML configs into dotted property keys. Get keys in Mule-ready
+            formats like <code>${key}</code> or <code>Mule::p("key")</code>.</p>
           <div class="tool-card-tech">
             <span class="badge">MuleSoft</span>
             <span class="badge badge-purple">YAML</span>
@@ -280,7 +296,24 @@
           </div>
         </a>
 
-        <!-- Tool 3: XML SDK Helper -->
+        <!-- Tool 4: Properties to YAML -->
+        <a href="/tools/props2yaml/" class="card tool-card">
+          <div class="tool-card-icon">📝</div>
+          <h3 class="tool-card-title">Properties to YAML</h3>
+          <p class="tool-card-desc">Reconstruct nested YAML hierarchy from flat <code>.properties</code> files.
+            Clean, well-indented output for MuleSoft configurations.</p>
+          <div class="tool-card-tech">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">Properties</span>
+            <span class="badge">YAML</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Tool 5: XML SDK Helper -->
         <a href="/tools/xml-sdk/" class="card tool-card">
           <div class="tool-card-icon">🏗️</div>
           <h3 class="tool-card-title">Mule XML SDK Helper</h3>
@@ -298,7 +331,7 @@
           </div>
         </a>
 
-        <!-- Tool 4: Gmail URL -->
+        <!-- Tool 6: Gmail URL -->
         <a href="/tools/gmail-url/" class="card tool-card">
           <div class="tool-card-icon">📧</div>
           <h3 class="tool-card-title">Gmail Compose URL Generator</h3>
@@ -315,7 +348,7 @@
           </div>
         </a>
 
-        <!-- Tool 5: Salary Calc -->
+        <!-- Tool 7: Salary Calc -->
         <a href="/tools/salary-calc/" class="card tool-card">
           <div class="tool-card-icon">💰</div>
           <h3 class="tool-card-title">Salary Hike Calculator</h3>
@@ -325,23 +358,6 @@
             <span class="badge">Finance</span>
             <span class="badge badge-purple">Career</span>
             <span class="badge">Calculator</span>
-          </div>
-          <div class="tool-card-footer">
-            <span class="badge badge-success">🟢 Live</span>
-            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </a>
-
-        <!-- Tool 6: Mule2Curl -->
-        <a href="/tools/mule2curl/" class="card tool-card">
-          <div class="tool-card-icon">⚡</div>
-          <h3 class="tool-card-title">Mule2Curl</h3>
-          <p class="tool-card-desc">Paste MuleSoft HTTP debug logs → get a ready-to-use cURL command instantly.
-            Parses method, host, path, query params, headers, and body.</p>
-          <div class="tool-card-tech">
-            <span class="badge">MuleSoft</span>
-            <span class="badge badge-purple">Debugging</span>
-            <span class="badge">cURL</span>
           </div>
           <div class="tool-card-footer">
             <span class="badge badge-success">🟢 Live</span>
@@ -787,56 +803,9 @@
       </div>
 
       <div style="max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:var(--space-md);"
-        class="reveal-stagger">
-        <a href="https://medium.com/search?q=adding+two+hours+dataweave+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">⏰</span>
-          <div>
-            <div class="pub-title">Adding Two Hours in DataWeave — Mulesoft 4</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · DataWeave Date
-              Manipulation</div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
-        <a href="https://medium.com/search?q=import+function+module+dataweave+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">📦</span>
-          <div>
-            <div class="pub-title">How to Import a Function/Module in DataWeave — Mulesoft 4</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · DataWeave Modularity</div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
-        <a href="https://medium.com/search?q=cloning+azure+repo+github+desktop+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">🐙</span>
-          <div>
-            <div class="pub-title">Cloning an Azure Repo into GitHub Desktop with Single Click</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · DevOps / Source Control
-            </div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
-        <a href="https://medium.com/search?q=json+http+request+db+query+mule+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">🗃️</span>
-          <div>
-            <div class="pub-title">Using JSON in HTTP Request and DB Query — Mule 4</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · Mule Integration Patterns
-            </div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
-        <a href="https://medium.com/search?q=docker+mulesoft+secrets+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">🐳</span>
-          <div>
-            <div class="pub-title">Handling Secrets with Docker and MuleSoft: A Fun and Secure Adventure</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · Docker + MuleSoft Security
-            </div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
+        class="reveal-stagger" data-blog-type="pub-card" data-blog-limit="6">
+        <!-- Dynamic content from blogs-loader.js -->
+        <p style="text-align:center; color:var(--text-muted);">Loading latest articles...</p>
 
         <div style="text-align:center; margin-top:var(--space-lg);">
           <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="btn btn-outline">
@@ -920,6 +889,7 @@
 
   <!-- Platform JS -->
   <script src="/assets/js/platform.js"></script>
+  <script src="/assets/js/blogs-loader.js"></script>
   <script>
     // Init typewriter
     document.addEventListener('DOMContentLoaded', function () {

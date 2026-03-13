@@ -554,28 +554,9 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
                 <h2>From the Blog</h2>
                 <p>Deeper dives into MuleSoft HTTP debugging and integration troubleshooting.</p>
             </div>
-            <div class="blog-grid">
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">MuleSoft · Debugging</div>
-                    <div class="blog-card-title">Handling Secrets with Docker and MuleSoft: A Fun and Secure Adventure
-                    </div>
-                    <div class="blog-card-desc">Best practices for managing secrets and HTTP connector credentials
-                        when debugging MuleSoft applications running in containers.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">MuleSoft · Integration</div>
-                    <div class="blog-card-title">Using JSON in HTTP Request and DB Query — Mule 4</div>
-                    <div class="blog-card-desc">Learn common HTTP request patterns in Mule 4, including how debug
-                        logs can help you trace and troubleshoot API calls.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <!-- Dynamic content from blogs-loader.js -->
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
             </div>
         </div>
     </div>
@@ -607,10 +588,10 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
                         <div class="desc">MuleSoft DataType converter</div>
                     </div>
                 </a>
-                <a href="/tools/yaml-tools/" class="related-tool-link"><span class="icon">⚙️</span>
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
                     <div>
-                        <div class="name">YAML Tools</div>
-                        <div class="desc">YAML ↔ Properties</div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
                     </div>
                 </a>
                 <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
@@ -637,6 +618,7 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
     </footer>
 
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
     <script src="/assets/js/analytics.js"></script>
     <script>
         /* ══════════════════════════════════════════════

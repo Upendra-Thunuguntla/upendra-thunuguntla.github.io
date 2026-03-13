@@ -388,28 +388,9 @@
                 <h2>From the Blog</h2>
                 <p>In-depth articles on MuleSoft connector development and integration patterns.</p>
             </div>
-            <div class="blog-grid">
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">MuleSoft · Connectors</div>
-                    <div class="blog-card-title">Cloning an Azure Repo into GitHub Desktop with Single Click</div>
-                    <div class="blog-card-desc">Speed up your connector development workflow by setting up seamless
-                        source control between Azure DevOps and GitHub Desktop.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">MuleSoft · Security</div>
-                    <div class="blog-card-title">Handling Secrets with Docker and MuleSoft: A Fun and Secure Adventure
-                    </div>
-                    <div class="blog-card-desc">Best practices for managing connector credentials and secrets when
-                        running MuleSoft applications in containerized environments.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <!-- Dynamic content from blogs-loader.js -->
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
             </div>
         </div>
     </div>
@@ -441,10 +422,10 @@
                         <div class="desc">MuleSoft DataType converter</div>
                     </div>
                 </a>
-                <a href="/tools/yaml-tools/" class="related-tool-link"><span class="icon">⚙️</span>
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
                     <div>
-                        <div class="name">YAML Tools</div>
-                        <div class="desc">YAML ↔ Properties</div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
                     </div>
                 </a>
                 <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
@@ -473,6 +454,7 @@
 
     <script src="/assets/js/voca.min.js"></script>
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
     <script src="/assets/js/analytics.js"></script>
     <script>
         /* ══ Model ══ */

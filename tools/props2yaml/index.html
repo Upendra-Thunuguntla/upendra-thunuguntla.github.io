@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Properties to YAML Converter | Upendra.dev</title>
+    <meta name="description"
+        content="Free Properties to YAML converter for MuleSoft. Reconstruct nested YAML hierarchy from flat .properties files instantly. 100% client-side.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Properties to YAML Converter",
+        "description": "Free Properties to YAML converter for MuleSoft. Reconstruct nested YAML hierarchy from flat .properties files.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>Properties to YAML</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">📝</div>
+                <div class="tool-hero-text">
+                    <h1>Properties to YAML Converter</h1>
+                    <p>Convert flat <code>.properties</code> files into cleanly nested YAML. Reconstruct the logical
+                        hierarchy of your MuleSoft configurations with ease.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">Properties</span>
+                        <span class="badge">YAML</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <div class="workspace-grid">
+                <!-- ── Left Panel: Input ── -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Input: Properties</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" onclick="p2y_loadExample()">⚡ Example</button>
+                            <button class="btn btn-ghost btn-sm" onclick="p2y_clear()">🗑 Clear</button>
+                        </div>
+                    </div>
+
+                    <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()"
+                        placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"></textarea>
+
+                    <label class="file-zone-card" for="propFileInput">
+                        <span class="file-zone-icon">📂</span>
+                        <span class="file-zone-text" id="prop-file-label">Upload a <strong>.properties</strong> file</span>
+                        <input type="file" accept=".properties,.prop" id="propFileInput" onchange="p2y_openFile(event)">
+                    </label>
+                </div>
+
+                <!-- ── Right Panel: Output ── -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Output: YAML</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" id="p2y-copy-btn" onclick="p2y_copy()">📋 Copy</button>
+                        </div>
+                    </div>
+                    <textarea id="yamlOutput" class="code-output" readonly placeholder="YAML output will appear here…" style="min-height:280px;"></textarea>
+                    <div class="file-zone-card" onclick="p2y_download()" role="button" tabindex="0" title="Download .yaml file">
+                        <span class="file-zone-icon">📥</span>
+                        <span class="file-zone-text">Download as <strong>.yaml</strong> file</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-footer">
+                <button class="btn btn-primary" onclick="p2y_convert()"><i class="fas fa-play"></i> Convert to YAML</button>
+            </div>
+
+            <div class="info-box" style="margin-top:var(--space-xl);">
+                <span class="info-box-icon">💡</span>
+                <span>The tool automatically converts dotted keys like <code>app.db.host</code> into a nested YAML structure. Line comments starting with <code>#</code> are preserved during input.</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">Nesting</div>
+                    <div class="proof-label">Reconstructs YAML<br>Hierarchy</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">MuleSoft</div>
+                    <div class="proof-label">Optimized for<br>Config Files</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Fast</div>
+                    <div class="proof-label">Instant Live<br>Conversion</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Always Free<br>No Sign-up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>Why convert Properties to YAML?</summary>
+                    <div class="faq-answer">YAML is much more readable for complex configurations. When migrating flat <code>.properties</code> files to <code>.yaml</code>, this tool saves time by automatically building the nested levels.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does it handle complex keys?</summary>
+                    <div class="faq-answer">Yes, it handles any number of nested levels. <code>a.b.c.d=value</code> will result in a 4-level deep YAML structure.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data secure?</summary>
+                    <div class="faq-answer">Absolutely. Like all tools on Upendra.dev, the conversion happens entirely in your browser. No data ever leaves your machine.</div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>Deep-dives on YAML, Properties, and MuleSoft configuration patterns.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <!-- Dynamic content from blogs-loader.js -->
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>Built for the MuleSoft community. If it saves you time on your next deployment, a coffee goes a long way!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
+                    <div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
+                    </div>
+                </a>
+                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
+                </a>
+                <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
+                    <div>
+                        <div class="name">Mule2Curl</div>
+                        <div class="desc">Logs to cURL converter</div>
+                    </div>
+                </a>
+                <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
+                    <div>
+                        <div class="name">XML SDK Helper</div>
+                        <div class="desc">Mule connector XML builder</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View Source on GitHub</a>
+        </div>
+    </footer>
+
+    <script src="/assets/js/js-yaml.min.js"></script>
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script>
+        function p2y_loadExample() {
+            document.getElementById('propTextarea').value = "database.host=localhost\ndatabase.port=5432\ndatabase.name=mydb\napp.name=mule-app\napp.version=1.0.0";
+            p2y_convert();
+            track_event('load_example', { tool: 'props2yaml' });
+        }
+
+        function p2y_openFile(event) {
+            const file = event.target.files[0]; if (!file) return;
+            document.getElementById('prop-file-label').textContent = file.name;
+            const reader = new FileReader();
+            reader.onload = e => { document.getElementById('propTextarea').value = e.target.result; p2y_convert(); };
+            reader.readAsText(file);
+            track_event('file_upload', { tool: 'props2yaml', file_type: 'properties' });
+        }
+
+        function p2y_convert() {
+            const input = document.getElementById('propTextarea').value.trim();
+            if (!input) { document.getElementById('yamlOutput').value = ''; return; }
+            try {
+                const obj = {};
+                input.split('\n').forEach(line => {
+                    line = line.trim();
+                    if (!line || line.startsWith('#')) return;
+                    const eqIdx = line.indexOf('=');
+                    if (eqIdx < 0) return;
+                    const key = line.slice(0, eqIdx).trim();
+                    const val = line.slice(eqIdx + 1).trim();
+                    const parts = key.split('.');
+                    let cur = obj;
+                    parts.forEach((p, i) => {
+                        if (i === parts.length - 1) cur[p] = val;
+                        else { if (!cur[p] || typeof cur[p] !== 'object') cur[p] = {}; cur = cur[p]; }
+                    });
+                });
+                document.getElementById('yamlOutput').value = jsyaml.dump(obj, { indent: 2 });
+                track_event('convert', { tool: 'props2yaml' });
+            } catch (e) { document.getElementById('yamlOutput').value = "❌ Error: " + e.message; }
+        }
+
+        function p2y_clear() {
+            document.getElementById('propTextarea').value = '';
+            document.getElementById('yamlOutput').value = '';
+            document.getElementById('prop-file-label').innerHTML = 'Upload a <strong>.properties</strong> file';
+        }
+
+        function p2y_copy() { copyToClipboard(document.getElementById('yamlOutput').value, document.getElementById('p2y-copy-btn')); }
+
+        function p2y_download() {
+            const val = document.getElementById('yamlOutput').value;
+            if (!val) { showToast('Nothing to download!', 'error'); return; }
+            downloadFile(val, 'config.yaml', 'text/plain;charset=utf-8');
+            track_event('download', { tool: 'props2yaml' });
+        }
+    </script>
+</body>
+</html>
