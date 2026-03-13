@@ -103,7 +103,7 @@
 
             <!-- Grid -->
             <div class="workspace-grid">
-                <!-- Input -->
+                <!-- ── Left Panel: Input ── -->
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">Input: JSON</span>
@@ -112,22 +112,17 @@
                             <button class="btn btn-ghost btn-sm" onclick="clearContents()">🗑 Clear</button>
                         </div>
                     </div>
-                    <label class="file-upload-zone" for="json-file-input">
-                        <span style="font-size:1.2rem">📂</span>
-                        <span class="file-upload-label">Upload a <strong>.json</strong> file, or paste below</span>
+                    <textarea id="json-input" class="code-textarea" oninput="convert()"
+                        placeholder='Paste your JSON here&#10;&#10;{&#10;  &quot;name&quot;: &quot;John&quot;,&#10;  &quot;age&quot;: 30,&#10;  &quot;active&quot;: true&#10;}'></textarea>
+                    <label class="file-zone-card" for="json-file-input">
+                        <span class="file-zone-icon">📂</span>
+                        <span class="file-zone-text">Upload a <strong>.json</strong> file</span>
                         <input type="file" id="json-file-input" accept=".json,application/json"
                             onchange="loadJSONFile(event)">
                     </label>
-                    <textarea id="json-input" class="code-textarea" oninput="convert()"
-                        placeholder='Paste your JSON here&#10;&#10;{&#10;  &quot;name&quot;: &quot;John&quot;,&#10;  &quot;age&quot;: 30,&#10;  &quot;active&quot;: true&#10;}'></textarea>
-                    <div class="action-row">
-                        <button class="btn btn-primary" onclick="convert()">
-                            <i class="fas fa-play"></i> Convert to RAML
-                        </button>
-                    </div>
                 </div>
 
-                <!-- Output -->
+                <!-- ── Right Panel: Output ── -->
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">Output: RAML DataType</span>
@@ -137,12 +132,11 @@
                     </div>
                     <textarea id="raml-output" class="code-output" readonly
                         placeholder="RAML DataType will appear here after conversion"></textarea>
-                    <div class="action-row">
-                        <button class="btn btn-outline btn-sm" onclick="downloadRAML()">
-                            <i class="fas fa-download"></i> Download .raml
-                        </button>
+                    <div class="file-zone-card" onclick="downloadRAML()" role="button" tabindex="0" title="Download .raml file">
+                        <span class="file-zone-icon">📥</span>
+                        <span class="file-zone-text">Download as <strong>.raml</strong> file</span>
                     </div>
-                    <div id="filename-wrap" style="display:none; margin-top:var(--space-sm);">
+                    <div id="filename-wrap" style="display:none;">
                         <div class="flex" style="gap:var(--space-sm);">
                             <input type="text" id="raml-filename" class="form-control"
                                 style="font-family:var(--font-body);font-size:0.9rem;"
@@ -151,6 +145,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- ── Centered Action Footer ── -->
+            <div class="action-footer">
+                <button class="btn btn-primary" onclick="convert()">
+                    <i class="fas fa-play"></i> Convert to RAML
+                </button>
             </div>
 
             <!-- Info box -->

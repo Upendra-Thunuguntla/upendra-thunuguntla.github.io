@@ -67,7 +67,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-xl);
-    align-items: start;
+    align-items: stretch;
 }
 
 .workspace-panel {
@@ -80,6 +80,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-height: 36px;
     margin-bottom: var(--space-xs);
 }
 
@@ -101,6 +102,7 @@
 .code-textarea {
     width: 100%;
     min-height: 320px;
+    flex: 1;
     padding: var(--space-md);
     background: var(--surface-2);
     border: 1.5px solid var(--border);
@@ -170,7 +172,57 @@
     align-items: center;
 }
 
-/* ─── File Upload ─── */
+/* ─── Symmetrical Action Footer (centered below grid) ─── */
+.action-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+    margin-top: var(--space-lg);
+}
+
+/* ─── File Zone Card (symmetrical upload/download) ─── */
+.file-zone-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--surface-2);
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition);
+    min-height: 56px;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.file-zone-card:hover {
+    border-color: var(--border-accent);
+    background: rgba(var(--accent-rgb), 0.04);
+    color: var(--text);
+}
+
+.file-zone-card input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.file-zone-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.file-zone-text {
+    font-size: 0.875rem;
+    color: var(--text-subtle);
+}
+
+/* ─── File Upload (legacy — kept for backward compat) ─── */
 .file-upload-zone {
     display: flex;
     align-items: center;
@@ -204,6 +256,7 @@
 .code-output {
     width: 100%;
     min-height: 320px;
+    flex: 1;
     padding: var(--space-md);
     background: var(--bg-alt);
     border: 1.5px solid var(--border);

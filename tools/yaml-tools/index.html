@@ -88,7 +88,7 @@
             <!-- ════ TAB 1: YAML → Properties ════ -->
             <div id="tab-yaml2prop" class="tab-panel active">
                 <div class="workspace-grid">
-                    <!-- Input -->
+                    <!-- ── Left Panel: Input ── -->
                     <div class="workspace-panel">
                         <div class="panel-header">
                             <span class="panel-title">Input: YAML</span>
@@ -98,22 +98,16 @@
                             </div>
                         </div>
 
-                        <!-- File upload -->
-                        <label
-                            style="display:flex; align-items:center; gap:var(--space-md); padding:var(--space-md) var(--space-lg); background:var(--surface-2); border:1.5px dashed var(--border); border-radius:var(--radius-lg); cursor:pointer; transition:all var(--transition);"
-                            onmouseover="this.style.borderColor='var(--border-accent)'"
-                            onmouseout="this.style.borderColor='var(--border)'">
-                            <span style="font-size:1.5rem;">📂</span>
-                            <span style="font-size:0.875rem; color:var(--text-subtle);" id="yaml-file-label">Choose a
-                                YAML file… or paste below</span>
-                            <input type="file" accept=".yaml,.yml" id="yamlFileInput" onchange="y2p_openFile(event)"
-                                style="position:absolute;opacity:0;width:0;height:0;">
-                        </label>
-
                         <textarea id="yamlTextarea" class="code-textarea" oninput="y2p_convert()"
                             placeholder="Paste YAML content here&#10;&#10;database:&#10;  host: &quot;localhost&quot;&#10;  port: 5432"></textarea>
 
-                        <!-- Options -->
+                        <label class="file-zone-card" for="yamlFileInput">
+                            <span class="file-zone-icon">📂</span>
+                            <span class="file-zone-text" id="yaml-file-label">Upload a <strong>YAML</strong> file</span>
+                            <input type="file" accept=".yaml,.yml" id="yamlFileInput" onchange="y2p_openFile(event)">
+                        </label>
+
+                        <!-- Options (contextual to input) -->
                         <div class="options-bar">
                             <div class="option-row">
                                 <input type="checkbox" id="keysOnly"
@@ -131,22 +125,14 @@
                                 <label for="addMuleProp">Enclose in <code>Mule::p("key")</code></label>
                             </div>
                         </div>
-
-                        <div class="action-row">
-                            <button class="btn btn-primary" onclick="y2p_convert()"><i class="fas fa-play"></i>
-                                Convert</button>
-                            <button class="btn btn-outline btn-sm" onclick="y2p_removeValues()">Remove YAML
-                                Values</button>
-                        </div>
                     </div>
 
-                    <!-- Output -->
+                    <!-- ── Right Panel: Output ── -->
                     <div class="workspace-panel">
                         <div class="panel-header">
                             <span class="panel-title">Output: Properties</span>
                             <div class="panel-actions">
-                                <button class="btn btn-ghost btn-sm" id="y2p-copy-btn" onclick="y2p_copy()">📋
-                                    Copy</button>
+                                <button class="btn btn-ghost btn-sm" id="y2p-copy-btn" onclick="y2p_copy()">📋 Copy</button>
                             </div>
                         </div>
 
@@ -156,11 +142,11 @@
                         <textarea id="propertiesOutput" class="code-output" readonly
                             placeholder="Properties output will appear here…" style="min-height:250px;"></textarea>
 
-                        <div class="action-row" style="margin-top:var(--space-sm);">
-                            <button class="btn btn-outline btn-sm" id="downloadProp" onclick="y2p_downloadPrompt()"><i
-                                    class="fas fa-download"></i> Download .properties</button>
+                        <div class="file-zone-card" onclick="y2p_downloadPrompt()" role="button" tabindex="0" title="Download .properties file">
+                            <span class="file-zone-icon">📥</span>
+                            <span class="file-zone-text">Download as <strong>.properties</strong> file</span>
                         </div>
-                        <div id="prop-filename-group" style="display:none; margin-top:var(--space-sm);">
+                        <div id="prop-filename-group" style="display:none;">
                             <div class="flex" style="gap:var(--space-sm);">
                                 <input type="text" id="propFileName" class="form-control"
                                     style="font-family:var(--font-body);" placeholder="File name">
@@ -168,6 +154,12 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- ── Centered Action Footer ── -->
+                <div class="action-footer">
+                    <button class="btn btn-primary" onclick="y2p_convert()"><i class="fas fa-play"></i> Convert</button>
+                    <button class="btn btn-outline btn-sm" onclick="y2p_removeValues()">Remove YAML Values</button>
                 </div>
 
                 <div class="info-box" style="margin-top:var(--space-xl);">
@@ -180,6 +172,7 @@
             <!-- ════ TAB 2: Properties → YAML ════ -->
             <div id="tab-prop2yaml" class="tab-panel">
                 <div class="workspace-grid">
+                    <!-- ── Left Panel: Input ── -->
                     <div class="workspace-panel">
                         <div class="panel-header">
                             <span class="panel-title">Input: Properties</span>
@@ -189,41 +182,37 @@
                             </div>
                         </div>
 
-                        <label
-                            style="display:flex; align-items:center; gap:var(--space-md); padding:var(--space-md) var(--space-lg); background:var(--surface-2); border:1.5px dashed var(--border); border-radius:var(--radius-lg); cursor:pointer;"
-                            onmouseover="this.style.borderColor='var(--border-accent)'"
-                            onmouseout="this.style.borderColor='var(--border)'">
-                            <span style="font-size:1.5rem;">📂</span>
-                            <span style="font-size:0.875rem; color:var(--text-subtle);" id="prop-file-label">Choose a
-                                .properties file… or paste below</span>
-                            <input type="file" accept=".properties,.prop" id="propFileInput"
-                                onchange="p2y_openFile(event)" style="position:absolute;opacity:0;width:0;height:0;">
-                        </label>
-
                         <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()"
                             placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"></textarea>
 
-                        <div class="action-row" style="margin-top:var(--space-sm);">
-                            <button class="btn btn-primary" onclick="p2y_convert()"><i class="fas fa-play"></i> Convert
-                                to YAML</button>
-                        </div>
+                        <label class="file-zone-card" for="propFileInput">
+                            <span class="file-zone-icon">📂</span>
+                            <span class="file-zone-text" id="prop-file-label">Upload a <strong>.properties</strong> file</span>
+                            <input type="file" accept=".properties,.prop" id="propFileInput"
+                                onchange="p2y_openFile(event)">
+                        </label>
                     </div>
 
+                    <!-- ── Right Panel: Output ── -->
                     <div class="workspace-panel">
                         <div class="panel-header">
                             <span class="panel-title">Output: YAML</span>
                             <div class="panel-actions">
-                                <button class="btn btn-ghost btn-sm" id="p2y-copy-btn" onclick="p2y_copy()">📋
-                                    Copy</button>
+                                <button class="btn btn-ghost btn-sm" id="p2y-copy-btn" onclick="p2y_copy()">📋 Copy</button>
                             </div>
                         </div>
                         <textarea id="yamlOutput" class="code-output" readonly
                             placeholder="YAML output will appear here…" style="min-height:280px;"></textarea>
-                        <div class="action-row" style="margin-top:var(--space-sm);">
-                            <button class="btn btn-outline btn-sm" onclick="p2y_download()"><i
-                                    class="fas fa-download"></i> Download .yaml</button>
+                        <div class="file-zone-card" onclick="p2y_download()" role="button" tabindex="0" title="Download .yaml file">
+                            <span class="file-zone-icon">📥</span>
+                            <span class="file-zone-text">Download as <strong>.yaml</strong> file</span>
                         </div>
                     </div>
+                </div>
+
+                <!-- ── Centered Action Footer ── -->
+                <div class="action-footer">
+                    <button class="btn btn-primary" onclick="p2y_convert()"><i class="fas fa-play"></i> Convert to YAML</button>
                 </div>
             </div>
 

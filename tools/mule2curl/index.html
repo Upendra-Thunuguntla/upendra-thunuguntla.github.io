@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mule2Curl — MuleSoft Debug Logs to cURL | Upendra.dev</title>
+    <meta name="description"
+        content="Mule2Curl: Instantly convert MuleSoft HTTP debug logs into ready-to-use cURL commands. Parses method, host, path, query params, headers, and body automatically.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Mule2Curl — MuleSoft Debug Logs to cURL Converter",
+        "description": "Instantly convert MuleSoft HTTP debug logs into ready-to-use cURL commands. Parses method, host, path, query params, headers, and body automatically.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+
+    <style>
+        /* ── Parsed Breakdown: full-width 2-column ── */
+        .breakdown-banner {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-top: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        .breakdown-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #10b981, var(--accent));
+        }
+        .breakdown-banner-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: var(--space-md);
+        }
+        .breakdown-banner-title i {
+            color: #10b981;
+        }
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+        }
+        @media (max-width: 768px) {
+            .breakdown-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .breakdown-col {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .breakdown-col-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: var(--space-xs);
+        }
+        .parsed-field {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--surface-1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.82rem;
+            transition: border-color var(--transition);
+        }
+        .parsed-field:hover {
+            border-color: var(--border-accent);
+        }
+        .parsed-field-label {
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.7rem;
+            min-width: 70px;
+            flex-shrink: 0;
+        }
+        .parsed-field-value {
+            font-family: var(--font-mono);
+            color: var(--text);
+            word-break: break-all;
+            font-size: 0.8rem;
+        }
+        .parsed-field-value.empty {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .parsed-headers-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .parsed-header-row {
+            display: flex;
+            gap: var(--space-sm);
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            padding: 3px var(--space-sm);
+            border-radius: var(--radius-sm);
+        }
+        .parsed-header-row:hover {
+            background: rgba(var(--accent-rgb), 0.04);
+        }
+        .parsed-header-key {
+            color: var(--accent);
+            font-weight: 600;
+            min-width: 140px;
+            flex-shrink: 0;
+        }
+        .parsed-header-val {
+            color: var(--text-subtle);
+            word-break: break-all;
+        }
+        .parse-status {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: var(--space-xs) var(--space-md);
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-md);
+        }
+        .parse-status.success {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .parse-status.error {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+        .parse-status.idle {
+            background: rgba(100, 116, 139, 0.12);
+            color: var(--text-muted);
+            border: 1px solid rgba(100, 116, 139, 0.2);
+        }
+        /* Debug log enablement banner — full width */
+        .debug-banner {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        .debug-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-alt, #a78bfa));
+        }
+        .debug-banner-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: var(--space-md);
+        }
+        .debug-banner-title i {
+            color: var(--accent);
+        }
+        .debug-banner-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+        }
+        @media (max-width: 768px) {
+            .debug-banner-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .debug-banner-col {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+        .debug-banner-col-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        .debug-banner-col-label .col-icon {
+            font-size: 0.85rem;
+        }
+        .debug-code-block {
+            background: var(--surface-1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm) var(--space-md);
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            line-height: 1.7;
+            color: var(--text);
+            word-break: break-all;
+            position: relative;
+        }
+        .debug-code-block .logger-line {
+            display: block;
+            padding: 2px 0;
+        }
+        .debug-code-block .logger-line + .logger-line {
+            border-top: 1px dashed var(--border);
+            margin-top: 2px;
+            padding-top: 4px;
+        }
+        .pkg-row {
+            display: flex;
+            align-items: baseline;
+            gap: var(--space-sm);
+            padding: var(--space-xs) var(--space-sm);
+            background: var(--surface-1);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.78rem;
+            transition: border-color var(--transition);
+        }
+        .pkg-row:hover {
+            border-color: var(--border-accent);
+        }
+        .pkg-name {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--accent);
+            word-break: break-all;
+            flex: 1;
+        }
+        .pkg-label {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>Mule2Curl</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">⚡</div>
+                <div class="tool-hero-text">
+                    <h1>Mule2Curl</h1>
+                    <p>Paste MuleSoft HTTP debug logs → get a ready-to-use cURL command instantly.
+                        Copy it, run it, or import it into Postman. Zero manual header wrangling.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">Debugging</span>
+                        <span class="badge">cURL</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <!-- ═══ DEBUG LOG ENABLEMENT BANNER — Full Width ═══ -->
+            <div class="debug-banner">
+                <div class="debug-banner-title">
+                    <i class="fas fa-terminal"></i>
+                    Enable HTTP Debug Logs
+                </div>
+                <div class="debug-banner-grid">
+                    <!-- Left: log4j2.xml -->
+                    <div class="debug-banner-col">
+                        <div class="debug-banner-col-label">
+                            <span class="col-icon">📄</span> log4j2.xml &nbsp;(Anypoint Studio / On-Prem)
+                        </div>
+                        <div class="debug-code-block">
+                            <span class="logger-line">&lt;AsyncLogger name="<strong>org.mule.service.http.impl.service.HttpMessageLogger</strong>" level="DEBUG"/&gt;</span>
+                            <span class="logger-line">&lt;AsyncLogger name="<strong>org.mule.extension.http.internal.listener.HttpListener</strong>" level="DEBUG"/&gt;</span>
+                            <span class="logger-line">&lt;AsyncLogger name="<strong>org.mule.extension.http.internal.request.HttpRequester</strong>" level="DEBUG"/&gt;</span>
+                        </div>
+                    </div>
+                    <!-- Right: Runtime Manager -->
+                    <div class="debug-banner-col">
+                        <div class="debug-banner-col-label">
+                            <span class="col-icon">☁️</span> Runtime Manager &nbsp;(CloudHub / RTF)
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:var(--space-xs);">
+                            <div class="pkg-row">
+                                <span class="pkg-name">org.mule.service.http.impl.service.HttpMessageLogger</span>
+                                <span class="pkg-label">→ DEBUG</span>
+                            </div>
+                            <div class="pkg-row">
+                                <span class="pkg-name">org.mule.extension.http.internal.listener.HttpListener</span>
+                                <span class="pkg-label">→ DEBUG</span>
+                            </div>
+                            <div class="pkg-row">
+                                <span class="pkg-name">org.mule.extension.http.internal.request.HttpRequester</span>
+                                <span class="pkg-label">→ DEBUG</span>
+                            </div>
+                        </div>
+                        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:var(--space-xs);">
+                            Runtime Manager → Application → Settings → Logging → Add package name → set to DEBUG
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workspace-grid" style="align-items:start;">
+
+                <!-- Left: Log Input -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">HTTP Debug Log</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" onclick="loadExample()">📝 Load Example</button>
+                            <button class="btn btn-ghost btn-sm" onclick="clearAll()">🗑 Clear</button>
+                        </div>
+                    </div>
+                    <textarea id="log-input" class="code-textarea" style="min-height:420px;"
+                        placeholder="Paste your MuleSoft HTTP connector debug logs here…
+
+Example log lines:
+POST /api/v1/orders?status=active HTTP/1.1
+Host: api.example.com:443
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOi...
+x-correlation-id: abc-123-def
+
+{&quot;key&quot;: &quot;value&quot;}"></textarea>
+                </div>
+
+                <!-- Right: Output — cURL FIRST, parsed fields at bottom -->
+                <div class="workspace-panel">
+
+                    <!-- Parse status -->
+                    <div id="parse-status" class="parse-status idle">
+                        ⏳ Waiting for input…
+                    </div>
+
+                    <!-- cURL Output — TOP priority -->
+                    <div class="panel-header">
+                        <span class="panel-title">cURL Command</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" id="curl-copy-btn" onclick="copyCurl()">📋
+                                Copy</button>
+                            <button class="btn btn-ghost btn-sm" onclick="downloadCurl()">📥 .sh</button>
+                        </div>
+                    </div>
+                    <textarea id="curl-output" class="code-output" style="min-height:300px;" readonly
+                        placeholder="# cURL command will appear here after parsing your debug logs…
+
+Paste logs on the left → cURL appears here instantly.
+Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
+
+                </div>
+
+            </div>
+
+            <!-- ═══ PARSED BREAKDOWN — Full Width, 2-Column ═══ -->
+            <div id="parsed-breakdown" class="breakdown-banner" style="display:none;">
+                <div class="breakdown-banner-title">
+                    <i class="fas fa-sitemap"></i>
+                    Parsed Breakdown
+                </div>
+                <div class="breakdown-grid">
+                    <div class="breakdown-col">
+                        <div class="breakdown-col-label">🔗 Request Info</div>
+                        <div id="breakdown-request"></div>
+                    </div>
+                    <div class="breakdown-col">
+                        <div class="breakdown-col-label">📨 Headers & Body</div>
+                        <div id="breakdown-headers"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">Auto</div>
+                    <div class="proof-label">Parses Method<br>Host & Path</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Headers</div>
+                    <div class="proof-label">All Headers<br>Extracted</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">QP</div>
+                    <div class="proof-label">Query Params<br>Preserved</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Always Free<br>No Sign-up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use Mule2Curl</h2>
+                <p>Go from Mule debug logs to a working cURL / Postman request in seconds.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Enable Debug Logs</h4>
+                    <p>Add the <code>HttpMessageLogger</code> to your <code>log4j2.xml</code> at
+                        <strong>DEBUG</strong> level. The logger line is shown above the input area.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Copy & Paste Logs</h4>
+                    <p>Copy the HTTP request debug output from Anypoint Studio console or CloudHub logs.
+                        Paste it into the input area on the left.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Copy the cURL</h4>
+                    <p>The cURL command is generated instantly. Click <strong>Copy</strong> and paste it
+                        into your terminal or into Postman via <strong>File → Import → Raw Text</strong>.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Debug Faster</h4>
+                    <p>No more manually copying host, path, headers, and body into Postman one by one.
+                        Go from log to request replay in under 10 seconds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What log format does this tool support?</summary>
+                    <div class="faq-answer">Mule2Curl parses standard MuleSoft HTTP connector debug logs, including
+                        output from <code>org.mule.service.http.impl.service.HttpMessageLogger</code>,
+                        <code>org.mule.extension.http</code>, and plain HTTP request lines like
+                        <code>POST /api/v1/resource HTTP/1.1</code> followed by headers.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I import the cURL into Postman?</summary>
+                    <div class="faq-answer">Copy the generated cURL command, open Postman, go to
+                        <strong>File → Import</strong>, select <strong>Raw text</strong>, and paste the cURL.
+                        Postman automatically converts it into a full request with all headers, method, URL,
+                        and body pre-filled.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this tool handle request bodies?</summary>
+                    <div class="faq-answer">Yes. If the debug logs include a request body, the tool extracts it
+                        and includes it in the cURL command using the <code>--data</code> flag.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data safe?</summary>
+                    <div class="faq-answer">Your debug logs never leave your browser. All parsing happens 100%
+                        client-side in JavaScript. No data is sent to any server. Logs may contain sensitive
+                        headers like <code>Authorization</code> — they stay on your machine only.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What if my logs don't parse correctly?</summary>
+                    <div class="faq-answer">Try extracting just the HTTP request portion (starting from the
+                        request line like <code>GET /path HTTP/1.1</code> followed by headers). The parser
+                        is designed to be forgiving with extra noise from Mule log prefixes.</div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>Deeper dives into MuleSoft HTTP debugging and integration troubleshooting.</p>
+            </div>
+            <div class="blog-grid">
+                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
+                    <div class="blog-card-tag">MuleSoft · Debugging</div>
+                    <div class="blog-card-title">Handling Secrets with Docker and MuleSoft: A Fun and Secure Adventure
+                    </div>
+                    <div class="blog-card-desc">Best practices for managing secrets and HTTP connector credentials
+                        when debugging MuleSoft applications running in containers.</div>
+                    <div class="blog-card-footer">
+                        <span>Medium · Upendra Thunuguntla</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
+                    <div class="blog-card-tag">MuleSoft · Integration</div>
+                    <div class="blog-card-title">Using JSON in HTTP Request and DB Query — Mule 4</div>
+                    <div class="blog-card-desc">Learn common HTTP request patterns in Mule 4, including how debug
+                        logs can help you trace and troubleshoot API calls.</div>
+                    <div class="blog-card-footer">
+                        <span>Medium · Upendra Thunuguntla</span>
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>Debugging MuleSoft HTTP issues is painful enough. If Mule2Curl saved you from manually building
+                    cURL commands, a coffee is always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
+                </a>
+                <a href="/tools/yaml-tools/" class="related-tool-link"><span class="icon">⚙️</span>
+                    <div>
+                        <div class="name">YAML Tools</div>
+                        <div class="desc">YAML ↔ Properties</div>
+                    </div>
+                </a>
+                <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
+                    <div>
+                        <div class="name">XML SDK Helper</div>
+                        <div class="desc">Mule connector XML</div>
+                    </div>
+                </a>
+                <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
+                    <div>
+                        <div class="name">Gmail URL Generator</div>
+                        <div class="desc">Pre-filled compose links</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script>
+        /* ══════════════════════════════════════════════
+           Mule2Curl — Debug Log → cURL Converter Engine
+           ══════════════════════════════════════════════ */
+
+        const logInput = document.getElementById('log-input');
+        const curlOutput = document.getElementById('curl-output');
+        const parseStatusEl = document.getElementById('parse-status');
+        const breakdownEl = document.getElementById('parsed-breakdown');
+
+        /* ── Live parsing on input ── */
+        logInput.addEventListener('input', debounce(parseAndConvert, 300));
+
+        /* ── Debounce helper ── */
+        function debounce(fn, ms) {
+            let timer;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, args), ms);
+            };
+        }
+
+        /* ══════════════════════════════════════════════
+           PARSER: Extract HTTP details from Mule logs
+           ══════════════════════════════════════════════ */
+        function parseMuleLog(raw) {
+            const lines = raw.split(/\r?\n/);
+            let method = '';
+            let scheme = 'https';
+            let host = '';
+            let port = '';
+            let path = '';
+            let queryString = '';
+            const headers = [];
+            let body = '';
+            let bodyCapture = false;
+
+            const requestLineRe = /^(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|TRACE)\s+(\S+)\s*(HTTP\/[\d.]+)?/i;
+            const hostRe = /^Host:\s*(.+)/i;
+            const headerRe = /^([A-Za-z0-9\-_]+)\s*:\s*(.+)/;
+            const muleRequestUriRe = /requesting:\s*(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|TRACE)\s+(\S+)/i;
+            const muleUriRe = /URI:\s*(\S+)/i;
+            const muleMethodRe = /method:\s*(GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS|TRACE)/i;
+            const muleHostRe = /host:\s*(\S+)/i;
+            const mulePortRe = /port:\s*(\d+)/i;
+            const mulePathRe = /path:\s*(\S+)/i;
+            const muleSchemeRe = /scheme:\s*(https?)/i;
+            const muleQueryParamRe = /queryParam[s]?:\s*\{([^}]*)\}/i;
+            const muleHeadersBlockRe = /headers:\s*\{([^}]*)\}/i;
+            const bodyRe = /^(?:body|payload|Request body|request-body|data):\s*(.*)/i;
+
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+
+                // Strip common Mule log prefixes (timestamps, log levels, class names)
+                const cleaned = line
+                    .replace(/^\d{4}[-/]\d{2}[-/]\d{2}\s+\d{2}:\d{2}:\d{2}[.,]\d{1,3}\s+/, '')
+                    .replace(/^(DEBUG|INFO|WARN|ERROR|TRACE)\s+/i, '')
+                    .replace(/^\[.*?\]\s*/, '')
+                    .replace(/^[\w]+(?:\.[\w]+){2,}\s*[-–:]\s*/, '')
+                    .trim();
+
+                let m = cleaned.match(muleRequestUriRe);
+                if (m) {
+                    method = m[1].toUpperCase();
+                    parseFullUrl(m[2]);
+                    continue;
+                }
+
+                m = cleaned.match(requestLineRe);
+                if (m && !method) {
+                    method = m[1].toUpperCase();
+                    const urlPart = m[2];
+                    if (urlPart.startsWith('http')) {
+                        parseFullUrl(urlPart);
+                    } else {
+                        const qIdx = urlPart.indexOf('?');
+                        if (qIdx !== -1) {
+                            path = urlPart.substring(0, qIdx);
+                            queryString = urlPart.substring(qIdx + 1);
+                        } else {
+                            path = urlPart;
+                        }
+                    }
+                    continue;
+                }
+
+                m = cleaned.match(muleMethodRe);
+                if (m && !method) { method = m[1].toUpperCase(); continue; }
+
+                m = cleaned.match(muleUriRe);
+                if (m && !path) {
+                    const uri = m[1];
+                    if (uri.startsWith('http')) { parseFullUrl(uri); }
+                    else {
+                        const qIdx = uri.indexOf('?');
+                        if (qIdx !== -1) { path = uri.substring(0, qIdx); queryString = uri.substring(qIdx + 1); }
+                        else { path = uri; }
+                    }
+                    continue;
+                }
+
+                m = cleaned.match(muleSchemeRe);
+                if (m) { scheme = m[1].toLowerCase(); continue; }
+
+                m = cleaned.match(mulePortRe);
+                if (m) { port = m[1]; continue; }
+
+                m = cleaned.match(mulePathRe);
+                if (m && !path) {
+                    const p = m[1];
+                    const qIdx = p.indexOf('?');
+                    if (qIdx !== -1) { path = p.substring(0, qIdx); queryString = p.substring(qIdx + 1); }
+                    else { path = p; }
+                    continue;
+                }
+
+                m = cleaned.match(muleQueryParamRe);
+                if (m) {
+                    const pairs = m[1].split(',').map(p => p.trim()).filter(Boolean);
+                    queryString = pairs.join('&');
+                    continue;
+                }
+
+                m = cleaned.match(muleHeadersBlockRe);
+                if (m) {
+                    m[1].split(',').map(p => p.trim()).filter(Boolean).forEach(p => {
+                        const eqIdx = p.indexOf('=');
+                        if (eqIdx !== -1) {
+                            headers.push({ key: p.substring(0, eqIdx).trim(), value: p.substring(eqIdx + 1).trim() });
+                        }
+                    });
+                    continue;
+                }
+
+                m = cleaned.match(hostRe);
+                if (m) {
+                    const hostVal = m[1].trim();
+                    if (!host) {
+                        const colonIdx = hostVal.indexOf(':');
+                        if (colonIdx !== -1) { host = hostVal.substring(0, colonIdx); port = hostVal.substring(colonIdx + 1); }
+                        else { host = hostVal; }
+                    }
+                    headers.push({ key: 'Host', value: hostVal });
+                    continue;
+                }
+
+                m = cleaned.match(muleHostRe);
+                if (m && !host) {
+                    const hostVal = m[1].trim();
+                    const colonIdx = hostVal.indexOf(':');
+                    if (colonIdx !== -1) { host = hostVal.substring(0, colonIdx); port = hostVal.substring(colonIdx + 1); }
+                    else { host = hostVal; }
+                    continue;
+                }
+
+                m = cleaned.match(bodyRe);
+                if (m) { body = m[1].trim(); bodyCapture = true; continue; }
+
+                if (bodyCapture && cleaned.startsWith('{') || bodyCapture && cleaned.startsWith('[')) {
+                    body += (body ? '\n' : '') + cleaned; continue;
+                }
+
+                m = cleaned.match(headerRe);
+                if (m) {
+                    const hKey = m[1].trim();
+                    const hVal = m[2].trim();
+                    const skipKeys = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'TRACE', 'at', 'Caused'];
+                    if (!skipKeys.includes(hKey) && hKey.length < 60) {
+                        headers.push({ key: hKey, value: hVal });
+                    }
+                    if (hKey.toLowerCase() === 'host' && !host) {
+                        const colonIdx = hVal.indexOf(':');
+                        if (colonIdx !== -1) { host = hVal.substring(0, colonIdx); port = hVal.substring(colonIdx + 1); }
+                        else { host = hVal; }
+                    }
+                    bodyCapture = false;
+                    continue;
+                }
+
+                if (bodyCapture && cleaned) { body += '\n' + cleaned; }
+            }
+
+            function parseFullUrl(url) {
+                try {
+                    const u = new URL(url);
+                    scheme = u.protocol.replace(':', '');
+                    host = u.hostname;
+                    if (u.port) port = u.port;
+                    path = u.pathname;
+                    if (u.search) queryString = u.search.substring(1);
+                } catch (e) {
+                    const protoMatch = url.match(/^(https?):\/\/([^/:]+)(?::(\d+))?(\/[^?]*)?(?:\?(.*))?$/i);
+                    if (protoMatch) {
+                        scheme = protoMatch[1]; host = protoMatch[2];
+                        if (protoMatch[3]) port = protoMatch[3];
+                        if (protoMatch[4]) path = protoMatch[4];
+                        if (protoMatch[5]) queryString = protoMatch[5];
+                    }
+                }
+            }
+
+            const headerMap = new Map();
+            headers.forEach(h => headerMap.set(h.key, h.value));
+            const dedupedHeaders = [];
+            headerMap.forEach((v, k) => dedupedHeaders.push({ key: k, value: v }));
+
+            let fullUrl = '';
+            if (host) {
+                const defaultPort = scheme === 'https' ? '443' : '80';
+                const portSuffix = (port && port !== defaultPort) ? ':' + port : '';
+                fullUrl = scheme + '://' + host + portSuffix + (path || '/');
+                if (queryString) fullUrl += '?' + queryString;
+            }
+
+            return {
+                method: method || 'GET', scheme, host, port,
+                path: path || '/', queryString,
+                headers: dedupedHeaders, body: body.trim(), fullUrl,
+                hasData: !!host || !!method,
+            };
+        }
+
+        /* ══════════════════════════════════════════════
+           BUILD cURL COMMAND
+           ══════════════════════════════════════════════ */
+        function buildCurl(parsed) {
+            const parts = ['curl'];
+            parts.push('--location');
+            parts.push('--request ' + parsed.method);
+            parts.push("'" + parsed.fullUrl + "'");
+
+            parsed.headers.forEach(h => {
+                if (h.key.toLowerCase() === 'host') return;
+                if (h.key.toLowerCase() === 'content-length') return;
+                parts.push("--header '" + h.key + ': ' + h.value + "'");
+            });
+
+            if (parsed.body) {
+                parts.push("--data '" + parsed.body.replace(/'/g, "'\\''") + "'");
+            }
+
+            return parts.join(' \\\n  ');
+        }
+
+        /* ══════════════════════════════════════════════
+           RENDER PARSED BREAKDOWN (Full-width, 2-column)
+           ══════════════════════════════════════════════ */
+        const requestCol = document.getElementById('breakdown-request');
+        const headersCol = document.getElementById('breakdown-headers');
+
+        function renderBreakdown(parsed) {
+            requestCol.innerHTML = '';
+            headersCol.innerHTML = '';
+
+            function makeField(label, value) {
+                const div = document.createElement('div');
+                div.className = 'parsed-field';
+                div.innerHTML = `
+                    <span class="parsed-field-label">${label}</span>
+                    <span class="parsed-field-value${value ? '' : ' empty'}">${value || '—'}</span>
+                `;
+                return div;
+            }
+
+            // Left column: Request Info
+            requestCol.appendChild(makeField('Method', parsed.method));
+            requestCol.appendChild(makeField('Scheme', parsed.scheme));
+            requestCol.appendChild(makeField('Host', parsed.host));
+            if (parsed.port) requestCol.appendChild(makeField('Port', parsed.port));
+            requestCol.appendChild(makeField('Path', parsed.path));
+            if (parsed.queryString) requestCol.appendChild(makeField('Query', parsed.queryString));
+            if (parsed.body) {
+                requestCol.appendChild(makeField('Body', parsed.body.length > 300 ? parsed.body.substring(0, 300) + '…' : parsed.body));
+            }
+
+            // Right column: Headers
+            if (parsed.headers.length > 0) {
+                const headerDiv = document.createElement('div');
+                headerDiv.innerHTML = `
+                    <div class="parsed-headers-list">
+                        ${parsed.headers.map(h => `
+                            <div class="parsed-header-row">
+                                <span class="parsed-header-key">${escapeHtml(h.key)}:</span>
+                                <span class="parsed-header-val">${escapeHtml(h.value)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                headersCol.appendChild(headerDiv);
+            } else {
+                headersCol.innerHTML = '<div style="color:var(--text-muted); font-size:0.8rem; font-style:italic;">No headers detected</div>';
+            }
+
+            breakdownEl.style.display = 'block';
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        /* ══════════════════════════════════════════════
+           MAIN: Parse and Convert
+           ══════════════════════════════════════════════ */
+        function parseAndConvert() {
+            const raw = logInput.value.trim();
+
+            if (!raw) {
+                curlOutput.value = '';
+                parseStatusEl.className = 'parse-status idle';
+                parseStatusEl.textContent = '⏳ Waiting for input…';
+                breakdownEl.style.display = 'none';
+                return;
+            }
+
+            try {
+                const parsed = parseMuleLog(raw);
+
+                if (!parsed.hasData || !parsed.host) {
+                    parseStatusEl.className = 'parse-status error';
+                    parseStatusEl.textContent = '⚠️ Could not detect HTTP request details. Check your log format.';
+                    curlOutput.value = '# Unable to parse the input. Try pasting the full HTTP debug log.';
+                    breakdownEl.style.display = 'none';
+                    return;
+                }
+
+                const curl = buildCurl(parsed);
+                curlOutput.value = curl;
+                renderBreakdown(parsed);
+
+                const headerCount = parsed.headers.length;
+                parseStatusEl.className = 'parse-status success';
+                parseStatusEl.textContent = `✅ Parsed: ${parsed.method} ${parsed.host}${parsed.path} — ${headerCount} header${headerCount !== 1 ? 's' : ''}`;
+
+                track_event('mule2curl_parsed', {
+                    tool: 'mule2curl',
+                    method: parsed.method,
+                    header_count: headerCount,
+                    has_body: !!parsed.body,
+                    has_query: !!parsed.queryString,
+                });
+
+            } catch (err) {
+                parseStatusEl.className = 'parse-status error';
+                parseStatusEl.textContent = '❌ Parse error: ' + err.message;
+                curlOutput.value = '# Parse error: ' + err.message;
+            }
+        }
+
+        /* ══════════════════════════════════════════════
+           ACTIONS
+           ══════════════════════════════════════════════ */
+        function copyCurl() {
+            copyToClipboard(curlOutput.value, document.getElementById('curl-copy-btn'));
+            track_event('copy', { tool: 'mule2curl', content_type: 'curl' });
+        }
+
+        function downloadCurl() {
+            const content = curlOutput.value;
+            if (!content.trim() || content.startsWith('#')) {
+                showToast('Nothing to download!', 'error');
+                return;
+            }
+            downloadFile('#!/bin/bash\n\n' + content + '\n', 'mule-request.sh', 'text/x-shellscript;charset=utf-8');
+            track_event('download', { tool: 'mule2curl', file_type: 'sh' });
+        }
+
+        function clearAll() {
+            logInput.value = '';
+            curlOutput.value = '';
+            parseStatusEl.className = 'parse-status idle';
+            parseStatusEl.textContent = '⏳ Waiting for input…';
+            breakdownEl.style.display = 'none';
+            requestCol.innerHTML = '';
+            headersCol.innerHTML = '';
+            showToast('Cleared.');
+        }
+
+        function loadExample() {
+            logInput.value = `2024-03-11 14:23:45.123 DEBUG [processor-1] org.mule.service.http.impl.service.HttpMessageLogger - 
+POST /api/v1/orders?status=active&page=1 HTTP/1.1
+Host: api.acme-corp.com:8443
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature
+Accept: application/json
+x-correlation-id: 8f14e45f-ceea-367a-a92e-4427f2d1a3b7
+x-client-id: mule-order-service
+Cache-Control: no-cache
+Content-Length: 82
+
+{"customerId": "CUST-2024-001", "items": [{"sku": "PROD-100", "quantity": 3}]}`;
+            parseAndConvert();
+            showToast('Example loaded!');
+            track_event('load_example', { tool: 'mule2curl' });
+        }
+    </script>
+
+</body>
+
+</html>

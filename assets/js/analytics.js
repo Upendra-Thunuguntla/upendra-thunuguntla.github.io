@@ -33,6 +33,7 @@
         if (p.includes('/xml-sdk')) return 'xml_sdk';
         if (p.includes('/gmail-url')) return 'gmail_url';
         if (p.includes('/salary-calc')) return 'salary_calc';
+        if (p.includes('/mule2curl')) return 'mule2curl';
         return 'home';
     })();
 
