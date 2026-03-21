@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuleSoft Secure Properties Generator | Upendra.dev</title>
+    <meta name="description"
+        content="Free MuleSoft Secure Properties generator. Encrypt and decrypt configuration properties directly in your browser. Supports AES, Blowfish, DES, DESede, RCA.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Secure Properties Generator",
+        "description": "Free MuleSoft Secure Properties generator. Encrypt and decrypt configuration properties.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra-thunuguntla.github.io/tools/secure-properties-generator/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+    <style>
+        @media (min-width: 900px) {
+            .workspace-grid {
+                grid-template-columns: 1fr auto 1fr !important;
+            }
+        }
+
+        .workspace-middle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-convert-middle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
+            transition: all var(--transition, 0.2s);
+        }
+
+        .btn-convert-middle:hover:not(:disabled) {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4);
+        }
+
+        .btn-convert-middle:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: var(--surface-2);
+            color: var(--text-muted);
+            box-shadow: none;
+        }
+
+        @media (max-width: 899px) {
+            .workspace-middle {
+                padding: var(--space-sm) 0;
+            }
+
+            .btn-convert-middle {
+                width: 100%;
+                border-radius: var(--radius-md);
+                height: 48px;
+                font-size: 1.1rem;
+            }
+
+            .btn-convert-middle #btn-run-icon {
+                transform: rotate(90deg);
+            }
+
+            #btn-run-text {
+                display: inline !important;
+                font-family: inherit;
+                font-weight: 600;
+                margin-left: 8px;
+            }
+        }
+
+        .panel-footer-row {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+            margin-top: var(--space-md);
+        }
+
+        .algo-tag {
+            cursor: default;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            transition: all var(--transition, 0.2s);
+        }
+
+        .algo-tag.active-algo {
+            background: var(--accent-dim);
+            border-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .key-hint {
+            font-size: 0.75rem;
+            font-family: var(--font-mono);
+        }
+
+        .key-hint.ok {
+            color: var(--success);
+        }
+
+        .key-hint.warn {
+            color: var(--warn);
+        }
+    </style>
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"
+                    aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>Secure Properties Generator</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">🔐</div>
+                <div class="tool-hero-text">
+                    <h1>Secure Properties <span style="color:var(--accent);">Generator</span></h1>
+                    <p>Encrypt and decrypt configuration properties for your MuleSoft applications. Supports AES,
+                        Blowfish, DES, DESede, and RC4 algorithms, directly mimicking the Mule Secure Properties Tool
+                        JAR.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">Security</span>
+                        <span class="badge">Cryptography</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <div class="workspace-grid">
+                <!-- ── Left Panel: Input & Config ── -->
+                <div class="workspace-panel" style="display:flex; flex-direction:column;">
+                    <div class="panel-header">
+                        <span class="panel-title">Configuration & Input</span>
+                    </div>
+
+                    <div style="display:flex; gap:var(--space-sm); margin-bottom:var(--space-md);">
+                        <button class="btn btn-primary" style="flex:1;" id="tab-encrypt" onclick="setMode('encrypt')">⇡
+                            Encrypt</button>
+                        <button class="btn btn-outline" style="flex:1;" id="tab-decrypt" onclick="setMode('decrypt')">⇣
+                            Decrypt</button>
+                    </div>
+
+                    <!-- <div class="flex flex-wrap" id="algo-tags"
+                        style="gap:var(--space-xs); margin-bottom:var(--space-md);">
+                        <span class="algo-tag active-algo" data-algo="AES">AES</span>
+                        <span class="algo-tag" data-algo="Blowfish">Blowfish</span>
+                        <span class="algo-tag" data-algo="DES">DES</span>
+                        <span class="algo-tag" data-algo="DESede">DESede</span>
+                        <span class="algo-tag" data-algo="RCA">RC4</span>
+                    </div> -->
+
+                    <div
+                        style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-sm); margin-bottom:var(--space-md);">
+                        <div>
+                            <label
+                                style="display:block; font-size:0.8rem; margin-bottom:4px; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px;">Algorithm</label>
+                            <select id="sel-algo" class="form-control" onchange="onAlgoChange()"
+                                style="font-family:var(--font-mono); font-size:0.85rem;">
+                                <option value="AES">AES (default)</option>
+                                <option value="Blowfish">Blowfish</option>
+                                <option value="DES">DES</option>
+                                <option value="DESede">DESede (3DES)</option>
+                                <option value="RCA">RC4 / RCA</option>
+                            </select>
+                        </div>
+                        <div id="mode-field">
+                            <label
+                                style="display:block; font-size:0.8rem; margin-bottom:4px; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px;">Mode</label>
+                            <select id="sel-mode" class="form-control"
+                                style="font-family:var(--font-mono); font-size:0.85rem;">
+                                <option value="CBC">CBC (default)</option>
+                                <option value="CFB">CFB</option>
+                                <option value="OFB">OFB</option>
+                                <option value="ECB">ECB</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:var(--space-sm);">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                            <label
+                                style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px;">Encryption
+                                Key</label>
+                            <span id="key-hint" class="key-hint warn">enter key</span>
+                        </div>
+                        <input type="text" id="inp-key" class="form-control" placeholder="Enter secure key..."
+                            autocomplete="off" oninput="onKeyInput()" style="font-family:var(--font-mono);">
+                    </div>
+
+                    <div style="margin-bottom:var(--space-md); display:flex; align-items:center; gap:var(--space-sm); cursor:pointer;"
+                        id="iv-toggle-row" onclick="toggleIV()">
+                        <input type="checkbox" id="iv-toggle-check" style="pointer-events:none;">
+                        <label style="font-size:0.85rem; cursor:pointer;">Use random IV <span
+                                style="color:var(--text-muted); font-size:0.75rem;">(--use-random-iv
+                                flag)</span></label>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; margin-bottom:var(--space-md);">
+                        <label id="inp-label"
+                            style="display:block; font-size:0.8rem; margin-bottom:4px; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px;">Plain
+                            Value</label>
+                        <input type="text" id="inp-value" class="form-control" oninput="clearResult(); validateForm();"
+                            spellcheck="false" placeholder="Enter value to encrypt..."
+                            style="font-family:var(--font-mono);">
+                    </div>
+                </div>
+
+                <!-- ── Middle Action: Run ── -->
+                <div class="workspace-middle">
+                    <button class="btn-convert-middle" id="btn-run" onclick="runOp()" disabled title="Encrypt">
+                        <i id="btn-run-icon" class="fas fa-arrow-right"></i><span id="btn-run-text"
+                            style="display:none;"> Encrypt</span>
+                    </button>
+                </div>
+
+                <!-- ── Right Panel: Output ── -->
+                <div class="workspace-panel" style="display:flex; flex-direction:column;">
+                    <div class="panel-header">
+                        <span class="panel-title">Output</span>
+                    </div>
+
+                    <div id="error-box" class="info-box"
+                        style="display:none; border-color:var(--warn); color:var(--warn); margin-bottom:var(--space-sm); background:rgba(255,107,107,0.05);">
+                    </div>
+
+                    <textarea id="result-box" class="code-output" readonly placeholder="Result will appear here…"
+                        style="min-height:180px;"></textarea>
+
+                    <div style="font-size:0.75rem; color:var(--text-muted); padding:var(--space-xs) 0; font-family:var(--font-mono);"
+                        id="result-note"></div>
+
+                    <div class="panel-footer-row" style="justify-content:flex-end;">
+                        <button class="btn btn-ghost" id="btn-copy" onclick="copyResult()">📋 Copy</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top:var(--space-xl);">
+                <span class="info-box-icon">💡</span>
+                <span>Matches `secure-properties-tool.jar`. AES encryption uses the Web Crypto API, while others
+                    fallback to CryptoJS 4.2. Output automatically uses PKCS7 padding.</span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">Local</div>
+                    <div class="proof-label">100% Client-Side<br>Execution</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">AES</div>
+                    <div class="proof-label">Web Crypto API<br>Performance</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Jar</div>
+                    <div class="proof-label">Matches Mule<br>Tool.jar Output</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">All</div>
+                    <div class="proof-label">Supports All standard<br>Algorithms & Modes</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Always Free<br>No Sign-up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>Is this tool safe to use with production keys?</summary>
+                    <div class="faq-answer">Yes. The encryption and decryption operations run entirely in your local
+                        browser using JavaScript. No data, keys, or configurations are ever sent to any remote server.
+                        It is completely safe.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Why does the result sometimes differ from the Mule tooling?</summary>
+                    <div class="faq-answer">By default, standard Mule encryption uses a static initialization vector
+                        (IV). If you use the <code>--use-random-iv</code> flag in Mule, the output changes on every run.
+                        You can replicate this by checking the "Use random IV" box above!</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is RC4 / RCA?</summary>
+                    <div class="faq-answer">RC4 is a stream cipher. Since it doesn't use blocks, it does not require an
+                        Operation Mode (CBC, ECB) or an Initialization Vector (IV). You'll notice those fields are
+                        disabled when RC4 is selected.</div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>Deep-dives on MuleSoft security, configuration patterns, and best practices.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <!-- Dynamic content from blogs-loader.js -->
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>Built for the MuleSoft community. If it saves you time on your next deployment, a coffee goes a long
+                    way!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
+                    <div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
+                    </div>
+                </a>
+                <a href="/tools/props2yaml/" class="related-tool-link"><span class="icon">📝</span>
+                    <div>
+                        <div class="name">Properties → YAML</div>
+                        <div class="desc">Flat keys to nested YAML</div>
+                    </div>
+                </a>
+                <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
+                    <div>
+                        <div class="name">Mule2Curl</div>
+                        <div class="desc">Logs to cURL converter</div>
+                    </div>
+                </a>
+                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View Source on GitHub</a>
+        </div>
+    </footer>
+
+    <!-- Crypto engine -->
+    <script src="crypto.js"></script>
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+
+    <script>
+        // ─── State ─────────────────────────────────────────────────────────────────
+        let mode = 'encrypt';
+        let useRandomIV = false;
+
+        // ─── Mode switching ─────────────────────────────────────────────────────────
+        function setMode(m) {
+            mode = m;
+            document.getElementById('tab-encrypt').className = m === 'encrypt' ? 'btn btn-primary' : 'btn btn-outline';
+            document.getElementById('tab-decrypt').className = m === 'decrypt' ? 'btn btn-primary' : 'btn btn-outline';
+
+            document.getElementById('inp-label').textContent = m === 'encrypt' ? 'Plain Value' : 'Encrypted Value (with or without ![ ])';
+            document.getElementById('inp-value').placeholder = m === 'encrypt' ? 'Enter value to encrypt...' : '![AbC123...] or raw base64';
+
+            document.getElementById('btn-run-icon').className = 'fas fa-arrow-right';
+            document.getElementById('btn-run').title = m === 'encrypt' ? 'Encrypt' : 'Decrypt';
+            document.getElementById('btn-run-text').textContent = m === 'encrypt' ? ' Encrypt' : ' Decrypt';
+
+            clearResult();
+            validateForm();
+        }
+
+        // ─── Algorithm change ───────────────────────────────────────────────────────
+        function onAlgoChange() {
+            const algo = document.getElementById('sel-algo').value;
+            const modeField = document.getElementById('mode-field');
+            const ivRow = document.getElementById('iv-toggle-row');
+
+            // RC4 is a stream cipher: no mode, no IV
+            if (algo === 'RCA') {
+                modeField.style.opacity = '0.35';
+                modeField.style.pointerEvents = 'none';
+                ivRow.style.opacity = '0.35';
+                ivRow.style.pointerEvents = 'none';
+            } else {
+                modeField.style.opacity = '';
+                modeField.style.pointerEvents = '';
+                ivRow.style.opacity = '';
+                ivRow.style.pointerEvents = '';
+            }
+
+            // Highlight active algo tag
+            document.querySelectorAll('.algo-tag').forEach(t => {
+                const tagAlgo = t.dataset.algo;
+                // Map RCA display
+                const matches = tagAlgo === algo || (tagAlgo === 'RCA' && algo === 'RCA');
+                t.classList.toggle('active-algo', matches);
+            });
+
+            onKeyInput();
+            clearResult();
+            validateForm();
+        }
+
+        // ─── Key input ──────────────────────────────────────────────────────────────
+        function onKeyInput() {
+            const key = document.getElementById('inp-key').value;
+            const algo = document.getElementById('sel-algo').value;
+            const info = getKeyInfo(key, algo);
+            const hint = document.getElementById('key-hint');
+            hint.textContent = info.hint;
+            hint.className = 'key-hint ' + (info.valid ? 'ok' : 'warn');
+            validateForm();
+        }
+
+        // ─── IV toggle ──────────────────────────────────────────────────────────────
+        function toggleIV() {
+            useRandomIV = !useRandomIV;
+            document.getElementById('iv-toggle-check').checked = useRandomIV;
+            clearResult();
+        }
+
+        // ─── Validation ─────────────────────────────────────────────────────────────
+        function validateForm() {
+            const key = document.getElementById('inp-key').value.trim();
+            const value = document.getElementById('inp-value').value.trim();
+            const algo = document.getElementById('sel-algo').value;
+            const info = getKeyInfo(key, algo);
+            const ok = info.valid && value.length > 0;
+            document.getElementById('btn-run').disabled = !ok;
+        }
+
+        // ─── Clear result ───────────────────────────────────────────────────────────
+        function clearResult() {
+            document.getElementById('result-box').value = '';
+            document.getElementById('result-note').textContent = '';
+            document.getElementById('error-box').style.display = 'none';
+            document.getElementById('error-box').textContent = '';
+        }
+
+        // ─── Main operation ─────────────────────────────────────────────────────────
+        async function runOp() {
+            const key = document.getElementById('inp-key').value;
+            const value = document.getElementById('inp-value').value.trim();
+            const algo = document.getElementById('sel-algo').value;
+            const mode_ = document.getElementById('sel-mode').value;
+
+            clearResult();
+
+            const btn = document.getElementById('btn-run');
+            btn.disabled = true;
+            document.getElementById('btn-run-icon').className = 'fas fa-spinner fa-spin';
+
+            try {
+                let result;
+                if (mode === 'encrypt') {
+                    result = await muleEncrypt(value, key, algo, mode_, useRandomIV);
+                } else {
+                    result = await muleDecrypt(value, key, algo, mode_, useRandomIV);
+                }
+
+                document.getElementById('result-box').value = result;
+                document.getElementById('result-note').textContent = mode === 'encrypt' ? '↳ Ready to paste into your .yaml or .properties file' : '';
+                track_event('convert', { tool: 'secure_props', mode: mode, algo: algo });
+            } catch (e) {
+                const errBox = document.getElementById('error-box');
+                errBox.textContent = '✕ ' + (e.message || 'Operation failed. Check key and input.');
+                errBox.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                document.getElementById('btn-run-icon').className = 'fas fa-arrow-right';
+            }
+        }
+
+        // ─── Copy ───────────────────────────────────────────────────────────────────
+        function copyResult() {
+            copyToClipboard(document.getElementById('result-box').value, document.getElementById('btn-copy'));
+        }
+
+        // Initial setup
+        validateForm();
+        onAlgoChange();
+    </script>
+</body>
+
+</html>
