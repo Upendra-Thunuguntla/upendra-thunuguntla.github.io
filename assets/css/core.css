@@ -519,6 +519,10 @@ select.form-control {
 .reveal-stagger.visible > *:nth-child(6) { opacity:1; transform:none; transition-delay:400ms; }
 .reveal-stagger.visible > *:nth-child(7) { opacity:1; transform:none; transition-delay:480ms; }
 .reveal-stagger.visible > *:nth-child(8) { opacity:1; transform:none; transition-delay:560ms; }
+.reveal-stagger.visible > *:nth-child(9) { opacity:1; transform:none; transition-delay:640ms; }
+.reveal-stagger.visible > *:nth-child(10) { opacity:1; transform:none; transition-delay:720ms; }
+.reveal-stagger.visible > *:nth-child(11) { opacity:1; transform:none; transition-delay:800ms; }
+.reveal-stagger.visible > *:nth-child(12) { opacity:1; transform:none; transition-delay:880ms; }
 
 /* ─── Section label ─── */
 .section-label {

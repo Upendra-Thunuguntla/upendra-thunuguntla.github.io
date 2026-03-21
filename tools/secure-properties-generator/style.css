@@ -1,0 +1,58 @@
+/* Tool-specific styles for secure-properties-generator */
+.btn-convert-middle:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    box-shadow: none;
+}
+
+.btn-convert-middle:hover:not(:disabled) {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4);
+}
+
+.algo-tag {
+    cursor: default;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    transition: all var(--transition, 0.2s);
+}
+
+.algo-tag.active-algo {
+    background: var(--accent-dim);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.key-hint {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+}
+
+.key-hint.ok {
+    color: var(--success);
+}
+
+.key-hint.warn {
+    color: var(--warn);
+}
+
+/* Override: the mobile convert button in this tool uses #btn-run-icon
+   instead of the generic i rotation */
+@media (max-width: 899px) {
+    .btn-convert-middle #btn-run-icon {
+        transform: rotate(90deg);
+    }
+    #btn-run-text {
+        display: inline !important;
+        font-family: inherit;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+}

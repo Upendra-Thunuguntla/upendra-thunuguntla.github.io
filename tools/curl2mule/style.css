@@ -1,0 +1,264 @@
+/* ── Output Mode Toggle ── */
+.mode-toggle {
+    display: flex;
+    gap: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    padding: 3px;
+    width: fit-content;
+}
+.mode-toggle-btn {
+    padding: var(--space-xs) var(--space-lg);
+    border: none;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+.mode-toggle-btn.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(var(--accent-rgb), 0.3);
+}
+.mode-toggle-btn:hover:not(.active) {
+    color: var(--text);
+}
+
+/* ── Options Panel ── */
+.curl-options-panel {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md) var(--space-xl);
+    align-items: center;
+}
+.curl-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+.curl-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+.curl-option label {
+    font-size: 0.82rem;
+    color: var(--text-subtle);
+    cursor: pointer;
+}
+.curl-option-input {
+    width: 100px;
+    padding: 4px 8px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+}
+.curl-option-input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+/* ── Config Name Input ── */
+.config-name-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+}
+.config-name-input {
+    padding: 5px 10px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    width: 220px;
+}
+.config-name-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+}
+.config-name-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+/* ── Output Sections ── */
+.output-section {
+    margin-bottom: var(--space-lg);
+}
+.output-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+}
+.output-section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+}
+.output-section-title i {
+    color: var(--accent);
+    font-size: 0.8rem;
+}
+
+/* ── Parsed Breakdown ── */
+.breakdown-banner {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    margin-top: var(--space-lg);
+    position: relative;
+    overflow: hidden;
+}
+.breakdown-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #10b981, var(--accent));
+}
+.breakdown-banner-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: var(--space-md);
+}
+.breakdown-banner-title i {
+    color: #10b981;
+}
+.breakdown-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+}
+@media (max-width: 768px) {
+    .breakdown-grid {
+        grid-template-columns: 1fr;
+    }
+}
+.breakdown-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+.breakdown-col-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-xs);
+}
+.parsed-field {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    transition: border-color var(--transition);
+}
+.parsed-field:hover {
+    border-color: var(--border-accent);
+}
+.parsed-field-label {
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.7rem;
+    min-width: 70px;
+    flex-shrink: 0;
+}
+.parsed-field-value {
+    font-family: var(--font-mono);
+    color: var(--text);
+    word-break: break-all;
+    font-size: 0.8rem;
+}
+.parsed-field-value.empty {
+    color: var(--text-muted);
+    font-style: italic;
+}
+.parsed-headers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.parsed-header-row {
+    display: flex;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    padding: 3px var(--space-sm);
+    border-radius: var(--radius-sm);
+}
+.parsed-header-row:hover {
+    background: rgba(var(--accent-rgb), 0.04);
+}
+.parsed-header-key {
+    color: var(--accent);
+    font-weight: 600;
+    min-width: 140px;
+    flex-shrink: 0;
+}
+.parsed-header-val {
+    color: var(--text-subtle);
+    word-break: break-all;
+}
+.parse-status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-full);
+    margin-bottom: var(--space-md);
+}
+.parse-status.success {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--success);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+}
+.parse-status.error {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+.parse-status.idle {
+    background: rgba(100, 116, 139, 0.12);
+    color: var(--text-muted);
+    border: 1px solid rgba(100, 116, 139, 0.2);
+}
