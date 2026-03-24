@@ -86,6 +86,15 @@
                 if (data.status !== 'ok') return;
                 const posts = data.items || [];
 
+                // Update publication count if element exists
+                const pubCountEl = document.getElementById('pub-count');
+                if (pubCountEl && posts.length) {
+                    // RSS usually returns a limit (e.g. 10), so we might want to say "X+" if it's the limit
+                    // but for now let's just use the exact count or 5+ if we have posts.
+                    // User requested "publication count get it from medium rss feed (count)"
+                    pubCountEl.textContent = posts.length + (posts.length >= 10 ? '+' : '');
+                }
+
                 containers.forEach(container => {
                     const type = container.dataset.blogType; // "blog-card" or "pub-card"
                     const limit = parseInt(container.dataset.blogLimit || '4', 10);
