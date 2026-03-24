@@ -63,7 +63,7 @@
             <div class="tool-hero-inner">
                 <div class="tool-page-icon">🔁</div>
                 <div class="tool-hero-text">
-                    <h1>cURL → Mule HTTP Request</h1>
+                    <h1>cURL → Mule HTTP Request (Early Access)</h1>
                     <p>Paste a cURL command → get MuleSoft HTTP Request Configuration and Processor XML instantly.
                         Headers and query params are generated as dynamic input parameters per MuleSoft standards.</p>
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
@@ -131,12 +131,9 @@
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">cURL Command</span>
-                        <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" onclick="loadExample()">📝 Load Example</button>
-                            <button class="btn btn-ghost btn-sm" onclick="clearAll()">🗑 Clear</button>
-                        </div>
                     </div>
-                    <textarea id="curl-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your cURL command here…
+                    <div class="editor-wrapper">
+                        <textarea id="curl-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your cURL command here…
 
 Example:
 curl --location --request POST 'https://api.example.com:8443/api/v1/orders?status=active&page=1' \
@@ -144,12 +141,21 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders?statu
   --header 'Authorization: Bearer eyJhbGciOi...' \
   --header 'x-correlation-id: abc-123-def' \
   --data '{&quot;customerId&quot;: &quot;CUST-001&quot;, &quot;quantity&quot;: 3}'"></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="clearAll()">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Right: Output -->
                 <div class="workspace-panel">
                     <div id="parse-status" class="parse-status idle">
-                        ⏳ Waiting for input…
+                        <i class="fas fa-hourglass-half"></i> Waiting for input…
                     </div>
 
                     <!-- Config Output -->
@@ -157,27 +163,36 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders?statu
                         <div class="output-section-header">
                             <span class="output-section-title"><i class="fas fa-cog"></i> HTTP Request
                                 Configuration</span>
-                            <button class="btn btn-ghost btn-sm" id="config-copy-btn" onclick="copyConfig()">📋
-                                Copy</button>
                         </div>
-                        <textarea id="config-output" class="code-output" style="min-height:160px;" readonly
-                            placeholder="<!-- HTTP Request Configuration XML will appear here -->"></textarea>
+                        <div class="editor-wrapper">
+                            <textarea id="config-output" class="code-output" style="min-height:160px;" readonly
+                                placeholder="<!-- HTTP Request Configuration XML will appear here -->"></textarea>
+                            <div class="editor-actions">
+                                <button class="btn-icon" id="config-copy-btn" title="Copy Config" onclick="copyConfig()">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Processor Output -->
                     <div id="processor-output-section" class="output-section">
                         <div class="output-section-header">
                             <span class="output-section-title"><i class="fas fa-play"></i> HTTP Request Processor</span>
-                            <button class="btn btn-ghost btn-sm" id="processor-copy-btn" onclick="copyProcessor()">📋
-                                Copy</button>
                         </div>
-                        <textarea id="processor-output" class="code-output" style="min-height:200px;" readonly
-                            placeholder="<!-- HTTP Request Processor XML will appear here -->"></textarea>
-                    </div>
-
-                    <div class="panel-actions" style="justify-content:flex-end;">
-                        <button class="btn btn-ghost btn-sm" onclick="copyAll()">📋 Copy All</button>
-                        <button class="btn btn-ghost btn-sm" onclick="downloadXml()">📥 .xml</button>
+                        <div class="editor-wrapper">
+                            <textarea id="processor-output" class="code-output" style="min-height:200px;" readonly
+                                placeholder="<!-- HTTP Request Processor XML will appear here -->"></textarea>
+                            <div class="editor-actions">
+                                <button class="btn-icon" id="processor-copy-btn" title="Copy Processor"
+                                    onclick="copyProcessor()">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="btn-icon" title="Download .xml" onclick="downloadXml()">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -353,7 +368,7 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders?statu
             <div class="related-tools-grid">
                 <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
                     <div>
-                        <div class="name">Mule2Curl</div>
+                        <div class="name">MuleSoft Log to cURL</div>
                         <div class="desc">Debug logs to cURL</div>
                     </div>
                 </a>

@@ -84,15 +84,21 @@
                 <div class="workspace-panel" style="display:flex; flex-direction:column;">
                     <div class="panel-header">
                         <span class="panel-title">Input: Properties</span>
-                        <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" onclick="p2y_loadExample()">⚡ Example</button>
-                            <button class="btn btn-ghost btn-sm" onclick="p2y_clear()">🗑 Clear</button>
-                        </div>
                     </div>
 
-                    <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()" spellcheck="false"
-                        placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"
-                        style="flex:1;"></textarea>
+                    <div class="editor-wrapper">
+                        <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()" spellcheck="false"
+                            placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"
+                            style="flex:1;"></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" title="Load Example" onclick="p2y_loadExample()">
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="p2y_clear()">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
 
                     <div class="panel-footer-row">
                         <label class="btn btn-outline" for="propFileInput"
@@ -118,16 +124,25 @@
                         <span class="panel-title">Output: YAML</span>
                     </div>
 
-                    <textarea id="yamlOutput" class="code-output" readonly placeholder="YAML output will appear here…"
-                        style="flex:1; min-height:280px;"></textarea>
+                    <div class="editor-wrapper">
+                        <textarea id="yamlOutput" class="code-output" readonly
+                            placeholder="YAML output will appear here…" style="flex:1; min-height:280px;"></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" id="p2y-copy-btn" title="Copy to Clipboard" onclick="p2y_copy()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="btn-icon" id="p2y-save-btn" title="Download YAML"
+                                onclick="p2y_downloadPrompt()">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
 
                     <div class="panel-footer-row">
                         <input type="text" id="filterYaml" class="filter-input" placeholder="Filter results…"
                             title="Filter output by property key or value" disabled oninput="p2y_convert()"
                             style="flex:1; margin:0;">
-                        <button class="btn btn-ghost" id="p2y-copy-btn" onclick="p2y_copy()">📋 Copy</button>
-                        <button class="btn btn-primary" id="p2y-save-btn" onclick="p2y_downloadPrompt()">📥
-                            Save</button>
+                    </div>
                         <div id="p2y-filename-group" style="display:none; gap:var(--space-xs); align-items:center;">
                             <input type="text" id="p2yFileName" class="filter-input"
                                 style="width:120px; margin:0; padding:6px 10px;" placeholder="config">
@@ -190,7 +205,8 @@
                     <summary>Why convert Properties to YAML?</summary>
                     <div class="faq-answer">YAML is much more readable for complex configurations. When migrating flat
                         <code>.properties</code> files to <code>.yaml</code>, this tool saves time by automatically
-                        building the nested levels.</div>
+                        building the nested levels.
+                    </div>
                 </details>
                 <details class="faq-item">
                     <summary>Does it handle complex keys?</summary>
@@ -256,7 +272,7 @@
                 </a>
                 <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
                     <div>
-                        <div class="name">Mule2Curl</div>
+                        <div class="name">MuleSoft Log to cURL</div>
                         <div class="desc">Logs to cURL converter</div>
                     </div>
                 </a>

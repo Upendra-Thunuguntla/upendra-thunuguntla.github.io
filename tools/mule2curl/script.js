@@ -4,7 +4,6 @@
 
 const logInput = document.getElementById('log-input');
 const curlOutput = document.getElementById('curl-output');
-const parseStatusEl = document.getElementById('parse-status');
 const breakdownEl = document.getElementById('parsed-breakdown');
 
 /* ── Live parsing on input ── */
@@ -307,8 +306,6 @@ function parseAndConvert() {
 
     if (!raw) {
         curlOutput.value = '';
-        parseStatusEl.className = 'parse-status idle';
-        parseStatusEl.textContent = '⏳ Waiting for input…';
         breakdownEl.style.display = 'none';
         return;
     }
@@ -317,8 +314,6 @@ function parseAndConvert() {
         const parsed = parseMuleLog(raw);
 
         if (!parsed.hasData || !parsed.host) {
-            parseStatusEl.className = 'parse-status error';
-            parseStatusEl.textContent = '⚠️ Could not detect HTTP request details. Check your log format.';
             curlOutput.value = '# Unable to parse the input. Try pasting the full HTTP debug log.';
             breakdownEl.style.display = 'none';
             return;
@@ -329,9 +324,6 @@ function parseAndConvert() {
         renderBreakdown(parsed);
 
         const headerCount = parsed.headers.length;
-        parseStatusEl.className = 'parse-status success';
-        parseStatusEl.textContent = `✅ Parsed: ${parsed.method} ${parsed.host}${parsed.path} — ${headerCount} header${headerCount !== 1 ? 's' : ''}`;
-
         track_event('mule2curl_parsed', {
             tool: 'mule2curl',
             method: parsed.method,
@@ -341,8 +333,6 @@ function parseAndConvert() {
         });
 
     } catch (err) {
-        parseStatusEl.className = 'parse-status error';
-        parseStatusEl.textContent = '❌ Parse error: ' + err.message;
         curlOutput.value = '# Parse error: ' + err.message;
     }
 }
@@ -368,8 +358,6 @@ function downloadCurl() {
 function clearAll() {
     logInput.value = '';
     curlOutput.value = '';
-    parseStatusEl.className = 'parse-status idle';
-    parseStatusEl.textContent = '⏳ Waiting for input…';
     breakdownEl.style.display = 'none';
     requestCol.innerHTML = '';
     headersCol.innerHTML = '';

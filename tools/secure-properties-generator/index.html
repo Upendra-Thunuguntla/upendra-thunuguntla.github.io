@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="/assets/css/core.css">
     <link rel="stylesheet" href="/assets/css/home.css">
     <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         crossorigin="anonymous">
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
 
@@ -32,7 +34,6 @@
         }
     }
     </script>
-    <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="tool-page">
@@ -47,26 +48,22 @@
             </ul>
             <div class="nav-actions">
                 <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
-                <button class="nav-hamburger" id="nav-hamburger"
-                    aria-label="Menu"><span></span><span></span><span></span></button>
             </div>
         </div>
     </nav>
 
-    <div class="tool-hero">
+    <div class="tool-hero" style="padding: var(--space-lg) 0;">
         <div class="container">
-            <div class="tool-breadcrumb">
+            <div class="tool-breadcrumb" style="margin-bottom: var(--space-sm);">
                 <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
                 <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
                 <span>Secure Properties Generator</span>
             </div>
             <div class="tool-hero-inner">
-                <div class="tool-page-icon">🔐</div>
+                <div class="tool-page-icon" style="font-size: 2.5rem;">🔐</div>
                 <div class="tool-hero-text">
-                    <h1>Secure Properties <span style="color:var(--accent);">Generator</span></h1>
-                    <p>Encrypt and decrypt configuration properties for your MuleSoft applications. Supports AES,
-                        Blowfish, DES, DESede, and RC4 algorithms, directly mimicking the Mule Secure Properties Tool
-                        JAR.</p>
+                    <h1 style="font-size: 2rem;">MuleSoft Secure Properties <span style="color:var(--accent);">Generator</span></h1>
+                    <p style="font-size: 0.9rem; max-width: 800px; margin-bottom: 0;">Encrypt and decrypt properties for MuleSoft apps. Supports AES, Blowfish, DES, DESede, and RC4 algorithms.</p>
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
                         <span class="badge">MuleSoft</span>
                         <span class="badge badge-purple">Security</span>
@@ -78,123 +75,142 @@
         </div>
     </div>
 
-    <div class="tool-workspace">
-        <div class="container">
+    <div class="tool-workspace" style="padding-top: var(--space-lg);">
+        <div class="container" style="max-width: 900px;">
 
-            <div class="workspace-grid">
-                <!-- ── Left Panel: Input & Config ── -->
-                <div class="workspace-panel" style="display:flex; flex-direction:column;">
-                    <div class="panel-header">
-                        <span class="panel-title">Configuration & Input</span>
-                    </div>
-
-                    <div style="display:flex; gap:var(--space-sm); margin-bottom:var(--space-md);">
-                        <button class="btn btn-primary" style="flex:1;" id="tab-encrypt" onclick="setMode('encrypt')">⇡
-                            Encrypt</button>
-                        <button class="btn btn-outline" style="flex:1;" id="tab-decrypt" onclick="setMode('decrypt')">⇣
-                            Decrypt</button>
-                    </div>
-
-                    <!-- <div class="flex flex-wrap" id="algo-tags"
-                        style="gap:var(--space-xs); margin-bottom:var(--space-md);">
-                        <span class="algo-tag active-algo" data-algo="AES">AES</span>
-                        <span class="algo-tag" data-algo="Blowfish">Blowfish</span>
-                        <span class="algo-tag" data-algo="DES">DES</span>
-                        <span class="algo-tag" data-algo="DESede">DESede</span>
-                        <span class="algo-tag" data-algo="RCA">RC4</span>
-                    </div> -->
-
-                    <div
-                        style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-sm); margin-bottom:var(--space-md);">
-                        <div>
-                            <label
-                                style="display:block; font-size:0.8rem; margin-bottom:4px; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px;">Algorithm</label>
-                            <select id="sel-algo" class="form-control" onchange="onAlgoChange()"
-                                style="font-family:var(--font-mono); font-size:0.85rem;">
-                                <option value="AES">AES (default)</option>
-                                <option value="Blowfish">Blowfish</option>
-                                <option value="DES">DES</option>
-                                <option value="DESede">DESede (3DES)</option>
-                                <option value="RCA">RC4 / RCA</option>
-                            </select>
-                        </div>
-                        <div id="mode-field">
-                            <label
-                                style="display:block; font-size:0.8rem; margin-bottom:4px; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px;">Mode</label>
-                            <select id="sel-mode" class="form-control"
-                                style="font-family:var(--font-mono); font-size:0.85rem;">
-                                <option value="CBC">CBC (default)</option>
-                                <option value="CFB">CFB</option>
-                                <option value="OFB">OFB</option>
-                                <option value="ECB">ECB</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div style="margin-bottom:var(--space-sm);">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                            <label
-                                style="font-size:0.8rem; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px;">Encryption
-                                Key</label>
-                            <span id="key-hint" class="key-hint warn">enter key</span>
-                        </div>
-                        <input type="text" id="inp-key" class="form-control" placeholder="Enter secure key..."
-                            autocomplete="off" oninput="onKeyInput()" style="font-family:var(--font-mono);">
-                    </div>
-
-                    <div style="margin-bottom:var(--space-md); display:flex; align-items:center; gap:var(--space-sm); cursor:pointer;"
-                        id="iv-toggle-row" onclick="toggleIV()">
-                        <input type="checkbox" id="iv-toggle-check" style="pointer-events:none;">
-                        <label style="font-size:0.85rem; cursor:pointer;">Use random IV <span
-                                style="color:var(--text-muted); font-size:0.75rem;">(--use-random-iv
-                                flag)</span></label>
-                    </div>
-
-                    <div style="display:flex; flex-direction:column; margin-bottom:var(--space-md);">
-                        <label id="inp-label"
-                            style="display:block; font-size:0.8rem; margin-bottom:4px; color:var(--text-muted); font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px;">Plain
-                            Value</label>
-                        <input type="text" id="inp-value" class="form-control" oninput="clearResult(); validateForm();"
-                            spellcheck="false" placeholder="Enter value to encrypt..."
-                            style="font-family:var(--font-mono);">
-                    </div>
+            <!-- ─── OPERATION MODE (Encrypt/Decrypt) ─── -->
+            <div class="mode-capsule-selector" style="display:flex; justify-content:center; margin-bottom:var(--space-lg);">
+                <div class="mode-capsule">
+                    <button id="mode-encrypt" class="mode-btn active" onclick="setMode('encrypt')"><i class="fas fa-lock"></i> Encrypt</button>
+                    <button id="mode-decrypt" class="mode-btn" onclick="setMode('decrypt')"><i class="fas fa-unlock"></i> Decrypt</button>
                 </div>
+            </div>
 
-                <!-- ── Middle Action: Run ── -->
-                <div class="workspace-middle">
-                    <button class="btn-convert-middle" id="btn-run" onclick="runOp()" disabled title="Encrypt">
-                        <i id="btn-run-icon" class="fas fa-arrow-right"></i><span id="btn-run-text"
-                            style="display:none;"> Encrypt</span>
-                    </button>
-                </div>
-
-                <!-- ── Right Panel: Output ── -->
-                <div class="workspace-panel" style="display:flex; flex-direction:column;">
-                    <div class="panel-header">
-                        <span class="panel-title">Output</span>
+            <!-- ─── CONFIGURATION SECTION ─── -->
+            <div class="config-card" style="padding: var(--space-md); margin-bottom: var(--space-lg);">
+                <div class="config-grid">
+                    <!-- Key Input -->
+                    <div class="config-item wide">
+                        <div class="config-label-row">
+                            <label>Security Key</label>
+                            <span id="key-hint" class="key-hint warn">Enter Key</span>
+                        </div>
+                        <div class="input-with-icon">
+                            <i class="fas fa-key icon-left"></i>
+                            <input type="password" id="inp-key" class="form-control" placeholder="Your encryption key..."
+                                oninput="onKeyInput()">
+                            <i id="eye-key" class="fas fa-eye icon-right" onclick="toggleKeyVisibility()"></i>
+                        </div>
                     </div>
 
-                    <div id="error-box" class="info-box"
-                        style="display:none; border-color:var(--warn); color:var(--warn); margin-bottom:var(--space-sm); background:rgba(255,107,107,0.05);">
+                    <!-- Algorithm Select -->
+                    <div class="config-item">
+                        <label>Algorithm</label>
+                        <select id="sel-algo" class="form-control" onchange="onAlgoChange()">
+                            <option value="AES">AES (default)</option>
+                            <option value="Blowfish">Blowfish</option>
+                            <option value="DES">DES</option>
+                            <option value="DESede">DESede (3DES)</option>
+                            <option value="RCA">RC4 / RCA</option>
+                        </select>
                     </div>
 
-                    <textarea id="result-box" class="code-output" readonly placeholder="Result will appear here…"
-                        style="min-height:180px;"></textarea>
+                    <!-- Mode Select -->
+                    <div class="config-item" id="mode-field">
+                        <label>Operation Mode</label>
+                        <select id="sel-mode" class="form-control">
+                            <option value="CBC">CBC (default)</option>
+                            <option value="CFB">CFB</option>
+                            <option value="OFB">OFB</option>
+                            <option value="ECB">ECB</option>
+                        </select>
+                    </div>
 
-                    <div style="font-size:0.75rem; color:var(--text-muted); padding:var(--space-xs) 0; font-family:var(--font-mono);"
-                        id="result-note"></div>
-
-                    <div class="panel-footer-row" style="justify-content:flex-end;">
-                        <button class="btn btn-ghost" id="btn-copy" onclick="copyResult()">📋 Copy</button>
+                    <!-- Random IV Switch -->
+                    <div class="config-item" id="iv-toggle-row">
+                        <label>Random IV</label>
+                        <div class="switch-row" onclick="toggleIV()">
+                            <label class="switch">
+                                <input type="checkbox" id="iv-toggle-check">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Random IV</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="info-box" style="margin-top:var(--space-xl);">
+            <!-- ─── INPUT / SOURCE SECTION ─── -->
+            <div class="editor-panel">
+                <div class="panel-flex-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-sm);">
+                    <div class="type-tabs" style="margin-bottom:0;">
+                        <button class="type-tab active" data-type="string" onclick="setInputType('string')"><i class="fas fa-keyboard"></i> String</button>
+                        <button class="type-tab" data-type="file" onclick="setInputType('file')"><i class="fas fa-file-code"></i> File Content</button>
+                        <button class="type-tab" data-type="whole-file" onclick="setInputType('whole-file')"><i class="fas fa-file-export"></i> Whole File</button>
+                    </div>
+
+                    <!-- Source Switcher (Only for File/Whole modes) -->
+                    <div id="source-switcher" class="source-toggle" style="display:none;">
+                        <button class="source-btn active" id="src-upload" onclick="setFileSource('upload')"><i class="fas fa-upload"></i> Upload</button>
+                        <button class="source-btn" id="src-paste" onclick="setFileSource('paste')"><i class="fas fa-pencil-alt"></i> Paste</button>
+                    </div>
+                </div>
+                
+                <!-- String Input: Single line -->
+                <div id="string-input-container" class="editor-wrapper">
+                    <input type="text" id="inp-string" class="form-control" placeholder="Enter value to encrypt..." 
+                           style="height:46px; font-family:var(--font-mono); font-size:1rem; padding-left:14px; padding-right:50px;">
+                    <div class="editor-actions">
+                        <button class="btn-icon" title="Clear Content" onclick="clearAll()"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+
+                <!-- File/Whole File: Upload Dropzone -->
+                <div id="upload-container" class="file-dropzone" style="display:none; padding: 2rem;">
+                    <i class="fas fa-cloud-upload-alt dropzone-icon" style="font-size: 2rem;"></i>
+                    <p style="margin-bottom: 4px;">Drag & drop <strong>.yaml</strong> or <strong>.properties</strong></p>
+                    <input type="file" id="file-upload" class="file-hidden-input" onchange="handleFileUpload(event)" accept=".yaml,.yml,.properties">
+                </div>
+
+                <!-- File/Whole File: Paste/Preview Textarea -->
+                <div id="paste-container" class="editor-wrapper" style="display:none;">
+                    <textarea id="inp-value" class="code-textarea" placeholder="Paste file content here..." style="min-height:160px;"></textarea>
+                    <div class="editor-actions">
+                        <button class="btn-icon" title="Clear Content" onclick="clearAll()"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── ACTION BUTTON ─── -->
+            <div style="text-align:center; margin: var(--space-md) 0;">
+                <button class="btn btn-primary btn-lg" id="btn-run" onclick="runOperation()" style="padding: 0.8rem 2.5rem; font-size: 1rem; border-radius:100px;">
+                    <i class="fas fa-lock"></i> Run Encryption
+                </button>
+            </div>
+
+            <!-- ─── RESULT SECTION ─── -->
+            <div class="editor-panel">
+                <div class="panel-header" style="padding: 4px 12px; font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                    <span class="panel-title">Result</span>
+                    <div id="result-extras" style="display: flex; gap: 8px;">
+                        <button class="btn btn-ghost btn-sm" onclick="downloadResult()"><i class="fas fa-download"></i> Download</button>
+                    </div>
+                </div>
+                <div class="editor-wrapper">
+                    <textarea id="result-box" class="code-output" readonly placeholder="Result will appear here…" style="min-height:120px;"></textarea>
+                    <div class="editor-actions">
+                        <button id="btn-copy-plain" class="btn-icon" title="Plain Copy" onclick="copyResult(false)"><i class="fas fa-copy"></i></button>
+                        <button id="btn-copy-wrapped" class="btn-icon" title="Wrapped Copy ![ ]" onclick="copyResult(true)" 
+                                style="font-family:var(--font-mono); font-weight:800; font-size: 0.75rem; color:var(--accent);">![]</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top:var(--space-lg); padding: 12px 16px;">
                 <span class="info-box-icon">💡</span>
-                <span>Matches `secure-properties-tool.jar`. AES encryption uses the Web Crypto API, while others
-                    fallback to CryptoJS 4.2. Output automatically uses PKCS7 padding.</span>
+                <span style="font-size: 0.8rem;">Supports AES / Blowfish / DES algorithms. All operations happen in your browser memory for maximum privacy.</span>
             </div>
+
 
         </div>
     </div>
@@ -204,20 +220,20 @@
         <div class="container">
             <div class="social-proof-bar">
                 <div class="proof-item">
-                    <div class="proof-number">Local</div>
-                    <div class="proof-label">100% Client-Side<br>Execution</div>
+                    <div class="proof-number">7+</div>
+                    <div class="proof-label">Years of MuleSoft<br>Expertise</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Secure</div>
+                    <div class="proof-label">MuleSoft Standard<br>Encryption</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
                 </div>
                 <div class="proof-item">
                     <div class="proof-number">AES</div>
-                    <div class="proof-label">Web Crypto API<br>Performance</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">Jar</div>
-                    <div class="proof-label">Matches Mule<br>Tool.jar Output</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">All</div>
-                    <div class="proof-label">Supports All standard<br>Algorithms & Modes</div>
+                    <div class="proof-label">Industry Standard<br>Compliant</div>
                 </div>
                 <div class="proof-item">
                     <div class="proof-number">Free</div>
@@ -227,58 +243,83 @@
         </div>
     </div>
 
-    <!-- ═══ FAQ ═══ -->
+    <!-- ═══ GUIDE ═══ -->
     <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use the Secure Properties Generator</h2>
+                <p>Generate encrypted values for your YAML or Properties files in four simple steps. Zero setup, 100% private.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Configure Encryption</h4>
+                    <p>Enter your security key and select the algorithm (AES recommended) and operation mode.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Input Your Data</h4>
+                    <p>Provide a single string, or upload a <code>.yaml</code>/<code>.properties</code> file to process in batch.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Generate & Copy</h4>
+                    <p>Click Run. Use the <code>![base64]</code> result directly in your secure property files.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Verify in Mule</h4>
+                    <p>Ensure your <code>Secure Properties Config</code> uses the same key and algorithm.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ SECTION ═══ -->
+    <div class="tool-section tool-section-alt">
         <div class="container">
             <div class="tool-section-header">
                 <div class="tool-section-label">FAQ</div>
                 <h2>Frequently Asked Questions</h2>
             </div>
-            <div class="faq-list">
+            <div class="faq-list" style="max-width: 800px; margin: 0 auto;">
                 <details class="faq-item">
-                    <summary>Is this tool safe to use with production keys?</summary>
-                    <div class="faq-answer">Yes. The encryption and decryption operations run entirely in your local
-                        browser using JavaScript. No data, keys, or configurations are ever sent to any remote server.
-                        It is completely safe.</div>
+                    <summary>Is my security key safe?</summary>
+                    <div class="faq-answer">Yes. This tool is 100% client-side. Your key and data never leave your browser memory. Everything happens locally via the Web Crypto API.</div>
                 </details>
                 <details class="faq-item">
-                    <summary>Why does the result sometimes differ from the Mule tooling?</summary>
-                    <div class="faq-answer">By default, standard Mule encryption uses a static initialization vector
-                        (IV). If you use the <code>--use-random-iv</code> flag in Mule, the output changes on every run.
-                        You can replicate this by checking the "Use random IV" box above!</div>
+                    <summary>Why use ![ ] wrapper?</summary>
+                    <div class="faq-answer">MuleSoft's Secure Properties Provider uses this syntax to identify which values need decryption at runtime. The wrapper is mandatory for secure property files.</div>
                 </details>
                 <details class="faq-item">
-                    <summary>What is RC4 / RCA?</summary>
-                    <div class="faq-answer">RC4 is a stream cipher. Since it doesn't use blocks, it does not require an
-                        Operation Mode (CBC, ECB) or an Initialization Vector (IV). You'll notice those fields are
-                        disabled when RC4 is selected.</div>
+                    <summary>Which algorithm should I choose?</summary>
+                    <div class="faq-answer">For modern Mule 4 apps, <strong>AES</strong> (CBC or ECB) is highly recommended. For older Mule 3 apps, Blowfish or DES might be required.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you support YAML anchors?</summary>
+                    <div class="faq-answer">Current batch processing supports standard key-value pairs. For complex YAML with anchors/aliases, we recommend processing individual values or the whole file.</div>
                 </details>
             </div>
         </div>
     </div>
 
     <!-- ═══ BLOG SNIPPETS ═══ -->
-    <div class="tool-section tool-section-alt">
+    <div class="tool-section">
         <div class="container">
             <div class="tool-section-header">
-                <div class="tool-section-label">Learn More</div>
-                <h2>From the Blog</h2>
-                <p>Deep-dives on MuleSoft security, configuration patterns, and best practices.</p>
+                <div class="tool-section-label">Blogs</div>
+                <h2>MuleSoft Security Insights</h2>
+                <p>Read more about securing your APIs and integration property management.</p>
             </div>
             <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
-                <!-- Dynamic content from blogs-loader.js -->
-                <p style="color:var(--text-muted)">Loading latest articles...</p>
+                <p style="color:var(--text-muted)">Loading latest articles…</p>
             </div>
         </div>
     </div>
 
     <!-- ═══ SUPPORT BANNER ═══ -->
-    <div class="container">
+    <div class="container" style="margin: var(--space-xl) auto var(--space-2xl);">
         <div class="support-banner">
             <div class="support-banner-text">
                 <h3>🤠 Find this tool useful?</h3>
-                <p>Built for the MuleSoft community. If it saves you time on your next deployment, a coffee goes a long
-                    way!</p>
+                <p>Built for the MuleSoft community. If it saves you time, feel free to support the developer!</p>
             </div>
             <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
                 data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
@@ -289,33 +330,16 @@
 
     <div class="related-tools">
         <div class="container">
-            <h3
-                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
-                Other Tools</h3>
+            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Other Tools</h3>
             <div class="related-tools-grid">
                 <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
-                    <div>
-                        <div class="name">YAML → Properties</div>
-                        <div class="desc">Flatten YAML configs</div>
-                    </div>
-                </a>
-                <a href="/tools/props2yaml/" class="related-tool-link"><span class="icon">📝</span>
-                    <div>
-                        <div class="name">Properties → YAML</div>
-                        <div class="desc">Flat keys to nested YAML</div>
-                    </div>
+                    <div><div class="name">YAML → Properties</div><div class="desc">Flatten YAML configs</div></div>
                 </a>
                 <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
-                    <div>
-                        <div class="name">Mule2Curl</div>
-                        <div class="desc">Logs to cURL converter</div>
-                    </div>
+                    <div><div class="name">MuleSoft Log to cURL</div><div class="desc">Logs to cURL converter</div></div>
                 </a>
                 <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
-                    <div>
-                        <div class="name">JSON → RAML</div>
-                        <div class="desc">MuleSoft DataType converter</div>
-                    </div>
+                    <div><div class="name">JSON → RAML</div><div class="desc">MuleSoft DataType converter</div></div>
                 </a>
             </div>
         </div>
@@ -323,16 +347,17 @@
 
     <footer class="footer">
         <div class="container">
-            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
-                Thunuguntla</a> ❤️ ·
-            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">GitHub</a> · 
+            <a href="https://docs.mulesoft.com/mule-runtime/4.4/secure-configuration-properties" target="_blank" rel="noopener">Official Docs</a>
             <br>
             All tools are 100% client-side & no data ever leaves your browser.
         </div>
     </footer>
 
-    <!-- Crypto engine -->
+    <!-- Scripts -->
     <script src="crypto.js"></script>
+    <script src="/assets/js/js-yaml.min.js"></script>
     <script src="/assets/js/platform.js"></script>
     <script src="/assets/js/blogs-loader.js"></script>
     <script src="/assets/js/analytics.js"></script>

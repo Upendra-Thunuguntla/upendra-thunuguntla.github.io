@@ -1,58 +1,244 @@
-/* Tool-specific styles for secure-properties-generator */
-.btn-convert-middle:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+/* ─── Mode Capsule (Encrypt/Decrypt) ─── */
+.mode-capsule {
+    display: flex;
     background: var(--surface-2);
-    color: var(--text-muted);
-    box-shadow: none;
-}
-
-.btn-convert-middle:hover:not(:disabled) {
-    transform: scale(1.08);
-    box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4);
-}
-
-.algo-tag {
-    cursor: default;
-    padding: 4px 10px;
-    font-size: 0.75rem;
-    font-family: var(--font-mono);
     border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    border-radius: 100px;
+    padding: 6px;
+    gap: 6px;
+    box-shadow: var(--shadow-sm);
+}
+.mode-btn {
+    border: none;
+    background: transparent;
+    padding: 10px 24px;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 700;
     color: var(--text-muted);
-    transition: all var(--transition, 0.2s);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.mode-btn.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+}
+.mode-btn i {
+    font-size: 0.8rem;
 }
 
-.algo-tag.active-algo {
-    background: var(--accent-dim);
-    border-color: var(--accent);
-    color: var(--accent);
-    font-weight: 600;
+/* ─── Layout Compression ─── */
+.tool-hero { padding: 1.5rem 0 !important; border-bottom: 1px solid var(--border); }
+.tool-hero-inner { gap: 1rem !important; }
+.tool-page-icon { font-size: 2rem !important; }
+.tool-hero-text h1 { font-size: 1.6rem !important; margin-bottom: 2px !important; }
+.tool-hero-text p { font-size: 0.85rem !important; opacity: 0.8; }
+
+.tool-workspace { padding-top: 1.5rem !important; padding-bottom: 2rem !important; }
+
+/* ─── Config Card ─── */
+.config-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+.config-item { display: flex; flex-direction: column; gap: 4px; }
+.config-item.wide { grid-column: span 3; }
+
+/* ─── Panels ─── */
+.editor-panel {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+.form-control { height: 36px; font-size: 0.85rem; border-radius: var(--radius-md); }
+textarea.code-textarea, textarea.code-output { min-height: 120px; font-size: 0.85rem; padding: 12px; }
+
+.btn-primary.btn-lg { padding: 0.5rem 2rem !important; font-size: 0.9rem !important; border-radius: 50px !important; }
+
+/* ─── Switch & Controls ─── */
+.switch-row { height: 36px; gap: 8px; }
+.switch-label { font-size: 0.8rem; font-weight: 600; }
+
+/* ─── Sections ─── */
+.tool-section { padding: 3rem 0 !important; }
+.tool-section-alt { background: var(--bg-alt); }
+
+.config-item label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    display: block;
 }
 
-.key-hint {
+.config-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.config-label-row label {
     font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+.key-hint {
+    font-size: 0.7rem;
     font-family: var(--font-mono);
+    font-weight: 700;
+}
+.key-hint.ok { color: var(--success); }
+.key-hint.warn { color: var(--warn); }
+
+/* ─── Input with Icons ─── */
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.input-with-icon .icon-left {
+    position: absolute;
+    left: 14px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+.input-with-icon .icon-right {
+    position: absolute;
+    right: 14px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.input-with-icon .icon-right:hover { color: var(--accent); }
+.input-with-icon .form-control {
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
-.key-hint.ok {
-    color: var(--success);
+/* ─── Type Tabs ─── */
+.type-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+.type-tab {
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.type-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
 }
 
-.key-hint.warn {
-    color: var(--warn);
+/* ─── Dropzone ─── */
+.file-dropzone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface-1);
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+.file-dropzone:hover {
+    border-color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.02);
+}
+.dropzone-icon {
+    font-size: 2.5rem;
+    color: var(--accent);
+    margin-bottom: var(--space-md);
+    opacity: 0.8;
+}
+.dropzone-sub {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.file-hidden-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
 }
 
-/* Override: the mobile convert button in this tool uses #btn-run-icon
-   instead of the generic i rotation */
-@media (max-width: 899px) {
-    .btn-convert-middle #btn-run-icon {
-        transform: rotate(90deg);
-    }
-    #btn-run-text {
-        display: inline !important;
-        font-family: inherit;
-        font-weight: 600;
-        margin-left: 8px;
-    }
+/* ─── Switch Row ─── */
+.switch-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    height: 38px;
+}
+.switch-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.source-toggle {
+    display: flex;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 3px;
+    gap: 2px;
+}
+.source-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.source-btn.active {
+    background: var(--surface-1);
+    color: var(--accent);
+    box-shadow: var(--shadow-sm);
+}
+.source-btn i { font-size: 0.7rem; }
+
+@media (max-width: 768px) {
+    .config-grid { grid-template-columns: 1fr; }
+    .config-item.wide { grid-column: span 1; }
+    .panel-flex-header { flex-direction: column; align-items: flex-start !important; gap: var(--space-md); }
 }

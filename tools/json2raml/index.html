@@ -87,54 +87,87 @@
     <div class="tool-workspace">
         <div class="container">
 
-            <!-- Options -->
-            <div class="options-bar" style="margin-bottom:var(--space-lg);">
-                <div class="option-row">
-                    <input type="checkbox" id="areKeysOptional" onchange="convert()">
-                    <label for="areKeysOptional">Make all keys <strong>Optional</strong> — outputs
-                        <code>key?: string</code> instead of <code>key: string</code></label>
-                </div>
-                <div class="option-row">
-                    <input type="checkbox" id="areKeysCamelCased" onchange="convert()">
-                    <label for="areKeysCamelCased">Make all keys <strong>CamelCase</strong> — converts
-                        <code>my_key</code> to <code>myKey</code></label>
-                </div>
-            </div>
-
             <!-- Grid -->
-            <div class="workspace-grid">
+            <div class="workspace-grid workspace-grid-3col">
                 <!-- ── Left Panel: Input ── -->
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">Input: JSON</span>
-                        <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" onclick="loadExample()">⚡ Load Example</button>
-                            <button class="btn btn-ghost btn-sm" onclick="clearContents()">🗑 Clear</button>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="json-input" class="code-textarea" oninput="convert()"
+                            placeholder='Paste your JSON here&#10;&#10;{&#10;  &quot;name&quot;: &quot;John&quot;,&#10;  &quot;age&quot;: 30,&#10;  &quot;active&quot;: true&#10;}'></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                            <button class="btn-icon btn-danger-hover" title="Clear Content" onclick="clearContents()">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </div>
                     </div>
-                    <textarea id="json-input" class="code-textarea" oninput="convert()"
-                        placeholder='Paste your JSON here&#10;&#10;{&#10;  &quot;name&quot;: &quot;John&quot;,&#10;  &quot;age&quot;: 30,&#10;  &quot;active&quot;: true&#10;}'></textarea>
                     <label class="file-zone-card" for="json-file-input">
-                        <span class="file-zone-icon">📂</span>
+                        <span class="file-zone-icon"><i class="fas fa-file-upload"></i></span>
                         <span class="file-zone-text">Upload a <strong>.json</strong> file</span>
                         <input type="file" id="json-file-input" accept=".json,application/json"
                             onchange="loadJSONFile(event)">
                     </label>
                 </div>
 
+                <!-- ── Middle Panel: Actions ── -->
+                <div class="workspace-middle" style="padding-top: 50px;">
+                    <div class="action-card">
+                        <!-- Optional Switch -->
+                        <div class="option-row-switch" style="flex-direction:column; gap:6px; width:100%; text-align:center;"
+                            title="Outputs key?: type instead of key: type. Useful for RAML fragments.">
+                            <label class="switch">
+                                <input type="checkbox" id="areKeysOptional" onchange="convert()">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="option-label-main" style="font-size:0.65rem; opacity:0.8; letter-spacing:0.02em;">OPTIONAL</span>
+                        </div>
+
+                        <!-- CamelCase Switch -->
+                        <div class="option-row-switch" style="flex-direction:column; gap:6px; width:100%; text-align:center;"
+                            title="Converts snake_case or kebab-case keys to camelCase.">
+                            <label class="switch">
+                                <input type="checkbox" id="areKeysCamelCased" onchange="convert()">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="option-label-main" style="font-size:0.65rem; opacity:0.8; letter-spacing:0.02em;">CAMELCASE</span>
+                        </div>
+
+                        <hr style="width:100%; border:0; border-top:1px solid var(--border); margin:4px 0;">
+
+                        <!-- Convert Button -->
+                        <button class="btn-convert-middle" style="margin:0; width:44px; height:44px; font-size:1rem;"
+                            onclick="convert()" title="Run JSON to RAML Conversion">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- ── Right Panel: Output ── -->
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">Output: RAML DataType</span>
-                        <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" id="copy-btn" onclick="copyResult()">📋 Copy</button>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="raml-output" class="code-output" readonly
+                            placeholder="RAML DataType will appear here after conversion"
+                            style="min-height:360px;"></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" id="copy-btn" title="Copy to Clipboard" onclick="copyResult()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="btn-icon" title="Download RAML" onclick="downloadRAML()">
+                                <i class="fas fa-download"></i>
+                            </button>
                         </div>
                     </div>
-                    <textarea id="raml-output" class="code-output" readonly
-                        placeholder="RAML DataType will appear here after conversion"></textarea>
                     <div class="file-zone-card" onclick="downloadRAML()" role="button" tabindex="0"
                         title="Download .raml file">
-                        <span class="file-zone-icon">📥</span>
+                        <span class="file-zone-icon"><i class="fas fa-file-download"></i></span>
                         <span class="file-zone-text">Download as <strong>.raml</strong> file</span>
                     </div>
                     <div id="filename-wrap" style="display:none;">
@@ -148,16 +181,9 @@
                 </div>
             </div>
 
-            <!-- ── Centered Action Footer ── -->
-            <div class="action-footer">
-                <button class="btn btn-primary" onclick="convert()">
-                    <i class="fas fa-play"></i> Convert to RAML
-                </button>
-            </div>
-
             <!-- Info box -->
             <div class="info-box" style="margin-top:var(--space-xl);">
-                <span class="info-box-icon">💡</span>
+                <span class="info-box-icon"><i class="fas fa-lightbulb"></i></span>
                 <span>Handles JSON objects and arrays. Arrays become <code>type: array</code> with auto-detected item
                     type. Nested objects get nested <code>properties</code> blocks. Basically handles whatever you throw
                     at it.</span>

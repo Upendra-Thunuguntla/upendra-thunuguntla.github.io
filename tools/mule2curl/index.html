@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mule2Curl — MuleSoft Debug Logs to cURL | Upendra.dev</title>
+    <title>MuleSoft Log to cURL Converter — Debug Logs to cURL | Upendra.dev</title>
     <meta name="description"
-        content="Mule2Curl: Instantly convert MuleSoft HTTP debug logs into ready-to-use cURL commands. Parses method, host, path, query params, headers, and body automatically.">
+        content="MuleSoft Log to cURL Converter: Instantly convert MuleSoft HTTP debug logs into ready-to-use cURL commands. Parses method, host, path, query params, headers, and body automatically. 100% client-side.">
     <link rel="icon" href="/portfolio.png" type="image/png">
     <script src="/assets/js/theme.js"></script>
     <link rel="stylesheet" href="/assets/css/core.css">
@@ -21,7 +21,7 @@
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "Mule2Curl — MuleSoft Debug Logs to cURL Converter",
+        "name": "MuleSoft Log to cURL Converter",
         "description": "Instantly convert MuleSoft HTTP debug logs into ready-to-use cURL commands. Parses method, host, path, query params, headers, and body automatically.",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "All",
@@ -58,19 +58,20 @@
             <div class="tool-breadcrumb">
                 <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
                 <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
-                <span>Mule2Curl</span>
+                <span>MuleSoft Log to cURL</span>
             </div>
             <div class="tool-hero-inner">
                 <div class="tool-page-icon">⚡</div>
                 <div class="tool-hero-text">
-                    <h1>Mule2Curl</h1>
-                    <p>Paste MuleSoft HTTP debug logs → get a ready-to-use cURL command instantly.
-                        Copy it, run it, or import it into Postman. Zero manual header wrangling.</p>
+                    <h1>MuleSoft Log to cURL Converter</h1>
+                    <p>MuleSoft HTTP debug logs to <strong>Postman</strong> in seconds. Paste logs, copy the cURL, and
+                        paste directly into any Postman tab to replay requests instantly.</p>
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
                         <span class="badge">MuleSoft</span>
                         <span class="badge badge-purple">Debugging</span>
                         <span class="badge">cURL</span>
-                        <span class="badge badge-success">100% Client-Side</span>
+                        <span class="badge badge-success">Postman Ready</span>
+                        <span class="badge badge-info">100% Client-Side</span>
                     </div>
                 </div>
             </div>
@@ -80,12 +81,18 @@
     <div class="tool-workspace">
         <div class="container">
 
-            <!-- ═══ DEBUG LOG ENABLEMENT BANNER — Full Width ═══ -->
-            <div class="debug-banner">
-                <div class="debug-banner-title">
-                    <i class="fas fa-terminal"></i>
-                    Enable HTTP Debug Logs
-                </div>
+            <!-- ═══ DEBUG LOG ENABLEMENT BANNER — Collapsible ═══ -->
+            <details class="debug-banner-collapsible">
+                <summary class="debug-banner-summary">
+                    <span class="debug-banner-summary-left">
+                        <i class="fas fa-terminal"></i>
+                        How to Enable HTTP Debug Logs
+                    </span>
+                    <span class="debug-banner-summary-right">
+                        <span class="debug-banner-hint">expand to see log4j2 &amp; Runtime Manager setup</span>
+                        <i class="fas fa-chevron-down debug-chevron"></i>
+                    </span>
+                </summary>
                 <div class="debug-banner-grid">
                     <!-- Left: log4j2.xml -->
                     <div class="debug-banner-col">
@@ -128,20 +135,16 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </details>
             <div class="workspace-grid" style="align-items:start;">
 
                 <!-- Left: Log Input -->
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">HTTP Debug Log</span>
-                        <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" onclick="loadExample()">📝 Load Example</button>
-                            <button class="btn btn-ghost btn-sm" onclick="clearAll()">🗑 Clear</button>
-                        </div>
                     </div>
-                    <textarea id="log-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your MuleSoft HTTP connector debug logs here…
+                    <div class="editor-wrapper">
+                        <textarea id="log-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your MuleSoft HTTP connector debug logs here…
 
 Example log lines:
 POST /api/v1/orders?status=active HTTP/1.1
@@ -151,36 +154,47 @@ Authorization: Bearer eyJhbGciOi...
 x-correlation-id: abc-123-def
 
 {&quot;key&quot;: &quot;value&quot;}"></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="clearAll()">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Right: Output — cURL FIRST, parsed fields at bottom -->
                 <div class="workspace-panel">
 
-                    <!-- Parse status -->
-                    <div id="parse-status" class="parse-status idle">
-                        ⏳ Waiting for input…
-                    </div>
+
 
                     <!-- cURL Output — TOP priority -->
                     <div class="panel-header">
                         <span class="panel-title">cURL Command</span>
-                        <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" id="curl-copy-btn" onclick="copyCurl()">📋
-                                Copy</button>
-                            <button class="btn btn-ghost btn-sm" onclick="downloadCurl()">📥 .sh</button>
-                        </div>
                     </div>
-                    <textarea id="curl-output" class="code-output" style="min-height:300px;" readonly placeholder="# cURL command will appear here after parsing your debug logs…
+
+                    <div class="editor-wrapper">
+                        <textarea id="curl-output" class="code-output" style="min-height:420px;" readonly placeholder="# cURL command will appear here…
 
 Paste logs on the left → cURL appears here instantly.
 Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
-
+                        <div class="editor-actions">
+                            <button class="btn-icon" id="curl-copy-btn" title="Copy to Clipboard" onclick="copyCurl()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="btn-icon" title="Download .sh Script" onclick="downloadCurl()">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
-            <!-- ═══ PARSED BREAKDOWN — Full Width, 2-Column ═══ -->
-            <div id="parsed-breakdown" class="breakdown-banner" style="display:none;">
+            <!-- ═══ PARSED BREAKDOWN — Symmetrical Width ═══ -->
+            <div id="parsed-breakdown" class="breakdown-banner" style="display:none; margin-top: var(--space-xl);">
                 <div class="breakdown-banner-title">
                     <i class="fas fa-sitemap"></i>
                     Parsed Breakdown
@@ -197,7 +211,8 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
                 </div>
             </div>
 
-        </div>
+        </div> <!-- End Container -->
+    </div> <!-- End Workspace -->
     </div>
 
     <!-- ═══ SOCIAL PROOF BAR ═══ -->
@@ -233,7 +248,7 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
         <div class="container">
             <div class="tool-section-header">
                 <div class="tool-section-label">Getting Started</div>
-                <h2>How to Use Mule2Curl</h2>
+                <h2>How to Use This Tool</h2>
                 <p>Go from Mule debug logs to a working cURL / Postman request in seconds.</p>
             </div>
             <div class="how-to-steps">
@@ -249,9 +264,9 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
                         Paste it into the input area on the left.</p>
                 </div>
                 <div class="how-to-step">
-                    <h4>Copy the cURL</h4>
-                    <p>The cURL command is generated instantly. Click <strong>Copy</strong> and paste it
-                        into your terminal or into Postman via <strong>File → Import → Raw Text</strong>.</p>
+                    <h4>Direct Postman Import</h4>
+                    <p>Copy the cURL and paste directly into a <strong>New Request</strong> tab in Postman.
+                        All headers, query params, and the body will be pre-filled automatically.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>Debug Faster</h4>
@@ -272,7 +287,7 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
             <div class="faq-list">
                 <details class="faq-item">
                     <summary>What log format does this tool support?</summary>
-                    <div class="faq-answer">Mule2Curl parses standard MuleSoft HTTP connector debug logs, including
+                    <div class="faq-answer">This tool parses standard MuleSoft HTTP connector debug logs, including
                         output from <code>org.mule.service.http.impl.service.HttpMessageLogger</code>,
                         <code>org.mule.extension.http</code>, and plain HTTP request lines like
                         <code>POST /api/v1/resource HTTP/1.1</code> followed by headers.
@@ -280,10 +295,11 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
                 </details>
                 <details class="faq-item">
                     <summary>How do I import the cURL into Postman?</summary>
-                    <div class="faq-answer">Copy the generated cURL command, open Postman, go to
-                        <strong>File → Import</strong>, select <strong>Raw text</strong>, and paste the cURL.
-                        Postman automatically converts it into a full request with all headers, method, URL,
-                        and body pre-filled.
+                    <div class="faq-answer">Copy the generated cURL command, open Postman, and simply
+                        <strong>paste it directly into any New Request tab</strong>.
+                        Postman automatically detects the cURL format and populates all headers, query params, and the
+                        body.
+                        You can also use <strong>File → Import → Raw text</strong>.
                     </div>
                 </details>
                 <details class="faq-item">
@@ -327,7 +343,7 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
         <div class="support-banner">
             <div class="support-banner-text">
                 <h3>🤠 Find this tool useful?</h3>
-                <p>Debugging MuleSoft HTTP issues is painful enough. If Mule2Curl saved you from manually building
+                <p>Debugging MuleSoft HTTP issues is painful enough. If this tool saved you from manually building
                     cURL commands, a coffee is always appreciated!</p>
             </div>
             <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
