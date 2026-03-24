@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         crossorigin="anonymous">
-    
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
 
@@ -62,8 +62,10 @@
             <div class="tool-hero-inner">
                 <div class="tool-page-icon" style="font-size: 2.5rem;">🔐</div>
                 <div class="tool-hero-text">
-                    <h1 style="font-size: 2rem;">MuleSoft Secure Properties <span style="color:var(--accent);">Generator</span></h1>
-                    <p style="font-size: 0.9rem; max-width: 800px; margin-bottom: 0;">Encrypt and decrypt properties for MuleSoft apps. Supports AES, Blowfish, DES, DESede, and RC4 algorithms.</p>
+                    <h1 style="font-size: 2rem;">MuleSoft Secure Properties <span
+                            style="color:var(--accent);">Generator</span></h1>
+                    <p style="font-size: 0.9rem; max-width: 800px; margin-bottom: 0;">Encrypt and decrypt properties for
+                        MuleSoft apps. Supports AES, Blowfish, DES, DESede, and RC4 algorithms.</p>
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
                         <span class="badge">MuleSoft</span>
                         <span class="badge badge-purple">Security</span>
@@ -79,10 +81,13 @@
         <div class="container" style="max-width: 900px;">
 
             <!-- ─── OPERATION MODE (Encrypt/Decrypt) ─── -->
-            <div class="mode-capsule-selector" style="display:flex; justify-content:center; margin-bottom:var(--space-lg);">
+            <div class="mode-capsule-selector"
+                style="display:flex; justify-content:center; margin-bottom:var(--space-lg);">
                 <div class="mode-capsule">
-                    <button id="mode-encrypt" class="mode-btn active" onclick="setMode('encrypt')"><i class="fas fa-lock"></i> Encrypt</button>
-                    <button id="mode-decrypt" class="mode-btn" onclick="setMode('decrypt')"><i class="fas fa-unlock"></i> Decrypt</button>
+                    <button id="mode-encrypt" class="mode-btn active" onclick="setMode('encrypt')"><i
+                            class="fas fa-lock"></i> Encrypt</button>
+                    <button id="mode-decrypt" class="mode-btn" onclick="setMode('decrypt')"><i
+                            class="fas fa-unlock"></i> Decrypt</button>
                 </div>
             </div>
 
@@ -93,12 +98,18 @@
                     <div class="config-item wide">
                         <div class="config-label-row">
                             <label>Security Key</label>
-                            <span id="key-hint" class="key-hint warn">Enter Key</span>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <!-- <span id="key-hint" class="key-hint warn">Enter Key</span> -->
+                                <button id="btn-gen-key" class="btn-icon" title="Generate Random Key"
+                                    onclick="generateRandomKey()"
+                                    style="font-size:0.8rem; width:28px; height:28px; color:var(--accent);"><i
+                                        class="fas fa-dice"></i></button>
+                            </div>
                         </div>
                         <div class="input-with-icon">
                             <i class="fas fa-key icon-left"></i>
-                            <input type="password" id="inp-key" class="form-control" placeholder="Your encryption key..."
-                                oninput="onKeyInput()">
+                            <input type="password" id="inp-key" class="form-control"
+                                placeholder="Your encryption key..." oninput="onKeyInput()">
                             <i id="eye-key" class="fas fa-eye icon-right" onclick="toggleKeyVisibility()"></i>
                         </div>
                     </div>
@@ -142,73 +153,99 @@
 
             <!-- ─── INPUT / SOURCE SECTION ─── -->
             <div class="editor-panel">
-                <div class="panel-flex-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-sm);">
+                <div class="panel-flex-header"
+                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-sm);">
                     <div class="type-tabs" style="margin-bottom:0;">
-                        <button class="type-tab active" data-type="string" onclick="setInputType('string')"><i class="fas fa-keyboard"></i> String</button>
-                        <button class="type-tab" data-type="file" onclick="setInputType('file')"><i class="fas fa-file-code"></i> File Content</button>
-                        <button class="type-tab" data-type="whole-file" onclick="setInputType('whole-file')"><i class="fas fa-file-export"></i> Whole File</button>
+                        <button class="type-tab active" data-type="string" onclick="setInputType('string')"><i
+                                class="fas fa-keyboard"></i> String</button>
+                        <button class="type-tab" data-type="file" onclick="setInputType('file')"><i
+                                class="fas fa-file-code"></i> File Content</button>
+                        <button class="type-tab" data-type="whole-file" onclick="setInputType('whole-file')"><i
+                                class="fas fa-file-export"></i> Whole File</button>
                     </div>
 
                     <!-- Source Switcher (Only for File/Whole modes) -->
                     <div id="source-switcher" class="source-toggle" style="display:none;">
-                        <button class="source-btn active" id="src-upload" onclick="setFileSource('upload')"><i class="fas fa-upload"></i> Upload</button>
-                        <button class="source-btn" id="src-paste" onclick="setFileSource('paste')"><i class="fas fa-pencil-alt"></i> Paste</button>
+                        <button class="source-btn active" id="src-upload" onclick="setFileSource('upload')"><i
+                                class="fas fa-upload"></i> Upload</button>
+                        <button class="source-btn" id="src-paste" onclick="setFileSource('paste')"><i
+                                class="fas fa-pencil-alt"></i> Paste</button>
                     </div>
                 </div>
-                
+
                 <!-- String Input: Single line -->
                 <div id="string-input-container" class="editor-wrapper">
-                    <input type="text" id="inp-string" class="form-control" placeholder="Enter value to encrypt..." 
-                           style="height:46px; font-family:var(--font-mono); font-size:1rem; padding-left:14px; padding-right:50px;">
+                    <input type="text" id="inp-string" class="form-control" placeholder="Enter value to encrypt..."
+                        style="height:46px; font-family:var(--font-mono); font-size:1rem; padding-left:14px; padding-right:50px;">
                     <div class="editor-actions">
-                        <button class="btn-icon" title="Clear Content" onclick="clearAll()"><i class="fas fa-trash-alt"></i></button>
+                        <button id="btn-gen-value" class="btn-icon" title="Generate Random Value"
+                            onclick="generateRandomValue()" style="color:var(--accent);"><i
+                                class="fas fa-dice"></i></button>
+                        <button class="btn-icon" title="Clear Content" onclick="clearAll()"><i
+                                class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
 
                 <!-- File/Whole File: Upload Dropzone -->
                 <div id="upload-container" class="file-dropzone" style="display:none; padding: 2rem;">
                     <i class="fas fa-cloud-upload-alt dropzone-icon" style="font-size: 2rem;"></i>
-                    <p style="margin-bottom: 4px;">Drag & drop <strong>.yaml</strong> or <strong>.properties</strong></p>
-                    <input type="file" id="file-upload" class="file-hidden-input" onchange="handleFileUpload(event)" accept=".yaml,.yml,.properties">
+                    <p style="margin-bottom: 4px;">Drag & drop <strong>.yaml</strong> or <strong>.properties</strong>
+                    </p>
+                    <input type="file" id="file-upload" class="file-hidden-input" onchange="handleFileUpload(event)"
+                        accept=".yaml,.yml,.properties">
                 </div>
 
                 <!-- File/Whole File: Paste/Preview Textarea -->
                 <div id="paste-container" class="editor-wrapper" style="display:none;">
-                    <textarea id="inp-value" class="code-textarea" placeholder="Paste file content here..." style="min-height:160px;"></textarea>
+                    <textarea id="inp-value" class="code-textarea" placeholder="Paste file content here..."
+                        style="min-height:160px;"></textarea>
                     <div class="editor-actions">
-                        <button class="btn-icon" title="Clear Content" onclick="clearAll()"><i class="fas fa-trash-alt"></i></button>
+                        <button class="btn-icon" title="Clear Content" onclick="clearAll()"><i
+                                class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
             </div>
 
             <!-- ─── ACTION BUTTON ─── -->
             <div style="text-align:center; margin: var(--space-md) 0;">
-                <button class="btn btn-primary btn-lg" id="btn-run" onclick="runOperation()" style="padding: 0.8rem 2.5rem; font-size: 1rem; border-radius:100px;">
+                <button class="btn btn-primary btn-lg" id="btn-run" onclick="runOperation()"
+                    style="padding: 0.8rem 2.5rem; font-size: 1rem; border-radius:100px;">
                     <i class="fas fa-lock"></i> Run Encryption
                 </button>
             </div>
 
             <!-- ─── RESULT SECTION ─── -->
             <div class="editor-panel">
-                <div class="panel-header" style="padding: 4px 12px; font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                <div class="panel-header"
+                    style="padding: 4px 12px; font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
                     <span class="panel-title">Result</span>
                     <div id="result-extras" style="display: flex; gap: 8px;">
-                        <button class="btn btn-ghost btn-sm" onclick="downloadResult()"><i class="fas fa-download"></i> Download</button>
+                        <button class="btn btn-ghost btn-sm" onclick="downloadResult()"><i class="fas fa-download"></i>
+                            Download</button>
                     </div>
                 </div>
                 <div class="editor-wrapper">
-                    <textarea id="result-box" class="code-output" readonly placeholder="Result will appear here…" style="min-height:120px;"></textarea>
-                    <div class="editor-actions">
-                        <button id="btn-copy-plain" class="btn-icon" title="Plain Copy" onclick="copyResult(false)"><i class="fas fa-copy"></i></button>
-                        <button id="btn-copy-wrapped" class="btn-icon" title="Wrapped Copy ![ ]" onclick="copyResult(true)" 
+                    <textarea id="result-box" class="code-output" readonly placeholder="Result will appear here…"
+                        style="min-height:120px;"></textarea>
+                    <div class="editor-actions" style="display:flex; gap:8px;">
+                        <button id="btn-copy-plain" class="btn-icon" title="Plain Copy" onclick="copyResult(false)"><i
+                                class="fas fa-copy"></i></button>
+                        <div style="position:relative;">
+                            <button id="btn-copy-wrapped" class="btn-icon" title="Wrapped Copy ![ ]"
+                                onclick="copyResult(true)"
                                 style="font-family:var(--font-mono); font-weight:800; font-size: 0.75rem; color:var(--accent);">![]</button>
+                            <span id="wrapped-copy-hint" class="badge-pulse"
+                                style="display:none; position:absolute; top:-12px; right:-8px; font-size:0.6rem; padding:2px 4px; border-radius:4px; white-space:nowrap;">Use
+                                this to copy with ![]</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="info-box" style="margin-top:var(--space-lg); padding: 12px 16px;">
                 <span class="info-box-icon">💡</span>
-                <span style="font-size: 0.8rem;">Supports AES / Blowfish / DES algorithms. All operations happen in your browser memory for maximum privacy.</span>
+                <span style="font-size: 0.8rem;">Supports AES / Blowfish / DES algorithms. All operations happen in your
+                    browser memory for maximum privacy.</span>
             </div>
 
 
@@ -249,7 +286,8 @@
             <div class="tool-section-header">
                 <div class="tool-section-label">Getting Started</div>
                 <h2>How to Use the Secure Properties Generator</h2>
-                <p>Generate encrypted values for your YAML or Properties files in four simple steps. Zero setup, 100% private.</p>
+                <p>Generate encrypted values for your YAML or Properties files in four simple steps. Zero setup, 100%
+                    private.</p>
             </div>
             <div class="how-to-steps">
                 <div class="how-to-step">
@@ -258,7 +296,8 @@
                 </div>
                 <div class="how-to-step">
                     <h4>Input Your Data</h4>
-                    <p>Provide a single string, or upload a <code>.yaml</code>/<code>.properties</code> file to process in batch.</p>
+                    <p>Provide a single string, or upload a <code>.yaml</code>/<code>.properties</code> file to process
+                        in batch.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>Generate & Copy</h4>
@@ -282,19 +321,23 @@
             <div class="faq-list" style="max-width: 800px; margin: 0 auto;">
                 <details class="faq-item">
                     <summary>Is my security key safe?</summary>
-                    <div class="faq-answer">Yes. This tool is 100% client-side. Your key and data never leave your browser memory. Everything happens locally via the Web Crypto API.</div>
+                    <div class="faq-answer">Yes. This tool is 100% client-side. Your key and data never leave your
+                        browser memory. Everything happens locally via the Web Crypto API.</div>
                 </details>
                 <details class="faq-item">
                     <summary>Why use ![ ] wrapper?</summary>
-                    <div class="faq-answer">MuleSoft's Secure Properties Provider uses this syntax to identify which values need decryption at runtime. The wrapper is mandatory for secure property files.</div>
+                    <div class="faq-answer">MuleSoft's Secure Properties Provider uses this syntax to identify which
+                        values need decryption at runtime. The wrapper is mandatory for secure property files.</div>
                 </details>
                 <details class="faq-item">
                     <summary>Which algorithm should I choose?</summary>
-                    <div class="faq-answer">For modern Mule 4 apps, <strong>AES</strong> (CBC or ECB) is highly recommended. For older Mule 3 apps, Blowfish or DES might be required.</div>
+                    <div class="faq-answer">For modern Mule 4 apps, <strong>AES</strong> (CBC or ECB) is highly
+                        recommended. For older Mule 3 apps, Blowfish or DES might be required.</div>
                 </details>
                 <details class="faq-item">
                     <summary>Do you support YAML anchors?</summary>
-                    <div class="faq-answer">Current batch processing supports standard key-value pairs. For complex YAML with anchors/aliases, we recommend processing individual values or the whole file.</div>
+                    <div class="faq-answer">Current batch processing supports standard key-value pairs. For complex YAML
+                        with anchors/aliases, we recommend processing individual values or the whole file.</div>
                 </details>
             </div>
         </div>
@@ -330,16 +373,27 @@
 
     <div class="related-tools">
         <div class="container">
-            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Other Tools</h3>
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
             <div class="related-tools-grid">
                 <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
-                    <div><div class="name">YAML → Properties</div><div class="desc">Flatten YAML configs</div></div>
+                    <div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
+                    </div>
                 </a>
                 <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
-                    <div><div class="name">MuleSoft Log to cURL</div><div class="desc">Logs to cURL converter</div></div>
+                    <div>
+                        <div class="name">MuleSoft Log to cURL</div>
+                        <div class="desc">Logs to cURL converter</div>
+                    </div>
                 </a>
                 <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
-                    <div><div class="name">JSON → RAML</div><div class="desc">MuleSoft DataType converter</div></div>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
                 </a>
             </div>
         </div>
@@ -347,9 +401,11 @@
 
     <footer class="footer">
         <div class="container">
-            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra Thunuguntla</a> ❤️ ·
-            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">GitHub</a> · 
-            <a href="https://docs.mulesoft.com/mule-runtime/4.4/secure-configuration-properties" target="_blank" rel="noopener">Official Docs</a>
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">GitHub</a> ·
+            <a href="https://docs.mulesoft.com/mule-runtime/4.4/secure-configuration-properties" target="_blank"
+                rel="noopener">Official Docs</a>
             <br>
             All tools are 100% client-side & no data ever leaves your browser.
         </div>

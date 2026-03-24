@@ -34,6 +34,13 @@ function setMode(m) {
     document.getElementById('mode-encrypt').classList.toggle('active', m === 'encrypt');
     document.getElementById('mode-decrypt').classList.toggle('active', m === 'decrypt');
     
+    // Toggle Random Key button (only for encrypt)
+    const genBtn = document.getElementById('btn-gen-key');
+    if (genBtn) genBtn.style.display = (m === 'encrypt' ? 'block' : 'none');
+
+    const genValBtn = document.getElementById('btn-gen-value');
+    if (genValBtn) genValBtn.style.display = (m === 'encrypt' ? 'block' : 'none');
+
     // Update Run Button
     const runBtn = document.getElementById('btn-run');
     if (runBtn) {
@@ -195,6 +202,9 @@ async function runOperation() {
 
         document.getElementById('result-box').value = result;
         showToast('Success!');
+        if (globalMode === 'encrypt') {
+            showCopyHint();
+        }
     } catch (e) {
         showToast(e.message || 'Operation failed', 'error');
         console.error(e);
@@ -287,17 +297,37 @@ function copyResult(withWrapper = true) {
     if (!res) return;
 
     if (globalMode === 'encrypt' && inputType === 'string') {
-        if (!withWrapper) {
-            // Strip ![ and ] if they exist
+        if (withWrapper) {
+            // Add wrapper if missing
+            if (!res.startsWith('![')) res = '![' + res + ']';
+        } else {
+            // Remove wrapper if present
             res = res.replace(/^!\[/, '').replace(/\]$/, '');
         }
     }
 
     navigator.clipboard.writeText(res).then(() => {
+        if (withWrapper) sessionStorage.setItem('wrapped_hint_shown', 'true');
+        hideCopyHint();
+
         if (typeof showToast === 'function') {
             showToast(withWrapper ? 'Copied with ![ ]' : 'Copied to clipboard');
         }
     });
+}
+
+function showCopyHint() {
+    const hint = document.getElementById('wrapped-copy-hint');
+    if (!hint) return;
+    const shown = sessionStorage.getItem('wrapped_hint_shown');
+    if (!shown && globalMode === 'encrypt' && inputType === 'string') {
+        hint.style.display = 'block';
+    }
+}
+
+function hideCopyHint() {
+    const hint = document.getElementById('wrapped-copy-hint');
+    if (hint) hint.style.display = 'none';
 }
 
 function downloadResult() {
@@ -325,4 +355,37 @@ function clearAll() {
     if (document.getElementById('inp-string')) document.getElementById('inp-string').value = '';
     if (document.getElementById('inp-value')) document.getElementById('inp-value').value = '';
     if (document.getElementById('result-box')) document.getElementById('result-box').value = '';
+}
+
+function generateRandomKey() {
+    const prefixes = ['Mule', 'Anypoint', 'Secure', 'Secret', 'Vault', 'Shadow', 'Frost', 'Iron', 'Zenith', 'Titan'];
+    const suffixes = ['Key', 'Prop', 'Node', 'Core', 'Vortex', 'Sentinel', 'Pulse', 'Edge', 'Base', 'Host'];
+    
+    const pre = prefixes[Math.floor(Math.random() * prefixes.length)];
+    const suf = suffixes[Math.floor(Math.random() * suffixes.length)];
+    const rand = Math.floor(1000 + Math.random() * 9000);
+    const newKey = pre + suf + rand + '!';
+    
+    const keyInput = document.getElementById('inp-key');
+    if (keyInput) {
+        keyInput.value = newKey;
+        if (keyInput.type === 'password') {
+            keyInput.type = 'text';
+            setTimeout(() => { if (keyInput.type === 'text') keyInput.type = 'password'; }, 2000);
+        }
+        onKeyInput();
+        if (typeof showToast === 'function') showToast('Random key generated!');
+    }
+}
+
+function generateRandomValue() {
+    const list = ['mulesoft_client_secret', 'anypoint_prod_db_pwd', 'secure_payload_auth', 'api_gateway_internal_key', 'sfdc_org_id_secret', 'aws_access_key_alias'];
+    const val = list[Math.floor(Math.random() * list.length)];
+    const randomHex = Array.from(crypto.getRandomValues(new Uint8Array(2))).map(b => b.toString(16).padStart(2, '0')).join('');
+    
+    const inp = document.getElementById('inp-string');
+    if (inp) {
+        inp.value = val + '_' + randomHex;
+        if (typeof showToast === 'function') showToast('Random value generated!');
+    }
 }

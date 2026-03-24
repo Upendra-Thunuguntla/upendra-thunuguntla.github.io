@@ -229,7 +229,7 @@ async function runCipher(op, valueBytes, keyStr, algorithm, mode, useRandomIV) {
 async function muleEncrypt(value, key, algorithm, mode, useRandomIV) {
   const valueBytes  = strToBytes(value);
   const cipherBytes = await runCipher('encrypt', valueBytes, key, algorithm, mode, useRandomIV);
-  return '![' + bytesToBase64(cipherBytes) + ']';
+  return bytesToBase64(cipherBytes);
 }
 
 /**
