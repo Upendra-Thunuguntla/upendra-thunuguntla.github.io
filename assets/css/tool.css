@@ -67,7 +67,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-xl);
-    align-items: start;
+    align-items: stretch;
 }
 
 .workspace-panel {
@@ -80,6 +80,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    min-height: 36px;
     margin-bottom: var(--space-xs);
 }
 
@@ -98,10 +99,19 @@
 }
 
 /* ─── Textarea panels ─── */
-.code-textarea {
+.editor-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.code-textarea, .code-output {
     width: 100%;
     min-height: 320px;
+    flex: 1;
     padding: var(--space-md);
+    padding-top: var(--space-lg); /* Extra padding for immersed buttons */
     background: var(--surface-2);
     border: 1.5px solid var(--border);
     border-radius: var(--radius-lg);
@@ -110,13 +120,63 @@
     font-size: 0.85rem;
     line-height: 1.7;
     resize: vertical;
-    transition: border-color var(--transition), box-shadow var(--transition);
+    transition: all var(--transition);
+}
+
+.code-output {
+    background: var(--bg-alt);
+    color: var(--success);
+    cursor: default;
 }
 
 .code-textarea:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.12);
+    box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.1);
+}
+
+.editor-actions {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    display: flex;
+    gap: var(--space-xs);
+    z-index: 10;
+    opacity: 0.4; /* Subtle when not focused/hovered */
+    transition: opacity var(--transition);
+}
+
+.editor-wrapper:hover .editor-actions,
+.editor-wrapper:focus-within .editor-actions {
+    opacity: 1;
+}
+
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    color: var(--text-subtle);
+    cursor: pointer;
+    transition: all var(--transition);
+    font-size: 0.9rem;
+}
+
+.btn-icon:hover {
+    background: var(--surface-3);
+    border-color: var(--border-accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-icon.btn-danger-hover:hover {
+    color: var(--danger);
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .code-textarea::placeholder {
@@ -162,6 +222,149 @@
     cursor: not-allowed;
 }
 
+/* ─── Toggle Switch UI ─── */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--surface-3);
+    transition: .3s;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--text-muted);
+    transition: .3s;
+    border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+    background-color: rgba(var(--accent-rgb), 0.2);
+    border-color: var(--accent);
+}
+
+.switch input:focus + .slider {
+    box-shadow: 0 0 1px var(--accent);
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(16px);
+    background-color: var(--accent);
+}
+
+.option-row-switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding: var(--space-xs) 0;
+    cursor: pointer;
+}
+
+.option-label-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.option-label-main {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* ─── Workspace Middle Column ─── */
+.workspace-middle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-lg);
+    width: 100%;
+}
+
+.workspace-grid-3col {
+    grid-template-columns: 1fr minmax(130px, 150px) 1fr !important;
+}
+
+.btn-convert-middle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all var(--transition);
+    box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
+    margin-top: 50px;
+}
+
+.btn-convert-middle:hover {
+    transform: scale(1.1) rotate(5deg);
+    background: var(--accent-hover, var(--accent));
+    box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.45);
+}
+
+.btn-convert-middle:active {
+    transform: scale(0.95);
+}
+
+.btn-convert-middle i {
+    transition: transform 0.3s var(--transition);
+}
+
+.btn-convert-middle:hover i {
+    transform: translateX(2px);
+}
+
+.action-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-md) var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    width: 100%;
+    min-width: 110px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
+}
+
+.action-card:hover {
+    border-color: var(--border-accent);
+    box-shadow: var(--shadow-md);
+}
+
 /* ─── Action Buttons Row ─── */
 .action-row {
     display: flex;
@@ -170,7 +373,57 @@
     align-items: center;
 }
 
-/* ─── File Upload ─── */
+/* ─── Symmetrical Action Footer (centered below grid) ─── */
+.action-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+    margin-top: var(--space-lg);
+}
+
+/* ─── File Zone Card (symmetrical upload/download) ─── */
+.file-zone-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--surface-2);
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition);
+    min-height: 56px;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.file-zone-card:hover {
+    border-color: var(--border-accent);
+    background: rgba(var(--accent-rgb), 0.04);
+    color: var(--text);
+}
+
+.file-zone-card input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.file-zone-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.file-zone-text {
+    font-size: 0.875rem;
+    color: var(--text-subtle);
+}
+
+/* ─── File Upload (legacy — kept for backward compat) ─── */
 .file-upload-zone {
     display: flex;
     align-items: center;
@@ -204,6 +457,7 @@
 .code-output {
     width: 100%;
     min-height: 320px;
+    flex: 1;
     padding: var(--space-md);
     background: var(--bg-alt);
     border: 1.5px solid var(--border);
@@ -413,6 +667,81 @@
         flex-direction: column;
         text-align: center;
     }
+}
+
+/* ─── 3-column grid (input | action | output) ─── */
+@media (min-width: 900px) {
+    .workspace-grid-3col {
+        grid-template-columns: 1fr auto 1fr !important;
+    }
+}
+
+/* ─── Middle convert button ─── */
+.workspace-middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-convert-middle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
+    transition: all var(--transition, 0.2s);
+}
+
+.btn-convert-middle:hover:not(:disabled) {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4);
+}
+
+.btn-convert-middle:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--surface-2);
+    color: var(--text-muted);
+    box-shadow: none;
+}
+
+@media (max-width: 899px) {
+    .workspace-middle {
+        padding: var(--space-sm) 0;
+    }
+
+    .btn-convert-middle {
+        width: 100%;
+        border-radius: var(--radius-md);
+        height: 48px;
+        font-size: 1.1rem;
+    }
+
+    .btn-convert-middle i {
+        transform: rotate(90deg);
+    }
+
+    .btn-convert-middle .btn-convert-text {
+        display: inline !important;
+        font-family: inherit;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+}
+
+/* ─── Panel footer row ─── */
+.panel-footer-row {
+    display: flex;
+    gap: var(--space-sm);
+    align-items: center;
+    margin-top: var(--space-md);
 }
 
 /* ═══════════════════════════════════════════════

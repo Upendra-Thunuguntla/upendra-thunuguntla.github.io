@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cURL to Mule — Convert cURL to MuleSoft HTTP Request XML | Upendra.dev</title>
+    <meta name="description"
+        content="Convert cURL commands into MuleSoft HTTP Request Configuration and Request Processor XML. Supports headers, query params, TLS, timeouts, and dynamic input parameters.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "cURL to Mule — cURL to MuleSoft HTTP Request Converter",
+        "description": "Convert cURL commands into MuleSoft HTTP Request Configuration and Request Processor XML. Supports headers, query params, TLS, timeouts, and dynamic input parameters per MuleSoft standards.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>cURL to Mule</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">🔁</div>
+                <div class="tool-hero-text">
+                    <h1>cURL → Mule HTTP Request (Early Access)</h1>
+                    <p>Paste a cURL command → get MuleSoft HTTP Request Configuration and Processor XML instantly.
+                        Headers and query params are generated as dynamic input parameters per MuleSoft standards.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">HTTP Connector</span>
+                        <span class="badge">cURL</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <!-- ═══ OPTIONS BAR ═══ -->
+            <div class="curl-options-panel" style="margin-bottom:var(--space-lg);">
+                <div class="config-name-row">
+                    <span class="config-name-label">Config Name:</span>
+                    <input type="text" id="config-name" class="config-name-input" value="HTTP_Request_Configuration"
+                        placeholder="HTTP_Request_Configuration">
+                </div>
+                <div style="display:flex; align-items:center; gap:var(--space-sm);">
+                    <span class="config-name-label">Output Mode:</span>
+                    <div class="mode-toggle">
+                        <button class="mode-toggle-btn active" data-mode="both" onclick="setMode('both')">Both</button>
+                        <button class="mode-toggle-btn" data-mode="separated" onclick="setMode('separated')">Config +
+                            Processor</button>
+                        <button class="mode-toggle-btn" data-mode="embedded" onclick="setMode('embedded')">Embedded
+                            Only</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══ ADDITIONAL OPTIONS ═══ -->
+            <div class="curl-options-panel" style="margin-bottom:var(--space-lg);">
+                <div class="curl-option">
+                    <input type="checkbox" id="opt-tls" checked>
+                    <label for="opt-tls">Generate TLS Context (for HTTPS)</label>
+                </div>
+                <div class="curl-option">
+                    <input type="checkbox" id="opt-follow-redirects" checked>
+                    <label for="opt-follow-redirects">Follow Redirects</label>
+                </div>
+                <div class="curl-option">
+                    <input type="checkbox" id="opt-response-timeout">
+                    <label for="opt-response-timeout">Response Timeout</label>
+                    <input type="number" id="opt-timeout-value" class="curl-option-input" value="30000" placeholder="ms"
+                        style="width:80px;">
+                </div>
+                <div class="curl-option">
+                    <input type="checkbox" id="opt-streaming">
+                    <label for="opt-streaming">Streaming Mode</label>
+                </div>
+                <div class="curl-option">
+                    <input type="checkbox" id="opt-insecure">
+                    <label for="opt-insecure">Insecure (Skip TLS Verification)</label>
+                </div>
+            </div>
+
+            <div class="workspace-grid" style="align-items:start;">
+
+                <!-- Left: cURL Input -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">cURL Command</span>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="curl-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your cURL command here…
+
+Example:
+curl --location --request POST 'https://api.example.com:8443/api/v1/orders?status=active&page=1' \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer eyJhbGciOi...' \
+  --header 'x-correlation-id: abc-123-def' \
+  --data '{&quot;customerId&quot;: &quot;CUST-001&quot;, &quot;quantity&quot;: 3}'"></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="clearAll()">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Output -->
+                <div class="workspace-panel">
+                    <div id="parse-status" class="parse-status idle">
+                        <i class="fas fa-hourglass-half"></i> Waiting for input…
+                    </div>
+
+                    <!-- Config Output -->
+                    <div id="config-output-section" class="output-section">
+                        <div class="output-section-header">
+                            <span class="output-section-title"><i class="fas fa-cog"></i> HTTP Request
+                                Configuration</span>
+                        </div>
+                        <div class="editor-wrapper">
+                            <textarea id="config-output" class="code-output" style="min-height:160px;" readonly
+                                placeholder="<!-- HTTP Request Configuration XML will appear here -->"></textarea>
+                            <div class="editor-actions">
+                                <button class="btn-icon" id="config-copy-btn" title="Copy Config" onclick="copyConfig()">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Processor Output -->
+                    <div id="processor-output-section" class="output-section">
+                        <div class="output-section-header">
+                            <span class="output-section-title"><i class="fas fa-play"></i> HTTP Request Processor</span>
+                        </div>
+                        <div class="editor-wrapper">
+                            <textarea id="processor-output" class="code-output" style="min-height:200px;" readonly
+                                placeholder="<!-- HTTP Request Processor XML will appear here -->"></textarea>
+                            <div class="editor-actions">
+                                <button class="btn-icon" id="processor-copy-btn" title="Copy Processor"
+                                    onclick="copyProcessor()">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button class="btn-icon" title="Download .xml" onclick="downloadXml()">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ═══ PARSED BREAKDOWN ═══ -->
+            <div id="parsed-breakdown" class="breakdown-banner" style="display:none;">
+                <div class="breakdown-banner-title">
+                    <i class="fas fa-sitemap"></i>
+                    Parsed Breakdown
+                </div>
+                <div class="breakdown-grid">
+                    <div class="breakdown-col">
+                        <div class="breakdown-col-label">🔗 Request Info</div>
+                        <div id="breakdown-request"></div>
+                    </div>
+                    <div class="breakdown-col">
+                        <div class="breakdown-col-label">📨 Headers & Query Params</div>
+                        <div id="breakdown-headers"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">Auto</div>
+                    <div class="proof-label">Parses URL<br>Method & Body</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Headers</div>
+                    <div class="proof-label">Dynamic Input<br>Parameters</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">QP</div>
+                    <div class="proof-label">Query Params<br>as Variables</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">TLS</div>
+                    <div class="proof-label">Auto TLS<br>for HTTPS</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use cURL to Mule</h2>
+                <p>Go from a working cURL command to production-ready MuleSoft HTTP Request XML in seconds.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Paste Your cURL</h4>
+                    <p>Copy a cURL command from your terminal, Postman, browser DevTools, or any API documentation.
+                        Paste it into the left panel.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Choose Output Mode</h4>
+                    <p>Select <strong>Both</strong> for config + processor, <strong>Separated</strong> for just those
+                        two blocks, or <strong>Embedded</strong> to inline all values in a single processor element.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Tune Options</h4>
+                    <p>Enable TLS context for HTTPS, set response timeouts, toggle follow-redirects, or enable streaming
+                        mode. All options generate valid Mule XML attributes.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Copy Into Anypoint Studio</h4>
+                    <p>Click <strong>Copy</strong> and paste directly into your Mule project's XML config file. Headers
+                        and query params are already wired as dynamic input parameters.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What cURL formats are supported?</summary>
+                    <div class="faq-answer">This tool supports standard cURL commands including <code>--header</code> /
+                        <code>-H</code>,
+                        <code>--data</code> / <code>-d</code>, <code>--request</code> / <code>-X</code>,
+                        <code>--location</code> / <code>-L</code>, <code>--user</code> / <code>-u</code>,
+                        <code>--insecure</code> / <code>-k</code>, and URL with query parameters.
+                        Multi-line commands with backslash continuations are handled automatically.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the difference between output modes?</summary>
+                    <div class="faq-answer"><strong>Both</strong> generates an <code>&lt;http:request-config&gt;</code>
+                        element and a separate <code>&lt;http:request&gt;</code> processor referencing it via
+                        <code>config-ref</code>.
+                        <strong>Embedded</strong> generates a single <code>&lt;http:request&gt;</code> element with
+                        host, port, and protocol inlined — useful for quick prototyping.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How are headers and query params generated?</summary>
+                    <div class="faq-answer">Headers are added inside <code>&lt;http:headers&gt;</code> as a DataWeave
+                        map expression with each header key-value pair. Query parameters extracted from the URL are
+                        added inside <code>&lt;http:query-params&gt;</code> the same way. Both follow MuleSoft's
+                        recommended dynamic input parameter standards.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this tool handle authentication?</summary>
+                    <div class="faq-answer">Yes. If <code>--user</code> / <code>-u</code> is detected, basic
+                        authentication config is generated. Bearer tokens and API keys in headers are preserved as-is in
+                        the headers block. For OAuth, you'll want to configure that separately in Anypoint Studio.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data safe?</summary>
+                    <div class="faq-answer">Your cURL commands never leave your browser. All parsing happens 100%
+                        client-side in JavaScript. No data is sent to any server. cURL commands often contain
+                        <code>Authorization</code> headers or API keys — they stay on your machine only.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>Deeper dives into MuleSoft HTTP connector configuration and integration patterns.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>Manually writing Mule HTTP Request XML from cURL is tedious. If this tool saved you time, a coffee is
+                    always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
+                    <div>
+                        <div class="name">MuleSoft Log to cURL</div>
+                        <div class="desc">Debug logs to cURL</div>
+                    </div>
+                </a>
+                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
+                </a>
+                <a href="/tools/secure-properties-generator/" class="related-tool-link"><span class="icon">🔐</span>
+                    <div>
+                        <div class="name">Secure Properties</div>
+                        <div class="desc">Encrypt & decrypt properties</div>
+                    </div>
+                </a>
+                <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
+                    <div>
+                        <div class="name">XML SDK Helper</div>
+                        <div class="desc">Mule connector XML</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            <br>
+            All tools are 100% client-side & no data ever leaves your browser.
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuleSoft Log to cURL Converter — Debug Logs to cURL | Upendra.dev</title>
+    <meta name="description"
+        content="MuleSoft Log to cURL Converter: Instantly convert MuleSoft HTTP debug logs into ready-to-use cURL commands. Parses method, host, path, query params, headers, and body automatically. 100% client-side.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "MuleSoft Log to cURL Converter",
+        "description": "Instantly convert MuleSoft HTTP debug logs into ready-to-use cURL commands. Parses method, host, path, query params, headers, and body automatically.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>MuleSoft Log to cURL</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">⚡</div>
+                <div class="tool-hero-text">
+                    <h1>MuleSoft Log to cURL Converter</h1>
+                    <p>MuleSoft HTTP debug logs to <strong>Postman</strong> in seconds. Paste logs, copy the cURL, and
+                        paste directly into any Postman tab to replay requests instantly.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">Debugging</span>
+                        <span class="badge">cURL</span>
+                        <span class="badge badge-success">Postman Ready</span>
+                        <span class="badge badge-info">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <!-- ═══ DEBUG LOG ENABLEMENT BANNER — Collapsible ═══ -->
+            <details class="debug-banner-collapsible">
+                <summary class="debug-banner-summary">
+                    <span class="debug-banner-summary-left">
+                        <i class="fas fa-terminal"></i>
+                        How to Enable HTTP Debug Logs
+                    </span>
+                    <span class="debug-banner-summary-right">
+                        <span class="debug-banner-hint">expand to see log4j2 &amp; Runtime Manager setup</span>
+                        <i class="fas fa-chevron-down debug-chevron"></i>
+                    </span>
+                </summary>
+                <div class="debug-banner-grid">
+                    <!-- Left: log4j2.xml -->
+                    <div class="debug-banner-col">
+                        <div class="debug-banner-col-label">
+                            <span class="col-icon">📄</span> log4j2.xml &nbsp;(Anypoint Studio / On-Prem)
+                        </div>
+                        <div class="debug-code-block">
+                            <span class="logger-line">&lt;AsyncLogger
+                                name="<strong>org.mule.service.http.impl.service.HttpMessageLogger</strong>"
+                                level="DEBUG"/&gt;</span>
+                            <span class="logger-line">&lt;AsyncLogger
+                                name="<strong>org.mule.extension.http.internal.listener.HttpListener</strong>"
+                                level="DEBUG"/&gt;</span>
+                            <span class="logger-line">&lt;AsyncLogger
+                                name="<strong>org.mule.extension.http.internal.request.HttpRequester</strong>"
+                                level="DEBUG"/&gt;</span>
+                        </div>
+                    </div>
+                    <!-- Right: Runtime Manager -->
+                    <div class="debug-banner-col">
+                        <div class="debug-banner-col-label">
+                            <span class="col-icon">☁️</span> Runtime Manager &nbsp;(CloudHub / RTF)
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:var(--space-xs);">
+                            <div class="pkg-row">
+                                <span class="pkg-name">org.mule.service.http.impl.service.HttpMessageLogger</span>
+                                <span class="pkg-label">→ DEBUG</span>
+                            </div>
+                            <div class="pkg-row">
+                                <span class="pkg-name">org.mule.extension.http.internal.listener.HttpListener</span>
+                                <span class="pkg-label">→ DEBUG</span>
+                            </div>
+                            <div class="pkg-row">
+                                <span class="pkg-name">org.mule.extension.http.internal.request.HttpRequester</span>
+                                <span class="pkg-label">→ DEBUG</span>
+                            </div>
+                        </div>
+                        <div style="font-size:0.72rem; color:var(--text-muted); margin-top:var(--space-xs);">
+                            Runtime Manager → Application → Settings → Logging → Add package name → set to DEBUG
+                        </div>
+                    </div>
+                </div>
+            </details>
+            <div class="workspace-grid" style="align-items:start;">
+
+                <!-- Left: Log Input -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">HTTP Debug Log</span>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="log-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your MuleSoft HTTP connector debug logs here…
+
+Example log lines:
+POST /api/v1/orders?status=active HTTP/1.1
+Host: api.example.com:443
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOi...
+x-correlation-id: abc-123-def
+
+{&quot;key&quot;: &quot;value&quot;}"></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
+                                <i class="fas fa-bolt"></i>
+                            </button>
+                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="clearAll()">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Output — cURL FIRST, parsed fields at bottom -->
+                <div class="workspace-panel">
+
+
+
+                    <!-- cURL Output — TOP priority -->
+                    <div class="panel-header">
+                        <span class="panel-title">cURL Command</span>
+                    </div>
+
+                    <div class="editor-wrapper">
+                        <textarea id="curl-output" class="code-output" style="min-height:420px;" readonly placeholder="# cURL command will appear here…
+
+Paste logs on the left → cURL appears here instantly.
+Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" id="curl-copy-btn" title="Copy to Clipboard" onclick="copyCurl()">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button class="btn-icon" title="Download .sh Script" onclick="downloadCurl()">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ═══ PARSED BREAKDOWN — Symmetrical Width ═══ -->
+            <div id="parsed-breakdown" class="breakdown-banner" style="display:none; margin-top: var(--space-xl);">
+                <div class="breakdown-banner-title">
+                    <i class="fas fa-sitemap"></i>
+                    Parsed Breakdown
+                </div>
+                <div class="breakdown-grid">
+                    <div class="breakdown-col">
+                        <div class="breakdown-col-label">🔗 Request Info</div>
+                        <div id="breakdown-request"></div>
+                    </div>
+                    <div class="breakdown-col">
+                        <div class="breakdown-col-label">📨 Headers & Body</div>
+                        <div id="breakdown-headers"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div> <!-- End Container -->
+    </div> <!-- End Workspace -->
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">Auto</div>
+                    <div class="proof-label">Parses Method<br>Host & Path</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Headers</div>
+                    <div class="proof-label">All Headers<br>Extracted</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">QP</div>
+                    <div class="proof-label">Query Params<br>Preserved</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Always Free<br>No Sign-up</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use This Tool</h2>
+                <p>Go from Mule debug logs to a working cURL / Postman request in seconds.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Enable Debug Logs</h4>
+                    <p>Add the <code>HttpMessageLogger</code> to your <code>log4j2.xml</code> at
+                        <strong>DEBUG</strong> level. The logger line is shown above the input area.
+                    </p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Copy & Paste Logs</h4>
+                    <p>Copy the HTTP request debug output from Anypoint Studio console or CloudHub logs.
+                        Paste it into the input area on the left.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Direct Postman Import</h4>
+                    <p>Copy the cURL and paste directly into a <strong>New Request</strong> tab in Postman.
+                        All headers, query params, and the body will be pre-filled automatically.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Debug Faster</h4>
+                    <p>No more manually copying host, path, headers, and body into Postman one by one.
+                        Go from log to request replay in under 10 seconds.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What log format does this tool support?</summary>
+                    <div class="faq-answer">This tool parses standard MuleSoft HTTP connector debug logs, including
+                        output from <code>org.mule.service.http.impl.service.HttpMessageLogger</code>,
+                        <code>org.mule.extension.http</code>, and plain HTTP request lines like
+                        <code>POST /api/v1/resource HTTP/1.1</code> followed by headers.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I import the cURL into Postman?</summary>
+                    <div class="faq-answer">Copy the generated cURL command, open Postman, and simply
+                        <strong>paste it directly into any New Request tab</strong>.
+                        Postman automatically detects the cURL format and populates all headers, query params, and the
+                        body.
+                        You can also use <strong>File → Import → Raw text</strong>.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this tool handle request bodies?</summary>
+                    <div class="faq-answer">Yes. If the debug logs include a request body, the tool extracts it
+                        and includes it in the cURL command using the <code>--data</code> flag.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data safe?</summary>
+                    <div class="faq-answer">Your debug logs never leave your browser. All parsing happens 100%
+                        client-side in JavaScript. No data is sent to any server. Logs may contain sensitive
+                        headers like <code>Authorization</code> — they stay on your machine only.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What if my logs don't parse correctly?</summary>
+                    <div class="faq-answer">Try extracting just the HTTP request portion (starting from the
+                        request line like <code>GET /path HTTP/1.1</code> followed by headers). The parser
+                        is designed to be forgiving with extra noise from Mule log prefixes.</div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>Deeper dives into MuleSoft HTTP debugging and integration troubleshooting.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <!-- Dynamic content from blogs-loader.js -->
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>Debugging MuleSoft HTTP issues is painful enough. If this tool saved you from manually building
+                    cURL commands, a coffee is always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
+                </a>
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
+                    <div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
+                    </div>
+                </a>
+                <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
+                    <div>
+                        <div class="name">XML SDK Helper</div>
+                        <div class="desc">Mule connector XML</div>
+                    </div>
+                </a>
+                <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
+                    <div>
+                        <div class="name">Gmail URL Generator</div>
+                        <div class="desc">Pre-filled compose links</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            <br>
+            All tools are 100% client-side & no data ever leaves your browser.
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

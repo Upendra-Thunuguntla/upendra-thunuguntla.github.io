@@ -277,27 +277,9 @@
                 <h2>From the Blog</h2>
                 <p>Productivity tips and automation workflows for developers and teams.</p>
             </div>
-            <div class="blog-grid">
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">Productivity · Automation</div>
-                    <div class="blog-card-title">Cloning an Azure Repo into GitHub Desktop with Single Click</div>
-                    <div class="blog-card-desc">Productivity hacks for developers — automate repetitive tasks and reduce
-                        context switching in your daily workflow.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
-                <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="blog-card">
-                    <div class="blog-card-tag">MuleSoft · Integration</div>
-                    <div class="blog-card-title">Using JSON in HTTP Request and DB Query — Mule 4</div>
-                    <div class="blog-card-desc">Learn API integration patterns that pair well with notification and
-                        email workflow automation built on top of MuleSoft.</div>
-                    <div class="blog-card-footer">
-                        <span>Medium · Upendra Thunuguntla</span>
-                        <i class="fas fa-external-link-alt"></i>
-                    </div>
-                </a>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <!-- Dynamic content from blogs-loader.js -->
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
             </div>
         </div>
     </div>
@@ -329,10 +311,10 @@
                         <div class="desc">MuleSoft DataType converter</div>
                     </div>
                 </a>
-                <a href="/tools/yaml-tools/" class="related-tool-link"><span class="icon">⚙️</span>
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
                     <div>
-                        <div class="name">YAML Tools</div>
-                        <div class="desc">YAML ↔ Properties</div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
                     </div>
                 </a>
                 <a href="/tools/salary-calc/" class="related-tool-link"><span class="icon">💰</span>
@@ -353,74 +335,18 @@
 
     <footer class="footer">
         <div class="container">
-            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
-            <a href="https://github.com/Upendra-Thunuguntla/gmail-compose-url-generator" target="_blank"
-                rel="noopener">View Source on GitHub</a>
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            <br>
+            All tools are 100% client-side & no data ever leaves your browser.
         </div>
     </footer>
 
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
     <script src="/assets/js/analytics.js"></script>
-    <script>
-        let generatedURL = '';
-
-        function generateURL() {
-            const to = document.getElementById('gmail-to').value.trim();
-            const cc = document.getElementById('gmail-cc').value.trim();
-            const bcc = document.getElementById('gmail-bcc').value.trim();
-            const subject = document.getElementById('gmail-subject').value.trim();
-            const body = document.getElementById('gmail-body').value;
-
-            if (!to || !subject || !body.trim()) {
-                document.getElementById('result-area').style.display = 'none';
-                document.getElementById('placeholder-area').style.display = 'block';
-                return;
-            }
-
-            const encBody = body.replace(/\r?\n/g, '%0D%0A');
-            generatedURL = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${encodeURIComponent(to)}&cc=${encodeURIComponent(cc)}&bcc=${encodeURIComponent(bcc)}&su=${encodeURIComponent(subject)}&body=${encBody}`;
-
-            document.getElementById('gmail-url-display').textContent = generatedURL;
-            document.getElementById('result-area').style.display = 'block';
-            document.getElementById('placeholder-area').style.display = 'none';
-            track_event('url_generated', {
-                tool: 'gmail_url',
-                has_cc: !!cc,
-                has_bcc: !!bcc,
-                subject_length: subject.length,
-                body_length: body.length,
-            });
-        }
-
-        function openGmail() {
-            if (!generatedURL) return;
-            window.open(generatedURL, '_blank', 'noopener');
-            track_event('open_gmail', { tool: 'gmail_url' });
-        }
-
-        function copyURL() {
-            copyToClipboard(generatedURL, document.getElementById('copy-url-btn'));
-            track_event('copy', { tool: 'gmail_url', content_type: 'url' });
-        }
-
-        function loadTestValues() {
-            document.getElementById('gmail-to').value = 'upendra.thunuguntla@gmail.com';
-            document.getElementById('gmail-subject').value = 'Sending Mail from Gmail Compose URL Generator';
-            document.getElementById('gmail-body').value = 'Hi Upendra,\n\nYour tool is so helpful ❤️\n\nThanks!';
-            track_event('load_example', { tool: 'gmail_url' });
-        }
-
-        function clearForm() {
-            ['gmail-to', 'gmail-cc', 'gmail-bcc', 'gmail-subject', 'gmail-body'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('result-area').style.display = 'none';
-            document.getElementById('placeholder-area').style.display = 'block';
-            generatedURL = '';
-        }
-
-        ['gmail-to', 'gmail-cc', 'gmail-bcc', 'gmail-subject', 'gmail-body'].forEach(id => {
-            document.getElementById(id).addEventListener('input', generateURL);
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>

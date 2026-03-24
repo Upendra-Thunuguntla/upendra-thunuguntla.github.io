@@ -211,7 +211,7 @@
         <div>
           <div
             style="font-family:var(--font-heading); font-size:2.25rem; font-weight:800; background:var(--grad-primary); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
-            5</div>
+            7</div>
           <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px; font-weight:500;">Open Source Tools
           </div>
         </div>
@@ -245,8 +245,26 @@
 
       <div class="grid grid-auto reveal-stagger">
 
-        <!-- Tool 1: JSON2RAML -->
-        <a href="/tools/json2raml/" class="card tool-card">
+        <!-- Tool 1: MuleSoft Log to cURL -->
+        <a href="/tools/mule2curl/" class="card tool-card">
+          <div class="tool-card-icon">⚡</div>
+          <h3 class="tool-card-title">MuleSoft Log to cURL Converter</h3>
+          <p class="tool-card-desc">Instantly convert debug logs to cURL for <strong>Direct Postman Import</strong>.
+            Parses method, headers, and body automatically for instant request replay.</p>
+          <div class="tool-card-tech">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">Debugging</span>
+            <span class="badge">cURL</span>
+            <span class="badge badge-success">Postman</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Tool 2: JSON2RAML -->
+        <a href="/tools/json2raml/" target="_blank" rel="noopener" class="card tool-card">
           <div class="tool-card-icon">🔄</div>
           <h3 class="tool-card-title">JSON to RAML Converter</h3>
           <p class="tool-card-desc">Transform your JSON examples into RAML DataType definitions instantly. Supports
@@ -262,13 +280,12 @@
           </div>
         </a>
 
-        <!-- Tool 2: YAML Tools -->
-        <a href="/tools/yaml-tools/" class="card tool-card">
+        <!-- Tool 3: YAML to Properties -->
+        <a href="/tools/yaml2props/" class="card tool-card">
           <div class="tool-card-icon">⚙️</div>
-          <h3 class="tool-card-title">Mule YAML Tools</h3>
-          <p class="tool-card-desc">Two-way YAML ↔ Properties converter with key extraction. Generate <code
-              style="font-size:0.8em">$&#123;key&#125;</code> or <code style="font-size:0.8em">Mule::p("key")</code>
-            expressions in one click.</p>
+          <h3 class="tool-card-title">YAML to Properties</h3>
+          <p class="tool-card-desc">Flatten nested YAML configs into dotted property keys. Get keys in Mule-ready
+            formats like <code>${key}</code> or <code>Mule::p("key")</code>.</p>
           <div class="tool-card-tech">
             <span class="badge">MuleSoft</span>
             <span class="badge badge-purple">YAML</span>
@@ -280,7 +297,41 @@
           </div>
         </a>
 
-        <!-- Tool 3: XML SDK Helper -->
+        <!-- Tool 4: Properties to YAML -->
+        <a href="/tools/props2yaml/" class="card tool-card">
+          <div class="tool-card-icon">📝</div>
+          <h3 class="tool-card-title">Properties to YAML</h3>
+          <p class="tool-card-desc">Reconstruct nested YAML hierarchy from flat <code>.properties</code> files.
+            Clean, well-indented output for MuleSoft configurations.</p>
+          <div class="tool-card-tech">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">Properties</span>
+            <span class="badge">YAML</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Tool 5: Secure Properties Generator -->
+        <a href="/tools/secure-properties-generator/" class="card tool-card">
+          <div class="tool-card-icon">🔐</div>
+          <h3 class="tool-card-title">Secure Properties Generator</h3>
+          <p class="tool-card-desc">Encrypt and decrypt properties for Mule applications. Supports AES, Blowfish, DES,
+            DESede, and RC4 algorithms, mimicking the Mule Secure Properties Tool.</p>
+          <div class="tool-card-tech">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">Security</span>
+            <span class="badge">Cryptography</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Tool 6: XML SDK Helper -->
         <a href="/tools/xml-sdk/" class="card tool-card">
           <div class="tool-card-icon">🏗️</div>
           <h3 class="tool-card-title">Mule XML SDK Helper</h3>
@@ -298,7 +349,7 @@
           </div>
         </a>
 
-        <!-- Tool 4: Gmail URL -->
+        <!-- Tool 7: Gmail URL -->
         <a href="/tools/gmail-url/" class="card tool-card">
           <div class="tool-card-icon">📧</div>
           <h3 class="tool-card-title">Gmail Compose URL Generator</h3>
@@ -315,7 +366,7 @@
           </div>
         </a>
 
-        <!-- Tool 5: Salary Calc -->
+        <!-- Tool 8: Salary Calc -->
         <a href="/tools/salary-calc/" class="card tool-card">
           <div class="tool-card-icon">💰</div>
           <h3 class="tool-card-title">Salary Hike Calculator</h3>
@@ -332,8 +383,25 @@
           </div>
         </a>
 
+        <!-- Tool 9: cURL to Mule -->
+        <a href="/tools/curl2mule/" class="card tool-card">
+          <div class="tool-card-icon">🔁</div>
+          <h3 class="tool-card-title">cURL → Mule HTTP Request</h3>
+          <p class="tool-card-desc">Convert cURL commands into MuleSoft HTTP Request Configuration & Processor XML.
+            Headers and query params as dynamic input parameters per MuleSoft standards.</p>
+          <div class="tool-card-tech">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">HTTP Connector</span>
+            <span class="badge">cURL</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
         <!-- Coming Soon card -->
-        <div class="card tool-card" style="opacity:0.6; cursor:default;" aria-label="Coming soon">
+        <!-- <div class="card tool-card" style="opacity:0.6; cursor:default;" aria-label="Coming soon">
           <div class="tool-card-icon">🔮</div>
           <h3 class="tool-card-title">Mystery awaits!!</h3>
           <p class="tool-card-desc">Something interesting will be shown here as soon as it is ready.</p>
@@ -345,7 +413,7 @@
             <span class="badge" style="background:rgba(100,116,139,0.15); color:var(--text-muted);">🔜 Coming
               Soon</span>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -686,6 +754,30 @@
                 community views on technical content.</p>
             </div>
           </div>
+          <div class="service-card">
+            <div class="service-icon">🏗️</div>
+            <div class="service-body">
+              <h4>API Governance &amp; Strategy</h4>
+              <p>Designing scalable API ecosystems, versioning strategies, and RAML/OAS standardization for
+                enterprise-grade API programs.</p>
+            </div>
+          </div>
+          <!-- <div class="service-card">
+            <div class="service-icon">☁️</div>
+            <div class="service-body">
+              <h4>CloudHub &amp; RTF Management</h4>
+              <p>Expertise in MuleSoft deployment models, VPC/VPN setup, dedicated load balancer configuration, and
+                high-availability design.</p>
+            </div>
+          </div> -->
+          <div class="service-card">
+            <div class="service-icon">🧬</div>
+            <div class="service-body">
+              <h4>DataWeave 2.0 Optimization</h4>
+              <p>Custom modules, complex JSON/XML transformations, and performance tuning for high-throughput batch
+                integration flows.</p>
+            </div>
+          </div>
         </div>
 
         <!-- CTA Card -->
@@ -737,6 +829,11 @@
             <a href="mailto:upendra.thunuguntla@gmail.com" class="btn btn-primary btn-lg">
               <i class="far fa-envelope"></i> Email Me
             </a>
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=upendra.thunuguntla@gmail.com&su=Consultation%20Inquiry%20%E2%80%93%20MuleSoft%20%2F%20Integration%20Services&body=Hi%20Upendra%2C%0D%0A%0D%0AI%20came%20across%20your%20portfolio%20and%20I%E2%80%99m%20interested%20in%20discussing%20a%20potential%20project.%0D%0A%0D%0AHere%E2%80%99s%20a%20brief%20overview%3A%0D%0A%E2%80%A2%20Project%20type%3A%20%5BAPI%20Integration%20%2F%20MuleSoft%20Architecture%20%2F%20CI-CD%20%2F%20Other%5D%0D%0A%E2%80%A2%20Timeline%3A%20%5BEstimated%20timeline%5D%0D%0A%E2%80%A2%20Budget%20range%3A%20%5BApproximate%20budget%5D%0D%0A%0D%0ALooking%20forward%20to%20hearing%20from%20you.%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Name%5D"
+              target="_blank" rel="noopener" class="btn btn-outline"
+              style="border-color:rgba(234,67,53,0.5); color:var(--text);">
+              <i class="fab fa-google" style="color:#EA4335;"></i> Quick Email via Gmail
+            </a>
             <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener"
               class="btn btn-outline">
               <i class="fab fa-linkedin-in"></i> Connect on LinkedIn
@@ -765,56 +862,9 @@
       </div>
 
       <div style="max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:var(--space-md);"
-        class="reveal-stagger">
-        <a href="https://medium.com/search?q=adding+two+hours+dataweave+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">⏰</span>
-          <div>
-            <div class="pub-title">Adding Two Hours in DataWeave — Mulesoft 4</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · DataWeave Date
-              Manipulation</div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
-        <a href="https://medium.com/search?q=import+function+module+dataweave+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">📦</span>
-          <div>
-            <div class="pub-title">How to Import a Function/Module in DataWeave — Mulesoft 4</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · DataWeave Modularity</div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
-        <a href="https://medium.com/search?q=cloning+azure+repo+github+desktop+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">🐙</span>
-          <div>
-            <div class="pub-title">Cloning an Azure Repo into GitHub Desktop with Single Click</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · DevOps / Source Control
-            </div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
-        <a href="https://medium.com/search?q=json+http+request+db+query+mule+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">🗃️</span>
-          <div>
-            <div class="pub-title">Using JSON in HTTP Request and DB Query — Mule 4</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · Mule Integration Patterns
-            </div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
-        <a href="https://medium.com/search?q=docker+mulesoft+secrets+upendra" target="_blank" rel="noopener"
-          class="pub-card">
-          <span class="pub-icon">🐳</span>
-          <div>
-            <div class="pub-title">Handling Secrets with Docker and MuleSoft: A Fun and Secure Adventure</div>
-            <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Medium · Docker + MuleSoft Security
-            </div>
-          </div>
-          <span class="pub-arrow"><i class="fas fa-external-link-alt"></i></span>
-        </a>
+        class="reveal-stagger" data-blog-type="pub-card" data-blog-limit="6">
+        <!-- Dynamic content from blogs-loader.js -->
+        <p style="text-align:center; color:var(--text-muted);">Loading latest articles...</p>
 
         <div style="text-align:center; margin-top:var(--space-lg);">
           <a href="https://medium.com/@upendra-thunuguntla" target="_blank" rel="noopener" class="btn btn-outline">
@@ -891,13 +941,18 @@
         </div>
       </div>
       <div style="margin-top:var(--space-md); color:var(--text-muted); font-size:0.78rem;">
-        Built with ❤️ · All tools are 100% client-side — no data ever leaves your browser.
+        Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+          Thunuguntla</a> ❤️ ·
+        <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+        <br>
+        All tools are 100% client-side & no data ever leaves your browser.
       </div>
     </div>
   </footer>
 
   <!-- Platform JS -->
   <script src="/assets/js/platform.js"></script>
+  <script src="/assets/js/blogs-loader.js"></script>
   <script>
     // Init typewriter
     document.addEventListener('DOMContentLoaded', function () {
