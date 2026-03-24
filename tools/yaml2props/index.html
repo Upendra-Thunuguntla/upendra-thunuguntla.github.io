@@ -46,7 +46,8 @@
             </ul>
             <div class="nav-actions">
                 <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
-                <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+                <button class="nav-hamburger" id="nav-hamburger"
+                    aria-label="Menu"><span></span><span></span><span></span></button>
             </div>
         </div>
     </nav>
@@ -62,7 +63,8 @@
                 <div class="tool-page-icon">⚙️</div>
                 <div class="tool-hero-text">
                     <h1>YAML to Properties Converter</h1>
-                    <p>Flatten nested YAML configuration files into dotted property keys. Perfect for MuleSoft environment
+                    <p>Flatten nested YAML configuration files into dotted property keys. Perfect for MuleSoft
+                        environment
                         overrides, DataWeave property extraction, and template generation.</p>
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
                         <span class="badge">MuleSoft</span>
@@ -90,27 +92,36 @@
                     </div>
 
                     <textarea id="yamlTextarea" class="code-textarea" oninput="y2p_convert()" spellcheck="false"
-                        placeholder="Paste YAML content here&#10;&#10;database:&#10;  host: &quot;localhost&quot;&#10;  port: 5432" style="flex:1;"></textarea>
+                        placeholder="Paste YAML content here&#10;&#10;database:&#10;  host: &quot;localhost&quot;&#10;  port: 5432"
+                        style="flex:1;"></textarea>
 
-                    <div class="options-bar" style="margin-top:var(--space-md); margin-bottom:0; background:var(--surface-2); border-radius:var(--radius-sm); padding:var(--space-xs) var(--space-sm);">
+                    <div class="options-bar"
+                        style="margin-top:var(--space-md); margin-bottom:0; background:var(--surface-2); border-radius:var(--radius-sm); padding:var(--space-xs) var(--space-sm);">
                         <div class="option-row" style="margin-bottom:0;">
                             <input type="checkbox" id="keysOnly" onclick="checkCheckboxes('keysOnly'); y2p_convert()">
-                            <label for="keysOnly" style="font-size:0.75rem;">Get <strong>Keys only</strong> (no values)</label>
+                            <label for="keysOnly" style="font-size:0.75rem;">Get <strong>Keys only</strong> (no
+                                values)</label>
                         </div>
                         <div class="option-row" style="margin-bottom:0; padding-left:1rem;">
-                            <input type="checkbox" id="addGenericProp" onclick="checkCheckboxes('addGenericProp'); y2p_convert()" disabled>
-                            <label for="addGenericProp" style="font-size:0.75rem;">Wrap in <code>${<!-- -->key}</code></label>
+                            <input type="checkbox" id="addGenericProp"
+                                onclick="checkCheckboxes('addGenericProp'); y2p_convert()" disabled>
+                            <label for="addGenericProp" style="font-size:0.75rem;">Wrap in
+                                <code>${<!-- -->key}</code></label>
                         </div>
                         <div class="option-row" style="margin-bottom:0; padding-left:1rem;">
-                            <input type="checkbox" id="addMuleProp" onclick="checkCheckboxes('addMuleProp'); y2p_convert()" disabled>
-                            <label for="addMuleProp" style="font-size:0.75rem;">Wrap in <code>Mule::p("key")</code></label>
+                            <input type="checkbox" id="addMuleProp"
+                                onclick="checkCheckboxes('addMuleProp'); y2p_convert()" disabled>
+                            <label for="addMuleProp" style="font-size:0.75rem;">Wrap in
+                                <code>Mule::p("key")</code></label>
                         </div>
                     </div>
 
                     <div class="panel-footer-row">
-                        <label class="btn btn-outline" for="yamlFileInput" style="width:100%; border-style:dashed; margin:0; justify-content:center;">
+                        <label class="btn btn-outline" for="yamlFileInput"
+                            style="width:100%; border-style:dashed; margin:0; justify-content:center;">
                             <i class="fas fa-file-upload"></i>&nbsp; <span id="yaml-file-label">Upload .yaml File</span>
-                            <input type="file" accept=".yaml,.yml" id="yamlFileInput" onchange="y2p_openFile(event)" style="display:none;">
+                            <input type="file" accept=".yaml,.yml" id="yamlFileInput" onchange="y2p_openFile(event)"
+                                style="display:none;">
                         </label>
                     </div>
                 </div>
@@ -120,7 +131,9 @@
                     <button class="btn-convert-middle" onclick="y2p_convert()" title="Flatten YAML">
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                    <button class="btn btn-ghost btn-sm" onclick="y2p_removeValues()" style="font-size:0.7rem; white-space:nowrap; opacity:0.8; padding:3px 6px;" title="Strip Values Only">Strip Vals</button>
+                    <button class="btn btn-ghost btn-sm" onclick="y2p_removeValues()"
+                        style="font-size:0.7rem; white-space:nowrap; opacity:0.8; padding:3px 6px;"
+                        title="Strip Values Only">Strip Vals</button>
                 </div>
 
                 <!-- ── Right Panel: Output ── -->
@@ -129,17 +142,24 @@
                         <span class="panel-title">Output: Properties</span>
                     </div>
 
-                    <textarea id="propertiesOutput" class="code-output" readonly placeholder="Properties output will appear here…" style="flex:1; min-height:280px;"></textarea>
+                    <textarea id="propertiesOutput" class="code-output" readonly
+                        placeholder="Properties output will appear here…" style="flex:1; min-height:280px;"></textarea>
 
                     <div class="panel-footer-row">
-                        <input type="text" id="filterProp" class="filter-input" placeholder="Filter results…" title="Filter output by property key or value" disabled oninput="y2p_filter(this.value)" style="flex:1; margin:0;">
+                        <input type="text" id="filterProp" class="filter-input" placeholder="Filter results…"
+                            title="Filter output by property key or value" disabled oninput="y2p_filter(this.value)"
+                            style="flex:1; margin:0;">
                         <button class="btn btn-ghost" id="y2p-copy-btn" onclick="y2p_copy()">📋 Copy</button>
-                        <button class="btn btn-primary" id="y2p-save-btn" onclick="y2p_downloadPrompt()">📥 Save</button>
+                        <button class="btn btn-primary" id="y2p-save-btn" onclick="y2p_downloadPrompt()">📥
+                            Save</button>
                         <div id="y2p-filename-group" style="display:none; gap:var(--space-xs); align-items:center;">
-                            <input type="text" id="y2pFileName" class="filter-input" style="width:120px; margin:0; padding:6px 10px;" placeholder="mule-config">
-                            <span style="color:var(--text-muted); font-size:0.8rem; font-family:var(--font-mono); margin-left:-4px;">.properties</span>
+                            <input type="text" id="y2pFileName" class="filter-input"
+                                style="width:120px; margin:0; padding:6px 10px;" placeholder="mule-config">
+                            <span
+                                style="color:var(--text-muted); font-size:0.8rem; font-family:var(--font-mono); margin-left:-4px;">.properties</span>
                             <button class="btn btn-success btn-sm" onclick="y2p_doDownload()">DL</button>
-                            <button class="btn btn-ghost btn-sm" onclick="y2p_cancelDownload()" style="padding:4px 8px;">✕</button>
+                            <button class="btn btn-ghost btn-sm" onclick="y2p_cancelDownload()"
+                                style="padding:4px 8px;">✕</button>
                         </div>
                     </div>
                 </div>
@@ -147,7 +167,8 @@
 
             <div class="info-box" style="margin-top:var(--space-xl);">
                 <span class="info-box-icon">💡</span>
-                <span>Encrypted values starting with <code>![</code> will automatically get the <code>secure::</code> prefix when using Keys Only mode.</span>
+                <span>Encrypted values starting with <code>![</code> will automatically get the <code>secure::</code>
+                    prefix when using Keys Only mode.</span>
             </div>
 
         </div>
@@ -191,15 +212,21 @@
             <div class="faq-list">
                 <details class="faq-item">
                     <summary>What is the difference between YAML and .properties in MuleSoft?</summary>
-                    <div class="faq-answer">MuleSoft supports both YAML and flat properties files. YAML is hierarchical and easier to read, while Properties files are flat key=value pairs often used for environment-specific overrides in CloudHub.</div>
+                    <div class="faq-answer">MuleSoft supports both YAML and flat properties files. YAML is hierarchical
+                        and easier to read, while Properties files are flat key=value pairs often used for
+                        environment-specific overrides in CloudHub.</div>
                 </details>
                 <details class="faq-item">
                     <summary>What does the "Keys Only" option do?</summary>
-                    <div class="faq-answer">It extracts just the dotted property keys (e.g., <code>database.host</code>) without the values. This is perfect for creating property placeholder templates or list of keys for DataWeave.</div>
+                    <div class="faq-answer">It extracts just the dotted property keys (e.g., <code>database.host</code>)
+                        without the values. This is perfect for creating property placeholder templates or list of keys
+                        for DataWeave.</div>
                 </details>
                 <details class="faq-item">
                     <summary>What is the Mule::p("key") format?</summary>
-                    <div class="faq-answer"><code>Mule::p("key")</code> is the DataWeave function to read a Mule property. This tool can auto-wrap all your keys in this format for quick use in transformations.</div>
+                    <div class="faq-answer"><code>Mule::p("key")</code> is the DataWeave function to read a Mule
+                        property. This tool can auto-wrap all your keys in this format for quick use in transformations.
+                    </div>
                 </details>
             </div>
         </div>
@@ -225,7 +252,8 @@
         <div class="support-banner">
             <div class="support-banner-text">
                 <h3>🤠 Find this tool useful?</h3>
-                <p>Built for the MuleSoft community. If it saves you time on your next deployment, a coffee goes a long way!</p>
+                <p>Built for the MuleSoft community. If it saves you time on your next deployment, a coffee goes a long
+                    way!</p>
             </div>
             <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
                 data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
@@ -236,7 +264,9 @@
 
     <div class="related-tools">
         <div class="container">
-            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">Other Tools</h3>
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
             <div class="related-tools-grid">
                 <a href="/tools/props2yaml/" class="related-tool-link"><span class="icon">📝</span>
                     <div>
@@ -268,8 +298,11 @@
 
     <footer class="footer">
         <div class="container">
-            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
-            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View Source on GitHub</a>
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            <br>
+            All tools are 100% client-side & no data ever leaves your browser.
         </div>
     </footer>
 
@@ -279,4 +312,5 @@
     <script src="/assets/js/analytics.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>

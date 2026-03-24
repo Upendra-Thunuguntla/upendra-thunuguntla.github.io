@@ -93,9 +93,15 @@
                             <span class="col-icon">📄</span> log4j2.xml &nbsp;(Anypoint Studio / On-Prem)
                         </div>
                         <div class="debug-code-block">
-                            <span class="logger-line">&lt;AsyncLogger name="<strong>org.mule.service.http.impl.service.HttpMessageLogger</strong>" level="DEBUG"/&gt;</span>
-                            <span class="logger-line">&lt;AsyncLogger name="<strong>org.mule.extension.http.internal.listener.HttpListener</strong>" level="DEBUG"/&gt;</span>
-                            <span class="logger-line">&lt;AsyncLogger name="<strong>org.mule.extension.http.internal.request.HttpRequester</strong>" level="DEBUG"/&gt;</span>
+                            <span class="logger-line">&lt;AsyncLogger
+                                name="<strong>org.mule.service.http.impl.service.HttpMessageLogger</strong>"
+                                level="DEBUG"/&gt;</span>
+                            <span class="logger-line">&lt;AsyncLogger
+                                name="<strong>org.mule.extension.http.internal.listener.HttpListener</strong>"
+                                level="DEBUG"/&gt;</span>
+                            <span class="logger-line">&lt;AsyncLogger
+                                name="<strong>org.mule.extension.http.internal.request.HttpRequester</strong>"
+                                level="DEBUG"/&gt;</span>
                         </div>
                     </div>
                     <!-- Right: Runtime Manager -->
@@ -135,8 +141,7 @@
                             <button class="btn btn-ghost btn-sm" onclick="clearAll()">🗑 Clear</button>
                         </div>
                     </div>
-                    <textarea id="log-input" class="code-textarea" style="min-height:420px;"
-                        placeholder="Paste your MuleSoft HTTP connector debug logs here…
+                    <textarea id="log-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your MuleSoft HTTP connector debug logs here…
 
 Example log lines:
 POST /api/v1/orders?status=active HTTP/1.1
@@ -165,8 +170,7 @@ x-correlation-id: abc-123-def
                             <button class="btn btn-ghost btn-sm" onclick="downloadCurl()">📥 .sh</button>
                         </div>
                     </div>
-                    <textarea id="curl-output" class="code-output" style="min-height:300px;" readonly
-                        placeholder="# cURL command will appear here after parsing your debug logs…
+                    <textarea id="curl-output" class="code-output" style="min-height:300px;" readonly placeholder="# cURL command will appear here after parsing your debug logs…
 
 Paste logs on the left → cURL appears here instantly.
 Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
@@ -236,7 +240,8 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
                 <div class="how-to-step">
                     <h4>Enable Debug Logs</h4>
                     <p>Add the <code>HttpMessageLogger</code> to your <code>log4j2.xml</code> at
-                        <strong>DEBUG</strong> level. The logger line is shown above the input area.</p>
+                        <strong>DEBUG</strong> level. The logger line is shown above the input area.
+                    </p>
                 </div>
                 <div class="how-to-step">
                     <h4>Copy & Paste Logs</h4>
@@ -368,8 +373,11 @@ Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
 
     <footer class="footer">
         <div class="container">
-            Built by <a href="/">Upendra Thunuguntla</a> ❤️ ·
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
             <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            <br>
+            All tools are 100% client-side & no data ever leaves your browser.
         </div>
     </footer>
 
