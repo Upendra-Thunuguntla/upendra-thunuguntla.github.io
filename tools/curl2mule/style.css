@@ -206,6 +206,7 @@
     color: var(--text);
     word-break: break-all;
     font-size: 0.8rem;
+    white-space: pre-wrap;
 }
 .parsed-field-value.empty {
     color: var(--text-muted);
