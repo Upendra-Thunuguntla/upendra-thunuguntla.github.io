@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cURL to Mule — Convert cURL to MuleSoft HTTP Request XML | Upendra.dev</title>
+    <title>Postman cURL to Mule — Convert cURL to MuleSoft HTTP Request XML | Upendra.dev</title>
     <meta name="description"
-        content="Convert cURL commands into MuleSoft HTTP Request Configuration and Request Processor XML. Supports headers, query params, TLS, timeouts, and dynamic input parameters.">
+        content="Instantly convert cURL commands (from Postman, DevTools, or terminal) into MuleSoft HTTP Request Configuration and Processor XML. 100% browser-based and secure.">
     <link rel="icon" href="/portfolio.png" type="image/png">
     <script src="/assets/js/theme.js"></script>
     <link rel="stylesheet" href="/assets/css/core.css">
@@ -21,8 +21,8 @@
     {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "cURL to Mule — cURL to MuleSoft HTTP Request Converter",
-        "description": "Convert cURL commands into MuleSoft HTTP Request Configuration and Request Processor XML. Supports headers, query params, TLS, timeouts, and dynamic input parameters per MuleSoft standards.",
+        "name": "Postman cURL to Mule — cURL to MuleSoft HTTP Request Converter",
+        "description": "Instantly convert cURL commands (from Postman, DevTools, or terminal) into MuleSoft HTTP Request Configuration and Processor XML. 100% browser-based and secure.",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "All",
         "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/",
@@ -63,9 +63,10 @@
             <div class="tool-hero-inner">
                 <div class="tool-page-icon">🔁</div>
                 <div class="tool-hero-text">
-                    <h1>cURL → Mule HTTP Request (Early Access)</h1>
-                    <p>Paste a cURL command → get MuleSoft HTTP Request Configuration and Processor XML instantly.
-                        Headers and query params are generated as dynamic input parameters per MuleSoft standards.</p>
+                    <h1>Postman cURL → Mule HTTP Request</h1>
+                    <p>Copy cURL from <strong>Postman</strong> or browser <strong>DevTools</strong> and get production-ready 
+                        MuleSoft HTTP Request Configuration and Processor XML instantly. All headers and query parameters 
+                        are automatically extracted into dynamic DataWeave expressions.</p>
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
                         <span class="badge">MuleSoft</span>
                         <span class="badge badge-purple">HTTP Connector</span>
@@ -90,21 +91,15 @@
                 <div style="display:flex; align-items:center; gap:var(--space-sm);">
                     <span class="config-name-label">Output Mode:</span>
                     <div class="mode-toggle">
-                        <button class="mode-toggle-btn active" data-mode="both" onclick="setMode('both')">Both</button>
-                        <button class="mode-toggle-btn" data-mode="separated" onclick="setMode('separated')">Config +
+                        <button class="mode-toggle-btn active" data-mode="separated" onclick="setMode('separated')">Config +
                             Processor</button>
-                        <button class="mode-toggle-btn" data-mode="embedded" onclick="setMode('embedded')">Embedded
-                            Only</button>
+                        <button class="mode-toggle-btn" data-mode="embedded" onclick="setMode('embedded')">Embedded</button>
                     </div>
                 </div>
             </div>
 
             <!-- ═══ ADDITIONAL OPTIONS ═══ -->
             <div class="curl-options-panel" style="margin-bottom:var(--space-lg);">
-                <div class="curl-option">
-                    <input type="checkbox" id="opt-tls" checked>
-                    <label for="opt-tls">Generate TLS Context (for HTTPS)</label>
-                </div>
                 <div class="curl-option">
                     <input type="checkbox" id="opt-follow-redirects" checked>
                     <label for="opt-follow-redirects">Follow Redirects</label>
@@ -119,10 +114,6 @@
                     <input type="checkbox" id="opt-streaming">
                     <label for="opt-streaming">Streaming Mode</label>
                 </div>
-                <div class="curl-option">
-                    <input type="checkbox" id="opt-insecure">
-                    <label for="opt-insecure">Insecure (Skip TLS Verification)</label>
-                </div>
             </div>
 
             <div class="workspace-grid" style="align-items:start;">
@@ -130,17 +121,16 @@
                 <!-- Left: cURL Input -->
                 <div class="workspace-panel">
                     <div class="panel-header">
-                        <span class="panel-title">cURL Command</span>
+                        <span class="panel-title">Postman cURL Command</span>
                     </div>
                     <div class="editor-wrapper">
-                        <textarea id="curl-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your cURL command here…
+                        <textarea id="curl-input" class="code-textarea" style="min-height:420px;" placeholder="Paste cURL from Postman or terminal here…
 
 Example:
-curl --location --request POST 'https://api.example.com:8443/api/v1/orders?status=active&page=1' \
+curl --location --request POST 'https://api.example.com:8443/api/v1/orders' \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer eyJhbGciOi...' \
-  --header 'x-correlation-id: abc-123-def' \
-  --data '{&quot;customerId&quot;: &quot;CUST-001&quot;, &quot;quantity&quot;: 3}'"></textarea>
+  --data '{&quot;customerId&quot;: &quot;CUST-001&quot;}'"></textarea>
                         <div class="editor-actions">
                             <button class="btn-icon" title="Load Example" onclick="loadExample()">
                                 <i class="fas fa-bolt"></i>
@@ -154,9 +144,9 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders?statu
 
                 <!-- Right: Output -->
                 <div class="workspace-panel">
-                    <div id="parse-status" class="parse-status idle">
-                        <i class="fas fa-hourglass-half"></i> Waiting for input…
-                    </div>
+                <!-- Right: Output -->
+                <div class="workspace-panel">
+                    <!-- Status bar removed per request -->
 
                     <!-- Config Output -->
                     <div id="config-output-section" class="output-section">
@@ -216,6 +206,7 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders?statu
                 </div>
             </div>
 
+
         </div>
     </div>
 
@@ -257,9 +248,9 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders?statu
             </div>
             <div class="how-to-steps">
                 <div class="how-to-step">
-                    <h4>Paste Your cURL</h4>
-                    <p>Copy a cURL command from your terminal, Postman, browser DevTools, or any API documentation.
-                        Paste it into the left panel.</p>
+                    <h4>1. Copy from Postman</h4>
+                    <p>In Postman, click the <strong>&lt;/&gt; (Code)</strong> icon in the right sidebar. 
+                        Select <strong>cURL</strong> from the dropdown and copy the snippet.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>Choose Output Mode</h4>
@@ -299,12 +290,10 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders?statu
                     </div>
                 </details>
                 <details class="faq-item">
-                    <summary>What is the difference between output modes?</summary>
-                    <div class="faq-answer"><strong>Both</strong> generates an <code>&lt;http:request-config&gt;</code>
-                        element and a separate <code>&lt;http:request&gt;</code> processor referencing it via
-                        <code>config-ref</code>.
-                        <strong>Embedded</strong> generates a single <code>&lt;http:request&gt;</code> element with
-                        host, port, and protocol inlined — useful for quick prototyping.
+                    <summary>Where do I find the cURL in Postman?</summary>
+                    <div class="faq-answer">Open any request in Postman. On the right sidebar, click the **Code** icon (`</>`). 
+                        Ensure **cURL** is selected in the language dropdown, and click the **Copy** icon. 
+                        Paste that result directly into this tool.
                     </div>
                 </details>
                 <details class="faq-item">
