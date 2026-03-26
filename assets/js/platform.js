@@ -88,10 +88,27 @@ function copyToClipboard(text, btn) {
     function onCopied() {
         showToast('Copied to clipboard! 📋');
         if (btn) {
-            const orig = btn.textContent;
-            btn.classList.add('btn-copy-success');
-            btn.textContent = '✓ Copied!';
-            setTimeout(() => { btn.textContent = orig; btn.classList.remove('btn-copy-success'); }, 1800);
+            const hasIcon = btn.querySelector('i');
+            const isSmall = btn.classList.contains('btn-icon') || btn.offsetWidth < 50;
+
+            if (hasIcon && isSmall) {
+                const icon = btn.querySelector('i');
+                const origClass = icon.className;
+                icon.className = 'fas fa-check btn-copy-success';
+                btn.classList.add('btn-copy-success');
+                setTimeout(() => {
+                    icon.className = origClass;
+                    btn.classList.remove('btn-copy-success');
+                }, 2000);
+            } else {
+                const orig = btn.innerHTML;
+                btn.classList.add('btn-copy-success');
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = orig;
+                    btn.classList.remove('btn-copy-success');
+                }, 2000);
+            }
         }
     }
     function onFail() { showToast('Copy failed — please copy manually.', 'error'); }
