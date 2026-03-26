@@ -64,8 +64,10 @@
                 <div class="tool-page-icon">🔁</div>
                 <div class="tool-hero-text">
                     <h1>Postman cURL → Mule HTTP Request</h1>
-                    <p>Copy cURL from <strong>Postman</strong> or browser <strong>DevTools</strong> and get production-ready 
-                        MuleSoft HTTP Request Configuration and Processor XML instantly. All headers and query parameters 
+                    <p>Copy cURL from <strong>Postman</strong> or browser <strong>DevTools</strong> and get
+                        production-ready
+                        MuleSoft HTTP Request Configuration and Processor XML instantly. All headers and query
+                        parameters
                         are automatically extracted into dynamic DataWeave expressions.</p>
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
                         <span class="badge">MuleSoft</span>
@@ -91,9 +93,11 @@
                 <div style="display:flex; align-items:center; gap:var(--space-sm);">
                     <span class="config-name-label">Output Mode:</span>
                     <div class="mode-toggle">
-                        <button class="mode-toggle-btn active" data-mode="separated" onclick="setMode('separated')">Config +
+                        <button class="mode-toggle-btn active" data-mode="separated"
+                            onclick="setMode('separated')">Config +
                             Processor</button>
-                        <button class="mode-toggle-btn" data-mode="embedded" onclick="setMode('embedded')">Embedded</button>
+                        <button class="mode-toggle-btn" data-mode="embedded"
+                            onclick="setMode('embedded')">Embedded</button>
                     </div>
                 </div>
             </div>
@@ -144,8 +148,6 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders' \
 
                 <!-- Right: Output -->
                 <div class="workspace-panel">
-                <!-- Right: Output -->
-                <div class="workspace-panel">
                     <!-- Status bar removed per request -->
 
                     <!-- Config Output -->
@@ -158,7 +160,8 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders' \
                             <textarea id="config-output" class="code-output" style="min-height:160px;" readonly
                                 placeholder="<!-- HTTP Request Configuration XML will appear here -->"></textarea>
                             <div class="editor-actions">
-                                <button class="btn-icon" id="config-copy-btn" title="Copy Config" onclick="copyConfig()">
+                                <button class="btn-icon" id="config-copy-btn" title="Copy Config"
+                                    onclick="copyConfig()">
                                     <i class="fas fa-copy"></i>
                                 </button>
                             </div>
@@ -249,18 +252,18 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders' \
             <div class="how-to-steps">
                 <div class="how-to-step">
                     <h4>1. Copy from Postman</h4>
-                    <p>In Postman, click the <strong>&lt;/&gt; (Code)</strong> icon in the right sidebar. 
+                    <p>In Postman, click the <strong>&lt;/&gt; (Code)</strong> icon in the right sidebar.
                         Select <strong>cURL</strong> from the dropdown and copy the snippet.</p>
                 </div>
                 <div class="how-to-step">
-                    <h4>Choose Output Mode</h4>
-                    <p>Select <strong>Both</strong> for config + processor, <strong>Separated</strong> for just those
-                        two blocks, or <strong>Embedded</strong> to inline all values in a single processor element.</p>
+                    <h4>2. Choose Output Mode</h4>
+                    <p>Select <strong>Config + Processor</strong> for global config and request blocks, 
+                        or <strong>Embedded</strong> for a standalone request using the full URL attribute.</p>
                 </div>
                 <div class="how-to-step">
-                    <h4>Tune Options</h4>
-                    <p>Enable TLS context for HTTPS, set response timeouts, toggle follow-redirects, or enable streaming
-                        mode. All options generate valid Mule XML attributes.</p>
+                    <h4>3. Contextualize Options</h4>
+                    <p>Toggle <strong>Follow Redirects</strong>, <strong>Response Timeout</strong>, or <strong>Streaming Mode</strong>. 
+                        All options generate valid Mule XML attributes instantly.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>Copy Into Anypoint Studio</h4>
@@ -291,9 +294,18 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders' \
                 </details>
                 <details class="faq-item">
                     <summary>Where do I find the cURL in Postman?</summary>
-                    <div class="faq-answer">Open any request in Postman. On the right sidebar, click the **Code** icon (`</>`). 
-                        Ensure **cURL** is selected in the language dropdown, and click the **Copy** icon. 
+                    <div class="faq-answer">Open any request in Postman. On the right sidebar, click the **Code** icon
+                        (<code>&lt;/&gt;</code>).
+                        Ensure **cURL** is selected in the language dropdown, and click the **Copy** icon.
                         Paste that result directly into this tool.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the difference between output modes?</summary>
+                    <div class="faq-answer"><strong>Config + Processor</strong> generates a global <code>&lt;http:request-config&gt;</code> 
+                        and a separate <code>&lt;http:request&gt;</code> that references it. 
+                        <strong>Embedded</strong> generates a single <code>&lt;http:request&gt;</code> that uses the <code>url</code> 
+                        attribute to define the connection — perfect for quick transformations.
                     </div>
                 </details>
                 <details class="faq-item">
