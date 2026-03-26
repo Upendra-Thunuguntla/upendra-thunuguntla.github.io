@@ -16,8 +16,9 @@ curlInput.addEventListener('input', debounce(parseAndConvert, 300));
 document.getElementById('config-name').addEventListener('input', debounce(parseAndConvert, 300));
 
 // Re-generate on option changes
-['opt-follow-redirects','opt-response-timeout','opt-streaming'].forEach(id => {
-    document.getElementById(id).addEventListener('change', parseAndConvert);
+['opt-follow-redirects', 'opt-response-timeout', 'opt-streaming', 'opt-format-body'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', parseAndConvert);
 });
 document.getElementById('opt-timeout-value').addEventListener('input', debounce(parseAndConvert, 300));
 
@@ -220,6 +221,70 @@ function escXml(s) {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
 }
 
+/* ── Body Formatter ── */
+function formatBody(body) {
+    if (!body) return '';
+    const trimmed = body.trim();
+
+    // 1. Try to parse as JSON first
+    try {
+        const parsed = JSON.parse(trimmed);
+        return JSON.stringify(parsed, null, 4);
+    } catch (e) {
+        // Not standard JSON
+    }
+
+    // 2. Try to handle DataWeave / "Java" style objects with unquoted keys
+    // Very basic brace-based formatter for DW/Java maps
+    if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+        let level = 0;
+        const indentString = '    ';
+        let result = '';
+        let lastChar = '';
+        let inQuote = false;
+        let quoteChar = '';
+
+        for (let i = 0; i < trimmed.length; i++) {
+            const char = trimmed[i];
+            
+            // Handle quotes to ignore braces inside strings
+            if ((char === '"' || char === "'") && lastChar !== '\\') {
+                if (!inQuote) {
+                    inQuote = true;
+                    quoteChar = char;
+                } else if (char === quoteChar) {
+                    inQuote = false;
+                }
+            }
+
+            if (!inQuote) {
+                if (char === '{' || char === '[') {
+                    level++;
+                    result += char + '\n' + indentString.repeat(level);
+                } else if (char === '}' || char === ']') {
+                    level = Math.max(0, level - 1);
+                    result = result.trimEnd();
+                    result += '\n' + indentString.repeat(level) + char;
+                } else if (char === ',') {
+                    result += ',\n' + indentString.repeat(level);
+                } else if (char === ':') {
+                    result += ': ';
+                } else if (/\s/.test(char)) {
+                    // skip whitespace
+                } else {
+                    result += char;
+                }
+            } else {
+                result += char;
+            }
+            lastChar = char;
+        }
+        return result.trim();
+    }
+
+    return trimmed;
+}
+
 function buildConfigXml(parsed) {
     const configName = document.getElementById('config-name').value.trim() || 'HTTP_Request_Configuration';
     const defaultPort = parsed.scheme === 'https' ? '443' : '80';
@@ -227,13 +292,13 @@ function buildConfigXml(parsed) {
 
     let xml = `<http:request-config name="${escXml(configName)}">\n`;
     xml += `    <http:request-connection protocol="${parsed.scheme.toUpperCase()}" host="${escXml(parsed.host)}" port="${port}" />\n`;
-    
+
     if (parsed.basicAuth) {
         xml += `    <http:authentication>\n`;
         xml += `        <http:basic-authentication username="${escXml(parsed.basicAuth.username)}" password="${escXml(parsed.basicAuth.password)}" />\n`;
         xml += `    </http:authentication>\n`;
     }
-    
+
     xml += `</http:request-config>`;
     return xml;
 }
@@ -251,7 +316,7 @@ function buildProcessorXml(parsed, useConfigRef) {
     });
 
     const requestName = `${parsed.method} | ${parsed.host} | ${parsed.path}`;
-    let xml = `<http:request method="${parsed.method}" name="${escXml(requestName)}" `;
+    let xml = `<http:request method="${parsed.method}" doc:name="${escXml(requestName)}" `;
 
     if (useConfigRef) {
         xml += `config-ref="${escXml(configName)}" `;
@@ -282,9 +347,20 @@ function buildProcessorXml(parsed, useConfigRef) {
 
     // Body
     if (parsed.body) {
-        xml += `    <http:body>\n`;
-        xml += `        <![CDATA[${parsed.body}]]>\n`;
-        xml += `    </http:body>\n`;
+        const shouldFormat = document.getElementById('opt-format-body').checked;
+        let bodyContent = parsed.body;
+
+        if (shouldFormat) {
+            bodyContent = formatBody(parsed.body);
+        }
+
+        if (bodyContent.includes('\n')) {
+            // Indent the multi-line body for XML readability
+            const indented = bodyContent.split('\n').map(line => '        ' + line).join('\n');
+            xml += `    <http:body><![CDATA[#[\n${indented}\n    ]]]></http:body>\n`;
+        } else {
+            xml += `    <http:body><![CDATA[#[${bodyContent}]]]></http:body>\n`;
+        }
     }
 
     // Headers as dynamic input params (DataWeave map)
@@ -324,7 +400,7 @@ const headersCol = document.getElementById('breakdown-headers');
 
 function renderBreakdown(parsed) {
     if (!requestCol || !headersCol || !breakdownEl) return;
-    
+
     requestCol.innerHTML = '';
     headersCol.innerHTML = '';
 
@@ -344,7 +420,9 @@ function renderBreakdown(parsed) {
     if (parsed.port) requestCol.appendChild(makeField('Port', parsed.port));
     requestCol.appendChild(makeField('Path', parsed.path));
     if (parsed.body) {
-        requestCol.appendChild(makeField('Body', parsed.body.length > 300 ? parsed.body.substring(0, 300) + '…' : parsed.body));
+        const isFormat = document.getElementById('opt-format-body').checked;
+        const b = isFormat ? formatBody(parsed.body) : parsed.body;
+        requestCol.appendChild(makeField('Body', b.length > 500 ? b.substring(0, 500) + '…' : b));
     }
     if (parsed.basicAuth) {
         const uname = parsed.basicAuth.username || '';
