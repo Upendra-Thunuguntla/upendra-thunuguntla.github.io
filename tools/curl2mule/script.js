@@ -5,19 +5,18 @@
 const curlInput = document.getElementById('curl-input');
 const configOutput = document.getElementById('config-output');
 const processorOutput = document.getElementById('processor-output');
-const parseStatusEl = document.getElementById('parse-status');
 const breakdownEl = document.getElementById('parsed-breakdown');
 const configSection = document.getElementById('config-output-section');
 const processorSection = document.getElementById('processor-output-section');
 
-let currentMode = 'both'; // 'both', 'separated', 'embedded'
+let currentMode = 'separated'; // 'separated', 'embedded'
 
 /* ── Live parsing on input ── */
 curlInput.addEventListener('input', debounce(parseAndConvert, 300));
 document.getElementById('config-name').addEventListener('input', debounce(parseAndConvert, 300));
 
 // Re-generate on option changes
-['opt-tls','opt-follow-redirects','opt-response-timeout','opt-streaming','opt-insecure'].forEach(id => {
+['opt-follow-redirects','opt-response-timeout','opt-streaming'].forEach(id => {
     document.getElementById(id).addEventListener('change', parseAndConvert);
 });
 document.getElementById('opt-timeout-value').addEventListener('input', debounce(parseAndConvert, 300));
@@ -223,68 +222,19 @@ function escXml(s) {
 
 function buildConfigXml(parsed) {
     const configName = document.getElementById('config-name').value.trim() || 'HTTP_Request_Configuration';
-    const useTls = document.getElementById('opt-tls').checked && parsed.scheme === 'https';
-    const isInsecure = document.getElementById('opt-insecure').checked || parsed.isInsecure;
     const defaultPort = parsed.scheme === 'https' ? '443' : '80';
     const port = parsed.port && parsed.port !== defaultPort ? parsed.port : defaultPort;
 
-    let xml = '';
-
-    // TLS context if needed
-    if (useTls) {
-        if (isInsecure) {
-            xml += `<tls:context name="${escXml(configName)}_TLS">\n`;
-            xml += `    <tls:trust-store insecure="true" />\n`;
-            xml += `</tls:context>\n\n`;
-        } else {
-            xml += `<tls:context name="${escXml(configName)}_TLS">\n`;
-            xml += `    <tls:trust-store />\n`;
-            xml += `</tls:context>\n\n`;
-        }
-    }
-
-    xml += `<http:request-config name="${escXml(configName)}"`;
-
-    // Basic auth
+    let xml = `<http:request-config name="${escXml(configName)}">\n`;
+    xml += `    <http:request-connection protocol="${parsed.scheme.toUpperCase()}" host="${escXml(parsed.host)}" port="${port}" />\n`;
+    
     if (parsed.basicAuth) {
-        xml += `>\n`;
-        xml += `    <http:request-connection protocol="${parsed.scheme.toUpperCase()}" host="${escXml(parsed.host)}" port="${port}"`;
-        if (useTls) {
-            xml += `>\n`;
-            xml += `        <tls:context>\n`;
-            if (isInsecure) {
-                xml += `            <tls:trust-store insecure="true" />\n`;
-            } else {
-                xml += `            <tls:trust-store />\n`;
-            }
-            xml += `        </tls:context>\n`;
-            xml += `    </http:request-connection>\n`;
-        } else {
-            xml += ` />\n`;
-        }
         xml += `    <http:authentication>\n`;
         xml += `        <http:basic-authentication username="${escXml(parsed.basicAuth.username)}" password="${escXml(parsed.basicAuth.password)}" />\n`;
         xml += `    </http:authentication>\n`;
-        xml += `</http:request-config>`;
-    } else {
-        xml += `>\n`;
-        xml += `    <http:request-connection protocol="${parsed.scheme.toUpperCase()}" host="${escXml(parsed.host)}" port="${port}"`;
-        if (useTls) {
-            xml += `>\n`;
-            xml += `        <tls:context>\n`;
-            if (isInsecure) {
-                xml += `            <tls:trust-store insecure="true" />\n`;
-            } else {
-                xml += `            <tls:trust-store />\n`;
-            }
-            xml += `        </tls:context>\n`;
-            xml += `    </http:request-connection>\n`;
-        } else {
-            xml += ` />\n`;
-        }
-        xml += `</http:request-config>`;
     }
-
+    
+    xml += `</http:request-config>`;
     return xml;
 }
 
@@ -300,20 +250,19 @@ function buildProcessorXml(parsed, useConfigRef) {
         return k !== 'content-length' && k !== 'host';
     });
 
-    let xml = `<http:request method="${parsed.method}" `;
+    const requestName = `${parsed.method} | ${parsed.host} | ${parsed.path}`;
+    let xml = `<http:request method="${parsed.method}" name="${escXml(requestName)}" `;
 
     if (useConfigRef) {
         xml += `config-ref="${escXml(configName)}" `;
+        xml += `path="${escXml(parsed.path)}"`;
     } else {
-        // Embedded: inline host/port/protocol
-        xml += `host="${escXml(parsed.host)}" port="${parsed.port}" protocol="${parsed.scheme.toUpperCase()}" `;
+        // Embedded: use full URL
+        const fullUrl = parsed.url;
+        xml += `url="${escXml(fullUrl)}"`;
     }
 
-    xml += `path="${escXml(parsed.path)}"`;
-
-    if (!followRedirects) {
-        xml += ` followRedirects="false"`;
-    }
+    xml += ` followRedirects="${followRedirects}"`;
     if (responseTimeout) {
         xml += ` responseTimeout="${escXml(timeoutVal)}"`;
     }
@@ -366,6 +315,7 @@ function buildProcessorXml(parsed, useConfigRef) {
     return xml;
 }
 
+
 /* ══════════════════════════════════════════════
    RENDER PARSED BREAKDOWN
    ══════════════════════════════════════════════ */
@@ -373,6 +323,8 @@ const requestCol = document.getElementById('breakdown-request');
 const headersCol = document.getElementById('breakdown-headers');
 
 function renderBreakdown(parsed) {
+    if (!requestCol || !headersCol || !breakdownEl) return;
+    
     requestCol.innerHTML = '';
     headersCol.innerHTML = '';
 
@@ -395,7 +347,8 @@ function renderBreakdown(parsed) {
         requestCol.appendChild(makeField('Body', parsed.body.length > 300 ? parsed.body.substring(0, 300) + '…' : parsed.body));
     }
     if (parsed.basicAuth) {
-        requestCol.appendChild(makeField('Auth', 'Basic (' + escapeHtml(parsed.basicAuth.username) + ')'));
+        const uname = parsed.basicAuth.username || '';
+        requestCol.appendChild(makeField('Auth', 'Basic (' + escXml(uname) + ')'));
     }
 
     // Headers + Query Params
@@ -405,8 +358,8 @@ function renderBreakdown(parsed) {
         content += '<div class="parsed-headers-list">';
         parsed.headers.forEach(h => {
             content += `<div class="parsed-header-row">
-                <span class="parsed-header-key">${escapeHtml(h.key)}:</span>
-                <span class="parsed-header-val">${escapeHtml(h.value)}</span>
+                <span class="parsed-header-key">${escXml(h.key)}:</span>
+                <span class="parsed-header-val">${escXml(h.value)}</span>
             </div>`;
         });
         content += '</div>';
@@ -417,8 +370,8 @@ function renderBreakdown(parsed) {
         content += '<div class="parsed-headers-list">';
         parsed.queryParams.forEach(p => {
             content += `<div class="parsed-header-row">
-                <span class="parsed-header-key">${escapeHtml(p.key)}:</span>
-                <span class="parsed-header-val">${escapeHtml(p.value)}</span>
+                <span class="parsed-header-key">${escXml(p.key)}:</span>
+                <span class="parsed-header-val">${escXml(p.value)}</span>
             </div>`;
         });
         content += '</div>';
@@ -427,10 +380,6 @@ function renderBreakdown(parsed) {
     headersCol.innerHTML = content || '<div style="color:var(--text-muted); font-size:0.8rem; font-style:italic;">No headers or query params detected</div>';
 
     breakdownEl.style.display = 'block';
-}
-
-function escapeHtml(str) {
-    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 /* ══════════════════════════════════════════════
@@ -442,8 +391,6 @@ function parseAndConvert() {
     if (!raw) {
         configOutput.value = '';
         processorOutput.value = '';
-        parseStatusEl.className = 'parse-status idle';
-        parseStatusEl.textContent = '⏳ Waiting for input…';
         breakdownEl.style.display = 'none';
         return;
     }
@@ -452,8 +399,6 @@ function parseAndConvert() {
         const parsed = parseCurl(raw);
 
         if (!parsed.host) {
-            parseStatusEl.className = 'parse-status error';
-            parseStatusEl.textContent = '⚠️ Could not detect a valid URL. Make sure your cURL starts with curl and includes a URL.';
             configOutput.value = '<!-- Unable to parse the cURL command. Check the URL format. -->';
             processorOutput.value = '';
             breakdownEl.style.display = 'none';
@@ -472,8 +417,6 @@ function parseAndConvert() {
 
         const headerCount = parsed.headers.length;
         const qpCount = parsed.queryParams.length;
-        parseStatusEl.className = 'parse-status success';
-        parseStatusEl.textContent = `✅ Parsed: ${parsed.method} ${parsed.host}${parsed.path} — ${headerCount} header${headerCount !== 1 ? 's' : ''}, ${qpCount} query param${qpCount !== 1 ? 's' : ''}`;
 
         if (typeof track_event === 'function') {
             track_event('curl2mule_parsed', {
@@ -487,10 +430,9 @@ function parseAndConvert() {
         }
 
     } catch (err) {
-        parseStatusEl.className = 'parse-status error';
-        parseStatusEl.textContent = '❌ Parse error: ' + err.message;
         configOutput.value = '<!-- Parse error: ' + err.message + ' -->';
         processorOutput.value = '';
+        if (breakdownEl) breakdownEl.style.display = 'none';
     }
 }
 
@@ -527,11 +469,7 @@ function clearAll() {
     curlInput.value = '';
     configOutput.value = '';
     processorOutput.value = '';
-    parseStatusEl.className = 'parse-status idle';
-    parseStatusEl.textContent = '⏳ Waiting for input…';
-    breakdownEl.style.display = 'none';
-    requestCol.innerHTML = '';
-    headersCol.innerHTML = '';
+    if (breakdownEl) breakdownEl.style.display = 'none';
     showToast('Cleared.');
 }
 

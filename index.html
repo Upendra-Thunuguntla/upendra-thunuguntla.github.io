@@ -202,21 +202,21 @@
       <div class="reveal-stagger"
         style="display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-xl); text-align:center;">
         <div>
-          <div
+          <div id="exp-years"
             style="font-family:var(--font-heading); font-size:2.25rem; font-weight:800; background:var(--grad-primary); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
             7+</div>
           <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px; font-weight:500;">Years Experience
           </div>
         </div>
         <div>
-          <div
+          <div id="tool-count"
             style="font-family:var(--font-heading); font-size:2.25rem; font-weight:800; background:var(--grad-primary); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
             7</div>
           <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px; font-weight:500;">Open Source Tools
           </div>
         </div>
         <div>
-          <div
+          <div id="pub-count"
             style="font-family:var(--font-heading); font-size:2.25rem; font-weight:800; background:var(--grad-primary); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
             5+</div>
           <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px; font-weight:500;">Publications</div>
@@ -699,7 +699,7 @@
       <div class="section-header reveal">
         <div class="section-label">Work With Me</div>
         <h2>Hire Me for Your Next Project</h2>
-        <p>7+ years architecting enterprise integrations. Got a MuleSoft problem that needs solving? Let's talk.</p>
+        <p><span class="exp-years-dyn">7+</span> years architecting enterprise integrations. Got a MuleSoft problem that needs solving? Let's talk.</p>
       </div>
 
       <div class="hire-me-grid reveal">
@@ -793,7 +793,7 @@
           <!-- Quick Stats -->
           <div class="hire-stat-row">
             <div class="hire-stat">
-              <span class="hire-stat-num">7+</span>
+              <span class="hire-stat-num exp-years-dyn">7+</span>
               <span class="hire-stat-label">Years</span>
             </div>
             <div class="hire-stat">
@@ -953,6 +953,7 @@
   <!-- Platform JS -->
   <script src="/assets/js/platform.js"></script>
   <script src="/assets/js/blogs-loader.js"></script>
+  <script src="/assets/js/dynamic-stats.js"></script>
   <script>
     // Init typewriter
     document.addEventListener('DOMContentLoaded', function () {
