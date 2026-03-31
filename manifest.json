@@ -1,0 +1,17 @@
+{
+  "name": "Upendra.dev Tool Suite",
+  "short_name": "Upendra Tools",
+  "description": "Developer tools for MuleSoft, DataWeave, and productivity.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/portfolio.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
