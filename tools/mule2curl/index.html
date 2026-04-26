@@ -143,6 +143,10 @@
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">HTTP Debug Log</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="loadExample()"><i class="fas fa-bolt"></i> Example</button>
+                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="clearAll()"><i class="fas fa-trash-alt"></i> Clear</button>
+                        </div>
                     </div>
                     <div class="editor-wrapper">
                         <textarea id="log-input" class="code-textarea" style="min-height:420px;" placeholder="Paste your MuleSoft HTTP connector debug logs here…
@@ -155,25 +159,18 @@ Authorization: Bearer eyJhbGciOi...
 x-correlation-id: abc-123-def
 
 {&quot;key&quot;: &quot;value&quot;}"></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
-                                <i class="fas fa-bolt"></i>
-                            </button>
-                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="clearAll()">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
 
                 <!-- Right: Output — cURL FIRST, parsed fields at bottom -->
                 <div class="workspace-panel">
 
-
-
-                    <!-- cURL Output — TOP priority -->
                     <div class="panel-header">
                         <span class="panel-title">cURL Command</span>
+                        <div class="panel-actions">
+                            <button id="curl-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="copyCurl()"><i class="fas fa-copy"></i> Copy</button>
+                            <button class="btn btn-ghost btn-sm" title="Download .sh Script" onclick="downloadCurl()"><i class="fas fa-download"></i> Download</button>
+                        </div>
                     </div>
 
                     <div class="editor-wrapper">
@@ -181,14 +178,6 @@ x-correlation-id: abc-123-def
 
 Paste logs on the left → cURL appears here instantly.
 Copy it to your terminal or Postman (File → Import → Raw Text)."></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" id="curl-copy-btn" title="Copy to Clipboard" onclick="copyCurl()">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button class="btn-icon" title="Download .sh Script" onclick="downloadCurl()">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
 

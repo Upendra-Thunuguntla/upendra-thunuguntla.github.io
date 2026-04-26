@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron Expression Builder for Mule Pollers — Visual Quartz Cron Generator | Upendra.dev</title>
+    <meta name="description"
+        content="Visually build Quartz/Mule cron expressions for MuleSoft Schedulers. See the next 5 execution times instantly. 100% browser-based and free.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Cron Expression Builder for Mule Pollers",
+        "description": "Visually build Quartz/Mule cron expressions for MuleSoft Schedulers. See the next 5 execution times instantly. 100% browser-based.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra-thunuguntla.github.io/tools/cron-builder/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>Cron Builder</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">⏱️</div>
+                <div class="tool-hero-text">
+                    <h1>Cron Expression Builder for Mule Pollers</h1>
+                    <p>Visually configure <strong>Quartz cron expressions</strong> for MuleSoft Scheduler and Poller components.
+                        Choose from presets or build field-by-field — preview the <strong>next 5 execution times</strong>
+                        instantly without memorizing cron syntax.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">Scheduler</span>
+                        <span class="badge">Quartz Cron</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <!-- ═══ CRON CHECKER ═══ -->
+            <div class="checker-top-panel">
+                <div class="checker-top-header">
+                    <span class="checker-top-label">🔍 Cron Checker</span>
+                    <span class="checker-top-hint">Paste an existing expression to explain it</span>
+                </div>
+                <div class="checker-input-row" style="margin-bottom:0;">
+                    <input type="text" id="checker-input" class="checker-input" placeholder="Paste cron here, e.g.  0 0/15 9-17 ? * MON-FRI" spellcheck="false" autocomplete="off">
+                    <button class="btn btn-primary" id="checker-btn" onclick="explainCron()">
+                        <i class="fas fa-magnifying-glass"></i> Explain
+                    </button>
+                </div>
+
+                <!-- Result Panel -->
+                <div id="checker-result" class="checker-result" style="display:none;">
+
+                    <!-- Expression breakdown -->
+                    <div class="checker-breakdown">
+                        <div class="checker-section-title">🧩 Field Breakdown</div>
+                        <div class="checker-fields-row" id="checker-fields-row"></div>
+                    </div>
+
+                    <!-- Plain English -->
+                    <div class="checker-explanation">
+                        <div class="checker-section-title">💬 In Plain English</div>
+                        <div id="checker-plain" class="checker-plain"></div>
+                    </div>
+
+                    <!-- Next 10 runs -->
+                    <div class="checker-schedule">
+                        <div class="checker-section-title-row">
+                            <div class="checker-section-title">📅 Next 10 Execution Times</div>
+                            <span id="checker-tz" class="tz-badge">Local Time</span>
+                        </div>
+                        <div id="checker-runs" class="checker-runs-grid"></div>
+                    </div>
+
+                </div>
+
+                <!-- Error -->
+                <div id="checker-error" class="checker-error-box" style="display:none;"></div>
+            </div>
+
+            <!-- ═══ PRESETS ═══ -->
+            <div class="presets-bar">
+                <span class="presets-label">⚡ Quick Presets:</span>
+                <div class="presets-list">
+                    <button class="preset-btn" data-cron="0 0 * * * ?" data-desc="Every Hour">Every Hour</button>
+                    <button class="preset-btn" data-cron="0 0 8 * * MON-FRI" data-desc="Weekdays at 8 AM">Weekdays 8 AM</button>
+                    <button class="preset-btn" data-cron="0 0 0 * * ?" data-desc="Every Midnight">Every Midnight</button>
+                    <button class="preset-btn" data-cron="0 0/15 * * * ?" data-desc="Every 15 Minutes">Every 15 Min</button>
+                    <button class="preset-btn" data-cron="0 0 0 1 * ?" data-desc="1st of Every Month">Monthly</button>
+                    <button class="preset-btn" data-cron="0 0 9 ? * MON" data-desc="Every Monday 9 AM">Every Monday</button>
+                    <button class="preset-btn" data-cron="0 0/30 * * * ?" data-desc="Every 30 Minutes">Every 30 Min</button>
+                    <button class="preset-btn" data-cron="0 0 6,12,18 * * ?" data-desc="3 Times Daily">3x Daily</button>
+                </div>
+            </div>
+
+            <div class="workspace-grid" style="align-items:start; margin-top: var(--space-lg);">
+
+                <!-- Left: Builder -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Visual Builder</span>
+                    </div>
+
+                    <div class="cron-fields">
+                        <div class="cron-field-group">
+                            <label class="cron-field-label" for="f-second">Second <span class="cron-field-range">(0–59)</span></label>
+                            <input type="text" id="f-second" class="cron-field-input" value="0" placeholder="0">
+                            <div class="cron-field-hint">Use <code>*</code> for every, <code>/</code> for step, <code>,</code> for list</div>
+                        </div>
+                        <div class="cron-field-group">
+                            <label class="cron-field-label" for="f-minute">Minute <span class="cron-field-range">(0–59)</span></label>
+                            <input type="text" id="f-minute" class="cron-field-input" value="0" placeholder="0">
+                        </div>
+                        <div class="cron-field-group">
+                            <label class="cron-field-label" for="f-hour">Hour <span class="cron-field-range">(0–23)</span></label>
+                            <input type="text" id="f-hour" class="cron-field-input" value="8" placeholder="8">
+                        </div>
+                        <div class="cron-field-group">
+                            <label class="cron-field-label" for="f-dom">Day of Month <span class="cron-field-range">(1–31)</span></label>
+                            <input type="text" id="f-dom" class="cron-field-input" value="*" placeholder="*">
+                        </div>
+                        <div class="cron-field-group">
+                            <label class="cron-field-label" for="f-month">Month <span class="cron-field-range">(1–12 or JAN–DEC)</span></label>
+                            <input type="text" id="f-month" class="cron-field-input" value="*" placeholder="*">
+                        </div>
+                        <div class="cron-field-group">
+                            <label class="cron-field-label" for="f-dow">Day of Week <span class="cron-field-range">(SUN–SAT or 1–7)</span></label>
+                            <input type="text" id="f-dow" class="cron-field-input" value="MON-FRI" placeholder="?">
+                            <div class="cron-field-hint">Use <code>?</code> if you specified Day of Month</div>
+                        </div>
+                        <div class="cron-field-group">
+                            <label class="cron-field-label" for="f-year">Year <span class="cron-field-range">(optional)</span></label>
+                            <input type="text" id="f-year" class="cron-field-input" value="" placeholder="(leave blank)">
+                        </div>
+                    </div>
+
+                    <!-- Generated Cron Display -->
+                    <div class="cron-result-box">
+                        <div class="cron-result-label">Generated Expression</div>
+                        <div class="cron-result-display" id="cron-expression">0 0 8 * * MON-FRI</div>
+                        <div class="cron-result-desc" id="cron-human">Weekdays at 8:00 AM</div>
+                        <div id="cron-error" class="cron-error" style="display:none;"></div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="cron-actions">
+                        <button class="btn btn-primary" id="copy-cron-btn" onclick="copyCron()">
+                            <i class="fas fa-copy"></i> Copy Expression
+                        </button>
+                        <button class="btn btn-outline" onclick="copyMuleXml()">
+                            <i class="fas fa-code"></i> Copy Mule XML
+                        </button>
+                        <button class="btn btn-outline" onclick="resetFields()">
+                            <i class="fas fa-undo"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Output -->
+                <div class="workspace-panel">
+
+                    <!-- Next Executions -->
+                    <div class="panel-header">
+                        <span class="panel-title">Next 5 Execution Times</span>
+                        <span id="tz-label" class="tz-badge">Local Time</span>
+                    </div>
+                    <div id="next-runs" class="next-runs-list">
+                        <div class="next-run-placeholder">Configure a cron expression to see execution times...</div>
+                    </div>
+
+                    <!-- Mule XML Output -->
+                    <div class="output-section" style="margin-top: var(--space-lg);">
+                        <div class="panel-header">
+                            <span class="panel-title"><i class="fas fa-code"></i> Mule Scheduler XML</span>
+                            <div class="panel-actions">
+                                <button class="btn btn-ghost btn-sm" title="Copy XML" onclick="copyMuleXml()"><i class="fas fa-copy"></i> Copy</button>
+                                <button class="btn btn-ghost btn-sm" title="Download .xml" onclick="downloadXml()"><i class="fas fa-download"></i> Download</button>
+                            </div>
+                        </div>
+                        <div class="editor-wrapper">
+                            <textarea id="mule-xml-output" class="code-output" style="min-height:180px;" readonly
+                                placeholder="<!-- Mule Scheduler XML will appear here -->"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Cron Field Legend -->
+                    <div class="cron-legend">
+                        <div class="cron-legend-title">📖 Quick Reference</div>
+                        <div class="cron-legend-grid">
+                            <div class="legend-item"><code>*</code> — Any value</div>
+                            <div class="legend-item"><code>?</code> — No specific value</div>
+                            <div class="legend-item"><code>-</code> — Range (e.g. MON-FRI)</div>
+                            <div class="legend-item"><code>,</code> — List (e.g. 6,12,18)</div>
+                            <div class="legend-item"><code>/</code> — Step (e.g. 0/15)</div>
+                            <div class="legend-item"><code>L</code> — Last (day of month)</div>
+                            <div class="legend-item"><code>#</code> — Nth day (e.g. 2#1 = 1st Mon)</div>
+                            <div class="legend-item"><code>W</code> — Nearest weekday</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">Visual</div>
+                    <div class="proof-label">Field-by-Field<br>Builder</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">8+</div>
+                    <div class="proof-label">Common<br>Presets</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Next 5</div>
+                    <div class="proof-label">Execution<br>Previews</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">XML</div>
+                    <div class="proof-label">Ready-to-paste<br>Mule XML</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use the Cron Builder</h2>
+                <p>Build and validate Quartz cron expressions for MuleSoft Scheduler in seconds — no cron memorization needed.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>1. Choose a Preset</h4>
+                    <p>Pick from common presets like <strong>Every Hour</strong>, <strong>Weekdays at 8 AM</strong>,
+                        or <strong>Monthly</strong> to instantly populate all fields.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>2. Fine-tune Fields</h4>
+                    <p>Edit individual fields like <strong>Second</strong>, <strong>Minute</strong>, <strong>Hour</strong>,
+                        and <strong>Day of Week</strong> using Quartz cron syntax to get exactly the schedule you need.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>3. Verify Execution Times</h4>
+                    <p>Check the <strong>Next 5 Execution Times</strong> panel on the right to confirm your schedule runs
+                        exactly when expected before adding it to your Mule flow.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>4. Copy Mule XML</h4>
+                    <p>Click <strong>Copy Mule XML</strong> to get a production-ready <code>&lt;scheduler:scheduling-strategy&gt;</code>
+                        block to paste directly into your Mule flow XML.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What cron format does MuleSoft use?</summary>
+                    <div class="faq-answer">MuleSoft Scheduler uses <strong>Quartz cron expressions</strong>, which have
+                        <strong>6 or 7 fields</strong>: <code>Seconds Minutes Hours Day-of-Month Month Day-of-Week [Year]</code>.
+                        This is different from Unix cron (5 fields). Notably, you cannot specify both Day-of-Month and
+                        Day-of-Week — one must be <code>?</code>.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What's the difference between * and ? in Quartz cron?</summary>
+                    <div class="faq-answer"><code>*</code> means "every value" and is used for fields like seconds, minutes, and hours.
+                        <code>?</code> means "no specific value" and is used to leave either Day-of-Month or Day-of-Week unspecified —
+                        since both cannot be set simultaneously in Quartz. Always use <code>?</code> in one of them.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I run a job every N minutes in Mule?</summary>
+                    <div class="faq-answer">Use the step notation: <code>0 0/N * * * ?</code>. For example, <code>0 0/15 * * * ?</code>
+                        runs every 15 minutes starting at the top of the hour. Alternatively, for simpler intervals,
+                        use the <strong>Fixed Frequency</strong> scheduler in MuleSoft instead of cron — set
+                        <code>frequency="15000" timeUnit="MILLISECONDS"</code>.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How do I run on weekdays only?</summary>
+                    <div class="faq-answer">Set Day-of-Week to <code>MON-FRI</code> and Day-of-Month to <code>?</code>.
+                        A full example: <code>0 0 8 ? * MON-FRI</code> fires every weekday at 8:00 AM.
+                        You can also use numbers: <code>2-6</code> maps to Mon–Fri (Quartz day numbering: 1=SUN, 7=SAT).
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How is the generated Mule XML structured?</summary>
+                    <div class="faq-answer">The generated XML uses the standard MuleSoft Scheduler XML structure:
+                        <code>&lt;scheduler:cron-scheduling-strategy expression="..." timeZone="UTC"/&gt;</code>
+                        wrapped inside a <code>&lt;scheduler:scheduling-strategy&gt;</code> and <code>&lt;scheduler&gt;</code> element.
+                        The <code>doc:name</code> is included for Anypoint Studio display.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data safe?</summary>
+                    <div class="faq-answer">Yes. All cron parsing and next-execution calculation happens entirely in your browser.
+                        No data is sent to any server. This tool works fully offline after the page loads.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>Deeper dives into MuleSoft Scheduler configuration and integration patterns.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>⏱️ Find this tool useful?</h3>
+                <p>Debugging cron expressions is painful. If this visual builder saved you time, a coffee is always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="⏱️"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/secure-properties-generator/" class="related-tool-link"><span class="icon">🔐</span>
+                    <div>
+                        <div class="name">Secure Properties</div>
+                        <div class="desc">Encrypt &amp; decrypt properties</div>
+                    </div>
+                </a>
+                <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
+                    <div>
+                        <div class="name">MuleSoft Log to cURL</div>
+                        <div class="desc">Debug logs to cURL</div>
+                    </div>
+                </a>
+                <a href="/tools/raml2oas/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">RAML to OAS Converter</div>
+                        <div class="desc">RAML 1.0 → OpenAPI 3.0</div>
+                    </div>
+                </a>
+                <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
+                    <div>
+                        <div class="name">XML SDK Helper</div>
+                        <div class="desc">Mule connector XML</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            <br>
+            All tools are 100% client-side &amp; no data ever leaves your browser.
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

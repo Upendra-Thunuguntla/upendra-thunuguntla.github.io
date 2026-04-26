@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAML to OAS (OpenAPI) Converter — RAML 1.0 to OpenAPI 3.0 | Upendra.dev</title>
+    <meta name="description"
+        content="Convert RAML 1.0 API specifications to OpenAPI 3.0 (OAS 3.0) YAML or JSON instantly. 100% browser-based, no data ever leaves your machine.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "RAML to OAS (OpenAPI) Converter",
+        "description": "Convert RAML 1.0 API specifications to OpenAPI 3.0 YAML or JSON instantly. 100% browser-based.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra-thunuguntla.github.io/tools/raml2oas/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>RAML to OAS</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">🔄</div>
+                <div class="tool-hero-text">
+                    <h1>RAML 1.0 → OpenAPI 3.0 Converter</h1>
+                    <p>Migrate your <strong>RAML 1.0</strong> API specifications to <strong>OpenAPI 3.0 (OAS 3.0)</strong>
+                        YAML or JSON instantly. Supports resources, methods, query parameters, headers, request/response
+                        bodies, and data types. All processing is 100% in your browser.</p>
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">RAML 1.0</span>
+                        <span class="badge badge-purple">OpenAPI 3.0</span>
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <!-- ═══ OPTIONS BAR ═══ -->
+            <div class="options-panel" style="margin-bottom:var(--space-lg);">
+                <div style="display:flex; align-items:center; gap:var(--space-sm);">
+                    <span class="config-name-label">Output Format:</span>
+                    <div class="mode-toggle">
+                        <button class="mode-toggle-btn active" id="btn-yaml" onclick="setOutputFormat('yaml')">YAML</button>
+                        <button class="mode-toggle-btn" id="btn-json" onclick="setOutputFormat('json')">JSON</button>
+                    </div>
+                </div>
+                <div id="convert-status" class="convert-status idle">
+                    <i class="fas fa-circle-dot"></i> Paste RAML to begin
+                </div>
+            </div>
+
+            <div class="workspace-grid" style="align-items:start;">
+
+                <!-- Left: RAML Input -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">RAML 1.0 Input</span>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="raml-input" class="code-textarea" style="min-height:500px;"
+                            placeholder="#%RAML 1.0
+title: My API
+version: v1
+baseUri: https://api.example.com/{version}
+
+types:
+  Order:
+    type: object
+    properties:
+      id: string
+      amount: number
+
+/orders:
+  get:
+    description: Get all orders
+    queryParameters:
+      page:
+        type: integer
+        default: 1
+    responses:
+      200:
+        body:
+          application/json:
+            type: Order[]
+  post:
+    description: Create order
+    body:
+      application/json:
+        type: Order
+    responses:
+      201:
+        body:
+          application/json:
+            type: Order
+"></textarea>
+                        <div class="editor-actions">
+                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
+                    </div>
+                </div>
+
+                <!-- Right: OAS Output -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">OpenAPI 3.0 Output</span>
+                        <div class="panel-actions">
+                            <button id="copy-oas-btn" class="btn btn-ghost btn-sm" title="Copy Output" onclick="copyOutput()"><i class="fas fa-copy"></i> Copy</button>
+                            <button class="btn btn-ghost btn-sm" title="Download" onclick="downloadOutput()"><i class="fas fa-download"></i> Download</button>
+                        </div>
+                    </div>
+
+                    <!-- Conversion Summary -->
+                    <div id="conversion-summary" class="conversion-summary" style="display:none;">
+                        <div class="summary-title"><i class="fas fa-check-circle"></i> Conversion Complete</div>
+                        <div class="summary-stats" id="summary-stats"></div>
+                    </div>
+
+                    <div class="editor-wrapper">
+                        <textarea id="oas-output" class="code-output" style="min-height:500px;" readonly
+                            placeholder="<!-- OpenAPI 3.0 YAML/JSON will appear here after conversion -->"></textarea>
+                    </div>
+
+                    <!-- Warnings Panel -->
+                    <div id="warnings-panel" class="warnings-panel" style="display:none;">
+                        <div class="warnings-title"><i class="fas fa-triangle-exclamation"></i> Conversion Notes</div>
+                        <div id="warnings-list" class="warnings-list"></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Convert Button -->
+            <div style="display:flex; justify-content:center; margin-top: var(--space-xl);">
+                <button class="btn btn-primary btn-lg" id="convert-btn" onclick="convertRaml()">
+                    <i class="fas fa-rotate"></i> Convert to OpenAPI 3.0
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">RAML</div>
+                    <div class="proof-label">1.0<br>Input</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">OAS</div>
+                    <div class="proof-label">3.0<br>Output</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Types</div>
+                    <div class="proof-label">Data Types<br>→ Schemas</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">YAML</div>
+                    <div class="proof-label">or JSON<br>Output</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy First</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use RAML to OAS Converter</h2>
+                <p>Migrate your MuleSoft RAML 1.0 API specs to OpenAPI 3.0 in four simple steps.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>1. Paste Your RAML</h4>
+                    <p>Copy your <strong>RAML 1.0</strong> spec from Anypoint Design Center or your editor and
+                        paste it into the input panel. Click <strong>Load Example</strong> to see a working sample first.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>2. Select Output Format</h4>
+                    <p>Choose between <strong>YAML</strong> (recommended for readability) or <strong>JSON</strong>
+                        output. Both are valid OpenAPI 3.0 formats supported by Swagger UI, Postman, and other tools.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>3. Click Convert</h4>
+                    <p>Hit <strong>Convert to OpenAPI 3.0</strong>. The tool maps your resources, methods, query params,
+                        headers, body types, and responses to their OAS 3.0 equivalents. Conversion notes highlight any
+                        unsupported features.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>4. Copy or Download</h4>
+                    <p>Click <strong>Copy</strong> to paste into Swagger Editor or Postman, or <strong>Download</strong>
+                        the <code>.yaml</code> / <code>.json</code> file for your project.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ WHAT'S SUPPORTED ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Coverage</div>
+                <h2>What's Converted</h2>
+                <p>Key RAML 1.0 constructs and their OpenAPI 3.0 equivalents handled by this tool.</p>
+            </div>
+            <div class="mapping-grid">
+                <div class="mapping-card">
+                    <div class="mapping-icon">📋</div>
+                    <div class="mapping-raml"><code>title</code>, <code>version</code>, <code>baseUri</code></div>
+                    <div class="mapping-arrow">→</div>
+                    <div class="mapping-oas"><code>info.title</code>, <code>info.version</code>, <code>servers[]</code></div>
+                </div>
+                <div class="mapping-card">
+                    <div class="mapping-icon">🔗</div>
+                    <div class="mapping-raml"><code>/resources</code> + HTTP methods</div>
+                    <div class="mapping-arrow">→</div>
+                    <div class="mapping-oas"><code>paths</code> + <code>get/post/put/delete</code></div>
+                </div>
+                <div class="mapping-card">
+                    <div class="mapping-icon">🗂️</div>
+                    <div class="mapping-raml"><code>types:</code> with properties</div>
+                    <div class="mapping-arrow">→</div>
+                    <div class="mapping-oas"><code>components/schemas</code></div>
+                </div>
+                <div class="mapping-card">
+                    <div class="mapping-icon">🔍</div>
+                    <div class="mapping-raml"><code>queryParameters:</code></div>
+                    <div class="mapping-arrow">→</div>
+                    <div class="mapping-oas"><code>parameters[in: query]</code></div>
+                </div>
+                <div class="mapping-card">
+                    <div class="mapping-icon">📨</div>
+                    <div class="mapping-raml"><code>headers:</code></div>
+                    <div class="mapping-arrow">→</div>
+                    <div class="mapping-oas"><code>parameters[in: header]</code></div>
+                </div>
+                <div class="mapping-card">
+                    <div class="mapping-icon">📦</div>
+                    <div class="mapping-raml"><code>body: application/json</code></div>
+                    <div class="mapping-arrow">→</div>
+                    <div class="mapping-oas"><code>requestBody.content</code></div>
+                </div>
+                <div class="mapping-card">
+                    <div class="mapping-icon">✅</div>
+                    <div class="mapping-raml"><code>responses: 200/201/...</code></div>
+                    <div class="mapping-arrow">→</div>
+                    <div class="mapping-oas"><code>responses.200/201/...</code></div>
+                </div>
+                <div class="mapping-card">
+                    <div class="mapping-icon">🔒</div>
+                    <div class="mapping-raml"><code>securitySchemes:</code></div>
+                    <div class="mapping-arrow">→</div>
+                    <div class="mapping-oas"><code>components/securitySchemes</code></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>Why should I migrate from RAML to OpenAPI?</summary>
+                    <div class="faq-answer">OpenAPI (OAS 3.0) has become the <strong>industry standard</strong> for API specification,
+                        with broader tooling support (Swagger UI, Postman, AWS API Gateway, Azure APIM, etc.).
+                        While MuleSoft still supports RAML natively, many organizations are standardizing on OAS 3.0
+                        for cross-platform compatibility and future-proofing.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What RAML features are NOT supported?</summary>
+                    <div class="faq-answer">Some advanced RAML features don't have direct OAS equivalents:
+                        <strong>Traits</strong>, <strong>Resource Types</strong>, <strong>Overlays</strong>, and
+                        <strong>Extensions</strong> are not converted (they are flagged in conversion notes).
+                        <strong>RAML 0.8</strong> is also not supported — only RAML 1.0.
+                        For complex specs, consider using the official <code>raml-to-oas</code> CLI tool for production migrations.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I use the output directly in Anypoint Platform?</summary>
+                    <div class="faq-answer">Yes. Anypoint Design Center supports importing OpenAPI 3.0 specs.
+                        You can also use the output in <strong>Swagger Editor</strong>, <strong>Postman</strong> (Import → OpenAPI),
+                        or any OAS-compatible tool. The generated output follows the OAS 3.0 specification precisely.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How are RAML types converted to OAS schemas?</summary>
+                    <div class="faq-answer">RAML <code>types:</code> are converted to <code>components/schemas</code> in OAS 3.0.
+                        RAML property types like <code>string</code>, <code>integer</code>, <code>number</code>, <code>boolean</code>,
+                        and <code>object</code> map directly. Arrays use <code>type: array</code> with <code>items</code>.
+                        Custom type references are preserved as <code>$ref</code> links.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my API spec safe?</summary>
+                    <div class="faq-answer">Absolutely. All conversion logic runs entirely in your browser using JavaScript.
+                        Your RAML content — which may contain internal API designs, security schemes, or business logic —
+                        is never sent to any server. The tool works fully offline after the page loads.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ BLOG SNIPPETS ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Learn More</div>
+                <h2>From the Blog</h2>
+                <p>Deeper dives into API design, RAML, and OpenAPI patterns.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🔄 Find this tool useful?</h3>
+                <p>Migrating APIs from RAML to OAS is time-consuming. If this tool saved you hours, a coffee is always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🔄"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                    <div>
+                        <div class="name">JSON → RAML</div>
+                        <div class="desc">MuleSoft DataType converter</div>
+                    </div>
+                </a>
+                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
+                    <div>
+                        <div class="name">YAML to Properties</div>
+                        <div class="desc">Flatten YAML configs</div>
+                    </div>
+                </a>
+                <a href="/tools/cron-builder/" class="related-tool-link"><span class="icon">⏱️</span>
+                    <div>
+                        <div class="name">Cron Builder</div>
+                        <div class="desc">Mule Scheduler cron helper</div>
+                    </div>
+                </a>
+                <a href="/tools/curl2mule/" class="related-tool-link"><span class="icon">🔁</span>
+                    <div>
+                        <div class="name">cURL → Mule XML</div>
+                        <div class="desc">MuleSoft HTTP Request config</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            <br>
+            All tools are 100% client-side &amp; no data ever leaves your browser.
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

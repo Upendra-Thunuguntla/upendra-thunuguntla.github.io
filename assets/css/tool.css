@@ -78,24 +78,27 @@
 
 .panel-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    min-height: 36px;
-    margin-bottom: var(--space-xs);
+    align-items: center;
+    padding: 6px 4px;
+    margin-bottom: 2px;
 }
 
 .panel-title {
-    font-size: 0.8rem;
     font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--text-muted);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .panel-actions {
     display: flex;
+    gap: 6px;
     align-items: center;
-    gap: var(--space-sm);
 }
 
 /* ─── Textarea panels ─── */
@@ -104,6 +107,10 @@
     display: flex;
     flex-direction: column;
     flex: 1;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
 }
 
 .code-textarea, .code-output {
@@ -111,10 +118,8 @@
     min-height: 320px;
     flex: 1;
     padding: var(--space-md);
-    padding-top: var(--space-lg); /* Extra padding for immersed buttons */
-    background: var(--surface-2);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius-lg);
+    background: transparent;
+    border: none;
     color: var(--text);
     font-family: var(--font-mono);
     font-size: 0.85rem;
@@ -124,59 +129,54 @@
 }
 
 .code-output {
-    background: var(--bg-alt);
+    background: rgba(var(--accent-rgb), 0.02);
     color: var(--success);
     cursor: default;
 }
 
 .code-textarea:focus {
     outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.1);
 }
 
+/* Global move of actions out of textareas */
 .editor-actions {
-    position: absolute;
-    top: 10px;
-    right: 12px;
     display: flex;
-    gap: var(--space-xs);
-    z-index: 10;
-    opacity: 0.4; /* Subtle when not focused/hovered */
-    transition: opacity var(--transition);
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    order: -1; /* renders before the textarea in column layout */
 }
 
-.editor-wrapper:hover .editor-actions,
-.editor-wrapper:focus-within .editor-actions {
-    opacity: 1;
+/* Hide editor-actions if the parent panel has a panel-actions in the header */
+.workspace-panel:has(.panel-actions) .editor-actions {
+    display: none;
 }
 
 .btn-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     border-radius: var(--radius-md);
-    background: var(--surface-1);
-    border: 1px solid var(--border);
-    color: var(--text-subtle);
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
     cursor: pointer;
     transition: all var(--transition);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 .btn-icon:hover {
     background: var(--surface-3);
     border-color: var(--border-accent);
     color: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
 }
 
 .btn-icon.btn-danger-hover:hover {
     color: var(--danger);
-    border-color: rgba(239, 68, 68, 0.3);
+    border-color: rgba(239, 68, 68, 0.2);
 }
 
 .code-textarea::placeholder {
@@ -1194,7 +1194,6 @@
     font-size: 0.75rem;
     color: var(--text-muted);
 }
-
 
 
 .cta-rate-badge {

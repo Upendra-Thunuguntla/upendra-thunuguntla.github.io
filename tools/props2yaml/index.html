@@ -85,20 +85,16 @@
                 <div class="workspace-panel" style="display:flex; flex-direction:column;">
                     <div class="panel-header">
                         <span class="panel-title">Input: Properties</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="p2y_loadExample()"><i class="fas fa-bolt"></i> Example</button>
+                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="p2y_clear()"><i class="fas fa-trash-alt"></i> Clear</button>
+                        </div>
                     </div>
 
                     <div class="editor-wrapper">
                         <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()" spellcheck="false"
                             placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"
                             style="flex:1;"></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" title="Load Example" onclick="p2y_loadExample()">
-                                <i class="fas fa-bolt"></i>
-                            </button>
-                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="p2y_clear()">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
                     </div>
 
                     <div class="panel-footer-row">
@@ -123,20 +119,15 @@
                 <div class="workspace-panel" style="display:flex; flex-direction:column;">
                     <div class="panel-header">
                         <span class="panel-title">Output: YAML</span>
+                        <div class="panel-actions">
+                            <button id="p2y-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="p2y_copy()"><i class="fas fa-copy"></i> Copy</button>
+                            <button id="p2y-save-btn" class="btn btn-ghost btn-sm" title="Download YAML" onclick="p2y_downloadPrompt()"><i class="fas fa-download"></i> Download</button>
+                        </div>
                     </div>
 
                     <div class="editor-wrapper">
                         <textarea id="yamlOutput" class="code-output" readonly
                             placeholder="YAML output will appear here…" style="flex:1; min-height:280px;"></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" id="p2y-copy-btn" title="Copy to Clipboard" onclick="p2y_copy()">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button class="btn-icon" id="p2y-save-btn" title="Download YAML"
-                                onclick="p2y_downloadPrompt()">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
                     </div>
 
                     <div class="panel-footer-row">

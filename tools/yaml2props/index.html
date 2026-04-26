@@ -86,20 +86,16 @@
                 <div class="workspace-panel" style="display:flex; flex-direction:column;">
                     <div class="panel-header">
                         <span class="panel-title">Input: YAML</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="y2p_loadExample()"><i class="fas fa-bolt"></i> Example</button>
+                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="y2p_clear()"><i class="fas fa-trash-alt"></i> Clear</button>
+                        </div>
                     </div>
 
                     <div class="editor-wrapper">
                         <textarea id="yamlTextarea" class="code-textarea" oninput="y2p_convert()" spellcheck="false"
                             placeholder="Paste YAML content here&#10;&#10;database:&#10;  host: &quot;localhost&quot;&#10;  port: 5432"
                             style="flex:1;"></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" title="Load Example" onclick="y2p_loadExample()">
-                                <i class="fas fa-bolt"></i>
-                            </button>
-                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="y2p_clear()">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
                     </div>
 
                     <div class="options-bar"
@@ -145,23 +141,18 @@
 
                 <!-- ── Right Panel: Output ── -->
                 <div class="workspace-panel" style="display:flex; flex-direction:column;">
-                    <div class="panel-header" style="justify-content:space-between; width:100%; display:flex;">
+                    <div class="panel-header">
                         <span class="panel-title">Output: Properties</span>
+                        <div class="panel-actions">
+                            <button id="y2p-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="y2p_copy()"><i class="fas fa-copy"></i> Copy</button>
+                            <button id="y2p-save-btn" class="btn btn-ghost btn-sm" title="Download Properties" onclick="y2p_downloadPrompt()"><i class="fas fa-download"></i> Download</button>
+                        </div>
                     </div>
 
                     <div class="editor-wrapper">
                         <textarea id="propertiesOutput" class="code-output" readonly
                             placeholder="Properties output will appear here…"
                             style="flex:1; min-height:280px;"></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" id="y2p-copy-btn" title="Copy to Clipboard" onclick="y2p_copy()">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button class="btn-icon" id="y2p-save-btn" title="Download Properties"
-                                onclick="y2p_downloadPrompt()">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
                     </div>
 
                     <div class="panel-footer-row">
