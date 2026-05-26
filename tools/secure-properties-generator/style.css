@@ -260,3 +260,60 @@ textarea.code-textarea, textarea.code-output { min-height: 120px; font-size: 0.8
     70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(var(--accent-rgb), 0); }
     100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0); }
 }
+
+/* Hide native browser password reveal eye button */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none !important;
+}
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+}
+
+/* ─── String Input Icon Overrides ─── */
+#string-input-container {
+    position: relative;
+    display: block;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    padding: 0 !important;
+}
+
+#string-input-container .form-control {
+    display: block;
+    width: 100%;
+    height: 46px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    padding-left: 14px;
+    padding-right: 85px !important; /* Extra padding on the right for 2 icons */
+    margin: 0;
+}
+
+#string-input-container .editor-actions {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 6px !important;
+    z-index: 10;
+    margin: 0;
+}
+
+#string-input-container .editor-actions .btn-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+

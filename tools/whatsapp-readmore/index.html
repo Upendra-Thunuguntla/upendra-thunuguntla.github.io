@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Read More Generator | Upendra.dev</title>
+    <meta name="description"
+        content="Force WhatsApp to truncate your messages and show the '... Read more' link. Insert thousands of zero-width characters to hide your punchlines. 100% client-side.">
+    <link rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <!-- Schema.org JSON-LD structured data for SEO and LLMs -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "WhatsApp Read More Generator",
+        "description": "Force WhatsApp to truncate your messages and show the '... Read more' link. Insert thousands of zero-width characters to hide your punchlines.",
+        "applicationCategory": "ProductivityApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+
+    <style>
+        /* WhatsApp Preview Window Custom Styles */
+        .whatsapp-chat-container {
+            width: 100%;
+            max-width: 420px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            background: #efeae2;
+            border: 1px solid var(--border);
+            margin: 0 auto;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            transition: all var(--transition);
+        }
+
+        [data-theme="light"] .whatsapp-chat-container {
+            background: #efeae2;
+        }
+
+        html:not([data-theme="light"]) .whatsapp-chat-container {
+            background: #0b141a;
+        }
+
+        .whatsapp-header {
+            background: #075e54;
+            color: #ffffff;
+            padding: var(--space-sm) var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        html:not([data-theme="light"]) .whatsapp-header {
+            background: #1f2c34;
+            color: #e9edef;
+        }
+
+        .whatsapp-back-btn {
+            font-size: 1rem;
+            margin-right: 4px;
+            cursor: pointer;
+            opacity: 0.85;
+        }
+
+        .whatsapp-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #128c7e;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        html:not([data-theme="light"]) .whatsapp-avatar {
+            background: #00a884;
+        }
+
+        .whatsapp-user-info {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .whatsapp-user-name {
+            font-size: 0.92rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .whatsapp-user-status {
+            font-size: 0.72rem;
+            opacity: 0.85;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .whatsapp-header-icons {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 0.95rem;
+            opacity: 0.85;
+            cursor: pointer;
+        }
+
+        .whatsapp-body {
+            padding: var(--space-md);
+            min-height: 220px;
+            max-height: 340px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            background-color: #efeae2;
+            background-image: radial-gradient(rgba(0,0,0,0.04) 1.2px, transparent 1.2px), radial-gradient(rgba(0,0,0,0.04) 1.2px, transparent 1.2px);
+            background-size: 16px 16px;
+            background-position: 0 0, 8px 8px;
+        }
+
+        html:not([data-theme="light"]) .whatsapp-body {
+            background-color: #0b141a;
+            background-image: radial-gradient(rgba(255,255,255,0.02) 1.2px, transparent 1.2px), radial-gradient(rgba(255,255,255,0.02) 1.2px, transparent 1.2px);
+        }
+
+        .whatsapp-bubble-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        .whatsapp-bubble {
+            max-width: 88%;
+            padding: 8px 12px 20px 12px;
+            border-radius: 7px 0px 7px 7px;
+            font-size: 0.88rem;
+            line-height: 1.4;
+            position: relative;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+            word-break: break-word;
+            white-space: pre-wrap;
+            background: #d9fdd3;
+            color: #111b21;
+        }
+
+        html:not([data-theme="light"]) .whatsapp-bubble {
+            background: #005c4b;
+            color: #e9edef;
+        }
+
+        .whatsapp-bubble::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -8px;
+            width: 0;
+            height: 0;
+            border-top: 0px solid transparent;
+            border-left: 8px solid #d9fdd3;
+            border-bottom: 10px solid transparent;
+        }
+
+        html:not([data-theme="light"]) .whatsapp-bubble::after {
+            border-left-color: #005c4b;
+        }
+
+        .whatsapp-time {
+            position: absolute;
+            bottom: 2px;
+            right: 8px;
+            font-size: 0.65rem;
+            color: #667781;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        html:not([data-theme="light"]) .whatsapp-time {
+            color: #8696a0;
+        }
+
+        .whatsapp-time i {
+            color: #53bdeb; /* Blue checkmarks */
+            font-size: 0.72rem;
+        }
+
+        .whatsapp-readmore-link {
+            color: #027eb5;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 2px;
+        }
+
+        .whatsapp-readmore-link:hover {
+            text-decoration: underline;
+        }
+
+        html:not([data-theme="light"]) .whatsapp-readmore-link {
+            color: #53bdeb;
+        }
+
+        .placeholder-msg {
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            margin: auto;
+            font-size: 0.85rem;
+            padding: var(--space-lg);
+        }
+
+        /* Stats indicators */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-xs);
+            margin-top: var(--space-sm);
+        }
+
+        .stat-badge {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+
+        /* Slider accent styling */
+        .range-slider-wrap {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .range-slider {
+            flex-grow: 1;
+            accent-color: var(--accent);
+            height: 6px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+        }
+
+        .range-value {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text);
+            min-width: 45px;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <div class="tool-breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>WhatsApp Read More Generator</span>
+            </div>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon">💬</div>
+                <div class="tool-hero-text">
+                    <h1>WhatsApp Read More Generator</h1>
+                    <p>Create WhatsApp messages that hide the punchline behind the "... Read more" button. Force truncation manually using invisible zero-width spaces.</p>
+                    <div style="display:flex; gap:var(--space-sm); margin-top:var(--space-md); flex-wrap:wrap;">
+                        <span class="badge">Messaging</span>
+                        <span class="badge badge-purple">WhatsApp</span>
+                        <span class="badge badge-success">100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+            <div class="grid grid-2" style="align-items:start; gap:var(--space-xl);">
+
+                <!-- Form Panel -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">Compose Message</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="intro-message">Intro Message (Visible immediately)</label>
+                        <textarea id="intro-message" class="form-control" style="min-height:120px;" 
+                            placeholder="Enter the intro message (e.g. 'Tap to find out who's awesome...')" autocomplete="off"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="hidden-message">Hidden Message (Appears after clicking Read More)</label>
+                        <textarea id="hidden-message" class="form-control" style="min-height:120px;" 
+                            placeholder="Enter the hidden message (e.g. 'YOU! You are awesome! ❤️')" autocomplete="off"></textarea>
+                    </div>
+
+                    <!-- Toggle Advanced Options -->
+                    <div class="advanced-toggle-wrap" style="margin-top:var(--space-md);">
+                        <button type="button" class="btn btn-ghost btn-sm" id="btn-toggle-advanced" style="width:100%; display:flex; justify-content:space-between; align-items:center; border-style:dashed;">
+                            <span>⚙️ Advanced Options</span>
+                            <i class="fas fa-chevron-down" id="advanced-toggle-icon"></i>
+                        </button>
+                    </div>
+
+                    <!-- Advanced Options Panel -->
+                    <div id="advanced-options-panel" style="display:none; flex-direction:column; gap:var(--space-md); background:var(--surface-2); padding:var(--space-md); border-radius:var(--radius-md); border:1px solid var(--border); margin-top:var(--space-sm); margin-bottom:var(--space-sm);">
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label class="form-label" for="separator-char">Separator Character</label>
+                            <select id="separator-char" class="form-control">
+                                <option value="zwsp">Zero-Width Space (\\u200B) - Standard</option>
+                                <option value="zwj_zwnj">Zero-Width Marks (\\u200E\\u200F) - RTL/LTR</option>
+                                <option value="zwnj">Zero-Width Non-Joiner (\\u200C)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label class="form-label" for="char-multiplier">Repetitions (Invisible Characters Count)</label>
+                            <div class="range-slider-wrap">
+                                <input type="range" id="char-multiplier" class="range-slider" min="1000" max="8000" step="500" value="3000">
+                                <span class="range-value" id="multiplier-value">3000</span>
+                            </div>
+                        </div>
+
+                        <!-- Stats Badges inside Advanced Options -->
+                        <div>
+                            <label class="form-label">Message Stats</label>
+                            <div class="stats-grid" style="margin-top:4px;">
+                                <div class="stat-badge" style="background:var(--surface-3);">
+                                    <div class="stat-value" id="stat-intro">0</div>
+                                    <div class="stat-label">Intro Chars</div>
+                                </div>
+                                <div class="stat-badge" style="background:var(--surface-3);">
+                                    <div class="stat-value" id="stat-spacer">3000</div>
+                                    <div class="stat-label">Spacer Chars</div>
+                                </div>
+                                <div class="stat-badge" style="background:var(--surface-3);">
+                                    <div class="stat-value" id="stat-hidden">0</div>
+                                    <div class="stat-label">Hidden Chars</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-row" style="margin-top:var(--space-md);">
+                        <button class="btn btn-ghost btn-sm" id="btn-load-example">Load Example</button>
+                        <button class="btn btn-ghost btn-sm btn-danger-hover" id="btn-clear-all"><i class="fas fa-trash-alt"></i> Clear All</button>
+                    </div>
+                </div>
+
+                <!-- Result Panel -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title">WhatsApp Mock Preview &amp; Actions</span>
+                    </div>
+
+                    <!-- WhatsApp Frame -->
+                    <div class="whatsapp-chat-container">
+                        <div class="whatsapp-header">
+                            <div class="whatsapp-back-btn"><i class="fas fa-arrow-left"></i></div>
+                            <div class="whatsapp-avatar"><i class="fas fa-user"></i></div>
+                            <div class="whatsapp-user-info">
+                                <div class="whatsapp-user-name">Preview Chat</div>
+                                <div class="whatsapp-user-status">online</div>
+                            </div>
+                            <div class="whatsapp-header-icons">
+                                <i class="fas fa-video"></i>
+                                <i class="fas fa-phone"></i>
+                                <i class="fas fa-ellipsis-v"></i>
+                            </div>
+                        </div>
+
+                        <div class="whatsapp-body" id="preview-body">
+                            <div class="placeholder-msg" id="preview-placeholder">
+                                Type in the text areas on the left to see the message preview.
+                            </div>
+                            <div class="whatsapp-bubble-wrapper" id="preview-bubble-wrapper" style="display: none;">
+                                <div class="whatsapp-bubble">
+                                    <span id="preview-content"></span>
+                                    <div class="whatsapp-time">
+                                        <span id="preview-time-stamp">12:34 PM</span>
+                                        <i class="fas fa-check-double"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats badge removed and placed inside Advanced Options -->
+
+                    <!-- Actions -->
+                    <div class="action-row" style="margin-top:var(--space-md); justify-content: stretch;">
+                        <button class="btn btn-primary" id="btn-copy-text" style="flex-grow: 1;">
+                            <i class="fas fa-copy"></i> Copy Text
+                        </button>
+                        <button class="btn btn-outline" id="btn-send-whatsapp" style="flex-grow: 1;">
+                            <i class="fab fa-whatsapp"></i> Send to WhatsApp
+                        </button>
+                    </div>
+
+                    <div class="info-box" style="margin-top:var(--space-md);">
+                        <span class="info-box-icon">💡</span>
+                        <span>Zero-width characters are completely invisible in chat apps but count towards the character limit, forcing the client to add a "... Read more" link.</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SOCIAL PROOF BAR ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">1-Click</div>
+                    <div class="proof-label">Copy Generated<br>String Instantly</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Interactive</div>
+                    <div class="proof-label">Mock Chat Bubble<br>Preview Window</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Customizable</div>
+                    <div class="proof-label">Control Spacer Chars<br>&amp; Separator Type</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">100%</div>
+                    <div class="proof-label">Client-Side<br>Privacy Guaranteed</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Always Free<br>No Sign-ups</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ HOW TO USE ═══ -->
+    <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use the WhatsApp Read More Generator</h2>
+                <p>Hide surprises, spoilers, jokes, or long messages in WhatsApp under a "... Read more" link in under a minute.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Write an Intro Message</h4>
+                    <p>Enter the text you want the recipient to see first. Keep it short and engaging to tempt them to click.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Add the Hidden Message</h4>
+                    <p>Type the secret content or punchline that will be hidden behind the truncation button.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Select Separator Settings</h4>
+                    <p>Choose the invisible space character and how many times it should be repeated (4000 repetitions are standard for mobile clients).</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Copy and Share</h4>
+                    <p>Click <strong>Copy Text</strong> to copy the payload to your clipboard, or click <strong>Send to WhatsApp</strong> to share it directly.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section tool-section-alt">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">FAQ</div>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list" style="max-width: 800px; margin: 0 auto;">
+                <details class="faq-item">
+                    <summary>How does this tool work?</summary>
+                    <div class="faq-answer">WhatsApp truncates messages when they exceed certain length criteria. Since zero-width characters (like zero-width space <code>\u200B</code>) are technically valid Unicode characters but have no visible width, inserting 4,000 of them between your intro and hidden message tricks WhatsApp into treating it as a very long message, forcing a "... Read more" break.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Why does the separator repeated count matter?</summary>
+                    <div class="faq-answer">WhatsApp limits vary by client platform (iOS, Android, Web). For example, Android requires about 3,000–4,000 characters to trigger truncation, whereas Web might require more. 4,000 repetitions is the sweet spot that works across almost all mobile devices.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Which separator character should I choose?</summary>
+                    <div class="faq-answer">The <strong>Zero-Width Space (<code>\u200B</code>)</strong> is the standard, clean choice. On some clients, a combination of LTR/RTL marks (<code>\u200E\u200F</code>) or Zero-Width Non-Joiner (<code>\u200C</code>) performs better if standard spaces fail to force truncation. We offer options to ensure compatibility.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is this safe and private?</summary>
+                    <div class="faq-answer">Yes, 100%. This tool runs completely inside your browser via local JavaScript. No message text is sent to our servers or third parties. All text generation happens on your device.</div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ SUPPORT BANNER ═══ -->
+    <div class="container" style="margin: var(--space-xl) auto var(--space-2xl);">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>Free forever, no sign-up, no catches. If this saved you time and brought some fun, supporting the developer is always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Other Tools</h3>
+            <div class="related-tools-grid">
+                <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
+                    <div>
+                        <div class="name">Gmail URL Generator</div>
+                        <div class="desc">Pre-filled compose links</div>
+                    </div>
+                </a>
+                <a href="/tools/salary-calc/" class="related-tool-link"><span class="icon">💰</span>
+                    <div>
+                        <div class="name">Salary Hike Calc</div>
+                        <div class="desc">Calculate your hike %</div>
+                    </div>
+                </a>
+                <a href="/tools/cron-builder/" class="related-tool-link"><span class="icon">⏱️</span>
+                    <div>
+                        <div class="name">Cron Builder</div>
+                        <div class="desc">Build Quartz cron expressions</div>
+                    </div>
+                </a>
+                <a href="/tools/secure-properties-generator/" class="related-tool-link"><span class="icon">🔐</span>
+                    <div>
+                        <div class="name">Secure Properties</div>
+                        <div class="desc">Encrypt Mule properties</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+            <br>
+            All tools are 100% client-side & no data ever leaves your browser.
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -163,3 +163,25 @@ function initTypewriter(elId, phrases, typingSpeed, pauseTime, deletingSpeed) {
     }
     tick();
 }
+
+/* ─── Service Worker Registration (Caching) ─── */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(reg => {
+                // Background update check — don't block main thread
+                reg.onupdatefound = () => {
+                    const installingWorker = reg.installing;
+                    if (installingWorker) {
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                console.log('[SW] New version available, reload to update!');
+                            }
+                        };
+                    }
+                };
+            })
+            .catch(err => console.error('[SW] Error registering service worker:', err));
+    });
+}
+

@@ -9,6 +9,7 @@
         content="Free online JSON to RAML DataType converter for MuleSoft API Designer. Supports optional keys, CamelCase conversion, and RAML 1.0 format.">
     <meta name="author" content="Upendra Thunuguntla">
     <link rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
     <link rel="canonical" href="https://upendra-thunuguntla.github.io/tools/json2raml/">
     <script src="/assets/js/theme.js"></script>
     <link rel="stylesheet" href="/assets/css/core.css">
@@ -93,18 +94,14 @@
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">Input: JSON</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="loadExample()"><i class="fas fa-bolt"></i> Example</button>
+                            <button class="btn btn-ghost btn-sm" title="Clear Content" onclick="clearContents()"><i class="fas fa-trash-alt"></i> Clear</button>
+                        </div>
                     </div>
                     <div class="editor-wrapper">
                         <textarea id="json-input" class="code-textarea" oninput="convert()"
                             placeholder='Paste your JSON here&#10;&#10;{&#10;  &quot;name&quot;: &quot;John&quot;,&#10;  &quot;age&quot;: 30,&#10;  &quot;active&quot;: true&#10;}'></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
-                                <i class="fas fa-bolt"></i>
-                            </button>
-                            <button class="btn-icon btn-danger-hover" title="Clear Content" onclick="clearContents()">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
                     </div>
                     <label class="file-zone-card" for="json-file-input">
                         <span class="file-zone-icon"><i class="fas fa-file-upload"></i></span>
@@ -151,19 +148,15 @@
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">Output: RAML DataType</span>
+                        <div class="panel-actions">
+                            <button id="copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="copyResult()"><i class="fas fa-copy"></i> Copy</button>
+                            <button class="btn btn-ghost btn-sm" title="Download RAML" onclick="downloadRAML()"><i class="fas fa-download"></i> Download</button>
+                        </div>
                     </div>
                     <div class="editor-wrapper">
                         <textarea id="raml-output" class="code-output" readonly
                             placeholder="RAML DataType will appear here after conversion"
                             style="min-height:360px;"></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" id="copy-btn" title="Copy to Clipboard" onclick="copyResult()">
-                                <i class="fas fa-copy"></i>
-                            </button>
-                            <button class="btn-icon" title="Download RAML" onclick="downloadRAML()">
-                                <i class="fas fa-download"></i>
-                            </button>
-                        </div>
                     </div>
                     <div class="file-zone-card" onclick="downloadRAML()" role="button" tabindex="0"
                         title="Download .raml file">

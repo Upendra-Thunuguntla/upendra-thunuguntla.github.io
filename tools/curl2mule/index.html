@@ -8,6 +8,7 @@
     <meta name="description"
         content="Instantly convert cURL commands (from Postman, DevTools, or terminal) into MuleSoft HTTP Request Configuration and Processor XML. 100% browser-based and secure.">
     <link rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
     <script src="/assets/js/theme.js"></script>
     <link rel="stylesheet" href="/assets/css/core.css">
     <link rel="stylesheet" href="/assets/css/home.css">
@@ -129,24 +130,18 @@
                 <!-- Left: cURL Input -->
                 <div class="workspace-panel">
                     <div class="panel-header">
-                        <span class="panel-title">Postman cURL Command</span>
+                        <span class="panel-title">Input: cURL Command</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="loadExample()"><i class="fas fa-bolt"></i> Example</button>
+                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="clearAll()"><i class="fas fa-trash-alt"></i> Clear</button>
+                        </div>
                     </div>
                     <div class="editor-wrapper">
-                        <textarea id="curl-input" class="code-textarea" style="min-height:420px;" placeholder="Paste cURL from Postman or terminal here…
-
-Example:
-curl --location --request POST 'https://api.example.com:8443/api/v1/orders' \
+                        <textarea id="curl-input" class="code-textarea" style="min-height:220px;"
+                            placeholder="curl -X POST https://api.example.com/v1/customers \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer eyJhbGciOi...' \
   --data '{&quot;customerId&quot;: &quot;CUST-001&quot;}'"></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
-                                <i class="fas fa-bolt"></i>
-                            </button>
-                            <button class="btn-icon btn-danger-hover" title="Clear All" onclick="clearAll()">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
 
@@ -156,39 +151,30 @@ curl --location --request POST 'https://api.example.com:8443/api/v1/orders' \
 
                     <!-- Config Output -->
                     <div id="config-output-section" class="output-section">
-                        <div class="output-section-header">
-                            <span class="output-section-title"><i class="fas fa-cog"></i> HTTP Request
-                                Configuration</span>
+                        <div class="panel-header">
+                            <span class="panel-title"><i class="fas fa-cog"></i> HTTP Request Configuration</span>
+                            <div class="panel-actions">
+                                <button id="config-copy-btn" class="btn btn-ghost btn-sm" title="Copy Config" onclick="copyConfig()"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
                         </div>
                         <div class="editor-wrapper">
                             <textarea id="config-output" class="code-output" style="min-height:160px;" readonly
                                 placeholder="<!-- HTTP Request Configuration XML will appear here -->"></textarea>
-                            <div class="editor-actions">
-                                <button class="btn-icon" id="config-copy-btn" title="Copy Config"
-                                    onclick="copyConfig()">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </div>
                         </div>
                     </div>
 
                     <!-- Processor Output -->
                     <div id="processor-output-section" class="output-section">
-                        <div class="output-section-header">
-                            <span class="output-section-title"><i class="fas fa-play"></i> HTTP Request Processor</span>
+                        <div class="panel-header">
+                            <span class="panel-title"><i class="fas fa-play"></i> HTTP Request Processor</span>
+                            <div class="panel-actions">
+                                <button id="processor-copy-btn" class="btn btn-ghost btn-sm" title="Copy Processor" onclick="copyProcessor()"><i class="fas fa-copy"></i> Copy</button>
+                                <button class="btn btn-ghost btn-sm" title="Download .xml" onclick="downloadXml()"><i class="fas fa-download"></i> Download</button>
+                            </div>
                         </div>
                         <div class="editor-wrapper">
                             <textarea id="processor-output" class="code-output" style="min-height:200px;" readonly
                                 placeholder="<!-- HTTP Request Processor XML will appear here -->"></textarea>
-                            <div class="editor-actions">
-                                <button class="btn-icon" id="processor-copy-btn" title="Copy Processor"
-                                    onclick="copyProcessor()">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                                <button class="btn-icon" title="Download .xml" onclick="downloadXml()">
-                                    <i class="fas fa-download"></i>
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>

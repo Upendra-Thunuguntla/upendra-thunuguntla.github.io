@@ -19,6 +19,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://upendra-thunuguntla.github.io/images/avat.jpg">
   <link rel="icon" href="/portfolio.png" type="image/png">
+  <link rel="manifest" href="/manifest.json">
   <link rel="canonical" href="https://upendra-thunuguntla.github.io/">
 
   <!-- Apply theme before render to avoid flash -->
@@ -211,7 +212,7 @@
         <div>
           <div id="tool-count"
             style="font-family:var(--font-heading); font-size:2.25rem; font-weight:800; background:var(--grad-primary); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
-            7</div>
+            12</div>
           <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px; font-weight:500;">Open Source Tools
           </div>
         </div>
@@ -241,21 +242,30 @@
         <h2>Developer Tools</h2>
         <p>A growing collection of free, browser-based tools built for the MuleSoft & developer community. All
           processing happens client-side — no data ever leaves your browser.</p>
+        
+        <!-- Layout Customizer Control Panel -->
+        <div style="display:flex; justify-content:center; gap:var(--space-md); margin-top:var(--space-lg);">
+            <button id="btn-edit-layout" class="btn btn-outline btn-sm" onclick="toggleLayoutEdit()">
+                <i class="fas fa-arrows-alt"></i> Customize Layout
+            </button>
+            <button id="btn-reset-layout" class="btn btn-ghost btn-sm" style="display:none;" onclick="resetLayout()">
+                <i class="fas fa-undo"></i> Reset Order
+            </button>
+        </div>
       </div>
 
-      <div class="grid grid-auto reveal-stagger">
+      <div class="grid grid-auto reveal-stagger" id="dev-tools-grid">
 
-        <!-- Tool 1: MuleSoft Log to cURL -->
-        <a href="/tools/mule2curl/" class="card tool-card">
-          <div class="tool-card-icon">⚡</div>
-          <h3 class="tool-card-title">MuleSoft Log to cURL Converter</h3>
-          <p class="tool-card-desc">Instantly convert debug logs to cURL for <strong>Direct Postman Import</strong>.
-            Parses method, headers, and body automatically for instant request replay.</p>
+        <!-- Tool 5: Secure Properties Generator -->
+        <a href="/tools/secure-properties-generator/" class="card tool-card" data-id="secure-properties-generator">
+          <div class="tool-card-icon">🔐</div>
+          <h3 class="tool-card-title">Secure Properties Generator</h3>
+          <p class="tool-card-desc">Encrypt and decrypt properties for Mule applications. Supports AES, Blowfish, DES,
+            DESede, and RC4 algorithms, mimicking the Mule Secure Properties Tool.</p>
           <div class="tool-card-tech">
             <span class="badge">MuleSoft</span>
-            <span class="badge badge-purple">Debugging</span>
-            <span class="badge">cURL</span>
-            <span class="badge badge-success">Postman</span>
+            <span class="badge badge-purple">Security</span>
+            <span class="badge">Cryptography</span>
           </div>
           <div class="tool-card-footer">
             <span class="badge badge-success">🟢 Live</span>
@@ -264,7 +274,7 @@
         </a>
 
         <!-- Tool 2: JSON2RAML -->
-        <a href="/tools/json2raml/" target="_blank" rel="noopener" class="card tool-card">
+        <a href="/tools/json2raml/" target="_blank" rel="noopener" class="card tool-card" data-id="json2raml">
           <div class="tool-card-icon">🔄</div>
           <h3 class="tool-card-title">JSON to RAML Converter</h3>
           <p class="tool-card-desc">Transform your JSON examples into RAML DataType definitions instantly. Supports
@@ -281,7 +291,7 @@
         </a>
 
         <!-- Tool 3: YAML to Properties -->
-        <a href="/tools/yaml2props/" class="card tool-card">
+        <a href="/tools/yaml2props/" class="card tool-card" data-id="yaml2props">
           <div class="tool-card-icon">⚙️</div>
           <h3 class="tool-card-title">YAML to Properties</h3>
           <p class="tool-card-desc">Flatten nested YAML configs into dotted property keys. Get keys in Mule-ready
@@ -298,7 +308,7 @@
         </a>
 
         <!-- Tool 4: Properties to YAML -->
-        <a href="/tools/props2yaml/" class="card tool-card">
+        <a href="/tools/props2yaml/" class="card tool-card" data-id="props2yaml">
           <div class="tool-card-icon">📝</div>
           <h3 class="tool-card-title">Properties to YAML</h3>
           <p class="tool-card-desc">Reconstruct nested YAML hierarchy from flat <code>.properties</code> files.
@@ -314,16 +324,34 @@
           </div>
         </a>
 
-        <!-- Tool 5: Secure Properties Generator -->
-        <a href="/tools/secure-properties-generator/" class="card tool-card">
-          <div class="tool-card-icon">🔐</div>
-          <h3 class="tool-card-title">Secure Properties Generator</h3>
-          <p class="tool-card-desc">Encrypt and decrypt properties for Mule applications. Supports AES, Blowfish, DES,
-            DESede, and RC4 algorithms, mimicking the Mule Secure Properties Tool.</p>
+        <!-- Tool 1: MuleSoft Log to cURL -->
+        <a href="/tools/mule2curl/" class="card tool-card" data-id="mule2curl">
+          <div class="tool-card-icon">⚡</div>
+          <h3 class="tool-card-title">MuleSoft Log to cURL Converter</h3>
+          <p class="tool-card-desc">Instantly convert debug logs to cURL for <strong>Direct Postman Import</strong>.
+            Parses method, headers, and body automatically for instant request replay.</p>
           <div class="tool-card-tech">
             <span class="badge">MuleSoft</span>
-            <span class="badge badge-purple">Security</span>
-            <span class="badge">Cryptography</span>
+            <span class="badge badge-purple">Debugging</span>
+            <span class="badge">cURL</span>
+            <span class="badge badge-success">Postman</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Tool 9: cURL to Mule -->
+        <a href="/tools/curl2mule/" class="card tool-card" data-id="curl2mule">
+          <div class="tool-card-icon">🔁</div>
+          <h3 class="tool-card-title">cURL → Mule HTTP Request</h3>
+          <p class="tool-card-desc">Convert cURL commands into MuleSoft HTTP Request Configuration & Processor XML.
+            Headers and query params as dynamic input parameters per MuleSoft standards.</p>
+          <div class="tool-card-tech">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">HTTP Connector</span>
+            <span class="badge">cURL</span>
           </div>
           <div class="tool-card-footer">
             <span class="badge badge-success">🟢 Live</span>
@@ -332,7 +360,7 @@
         </a>
 
         <!-- Tool 6: XML SDK Helper -->
-        <a href="/tools/xml-sdk/" class="card tool-card">
+        <a href="/tools/xml-sdk/" class="card tool-card" data-id="xml-sdk">
           <div class="tool-card-icon">🏗️</div>
           <h3 class="tool-card-title">Mule XML SDK Helper</h3>
           <p class="tool-card-desc">GUI-driven XML builder for Mule XML SDK connectors. Generate <code
@@ -349,8 +377,58 @@
           </div>
         </a>
 
+        <!-- Tool 10: Cron Builder -->
+        <a href="/tools/cron-builder/" class="card tool-card" data-id="cron-builder">
+          <div class="tool-card-icon">⏱️</div>
+          <h3 class="tool-card-title">Cron Expression Builder</h3>
+          <p class="tool-card-desc">Visually build Quartz cron expressions for MuleSoft Schedulers. Preview the
+            next 5 execution times instantly — no cron memorization needed.</p>
+          <div class="tool-card-tech">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">Scheduler</span>
+            <span class="badge">Quartz Cron</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <!-- Tool 11: RAML to OAS -->
+        <a href="/tools/raml2oas/" class="card tool-card" data-id="raml2oas">
+          <div class="tool-card-icon">🔄</div>
+          <h3 class="tool-card-title">RAML to OAS Converter</h3>
+          <p class="tool-card-desc">Convert RAML 1.0 API specs to OpenAPI 3.0 (OAS 3.0) YAML or JSON. Supports
+            types, resources, query params, headers, and response bodies.</p>
+          <div class="tool-card-tech">
+            <span class="badge">RAML 1.0</span>
+            <span class="badge badge-purple">OpenAPI 3.0</span>
+            <span class="badge">MuleSoft</span>
+          </div>
+          <div class="tool-card-footer">
+            <span class="badge badge-success">🟢 Live</span>
+            <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+     THE GOOFY ZONE
+  ════════════════════════════════════════════ -->
+  <section class="section" id="fun-tools" style="background:var(--bg-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label" style="background:rgba(var(--accent-rgb), 0.15); color:var(--accent);">Casual Playground</div>
+        <h2>The Goofy Zone 🤪</h2>
+        <p>A few fun, casual, and slightly goofy hacks built to solve everyday mini-problems (or just to mess with friends). 100% client-side, zero serious vibes.</p>
+      </div>
+
+      <div class="grid grid-auto reveal-stagger" id="fun-tools-grid">
+
         <!-- Tool 7: Gmail URL -->
-        <a href="/tools/gmail-url/" class="card tool-card">
+        <a href="/tools/gmail-url/" class="card tool-card" data-id="gmail-url">
           <div class="tool-card-icon">📧</div>
           <h3 class="tool-card-title">Gmail Compose URL Generator</h3>
           <p class="tool-card-desc">Generate pre-filled Gmail compose URLs with To, CC, BCC, Subject and Body. Bookmark
@@ -366,8 +444,8 @@
           </div>
         </a>
 
-        <!-- Tool 8: Salary Calc -->
-        <a href="/tools/salary-calc/" class="card tool-card">
+        <!-- Tool 8: Salary Hike -->
+        <a href="/tools/salary-calc/" class="card tool-card" data-id="salary-calc">
           <div class="tool-card-icon">💰</div>
           <h3 class="tool-card-title">Salary Hike Calculator</h3>
           <p class="tool-card-desc">Instantly calculate your hike percentage from current and revised CTC. Simple, fast,
@@ -383,37 +461,21 @@
           </div>
         </a>
 
-        <!-- Tool 9: cURL to Mule -->
-        <a href="/tools/curl2mule/" class="card tool-card">
-          <div class="tool-card-icon">🔁</div>
-          <h3 class="tool-card-title">cURL → Mule HTTP Request</h3>
-          <p class="tool-card-desc">Convert cURL commands into MuleSoft HTTP Request Configuration & Processor XML.
-            Headers and query params as dynamic input parameters per MuleSoft standards.</p>
+        <!-- Tool 12: WhatsApp Read More -->
+        <a href="/tools/whatsapp-readmore/" class="card tool-card" data-id="whatsapp-readmore">
+          <div class="tool-card-icon">💬</div>
+          <h3 class="tool-card-title">WhatsApp Read More Generator</h3>
+          <p class="tool-card-desc">Generate WhatsApp messages with hidden content behind the "... Read more" button. Force truncation manually using zero-width characters.</p>
           <div class="tool-card-tech">
-            <span class="badge">MuleSoft</span>
-            <span class="badge badge-purple">HTTP Connector</span>
-            <span class="badge">cURL</span>
+            <span class="badge">Messaging</span>
+            <span class="badge badge-purple">WhatsApp</span>
+            <span class="badge">Productivity</span>
           </div>
           <div class="tool-card-footer">
             <span class="badge badge-success">🟢 Live</span>
             <span class="tool-card-arrow">Open Tool <i class="fas fa-arrow-right"></i></span>
           </div>
         </a>
-
-        <!-- Coming Soon card -->
-        <!-- <div class="card tool-card" style="opacity:0.6; cursor:default;" aria-label="Coming soon">
-          <div class="tool-card-icon">🔮</div>
-          <h3 class="tool-card-title">Mystery awaits!!</h3>
-          <p class="tool-card-desc">Something interesting will be shown here as soon as it is ready.</p>
-          <div class="tool-card-tech">
-            <span class="badge">Something</span>
-            <span class="badge badge-purple">Awesome</span>
-          </div>
-          <div class="tool-card-footer">
-            <span class="badge" style="background:rgba(100,116,139,0.15); color:var(--text-muted);">🔜 Coming
-              Soon</span>
-          </div>
-        </div> -->
 
       </div>
     </div>
@@ -490,7 +552,7 @@
             <div class="card" style="padding:var(--space-md) var(--space-lg);">
               <div style="font-weight:700; font-size:0.9rem;">🎓 B.Tech — ECE</div>
               <div style="font-size:0.8rem; color:var(--text-muted);">Sri Mittapalli College of Engineering · 2015–2018
-                · 70.07%</div>
+              </div>
             </div>
             <div class="card" style="padding:var(--space-md) var(--space-lg);">
               <div style="font-weight:700; font-size:0.9rem;">📜 Diploma — ECE</div>
@@ -558,6 +620,29 @@
               <div style="margin-top:var(--space-md); display:flex; gap:var(--space-sm); flex-wrap:wrap;">
                 <span class="badge badge-purple">DataWeave</span>
                 <span class="badge">Content</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Technical Blogger -->
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--accent);"></div>
+            <div class="card">
+              <div class="timeline-header">
+                <div>
+                  <div class="timeline-role">Technical Blogger</div>
+                  <div class="timeline-company">Medium / Self-Published</div>
+                </div>
+                <span class="timeline-date">Oct 2021 – Present</span>
+              </div>
+              <p class="timeline-desc">
+                Authoring in-depth technical articles on MuleSoft, DataWeave, and API architecture.
+                Sharing architectural insights and integration best practices with the global developer community.
+              </p>
+              <div style="margin-top:var(--space-md); display:flex; gap:var(--space-sm); flex-wrap:wrap;">
+                <span class="badge">Technical Writing</span>
+                <span class="badge badge-purple">MuleSoft</span>
+                <span class="badge">Community Contribution</span>
               </div>
             </div>
           </div>
@@ -699,7 +784,8 @@
       <div class="section-header reveal">
         <div class="section-label">Work With Me</div>
         <h2>Hire Me for Your Next Project</h2>
-        <p><span class="exp-years-dyn">7+</span> years architecting enterprise integrations. Got a MuleSoft problem that needs solving? Let's talk.</p>
+        <p><span class="exp-years-dyn">7+</span> years architecting enterprise integrations. Got a MuleSoft problem that
+          needs solving? Let's talk.</p>
       </div>
 
       <div class="hire-me-grid reveal">
@@ -952,6 +1038,7 @@
 
   <!-- Platform JS -->
   <script src="/assets/js/platform.js"></script>
+  <script src="/assets/js/layout-customizer.js"></script>
   <script src="/assets/js/blogs-loader.js"></script>
   <script src="/assets/js/dynamic-stats.js"></script>
   <script>

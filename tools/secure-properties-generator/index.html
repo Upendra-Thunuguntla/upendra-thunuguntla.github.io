@@ -8,6 +8,7 @@
     <meta name="description"
         content="Free MuleSoft Secure Properties generator. Encrypt and decrypt configuration properties directly in your browser. Supports AES, Blowfish, DES, DESede, RCA.">
     <link rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
     <script src="/assets/js/theme.js"></script>
     <link rel="stylesheet" href="/assets/css/core.css">
     <link rel="stylesheet" href="/assets/css/home.css">
@@ -140,12 +141,11 @@
                     <!-- Random IV Switch -->
                     <div class="config-item" id="iv-toggle-row">
                         <label>Random IV</label>
-                        <div class="switch-row" onclick="toggleIV()">
+                        <div class="switch-row" onclick="toggleIV()" style="margin-top: 4px;">
                             <label class="switch">
                                 <input type="checkbox" id="iv-toggle-check">
                                 <span class="slider"></span>
                             </label>
-                            <span class="switch-label">Random IV</span>
                         </div>
                     </div>
                 </div>
@@ -175,8 +175,7 @@
 
                 <!-- String Input: Single line -->
                 <div id="string-input-container" class="editor-wrapper">
-                    <input type="text" id="inp-string" class="form-control" placeholder="Enter value to encrypt..."
-                        style="height:46px; font-family:var(--font-mono); font-size:1rem; padding-left:14px; padding-right:50px;">
+                    <input type="text" id="inp-string" class="form-control" placeholder="Enter value to encrypt...">
                     <div class="editor-actions">
                         <button id="btn-gen-value" class="btn-icon" title="Generate Random Value"
                             onclick="generateRandomValue()" style="color:var(--accent);"><i
@@ -216,29 +215,24 @@
 
             <!-- ─── RESULT SECTION ─── -->
             <div class="editor-panel">
-                <div class="panel-header"
-                    style="padding: 4px 12px; font-size: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                <div class="panel-header" style="margin-bottom: var(--space-xs);">
                     <span class="panel-title">Result</span>
-                    <div id="result-extras" style="display: flex; gap: 8px;">
-                        <button class="btn btn-ghost btn-sm" onclick="downloadResult()"><i class="fas fa-download"></i>
-                            Download</button>
+                    <div class="panel-actions">
+                        <button class="btn btn-ghost btn-sm" onclick="downloadResult()"><i class="fas fa-download"></i> Download</button>
+                        <div style="display: flex; gap: 6px; align-items: center; margin-left: 8px; border-left: 1px solid var(--border); padding-left: 8px;">
+                            <button id="btn-copy-plain" class="btn-icon" title="Plain Copy" onclick="copyResult(false)"><i class="fas fa-copy"></i></button>
+                            <div style="position:relative;">
+                                <button id="btn-copy-wrapped" class="btn-icon" title="Wrapped Copy ![ ]" onclick="copyResult(true)"
+                                    style="font-family:var(--font-mono); font-weight:800; font-size: 0.7rem; color:var(--accent);">![]</button>
+                                <span id="wrapped-copy-hint" class="badge-pulse"
+                                    style="display:none; position:absolute; top:-12px; right:-8px; font-size:0.6rem; padding:2px 4px; border-radius:4px; white-space:nowrap;">Use this to copy with ![]</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="editor-wrapper">
                     <textarea id="result-box" class="code-output" readonly placeholder="Result will appear here…"
                         style="min-height:120px;"></textarea>
-                    <div class="editor-actions" style="display:flex; gap:8px;">
-                        <button id="btn-copy-plain" class="btn-icon" title="Plain Copy" onclick="copyResult(false)"><i
-                                class="fas fa-copy"></i></button>
-                        <div style="position:relative;">
-                            <button id="btn-copy-wrapped" class="btn-icon" title="Wrapped Copy ![ ]"
-                                onclick="copyResult(true)"
-                                style="font-family:var(--font-mono); font-weight:800; font-size: 0.75rem; color:var(--accent);">![]</button>
-                            <span id="wrapped-copy-hint" class="badge-pulse"
-                                style="display:none; position:absolute; top:-12px; right:-8px; font-size:0.6rem; padding:2px 4px; border-radius:4px; white-space:nowrap;">Use
-                                this to copy with ![]</span>
-                        </div>
-                    </div>
                 </div>
             </div>
 

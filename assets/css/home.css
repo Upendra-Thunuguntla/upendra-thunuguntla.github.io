@@ -1018,3 +1018,52 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ─── Layout Edit Mode Styles ─── */
+.layout-edit-mode .tool-card {
+    cursor: grab !important;
+    user-select: none;
+    position: relative;
+    border-style: dashed !important;
+    border-color: var(--accent) !important;
+    animation: card-jiggle 0.3s ease-in-out infinite alternate;
+}
+
+.layout-edit-mode .tool-card:active {
+    cursor: grabbing !important;
+}
+
+.layout-edit-mode .tool-card::after {
+    content: '↕ Move';
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(var(--accent-rgb), 0.1);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    padding: 3px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.layout-edit-mode .tool-card.dragging {
+    opacity: 0.3;
+    transform: scale(0.96);
+    border-color: var(--border-accent) !important;
+}
+
+.layout-edit-mode .tool-card.drag-over {
+    border-color: var(--accent) !important;
+    background: rgba(var(--accent-rgb), 0.02) !important;
+    transform: scale(1.02);
+}
+
+@keyframes card-jiggle {
+    0% { transform: rotate(-0.3deg) translateY(-0.5px); }
+    100% { transform: rotate(0.3deg) translateY(0.5px); }
+}
