@@ -102,6 +102,9 @@
                 <div class="workspace-panel">
                     <div class="panel-header">
                         <span class="panel-title">RAML 1.0 Input</span>
+                        <div class="panel-actions">
+                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="loadExample()"><i class="fas fa-bolt"></i> Example</button>
+                        </div>
                     </div>
                     <div class="editor-wrapper">
                         <textarea id="raml-input" class="code-textarea" style="min-height:500px;"
@@ -140,8 +143,6 @@ types:
           application/json:
             type: Order
 "></textarea>
-                        <div class="editor-actions">
-                            <button class="btn-icon" title="Load Example" onclick="loadExample()">
                     </div>
                 </div>
 

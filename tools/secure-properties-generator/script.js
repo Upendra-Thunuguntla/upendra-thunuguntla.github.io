@@ -5,27 +5,21 @@
 let globalMode = 'encrypt';      // encrypt | decrypt
 let inputType = 'string';        // string | file | whole-file
 let useRandomIV = false;
-let fileSource = 'upload';      // upload | paste
-
-function toggleKeyVisibility() {
-    const keyInput = document.getElementById('inp-key');
-    const eyeIcon = document.getElementById('eye-key');
-    if (keyInput.type === 'password') {
-        keyInput.type = 'text';
-        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-        setTimeout(() => {
-            if (keyInput.type === 'text') toggleKeyVisibility();
-        }, 3000);
-    } else {
-        keyInput.type = 'password';
-        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-    }
-}
+let fileSource = 'paste';      // upload | paste
 
 /* ─── Initialization ─── */
 document.addEventListener('DOMContentLoaded', () => {
     setMode('encrypt');
     setInputType('string');
+
+    // Auto-trim spaces on key input blur event
+    const keyInput = document.getElementById('inp-key');
+    if (keyInput) {
+        keyInput.addEventListener('blur', (e) => {
+            e.target.value = e.target.value.trim();
+            onKeyInput();
+        });
+    }
 });
 
 /* ─── Mode Toggles (Encrypt / Decrypt) ─── */
@@ -125,7 +119,7 @@ function onAlgoChange() {
 }
 
 function onKeyInput() {
-    const key = document.getElementById('inp-key').value;
+    const key = document.getElementById('inp-key').value.trim();
     const algo = document.getElementById('sel-algo').value;
     const info = getKeyInfo(key, algo);
     const hint = document.getElementById('key-hint');
@@ -145,20 +139,28 @@ function toggleKeyVisibility() {
     const eye = document.getElementById('eye-key');
     if (inp.type === 'password') {
         inp.type = 'text';
-        eye.className = 'fas fa-eye-slash';
+        if (eye) {
+            eye.classList.replace('fa-eye', 'fa-eye-slash');
+        }
         setTimeout(() => {
-            inp.type = 'password';
-            eye.className = 'fas fa-eye';
-        }, 3000);
+            if (inp.type === 'text') {
+                inp.type = 'password';
+                if (eye) {
+                    eye.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            }
+        }, 5000); // 5s mask timeout
     } else {
         inp.type = 'password';
-        eye.className = 'fas fa-eye';
+        if (eye) {
+            eye.classList.replace('fa-eye-slash', 'fa-eye');
+        }
     }
 }
 
 /* ─── Main Execution ─── */
 async function runOperation() {
-    const key = document.getElementById('inp-key').value;
+    const key = document.getElementById('inp-key').value.trim(); // trimmed key
     const algo = document.getElementById('sel-algo').value;
     const mode_ = document.getElementById('sel-mode').value;
     
@@ -217,10 +219,15 @@ async function runOperation() {
 /* ─── File Processor Logic ─── */
 async function processFileContent(content, key, algo, encryptMode, randomIV, opMode) {
     if (opMode === 'decrypt') {
-        // Find all ![...] and decrypt them
         const regex = /!\[([^\]]+)\]/g;
         const matches = [...content.matchAll(regex)];
+        if (matches.length === 0) {
+            throw new Error('No encrypted patterns (![...]) found in the input.');
+        }
+
         let result = content;
+        let failCount = 0;
+        let successCount = 0;
         
         // Process matches in reverse to maintain indices
         for (let i = matches.length - 1; i >= 0; i--) {
@@ -228,8 +235,18 @@ async function processFileContent(content, key, algo, encryptMode, randomIV, opM
             try {
                 const plaintext = await muleDecrypt(match[0], key, algo, encryptMode, randomIV);
                 result = result.substring(0, match.index) + plaintext + result.substring(match.index + match[0].length);
+                successCount++;
             } catch (e) {
+                failCount++;
                 console.warn('Failed to decrypt match:', match[0], e);
+            }
+        }
+
+        if (failCount > 0 && successCount === 0) {
+            throw new Error('Decryption failed for all encrypted patterns. Check your security key and algorithm.');
+        } else if (failCount > 0) {
+            if (typeof showToast === 'function') {
+                showToast(`Decrypted ${successCount} secrets, ${failCount} failed.`, 'warning');
             }
         }
         return result;
@@ -243,6 +260,9 @@ async function processFileContent(content, key, algo, encryptMode, randomIV, opM
 async function encryptAllValues(content, key, algo, encryptMode, randomIV) {
     const lines = content.split('\n');
     const processedLines = [];
+    let successCount = 0;
+    let failCount = 0;
+    let attemptedCount = 0;
 
     for (let line of lines) {
         const trimmed = line.trim();
@@ -264,11 +284,15 @@ async function encryptAllValues(content, key, algo, encryptMode, randomIV) {
             
             // Skip if it's already a secret or looks like a JSON block starting
             if (v && !v.startsWith('![') && !v.startsWith('{') && !v.startsWith('[')) {
+                attemptedCount++;
                 try {
                     const secret = await muleEncrypt(v, key, algo, encryptMode, randomIV);
-                    processedLines.push(`${indent}${k}${sep} ${secret}`);
+                    // Encrypted values in the file MUST be wrapped in ![] wrapper
+                    processedLines.push(`${indent}${k}${sep} ![${secret}]`);
+                    successCount++;
                     continue;
                 } catch(e) {
+                    failCount++;
                     console.error('Encryption failed for line:', line, e);
                 }
             }
@@ -276,6 +300,15 @@ async function encryptAllValues(content, key, algo, encryptMode, randomIV) {
 
         processedLines.push(line);
     }
+
+    if (attemptedCount > 0 && successCount === 0) {
+        throw new Error('Encryption failed for all values. Check your key and configuration.');
+    } else if (failCount > 0) {
+        if (typeof showToast === 'function') {
+            showToast(`Encrypted ${successCount} values, ${failCount} failed.`, 'warning');
+        }
+    }
+
     return processedLines.join('\n');
 }
 
@@ -371,7 +404,7 @@ function generateRandomKey() {
         keyInput.value = newKey;
         if (keyInput.type === 'password') {
             keyInput.type = 'text';
-            setTimeout(() => { if (keyInput.type === 'text') keyInput.type = 'password'; }, 2000);
+            setTimeout(() => { if (keyInput.type === 'text') keyInput.type = 'password'; }, 5000); // 5s mask timeout
         }
         onKeyInput();
         if (typeof showToast === 'function') showToast('Random key generated!');

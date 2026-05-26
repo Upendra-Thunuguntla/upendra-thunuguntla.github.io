@@ -175,8 +175,7 @@
 
                 <!-- String Input: Single line -->
                 <div id="string-input-container" class="editor-wrapper">
-                    <input type="text" id="inp-string" class="form-control" placeholder="Enter value to encrypt..."
-                        style="height:46px; font-family:var(--font-mono); font-size:1rem; padding-left:14px; padding-right:50px;">
+                    <input type="text" id="inp-string" class="form-control" placeholder="Enter value to encrypt...">
                     <div class="editor-actions">
                         <button id="btn-gen-value" class="btn-icon" title="Generate Random Value"
                             onclick="generateRandomValue()" style="color:var(--accent);"><i
@@ -221,9 +220,9 @@
                     <div class="panel-actions">
                         <button class="btn btn-ghost btn-sm" onclick="downloadResult()"><i class="fas fa-download"></i> Download</button>
                         <div style="display: flex; gap: 6px; align-items: center; margin-left: 8px; border-left: 1px solid var(--border); padding-left: 8px;">
-                            <button id="btn-copy-plain" class="btn-icon btn-sm" title="Plain Copy" onclick="copyResult(false)"><i class="fas fa-copy"></i></button>
+                            <button id="btn-copy-plain" class="btn-icon" title="Plain Copy" onclick="copyResult(false)"><i class="fas fa-copy"></i></button>
                             <div style="position:relative;">
-                                <button id="btn-copy-wrapped" class="btn-icon btn-sm" title="Wrapped Copy ![ ]" onclick="copyResult(true)"
+                                <button id="btn-copy-wrapped" class="btn-icon" title="Wrapped Copy ![ ]" onclick="copyResult(true)"
                                     style="font-family:var(--font-mono); font-weight:800; font-size: 0.7rem; color:var(--accent);">![]</button>
                                 <span id="wrapped-copy-hint" class="badge-pulse"
                                     style="display:none; position:absolute; top:-12px; right:-8px; font-size:0.6rem; padding:2px 4px; border-radius:4px; white-space:nowrap;">Use this to copy with ![]</span>
