@@ -53,8 +53,11 @@ self.addEventListener('fetch', event => {
     // Skip non-GET requests
     if (event.request.method !== 'GET') return;
 
-    // Skip tracking/external scripts we don't want to cache deeply
     const url = new URL(event.request.url);
+    // Skip unsupported schemes (e.g., chrome-extension)
+    if (!url.protocol.startsWith('http')) return;
+
+    // Skip tracking/external scripts we don't want to cache deeply
     if (url.origin.includes('google-analytics') || url.origin.includes('googletagmanager')) {
         return;
     }

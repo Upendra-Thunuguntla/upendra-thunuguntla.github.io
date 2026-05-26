@@ -145,8 +145,8 @@ function getNextRuns(expression, count = 5) {
 
             // Advance month if needed
             if (!months.includes(d.getMonth() + 1)) {
-                d.setMonth(d.getMonth() + 1);
                 d.setDate(1);
+                d.setMonth(d.getMonth() + 1);
                 d.setHours(0, 0, 0);
                 continue;
             }
@@ -406,13 +406,13 @@ if (tzEl) tzEl.textContent = tz;
 
 // ── Cron Checker ─────────────────────────────────────────────────────────────
 const FIELD_META = [
-    { name: 'Second',       range: '0–59' },
-    { name: 'Minute',       range: '0–59' },
-    { name: 'Hour',         range: '0–23' },
+    { name: 'Second', range: '0–59' },
+    { name: 'Minute', range: '0–59' },
+    { name: 'Hour', range: '0–23' },
     { name: 'Day of Month', range: '1–31' },
-    { name: 'Month',        range: '1–12' },
-    { name: 'Day of Week',  range: '1–7 / SUN–SAT' },
-    { name: 'Year',         range: 'optional' },
+    { name: 'Month', range: '1–12' },
+    { name: 'Day of Week', range: '1–7 / SUN–SAT' },
+    { name: 'Year', range: 'optional' },
 ];
 
 function fieldMeaning(value, fieldIndex) {
@@ -428,12 +428,16 @@ function fieldMeaning(value, fieldIndex) {
     if (v.includes('-')) return `${v} (range)`;
     if (v.includes(',')) return `${v} (list)`;
     // Named days/months
-    const DAY_LABEL = { '1':'Sun','2':'Mon','3':'Tue','4':'Wed','5':'Thu','6':'Fri','7':'Sat',
-        'SUN':'Sun','MON':'Mon','TUE':'Tue','WED':'Wed','THU':'Thu','FRI':'Fri','SAT':'Sat' };
-    const MON_LABEL = { '1':'Jan','2':'Feb','3':'Mar','4':'Apr','5':'May','6':'Jun',
-        '7':'Jul','8':'Aug','9':'Sep','10':'Oct','11':'Nov','12':'Dec',
-        'JAN':'Jan','FEB':'Feb','MAR':'Mar','APR':'Apr','MAY':'May','JUN':'Jun',
-        'JUL':'Jul','AUG':'Aug','SEP':'Sep','OCT':'Oct','NOV':'Nov','DEC':'Dec' };
+    const DAY_LABEL = {
+        '1': 'Sun', '2': 'Mon', '3': 'Tue', '4': 'Wed', '5': 'Thu', '6': 'Fri', '7': 'Sat',
+        'SUN': 'Sun', 'MON': 'Mon', 'TUE': 'Tue', 'WED': 'Wed', 'THU': 'Thu', 'FRI': 'Fri', 'SAT': 'Sat'
+    };
+    const MON_LABEL = {
+        '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun',
+        '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec',
+        'JAN': 'Jan', 'FEB': 'Feb', 'MAR': 'Mar', 'APR': 'Apr', 'MAY': 'May', 'JUN': 'Jun',
+        'JUL': 'Jul', 'AUG': 'Aug', 'SEP': 'Sep', 'OCT': 'Oct', 'NOV': 'Nov', 'DEC': 'Dec'
+    };
     if (fieldIndex === 5 && DAY_LABEL[v]) return DAY_LABEL[v];
     if (fieldIndex === 4 && MON_LABEL[v]) return MON_LABEL[v];
     if (fieldIndex === 2) {
@@ -477,18 +481,18 @@ function buildDetailedExplanation(parts) {
         timeDesc += `, every <strong>${step} hours</strong> starting at <strong>${h}:00 ${suffix}</strong>`;
     } else if (hr.includes(',')) {
         const formatted = hr.split(',').map(h => {
-            const n = parseInt(h); const suf = n>=12?'PM':'AM'; const d=n%12===0?12:n%12;
+            const n = parseInt(h); const suf = n >= 12 ? 'PM' : 'AM'; const d = n % 12 === 0 ? 12 : n % 12;
             return `<strong>${d}:00 ${suf}</strong>`;
         }).join(', ');
         timeDesc += ` at ${formatted}`;
     } else if (hr.includes('-')) {
-        const [a,b] = hr.split('-').map(Number);
-        const fmt = n => { const suf=n>=12?'PM':'AM'; const d=n%12===0?12:n%12; return `${d}:00 ${suf}`; };
+        const [a, b] = hr.split('-').map(Number);
+        const fmt = n => { const suf = n >= 12 ? 'PM' : 'AM'; const d = n % 12 === 0 ? 12 : n % 12; return `${d}:00 ${suf}`; };
         timeDesc += ` between <strong>${fmt(a)}</strong> and <strong>${fmt(b)}</strong>`;
     } else {
         const n = parseInt(hr);
-        const suf = n>=12?'PM':'AM'; const d=n%12===0?12:n%12;
-        timeDesc += ` at <strong>${d}:${String(parseInt(min)).padStart(2,'0')} ${suf}</strong>`;
+        const suf = n >= 12 ? 'PM' : 'AM'; const d = n % 12 === 0 ? 12 : n % 12;
+        timeDesc += ` at <strong>${d}:${String(parseInt(min)).padStart(2, '0')} ${suf}</strong>`;
     }
 
     lines.push(timeDesc.charAt(0).toUpperCase() + timeDesc.slice(1));
@@ -502,21 +506,21 @@ function buildDetailedExplanation(parts) {
         if (v === 'MON-FRI' || v === '2-6') lines.push('on <strong>weekdays (Mon–Fri)</strong>');
         else if (v === 'SAT,SUN' || v === '1,7' || v === '7,1') lines.push('on <strong>weekends (Sat & Sun)</strong>');
         else if (v.includes('-')) {
-            const days = ['','Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-            const [a,b] = v.split('-');
+            const days = ['', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const [a, b] = v.split('-');
             const aName = days[parseInt(a)] || a;
             const bName = days[parseInt(b)] || b;
             lines.push(`on <strong>${aName} through ${bName}</strong>`);
         } else if (v.includes(',')) {
             lines.push(`on <strong>${v}</strong> (specific days)`);
         } else {
-            const days = ['','Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-            const name = {SUN:'Sunday',MON:'Monday',TUE:'Tuesday',WED:'Wednesday',THU:'Thursday',FRI:'Friday',SAT:'Saturday'}[v] || (days[parseInt(v)] ? days[parseInt(v)] + 'day' : v);
+            const days = ['', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const name = { SUN: 'Sunday', MON: 'Monday', TUE: 'Tuesday', WED: 'Wednesday', THU: 'Thursday', FRI: 'Friday', SAT: 'Saturday' }[v] || (days[parseInt(v)] ? days[parseInt(v)] + 'day' : v);
             lines.push(`every <strong>${name}</strong>`);
         }
     } else if (useDom) {
         if (dom === 'L') lines.push('on the <strong>last day of the month</strong>');
-        else if (dom.includes('W')) lines.push(`on the nearest <strong>weekday to day ${dom.replace('W','')}</strong>`);
+        else if (dom.includes('W')) lines.push(`on the nearest <strong>weekday to day ${dom.replace('W', '')}</strong>`);
         else lines.push(`on <strong>day ${dom}</strong> of the month`);
     } else {
         lines.push('every day');
@@ -524,15 +528,17 @@ function buildDetailedExplanation(parts) {
 
     // Month component
     if (mon && mon !== '*' && mon !== '?') {
-        const mNames = {1:'January',2:'February',3:'March',4:'April',5:'May',6:'June',
-            7:'July',8:'August',9:'September',10:'October',11:'November',12:'December',
-            JAN:'January',FEB:'February',MAR:'March',APR:'April',MAY:'May',JUN:'June',
-            JUL:'July',AUG:'August',SEP:'September',OCT:'October',NOV:'November',DEC:'December'};
+        const mNames = {
+            1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June',
+            7: 'July', 8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December',
+            JAN: 'January', FEB: 'February', MAR: 'March', APR: 'April', MAY: 'May', JUN: 'June',
+            JUL: 'July', AUG: 'August', SEP: 'September', OCT: 'October', NOV: 'November', DEC: 'December'
+        };
         if (mon.includes(',')) {
             const named = mon.split(',').map(m => mNames[m.toUpperCase()] || mNames[parseInt(m)] || m);
             lines.push(`in <strong>${named.join(', ')}</strong>`);
         } else if (mon.includes('-')) {
-            const [a,b] = mon.split('-');
+            const [a, b] = mon.split('-');
             lines.push(`from <strong>${mNames[a.toUpperCase()] || mNames[parseInt(a)] || a}</strong> to <strong>${mNames[b.toUpperCase()] || mNames[parseInt(b)] || b}</strong>`);
         } else {
             lines.push(`in <strong>${mNames[mon.toUpperCase()] || mNames[parseInt(mon)] || mon}</strong>`);
@@ -571,7 +577,7 @@ function explainCron() {
         // Field breakdown
         const fieldsRow = document.getElementById('checker-fields-row');
         fieldsRow.innerHTML = parts.map((val, i) => {
-            const meta = FIELD_META[i] || { name: `Field ${i+1}`, range: '' };
+            const meta = FIELD_META[i] || { name: `Field ${i + 1}`, range: '' };
             const meaning = fieldMeaning(val, i);
             return `<div class="checker-field-chip">
                 <div class="checker-field-value">${val}</div>
@@ -586,7 +592,7 @@ function explainCron() {
         // Next 10 runs
         const runs = getNextRuns(raw, 10);
         const runsEl = document.getElementById('checker-runs');
-        const DAY_NAMES_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const DAY_NAMES_FULL = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
         if (runs.length === 0) {
             runsEl.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">Could not calculate next runs for this expression.</p>';
@@ -611,7 +617,7 @@ function explainCron() {
         // Scroll into view
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-    } catch(e) {
+    } catch (e) {
         errorEl.innerHTML = `<i class="fas fa-circle-exclamation"></i> Error parsing expression: ${e.message}`;
         errorEl.style.display = 'flex';
     }

@@ -153,7 +153,8 @@ function convertRamlToOas(ramlText) {
 
                     if (typeof propDef === 'string') {
                         schema.properties[cleanProp] = ramlTypeToOasSchema(propDef);
-                    } else if (typeof propDef === 'object') {
+                        //js returns true for object validation even in null case   
+                    } else if (propDef && typeof propDef === 'object') {
                         const propSchema = ramlTypeToOasSchema(propDef.type);
                         if (propDef.description) propSchema.description = propDef.description;
                         if (propDef.example !== undefined) propSchema.example = propDef.example;
@@ -365,7 +366,7 @@ function yamlScalar(val) {
     const s = String(val);
     // Quote if contains special chars or looks like a number/bool
     if (/[:#\[\]{}&*!|>'"%@`,]/.test(s) || s === '' || /^\s|\s$/.test(s) ||
-        ['true','false','null','yes','no'].includes(s.toLowerCase()) ||
+        ['true', 'false', 'null', 'yes', 'no'].includes(s.toLowerCase()) ||
         (!isNaN(s) && s !== '')) {
         return `"${s.replace(/"/g, '\\"')}"`;
     }
