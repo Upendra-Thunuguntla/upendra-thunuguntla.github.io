@@ -242,12 +242,22 @@
         <h2>Developer Tools</h2>
         <p>A growing collection of free, browser-based tools built for the MuleSoft & developer community. All
           processing happens client-side — no data ever leaves your browser.</p>
+        
+        <!-- Layout Customizer Control Panel -->
+        <div style="display:flex; justify-content:center; gap:var(--space-md); margin-top:var(--space-lg);">
+            <button id="btn-edit-layout" class="btn btn-outline btn-sm" onclick="toggleLayoutEdit()">
+                <i class="fas fa-arrows-alt"></i> Customize Layout
+            </button>
+            <button id="btn-reset-layout" class="btn btn-ghost btn-sm" style="display:none;" onclick="resetLayout()">
+                <i class="fas fa-undo"></i> Reset Order
+            </button>
+        </div>
       </div>
 
-      <div class="grid grid-auto reveal-stagger">
+      <div class="grid grid-auto reveal-stagger" id="dev-tools-grid">
 
         <!-- Tool 5: Secure Properties Generator -->
-        <a href="/tools/secure-properties-generator/" class="card tool-card">
+        <a href="/tools/secure-properties-generator/" class="card tool-card" data-id="secure-properties-generator">
           <div class="tool-card-icon">🔐</div>
           <h3 class="tool-card-title">Secure Properties Generator</h3>
           <p class="tool-card-desc">Encrypt and decrypt properties for Mule applications. Supports AES, Blowfish, DES,
@@ -264,7 +274,7 @@
         </a>
 
         <!-- Tool 2: JSON2RAML -->
-        <a href="/tools/json2raml/" target="_blank" rel="noopener" class="card tool-card">
+        <a href="/tools/json2raml/" target="_blank" rel="noopener" class="card tool-card" data-id="json2raml">
           <div class="tool-card-icon">🔄</div>
           <h3 class="tool-card-title">JSON to RAML Converter</h3>
           <p class="tool-card-desc">Transform your JSON examples into RAML DataType definitions instantly. Supports
@@ -281,7 +291,7 @@
         </a>
 
         <!-- Tool 3: YAML to Properties -->
-        <a href="/tools/yaml2props/" class="card tool-card">
+        <a href="/tools/yaml2props/" class="card tool-card" data-id="yaml2props">
           <div class="tool-card-icon">⚙️</div>
           <h3 class="tool-card-title">YAML to Properties</h3>
           <p class="tool-card-desc">Flatten nested YAML configs into dotted property keys. Get keys in Mule-ready
@@ -298,7 +308,7 @@
         </a>
 
         <!-- Tool 4: Properties to YAML -->
-        <a href="/tools/props2yaml/" class="card tool-card">
+        <a href="/tools/props2yaml/" class="card tool-card" data-id="props2yaml">
           <div class="tool-card-icon">📝</div>
           <h3 class="tool-card-title">Properties to YAML</h3>
           <p class="tool-card-desc">Reconstruct nested YAML hierarchy from flat <code>.properties</code> files.
@@ -315,7 +325,7 @@
         </a>
 
         <!-- Tool 1: MuleSoft Log to cURL -->
-        <a href="/tools/mule2curl/" class="card tool-card">
+        <a href="/tools/mule2curl/" class="card tool-card" data-id="mule2curl">
           <div class="tool-card-icon">⚡</div>
           <h3 class="tool-card-title">MuleSoft Log to cURL Converter</h3>
           <p class="tool-card-desc">Instantly convert debug logs to cURL for <strong>Direct Postman Import</strong>.
@@ -333,7 +343,7 @@
         </a>
 
         <!-- Tool 9: cURL to Mule -->
-        <a href="/tools/curl2mule/" class="card tool-card">
+        <a href="/tools/curl2mule/" class="card tool-card" data-id="curl2mule">
           <div class="tool-card-icon">🔁</div>
           <h3 class="tool-card-title">cURL → Mule HTTP Request</h3>
           <p class="tool-card-desc">Convert cURL commands into MuleSoft HTTP Request Configuration & Processor XML.
@@ -350,7 +360,7 @@
         </a>
 
         <!-- Tool 6: XML SDK Helper -->
-        <a href="/tools/xml-sdk/" class="card tool-card">
+        <a href="/tools/xml-sdk/" class="card tool-card" data-id="xml-sdk">
           <div class="tool-card-icon">🏗️</div>
           <h3 class="tool-card-title">Mule XML SDK Helper</h3>
           <p class="tool-card-desc">GUI-driven XML builder for Mule XML SDK connectors. Generate <code
@@ -367,9 +377,8 @@
           </div>
         </a>
 
-
         <!-- Tool 10: Cron Builder -->
-        <a href="/tools/cron-builder/" class="card tool-card">
+        <a href="/tools/cron-builder/" class="card tool-card" data-id="cron-builder">
           <div class="tool-card-icon">⏱️</div>
           <h3 class="tool-card-title">Cron Expression Builder</h3>
           <p class="tool-card-desc">Visually build Quartz cron expressions for MuleSoft Schedulers. Preview the
@@ -386,7 +395,7 @@
         </a>
 
         <!-- Tool 11: RAML to OAS -->
-        <a href="/tools/raml2oas/" class="card tool-card">
+        <a href="/tools/raml2oas/" class="card tool-card" data-id="raml2oas">
           <div class="tool-card-icon">🔄</div>
           <h3 class="tool-card-title">RAML to OAS Converter</h3>
           <p class="tool-card-desc">Convert RAML 1.0 API specs to OpenAPI 3.0 (OAS 3.0) YAML or JSON. Supports
@@ -416,10 +425,10 @@
         <p>A few fun, casual, and slightly goofy hacks built to solve everyday mini-problems (or just to mess with friends). 100% client-side, zero serious vibes.</p>
       </div>
 
-      <div class="grid grid-auto reveal-stagger">
+      <div class="grid grid-auto reveal-stagger" id="fun-tools-grid">
 
         <!-- Tool 7: Gmail URL -->
-        <a href="/tools/gmail-url/" class="card tool-card">
+        <a href="/tools/gmail-url/" class="card tool-card" data-id="gmail-url">
           <div class="tool-card-icon">📧</div>
           <h3 class="tool-card-title">Gmail Compose URL Generator</h3>
           <p class="tool-card-desc">Generate pre-filled Gmail compose URLs with To, CC, BCC, Subject and Body. Bookmark
@@ -436,7 +445,7 @@
         </a>
 
         <!-- Tool 8: Salary Hike -->
-        <a href="/tools/salary-calc/" class="card tool-card">
+        <a href="/tools/salary-calc/" class="card tool-card" data-id="salary-calc">
           <div class="tool-card-icon">💰</div>
           <h3 class="tool-card-title">Salary Hike Calculator</h3>
           <p class="tool-card-desc">Instantly calculate your hike percentage from current and revised CTC. Simple, fast,
@@ -453,7 +462,7 @@
         </a>
 
         <!-- Tool 12: WhatsApp Read More -->
-        <a href="/tools/whatsapp-readmore/" class="card tool-card">
+        <a href="/tools/whatsapp-readmore/" class="card tool-card" data-id="whatsapp-readmore">
           <div class="tool-card-icon">💬</div>
           <h3 class="tool-card-title">WhatsApp Read More Generator</h3>
           <p class="tool-card-desc">Generate WhatsApp messages with hidden content behind the "... Read more" button. Force truncation manually using zero-width characters.</p>
@@ -1029,6 +1038,7 @@
 
   <!-- Platform JS -->
   <script src="/assets/js/platform.js"></script>
+  <script src="/assets/js/layout-customizer.js"></script>
   <script src="/assets/js/blogs-loader.js"></script>
   <script src="/assets/js/dynamic-stats.js"></script>
   <script>
