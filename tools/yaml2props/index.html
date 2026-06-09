@@ -210,8 +210,37 @@
         </div>
     </div>
 
-    <!-- ═══ FAQ ═══ -->
+    <!-- ═══ HOW TO USE ═══ -->
     <div class="tool-section">
+        <div class="container">
+            <div class="tool-section-header">
+                <div class="tool-section-label">Getting Started</div>
+                <h2>How to Use the YAML to Properties Converter</h2>
+                <p>Flatten your hierarchical YAML configuration files into a flat properties list in seconds.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Paste YAML Content</h4>
+                    <p>Paste your nested YAML configuration straight into the input editor, or upload a <code>.yaml</code> file.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Choose Output Format</h4>
+                    <p>Select option filters such as "Keys Only", or wrap properties keys in <code>${key}</code> or <code>Mule::p("key")</code>.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Convert Instantly</h4>
+                    <p>The conversion happens live as you type or change options, displaying structured dotted property key-value pairs.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Copy or Download</h4>
+                    <p>Copy the flat properties output to your clipboard, or download it directly as a <code>.properties</code> file.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="tool-section tool-section-alt">
         <div class="container">
             <div class="tool-section-header">
                 <div class="tool-section-label">FAQ</div>
@@ -235,6 +264,14 @@
                     <div class="faq-answer"><code>Mule::p("key")</code> is the DataWeave function to read a Mule
                         property. This tool can auto-wrap all your keys in this format for quick use in transformations.
                     </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How does the tool handle secure properties?</summary>
+                    <div class="faq-answer">If your YAML config contains encrypted values wrapped in <code>![val]</code>, selecting "Keys Only" mode will automatically prepend the <code>secure::</code> prefix to those property keys, keeping them aligned with MuleSoft's Secure Properties standards.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my configuration file sent to any server?</summary>
+                    <div class="faq-answer">No, all operations run entirely in local browser memory. None of your database credentials, system configs, or passwords ever leave your machine.</div>
                 </details>
             </div>
         </div>

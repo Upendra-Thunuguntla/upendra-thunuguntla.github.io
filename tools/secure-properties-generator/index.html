@@ -333,6 +333,10 @@
                     <div class="faq-answer">Current batch processing supports standard key-value pairs. For complex YAML
                         with anchors/aliases, we recommend processing individual values or the whole file.</div>
                 </details>
+                <details class="faq-item">
+                    <summary>How does Random IV affect encryption outputs?</summary>
+                    <div class="faq-answer">Using Random IV (Initialization Vector) means encrypting the same text with the same key will produce a different ciphertext each time. This increases security by preventing attackers from identifying repeated patterns. Decryption is still successful because the IV is stored along with the ciphertext in the output.</div>
+                </details>
             </div>
         </div>
     </div>
