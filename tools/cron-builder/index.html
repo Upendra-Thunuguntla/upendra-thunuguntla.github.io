@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cron Expression Builder for Mule Pollers — Visual Quartz Cron Generator | Upendra.dev</title>
+    <title>Cron Expression Builder for Mule Pollers | Visual Quartz Cron Generator | Upendra.dev</title>
     <meta name="description"
         content="Visually build Quartz/Mule cron expressions for MuleSoft Schedulers. See the next 5 execution times instantly. 100% browser-based and free.">
     <link rel="icon" href="/portfolio.png" type="image/png">
@@ -66,7 +66,7 @@
                 <div class="tool-hero-text">
                     <h1>Cron Expression Builder for Mule Pollers</h1>
                     <p>Visually configure <strong>Quartz cron expressions</strong> for MuleSoft Scheduler and Poller components.
-                        Choose from presets or build field-by-field — preview the <strong>next 5 execution times</strong>
+                        Choose from presets or build field-by-field, then preview the <strong>next 5 execution times</strong>
                         instantly without memorizing cron syntax.</p>
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
                         <span class="badge">MuleSoft</span>
@@ -234,14 +234,14 @@
                     <div class="cron-legend">
                         <div class="cron-legend-title">📖 Quick Reference</div>
                         <div class="cron-legend-grid">
-                            <div class="legend-item"><code>*</code> — Any value</div>
-                            <div class="legend-item"><code>?</code> — No specific value</div>
-                            <div class="legend-item"><code>-</code> — Range (e.g. MON-FRI)</div>
-                            <div class="legend-item"><code>,</code> — List (e.g. 6,12,18)</div>
-                            <div class="legend-item"><code>/</code> — Step (e.g. 0/15)</div>
-                            <div class="legend-item"><code>L</code> — Last (day of month)</div>
-                            <div class="legend-item"><code>#</code> — Nth day (e.g. 2#1 = 1st Mon)</div>
-                            <div class="legend-item"><code>W</code> — Nearest weekday</div>
+                            <div class="legend-item"><code>*</code>: Any value</div>
+                            <div class="legend-item"><code>?</code>: No specific value</div>
+                            <div class="legend-item"><code>-</code>: Range (e.g. MON-FRI)</div>
+                            <div class="legend-item"><code>,</code>: List (e.g. 6,12,18)</div>
+                            <div class="legend-item"><code>/</code>: Step (e.g. 0/15)</div>
+                            <div class="legend-item"><code>L</code>: Last (day of month)</div>
+                            <div class="legend-item"><code>#</code>: Nth day (e.g. 2#1 = 1st Mon)</div>
+                            <div class="legend-item"><code>W</code>: Nearest weekday</div>
                         </div>
                     </div>
                 </div>
@@ -284,7 +284,7 @@
             <div class="tool-section-header">
                 <div class="tool-section-label">Getting Started</div>
                 <h2>How to Use the Cron Builder</h2>
-                <p>Build and validate Quartz cron expressions for MuleSoft Scheduler in seconds — no cron memorization needed.</p>
+                <p>Build and validate Quartz cron expressions for MuleSoft Scheduler in seconds, with no cron memorization needed.</p>
             </div>
             <div class="how-to-steps">
                 <div class="how-to-step">
@@ -324,13 +324,13 @@
                     <div class="faq-answer">MuleSoft Scheduler uses <strong>Quartz cron expressions</strong>, which have
                         <strong>6 or 7 fields</strong>: <code>Seconds Minutes Hours Day-of-Month Month Day-of-Week [Year]</code>.
                         This is different from Unix cron (5 fields). Notably, you cannot specify both Day-of-Month and
-                        Day-of-Week — one must be <code>?</code>.
+                        Day-of-Week; one must be <code>?</code>.
                     </div>
                 </details>
                 <details class="faq-item">
                     <summary>What's the difference between * and ? in Quartz cron?</summary>
                     <div class="faq-answer"><code>*</code> means "every value" and is used for fields like seconds, minutes, and hours.
-                        <code>?</code> means "no specific value" and is used to leave either Day-of-Month or Day-of-Week unspecified —
+                        <code>?</code> means "no specific value" and is used to leave either Day-of-Month or Day-of-Week unspecified,
                         since both cannot be set simultaneously in Quartz. Always use <code>?</code> in one of them.
                     </div>
                 </details>
@@ -338,7 +338,7 @@
                     <summary>How do I run a job every N minutes in Mule?</summary>
                     <div class="faq-answer">Use the step notation: <code>0 0/N * * * ?</code>. For example, <code>0 0/15 * * * ?</code>
                         runs every 15 minutes starting at the top of the hour. Alternatively, for simpler intervals,
-                        use the <strong>Fixed Frequency</strong> scheduler in MuleSoft instead of cron — set
+                        use the <strong>Fixed Frequency</strong> scheduler in MuleSoft instead of cron by setting
                         <code>frequency="15000" timeUnit="MILLISECONDS"</code>.
                     </div>
                 </details>
