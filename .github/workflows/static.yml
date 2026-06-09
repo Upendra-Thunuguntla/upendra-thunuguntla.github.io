@@ -41,3 +41,16 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  submit-sitemap:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Submit sitemap URLs to IndexNow
+        uses: jakob-bagterp/index-now-submit-sitemap-urls-action@v1
+        with:
+          host: upendra-thunuguntla.github.io
+          api_key: ${{ secrets.INDEX_NOW_API_KEY }}
+          api_key_location: https://upendra-thunuguntla.github.io/${{ secrets.INDEX_NOW_API_KEY }}.txt
+          sitemap_locations: https://upendra-thunuguntla.github.io/sitemap.xml
+
