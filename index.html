@@ -63,6 +63,56 @@
     "description": "Creator of MuleSoft developer tools. Salesforce Certified MuleSoft Integration Architect. Senior Engineer at NTT DATA."
   }
   </script>
+
+  <!-- FAQ Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is API-Led Connectivity in MuleSoft?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "API-Led Connectivity is an architectural methodology that organizes integration layers into three distinct tiers: System APIs (exposing core records), Process APIs (orchestrating and encapsulating business logic), and Experience APIs (formatting data for target channels). This structure maximizes asset reusability, minimizes tight coupling, and speeds up enterprise delivery."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why are browser-local tools preferred for enterprise integrations?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Enterprise compliance strictly prohibits sending sensitive API payloads, system logs, security keys, or passwords to external servers. Browser-local utilities run fully in client-side memory using local JavaScript, ensuring zero risk of data leaks or compliance violations."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do you secure configuration properties in Mule 4 applications?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Configuration properties are secured using cryptography. Sensitive strings are encrypted (typically AES in CBC mode) and wrapped inside ![encrypted_value] indicators, which are decrypted dynamically in-memory at application runtime using a global security key."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the key benefits of migrating from RAML to OpenAPI (OAS)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "While RAML is standard in MuleSoft, OpenAPI (OAS) is the global industry standard. Migrating to OAS 3.0 provides broader toolchain compatibility across external developer portals, AWS Gateway, Azure APIM, Postman, and automated testing tools."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Quartz Scheduler specification in MuleSoft?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "MuleSoft schedulers utilize Quartz cron expressions consisting of 6 or 7 fields (seconds, minutes, hours, day-of-month, month, day-of-week, optional year) to trigger recurring processes at precise enterprise intervals."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -1008,8 +1058,81 @@
   </section>
 
   <!-- ═══════════════════════════════════════════
+     SEO & INTEGRATION ARCHITECTURE PERSPECTIVES
+  ════════════════════════════════════════════ -->
+  <section class="section" id="faq" style="background:var(--surface); border-top:1px solid var(--border);">
+    <div class="container" style="max-width:800px; margin:0 auto;">
+      <div class="section-header reveal">
+        <div class="section-label">Architecture Insights</div>
+        <h2>Integration FAQ & Resources</h2>
+        <p>Expert insights into modern API design, MuleSoft architecture, secure property management, and enterprise integration patterns.</p>
+      </div>
+
+      <div class="faq-list">
+        <!-- Section A & D Context -->
+        <div style="margin-bottom:var(--space-xl); line-height:1.7; color:var(--text-subtle); font-size:0.95rem;">
+          <h3 style="color:var(--text); margin-bottom:var(--space-md);">Upendra's Integration Architectural Philosophy</h3>
+          <p style="margin-bottom:var(--space-md);">
+            As a certified <strong>MuleSoft Certified Integration Architect (MCIA)</strong>, Upendra Thunuguntla designs and delivers robust, high-performance integration layers bridging core legacy systems with modern cloud infrastructure. Modern enterprise integration requires a strategic balance of <strong>API-Led Connectivity</strong>, strict credential cryptography, well-structured sitemap and endpoints routing, and modular developer toolchains that accelerate pipeline delivery.
+          </p>
+          <p>
+            This portal hosts zero-backend, browser-local utilities built to address real-world developer friction points, allowing consultants to process sensitive configurations without sending passwords or payloads to unverified third-party servers. All operations happen in-memory for 100% client-side privacy.
+          </p>
+        </div>
+
+        <!-- Section B & C Context -->
+        <div style="margin-bottom:var(--space-xl); line-height:1.7; color:var(--text-subtle); font-size:0.95rem;">
+          <h3 style="color:var(--text); margin-bottom:var(--space-md);">How to Leverage These Tools & Enterprise Use Cases</h3>
+          <p style="margin-bottom:var(--space-md);">
+            To leverage these utilities, simply navigate to the respective tool folder, input your configuration schema, security key, or raw log, and run the client-side parser. Common production integration use cases include:
+          </p>
+          <ul style="margin-left:20px; margin-bottom:var(--space-md); display:flex; flex-direction:column; gap:var(--space-xs);">
+            <li><strong>AES-256 System Encryption:</strong> Safely encrypting database, SMTP, and SFTP credentials inside <code>secure-properties</code> configurations before continuous deployment.</li>
+            <li><strong>API Spec Migration:</strong> Transforming RAML 1.0 specifications into OpenAPI (OAS 3.0) YAML structure to support cross-platform API Gateways.</li>
+            <li><strong>Live Debug Replays:</strong> Converting MuleSoft server request/response debug dumps back into valid Postman cURL commands to isolate HTTP timeouts and headers issues instantly.</li>
+          </ul>
+        </div>
+
+        <h3 style="color:var(--text); margin-bottom:var(--space-md);">Frequently Asked Questions</h3>
+        <div style="display:flex; flex-direction:column; gap:var(--space-sm); margin-bottom:var(--space-xl);">
+          <details class="faq-item">
+            <summary>What is API-Led Connectivity in MuleSoft?</summary>
+            <div class="faq-answer">
+              API-Led Connectivity is an architectural methodology that organizes integration layers into three distinct tiers: System APIs (exposing core records), Process APIs (orchestrating and encapsulating business logic), and Experience APIs (formatting data for target channels). This structure maximizes asset reusability, minimizes tight coupling, and speeds up enterprise delivery.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>Why are browser-local tools preferred for enterprise integrations?</summary>
+            <div class="faq-answer">
+              Enterprise compliance strictly prohibits sending sensitive API payloads, system logs, security keys, or passwords to external servers. Browser-local utilities run fully in client-side memory using local JavaScript. Since no data ever leaves the local machine, developers can safely perform cryptography, specification conversions, and logs flattening without risk of data leaks or compliance violations.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>How do you secure configuration properties in Mule 4 applications?</summary>
+            <div class="faq-answer">
+              Configuration properties are secured using the MuleSecureProperties tool or compliant local engines. Sensitive strings are encrypted (typically using algorithms like AES with CBC operation mode) and wrapped inside <code>![encrypted_value]</code> indicators. A Secure Properties Config element is configured in the XML with a global security key, which decrypts values dynamically in-memory at application runtime.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>What are the key benefits of migrating from RAML to OpenAPI (OAS)?</summary>
+            <div class="faq-answer">
+              While RAML is the standard within the MuleSoft Anypoint ecosystem, OpenAPI 3.0 (OAS) is the global industry standard for REST API specifications. Migrating to OAS 3.0 provides broader toolchain compatibility across external developer portals, AWS API Gateway, Azure API Management, Postman, and automated Swagger testing utilities.
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>What is the Quartz Scheduler specification in MuleSoft?</summary>
+            <div class="faq-answer">
+              MuleSoft schedulers utilize Quartz cron expressions to execute recurring integration tasks. A Quartz cron expression consists of 6 or 7 whitespace-separated fields: seconds, minutes, hours, day-of-month, month, day-of-week, and optional year. This visual builder allows developers to quickly define complex orchestration intervals without syntax errors.
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
      FOOTER
-════════════════════════════════════════════ -->
+  ════════════════════════════════════════════ -->
   <footer class="footer">
     <div class="container">
       <div
