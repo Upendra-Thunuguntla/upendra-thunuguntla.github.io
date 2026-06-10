@@ -49,7 +49,12 @@ function parseMuleLog(raw) {
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
-        if (!line) continue;
+        if (!line) {
+            if (method && !bodyCapture) {
+                bodyCapture = true;
+            }
+            continue;
+        }
 
         // Strip common Mule log prefixes (timestamps, log levels, class names)
         const cleaned = line
@@ -156,7 +161,12 @@ function parseMuleLog(raw) {
         m = cleaned.match(bodyRe);
         if (m) { body = m[1].trim(); bodyCapture = true; continue; }
 
-        if (bodyCapture && cleaned.startsWith('{') || bodyCapture && cleaned.startsWith('[')) {
+        // Auto-detect JSON or XML body start if method is set
+        if (!bodyCapture && method && (cleaned.startsWith('{') || cleaned.startsWith('[') || cleaned.startsWith('<'))) {
+            bodyCapture = true;
+        }
+
+        if (bodyCapture && (cleaned.startsWith('{') || cleaned.startsWith('['))) {
             body += (body ? '\n' : '') + cleaned; continue;
         }
 
