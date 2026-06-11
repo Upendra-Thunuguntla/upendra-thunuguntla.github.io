@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO & AEO Title Structure -->
+    <title>Base64 Encoder & Decoder | Encode & Decode Text & Files | Upendra.dev</title>
+
+    <!-- Meta Descriptions -->
+    <meta name="description"
+        content="Free online Base64 encoder and decoder. Convert text or files to/from Base64. Supports UTF-8, Hex, ASCII, UTF-16, URL-safe mode. 100% secure client-side processing.">
+    <meta name="author" content="Upendra Venkata Muralidhar Thunuguntla">
+
+    <!-- Brand / Identity Elements -->
+    <link class="portfolio-icon" rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://upendra-thunuguntla.github.io/tools/base64-converter/">
+
+    <!-- Pre-render Theme Injection -->
+    <script src="/assets/js/theme.js"></script>
+
+    <!-- Global CSS Hierarchy -->
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+
+    <!-- Tool-specific stylesheet override -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- FontAwesome Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-9YH1D05QCJ');
+    </script>
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Is my data safe when using this Base64 converter?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. This tool runs 100% in your local browser memory using client-side JavaScript. No data, API keys, or text payloads are sent to any external server."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What is URL-safe Base64 encoding?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Standard Base64 contains characters like '+' and '/' which have special meanings in URLs. URL-safe Base64 replaces '+' with '-' and '/' with '_' to prevent URL parameter encoding issues, and optionally strips the trailing padding '=' signs."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Which text encoding should I choose?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "UTF-8 is the standard encoding for modern web systems. ASCII is suitable for plain English strings. Hexadecimal is useful when you want to convert raw bytes in hex format (e.g. key hashes) directly to Base64."
+                }
+            },
+            {
+          "@type": "Question",
+          "name": "Is my data sent to any server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The tool processes all inputs directly inside your browser. No data, payloads, keys, or text contents ever leave your local computer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why use URL-Safe Base64?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard Base64 encoding utilizes character symbols such as '+' and '/' which carry operational meanings in URL query strings. Converting to URL-safe options replaces these symbols with '-' and '_' to prevent transmission corruption."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this support emoji and special characters?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. When using the default UTF-8 Character Encoding setting, the encoder and decoder handle multi-byte Unicode strings (including emojis and international glyphs) correctly without character loss."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Hexadecimal mode useful for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hex mode is ideal for cryptographic keys and digests. You can input raw hexadecimal byte strings (like hash outputs) and encode them into Base64, or decode Base64 back into hex bytes."
+          }
+        }
+        ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "browserRequirements": "Requires JavaScript",
+      "name": "Base64 Encoder & Decoder",
+      "url": "https://upendra-thunuguntla.github.io/tools/base64-converter/",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free online Base64 encoder and decoder. Convert text or files to/from Base64. Supports UTF-8, Hex, ASCII, UTF-16, URL-safe mode. 100% secure client-side processing.",
+      "author": {
+        "@type": "Person",
+        "name": "Upendra Venkata Muralidhar Thunuguntla",
+        "url": "https://upendra-thunuguntla.github.io/",
+        "sameAs": [
+          "https://www.linkedin.com/in/upendra-thunuguntla/",
+          "https://github.com/Upendra-Thunuguntla"
+        ]
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
+      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
+      "url": "https://upendra-thunuguntla.github.io/",
+      "numberOfItems": 13,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Base64 Encoder & Decoder",
+            "url": "https://upendra-thunuguntla.github.io/tools/base64-converter/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Cron Expression Builder for Mule Pollers",
+            "url": "https://upendra-thunuguntla.github.io/tools/cron-builder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Postman cURL → Mule HTTP Request",
+            "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Gmail Compose URL Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "WebApplication",
+            "name": "JSON to RAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/json2raml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Log to cURL Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Properties to YAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "WebApplication",
+            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/raml2oas/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Salary Hike Calculator",
+            "url": "https://upendra-thunuguntla.github.io/tools/salary-calc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Secure Properties Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/secure-properties-generator/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "WebApplication",
+            "name": "WhatsApp Read More Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule XML SDK Helper",
+            "url": "https://upendra-thunuguntla.github.io/tools/xml-sdk/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "WebApplication",
+            "name": "YAML to Properties Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/yaml2props/"
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body class="tool-page">
+
+    <!-- Global Navigation Menu -->
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo" aria-label="Home">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-label="Open menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tool Hero Banner -->
+    <div class="tool-hero">
+        <div class="container">
+            <nav class="tool-breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>Base64 Encoder & Decoder</span>
+            </nav>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon" aria-hidden="true">🔏</div>
+                <div class="tool-hero-text">
+                    <h1>Base64 Encoder & Decoder</h1>
+                    <p>Instantly encode raw text or files to Base64, or decode Base64 data back to clear text. Works
+                        100% locally in your browser for absolute data security.</p>
+
+                    <!-- Meta Badges -->
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">Utilities</span>
+                        <span class="badge badge-purple">Data Formats</span>
+                        <span class="badge badge-success">🟢 Active</span>
+                        <span class="badge badge-info">🔒 100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Workspace Section -->
+    <div class="tool-workspace">
+        <div class="container">
+
+            <!-- OPERATION MODE SELECTOR (Encode/Decode) -->
+            <div class="mode-capsule-selector">
+                <div class="mode-capsule">
+                    <button id="mode-encode" class="mode-btn active" onclick="setMode('encode')">
+                        <i class="fas fa-lock"></i> Encode
+                    </button>
+                    <button id="mode-decode" class="mode-btn" onclick="setMode('decode')">
+                        <i class="fas fa-unlock"></i> Decode
+                    </button>
+                </div>
+            </div>
+
+            <!-- CONFIGURATION SECTION -->
+            <div class="config-card">
+                <div class="config-grid">
+                    <!-- Text Encoding -->
+                    <div class="config-item">
+                        <label for="sel-encoding">Character Encoding</label>
+                        <select id="sel-encoding" class="form-control" onchange="processData()">
+                            <option value="UTF-8">UTF-8 (Standard)</option>
+                            <option value="ASCII">ASCII</option>
+                            <option value="HEX">Hexadecimal (Bytes)</option>
+                            <option value="UTF-16LE">UTF-16 LE</option>
+                            <option value="UTF-16BE">UTF-16 BE</option>
+                        </select>
+                    </div>
+
+                    <!-- URL-Safe Switch -->
+                    <div class="config-item">
+                        <label>URL-Safe Base64</label>
+                        <div class="switch-row" onclick="toggleUrlSafe()">
+                            <label class="switch">
+                                <input type="checkbox" id="check-urlsafe" onchange="onUrlSafeChange(event)">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Use URL-safe (`-`, `_`)</span>
+                        </div>
+                    </div>
+
+                    <!-- Strip Padding & Formatting -->
+                    <div class="config-item" id="format-options-col">
+                        <label id="format-label">Output Formatting</label>
+
+                        <!-- Output wrap options (Shown for Encode mode) -->
+                        <select id="sel-wrap" class="form-control" onchange="processData()">
+                            <option value="none">No Line Wrapping</option>
+                            <option value="64">Wrap at 64 Chars (MIME/PEM)</option>
+                            <option value="76">Wrap at 76 Chars (Email)</option>
+                        </select>
+
+                        <!-- Strip Padding switch (Shown for Decode mode or when URL-safe is active) -->
+                        <div class="switch-row" id="padding-switch-row" style="display:none;" onclick="togglePadding()">
+                            <label class="switch">
+                                <input type="checkbox" id="check-padding" onchange="processData()">
+                                <span class="slider"></span>
+                            </label>
+                            <span class="switch-label">Strip Padding (`=`)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2-Column Split Workspace -->
+            <div class="workspace-grid" style="margin-bottom: var(--space-xl);">
+
+                <!-- Left Column Panel: Input Area -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title"><i class="fas fa-edit"></i> Source Input</span>
+                        <div class="panel-actions">
+                            <button id="btn-load-example" class="btn btn-ghost btn-sm" title="Load Example data"
+                                onclick="loadExample()">
+                                <i class="fas fa-bolt"></i> Example
+                            </button>
+                            <button id="btn-clear-all" class="btn btn-ghost btn-sm" title="Clear inputs"
+                                onclick="clearAll()">
+                                <i class="fas fa-trash-alt"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="editor-panel" style="margin-bottom:0; display:flex; flex-direction:column; flex:1;">
+                        <div class="panel-flex-header">
+                            <div class="type-tabs">
+                                <button id="tab-text" class="type-tab active" onclick="setInputType('text')">
+                                    <i class="fas fa-keyboard"></i> Text Input
+                                </button>
+                                <button id="tab-file" class="type-tab" onclick="setInputType('file')">
+                                    <i class="fas fa-file-alt"></i> File Upload
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Text Input wrapper -->
+                        <div id="text-input-wrapper" class="editor-wrapper">
+                            <textarea id="text-input" class="code-textarea" placeholder="Paste source contents here..."
+                                aria-label="Source Input Area"></textarea>
+                        </div>
+
+                        <!-- File Input wrapper (Dropzone) -->
+                        <div id="file-input-wrapper" class="file-dropzone" style="display:none;">
+                            <i class="fas fa-cloud-upload-alt dropzone-icon" aria-hidden="true"></i>
+                            <p style="margin-bottom: 4px;">Drag & drop a file here, or click to browse</p>
+                            <p id="file-name-display"
+                                style="font-size:0.8rem; font-weight:700; color:var(--accent); margin-top:8px;"></p>
+                            <input type="file" id="file-upload" class="file-hidden-input"
+                                onchange="handleFileUpload(event)">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column Panel: Output Area -->
+                <div class="workspace-panel">
+                    <div class="panel-header">
+                        <span class="panel-title"><i class="fas fa-code"></i> Converted Output</span>
+                        <div class="panel-actions">
+                            <button id="btn-copy" class="btn btn-ghost btn-sm" title="Copy to clipboard"
+                                onclick="copyResult()">
+                                <i class="fas fa-copy"></i> Copy
+                            </button>
+                            <button id="btn-download" class="btn btn-ghost btn-sm" title="Download output file"
+                                onclick="downloadResult()">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                    <div class="editor-wrapper">
+                        <textarea id="text-output" class="code-output" readonly
+                            placeholder="Parsed output will display here..." aria-label="Parsed Output Area"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Parsed Breakdown Section -->
+            <div id="parsed-breakdown" class="breakdown-banner">
+                <div class="breakdown-banner-title">
+                    <i class="fas fa-calculator" aria-hidden="true"></i> Input & Output Statistics
+                </div>
+                <div class="breakdown-grid">
+                    <!-- Left stats column -->
+                    <div class="breakdown-col">
+                        <div class="breakdown-item">
+                            <span class="label">Input Character Count:</span>
+                            <span class="value accent" id="stat-input-chars">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="label">Input Byte Size:</span>
+                            <span class="value accent" id="stat-input-bytes">0 B</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="label">Lines Count:</span>
+                            <span class="value" id="stat-lines">0</span>
+                        </div>
+                    </div>
+                    <!-- Right stats column -->
+                    <div class="breakdown-col">
+                        <div class="breakdown-item">
+                            <span class="label">Output Character Count:</span>
+                            <span class="value success" id="stat-output-chars">0</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="label">Output Byte Size:</span>
+                            <span class="value success" id="stat-output-bytes">0 B</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="label">Status:</span>
+                            <span class="value success" id="stat-validity">Ready</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Social Proof Highlight Bar -->
+    <div class="tool-section tool-section-alt" role="region" aria-label="Key Advantages">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">Fast</div>
+                    <div class="proof-label">Instant parsing<br>in real time</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Secure</div>
+                    <div class="proof-label">100% local<br>No cloud storage</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Standards</div>
+                    <div class="proof-label">UTF-8, ASCII, Hex,<br>URL-Safe options</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Open source<br>No registrations</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Step-by-Step Guide Section -->
+    <div class="tool-section" id="how-to-use" role="region" aria-label="How-to Guide">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">Getting Started</span>
+                <h2>How to Use the Base64 Converter</h2>
+                <p>Follow these quick steps to encode or decode your text and files locally in your browser.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Step 1: Choose Mode</h4>
+                    <p>Select either "Encode" (Text to Base64) or "Decode" (Base64 to Text) using the top pill selector.
+                    </p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 2: Configure Options</h4>
+                    <p>Set character encoding (UTF-8, Hex, etc.) and toggle URL-Safe or output line wrapping
+                        preferences.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 3: Provide Input</h4>
+                    <p>Type/paste content in the Input Panel, or toggle to File Upload to read text files directly.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 4: Copy or Download</h4>
+                    <p>Watch results compute in real time, then copy to clipboard or download as a standalone file.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="tool-section tool-section-alt" id="faq" role="region" aria-label="FAQ">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">FAQ</span>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list" style="max-width: 800px; margin: 0 auto;">
+                <details class="faq-item">
+                    <summary>Is my data sent to any server?</summary>
+                    <div class="faq-answer">
+                        No. The tool processes all inputs directly inside your browser. No data, payloads, keys, or text
+                        contents ever leave your local computer.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Why use URL-Safe Base64?</summary>
+                    <div class="faq-answer">
+                        Standard Base64 encoding utilizes character symbols such as '+' and '/' which carry operational
+                        meanings in URL query strings. Converting to URL-safe options replaces these symbols with '-'
+                        and '_' to prevent transmission corruption.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does this support emoji and special characters?</summary>
+                    <div class="faq-answer">
+                        Yes. When using the default UTF-8 Character Encoding setting, the encoder and decoder handle
+                        multi-byte Unicode strings (including emojis and international glyphs) correctly without
+                        character loss.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is Hexadecimal mode useful for?</summary>
+                    <div class="faq-answer">
+                        Hex mode is ideal for cryptographic keys and digests. You can input raw hexadecimal byte strings
+                        (like hash outputs) and encode them into Base64, or decode Base64 back into hex bytes.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic Blog Snippets Area -->
+    <div class="tool-section" id="blog-articles" role="region" aria-label="From the Blog">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">Learn More</span>
+                <h2>From the Blog</h2>
+                <p>Read in-depth explanations, architect tips, and tutorials about API integrations.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Creator Banner -->
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>All utilities are free and open source. If this saved you time, a coffee is always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <!-- Related Tools Grid Section -->
+    <div class="related-tools" role="navigation" aria-label="Related tools">
+        <div class="container">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Related Tools
+            </h3>
+            <div class="related-tools-grid">
+                <a href="/tools/secure-properties-generator/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">🔐</span>
+                    <div>
+                        <div class="name">Secure Properties</div>
+                        <div class="desc">Encrypt properties for MuleSoft</div>
+                    </div>
+                </a>
+                <a href="/tools/yaml2props/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">⚙️</span>
+                    <div>
+                        <div class="name">YAML → Properties</div>
+                        <div class="desc">Flatten YAML configurations</div>
+                    </div>
+                </a>
+                <a href="/tools/props2yaml/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">📝</span>
+                    <div>
+                        <div class="name">Properties → YAML</div>
+                        <div class="desc">Build YAML trees from properties</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shared Footer -->
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">GitHub</a>
+            <br>
+            All tools run fully client-side. No sensitive data ever hits our hosting servers.
+        </div>
+    </footer>
+
+    <!-- Scripts in order of initialization -->
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

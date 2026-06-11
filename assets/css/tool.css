@@ -306,9 +306,7 @@
     width: 100%;
 }
 
-.workspace-grid-3col {
-    grid-template-columns: 1fr minmax(130px, 150px) 1fr !important;
-}
+/* Moved workspace-grid-3col layout definitions to media queries at the bottom */
 
 .btn-convert-middle {
     width: 56px;
@@ -670,9 +668,15 @@
 }
 
 /* ─── 3-column grid (input | action | output) ─── */
+@media (max-width: 899px) {
+    .workspace-grid-3col {
+        grid-template-columns: 1fr !important;
+    }
+}
+
 @media (min-width: 900px) {
     .workspace-grid-3col {
-        grid-template-columns: 1fr auto 1fr !important;
+        grid-template-columns: 1fr minmax(130px, 150px) 1fr !important;
     }
 }
 

@@ -7,6 +7,7 @@
     <title>Postman cURL to Mule | Convert cURL to MuleSoft HTTP Request XML | Upendra.dev</title>
     <meta name="description"
         content="Instantly convert cURL commands (from Postman, DevTools, or terminal) into MuleSoft HTTP Request Configuration and Processor XML. 100% browser-based and secure.">
+    <meta name="author" content="Upendra Venkata Muralidhar Thunuguntla">
     <link rel="icon" href="/portfolio.png" type="image/png">
     <link rel="manifest" href="/manifest.json">
     <script src="/assets/js/theme.js"></script>
@@ -18,23 +19,220 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
 
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Postman cURL to Mule (cURL to MuleSoft HTTP Request Converter)",
-        "description": "Instantly convert cURL commands (from Postman, DevTools, or terminal) into MuleSoft HTTP Request Configuration and Processor XML. 100% browser-based and secure.",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "All",
-        "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/",
-        "author": {
-            "@type": "Person",
-            "name": "Upendra Venkata Muralidhar Thunuguntla"
-        }
-    }
-    </script>
+
 
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What cURL formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This tool supports standard cURL commands including --header / -H, --data / -d, --request / -X, --location / -L, --user / -u, --insecure / -k, and URL with query parameters. Multi-line commands with backslash continuations are handled automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do I find the cURL in Postman?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Open any request in Postman. On the right sidebar, click the **Code** icon (</>). Ensure cURL is selected in the language dropdown, and click the Copy icon. Paste that result directly into this tool."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between output modes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Config + Processor generates a global <http:request-config> and a separate <http:request> that references it. Embedded generates a single <http:request> that uses the url attribute to define the connection, making it perfect for quick transformations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are headers and query params generated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Headers are added inside <http:headers> as a DataWeave map expression with each header key-value pair. Query parameters extracted from the URL are added inside <http:query-params> the same way. Both follow MuleSoft's recommended dynamic input parameter standards."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool handle authentication?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. If --user / -u is detected, basic authentication config is generated. Bearer tokens and API keys in headers are preserved as-is in the headers block. For OAuth, you'll want to configure that separately in Anypoint Studio."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your cURL commands never leave your browser. All parsing happens 100% client-side in JavaScript. No data is sent to any server. cURL commands often contain Authorization headers or API keys, which stay on your machine only."
+          }
+        }
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "browserRequirements": "Requires JavaScript",
+      "name": "Postman cURL → Mule HTTP Request",
+      "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Instantly convert cURL commands (from Postman, DevTools, or terminal) into MuleSoft HTTP Request Configuration and Processor XML. 100% browser-based and secure.",
+      "author": {
+        "@type": "Person",
+        "name": "Upendra Venkata Muralidhar Thunuguntla",
+        "url": "https://upendra-thunuguntla.github.io/",
+        "sameAs": [
+          "https://www.linkedin.com/in/upendra-thunuguntla/",
+          "https://github.com/Upendra-Thunuguntla"
+        ]
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
+      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
+      "url": "https://upendra-thunuguntla.github.io/",
+      "numberOfItems": 13,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Base64 Encoder & Decoder",
+            "url": "https://upendra-thunuguntla.github.io/tools/base64-converter/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Cron Expression Builder for Mule Pollers",
+            "url": "https://upendra-thunuguntla.github.io/tools/cron-builder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Postman cURL → Mule HTTP Request",
+            "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Gmail Compose URL Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "WebApplication",
+            "name": "JSON to RAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/json2raml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Log to cURL Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Properties to YAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "WebApplication",
+            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/raml2oas/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Salary Hike Calculator",
+            "url": "https://upendra-thunuguntla.github.io/tools/salary-calc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Secure Properties Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/secure-properties-generator/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "WebApplication",
+            "name": "WhatsApp Read More Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule XML SDK Helper",
+            "url": "https://upendra-thunuguntla.github.io/tools/xml-sdk/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "WebApplication",
+            "name": "YAML to Properties Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/yaml2props/"
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">
@@ -132,13 +330,14 @@
                     <div class="panel-header">
                         <span class="panel-title">Input: cURL Command</span>
                         <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="loadExample()"><i class="fas fa-bolt"></i> Example</button>
-                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="clearAll()"><i class="fas fa-trash-alt"></i> Clear</button>
+                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="loadExample()"><i
+                                    class="fas fa-bolt"></i> Example</button>
+                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="clearAll()"><i
+                                    class="fas fa-trash-alt"></i> Clear</button>
                         </div>
                     </div>
                     <div class="editor-wrapper">
-                        <textarea id="curl-input" class="code-textarea" style="min-height:220px;"
-                            placeholder="curl -X POST https://api.example.com/v1/customers \
+                        <textarea id="curl-input" class="code-textarea" style="min-height:220px;" placeholder="curl -X POST https://api.example.com/v1/customers \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer eyJhbGciOi...' \
   --data '{&quot;customerId&quot;: &quot;CUST-001&quot;}'"></textarea>
@@ -154,7 +353,8 @@
                         <div class="panel-header">
                             <span class="panel-title"><i class="fas fa-cog"></i> HTTP Request Configuration</span>
                             <div class="panel-actions">
-                                <button id="config-copy-btn" class="btn btn-ghost btn-sm" title="Copy Config" onclick="copyConfig()"><i class="fas fa-copy"></i> Copy</button>
+                                <button id="config-copy-btn" class="btn btn-ghost btn-sm" title="Copy Config"
+                                    onclick="copyConfig()"><i class="fas fa-copy"></i> Copy</button>
                             </div>
                         </div>
                         <div class="editor-wrapper">
@@ -168,8 +368,10 @@
                         <div class="panel-header">
                             <span class="panel-title"><i class="fas fa-play"></i> HTTP Request Processor</span>
                             <div class="panel-actions">
-                                <button id="processor-copy-btn" class="btn btn-ghost btn-sm" title="Copy Processor" onclick="copyProcessor()"><i class="fas fa-copy"></i> Copy</button>
-                                <button class="btn btn-ghost btn-sm" title="Download .xml" onclick="downloadXml()"><i class="fas fa-download"></i> Download</button>
+                                <button id="processor-copy-btn" class="btn btn-ghost btn-sm" title="Copy Processor"
+                                    onclick="copyProcessor()"><i class="fas fa-copy"></i> Copy</button>
+                                <button class="btn btn-ghost btn-sm" title="Download .xml" onclick="downloadXml()"><i
+                                        class="fas fa-download"></i> Download</button>
                             </div>
                         </div>
                         <div class="editor-wrapper">
@@ -247,12 +449,13 @@
                 </div>
                 <div class="how-to-step">
                     <h4>2. Choose Output Mode</h4>
-                    <p>Select <strong>Config + Processor</strong> for global config and request blocks, 
+                    <p>Select <strong>Config + Processor</strong> for global config and request blocks,
                         or <strong>Embedded</strong> for a standalone request using the full URL attribute.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>3. Contextualize Options</h4>
-                    <p>Toggle <strong>Follow Redirects</strong>, <strong>Response Timeout</strong>, or <strong>Streaming Mode</strong>. 
+                    <p>Toggle <strong>Follow Redirects</strong>, <strong>Response Timeout</strong>, or <strong>Streaming
+                            Mode</strong>.
                         All options generate valid Mule XML attributes instantly.</p>
                 </div>
                 <div class="how-to-step">
@@ -292,9 +495,11 @@
                 </details>
                 <details class="faq-item">
                     <summary>What is the difference between output modes?</summary>
-                    <div class="faq-answer"><strong>Config + Processor</strong> generates a global <code>&lt;http:request-config&gt;</code> 
-                        and a separate <code>&lt;http:request&gt;</code> that references it. 
-                        <strong>Embedded</strong> generates a single <code>&lt;http:request&gt;</code> that uses the <code>url</code> 
+                    <div class="faq-answer"><strong>Config + Processor</strong> generates a global
+                        <code>&lt;http:request-config&gt;</code>
+                        and a separate <code>&lt;http:request&gt;</code> that references it.
+                        <strong>Embedded</strong> generates a single <code>&lt;http:request&gt;</code> that uses the
+                        <code>url</code>
                         attribute to define the connection, making it perfect for quick transformations.
                     </div>
                 </details>

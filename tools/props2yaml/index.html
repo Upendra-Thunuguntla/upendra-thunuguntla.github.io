@@ -2,334 +2,531 @@
 <html lang="en" data-theme="">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Properties to YAML Converter | Upendra.dev</title>
-    <meta name="description"
-        content="Free Properties to YAML converter for MuleSoft. Reconstruct nested YAML hierarchy from flat .properties files instantly. 100% client-side.">
-    <link rel="icon" href="/portfolio.png" type="image/png">
-    <link rel="manifest" href="/manifest.json">
-    <script src="/assets/js/theme.js"></script>
-    <link rel="stylesheet" href="/assets/css/core.css">
-    <link rel="stylesheet" href="/assets/css/home.css">
-    <link rel="stylesheet" href="/assets/css/tool.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        crossorigin="anonymous">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Properties to YAML Converter | Upendra.dev</title>
+  <meta name="description"
+    content="Free Properties to YAML converter for MuleSoft. Reconstruct nested YAML hierarchy from flat .properties files instantly. 100% client-side.">
+  <meta name="author" content="Upendra Venkata Muralidhar Thunuguntla">
+  <link rel="icon" href="/portfolio.png" type="image/png">
+  <link rel="manifest" href="/manifest.json">
+  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/assets/css/core.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+  <link rel="stylesheet" href="/assets/css/tool.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+  <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
 
-    <script type="application/ld+json">
+
+  <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Properties to YAML Converter",
-        "description": "Free Properties to YAML converter for MuleSoft. Reconstruct nested YAML hierarchy from flat .properties files.",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "All",
-        "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/",
-        "author": {
-            "@type": "Person",
-            "name": "Upendra Venkata Muralidhar Thunuguntla"
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why convert Properties to YAML?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "YAML is much more readable for complex configurations. When migrating flat .properties files to .yaml, this tool saves time by automatically building the nested levels."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it handle complex keys?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it handles any number of nested levels. a.b.c.d=value will result in a 4-level deep YAML structure."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data secure?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. Like all tools on Upendra.dev, the conversion happens entirely in your browser. No data ever leaves your machine."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use comments in my properties file?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Single line comments starting with # are preserved during input parsing to help you maintain contextual notes in your config configurations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool support lists or arrays?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Currently, properties files representing array elements (e.g., list[0]=value, list[1]=value) are parsed as standard dotted strings. You can easily adjust the resulting YAML indentation manually if list syntax is required."
+          }
         }
+      ]
+    }
+    </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "browserRequirements": "Requires JavaScript",
+      "name": "Properties to YAML Converter",
+      "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free Properties to YAML converter for MuleSoft. Reconstruct nested YAML hierarchy from flat .properties files instantly. 100% client-side.",
+      "author": {
+        "@type": "Person",
+        "name": "Upendra Venkata Muralidhar Thunuguntla",
+        "url": "https://upendra-thunuguntla.github.io/",
+        "sameAs": [
+          "https://www.linkedin.com/in/upendra-thunuguntla/",
+          "https://github.com/Upendra-Thunuguntla"
+        ]
+      }
+    }
+    </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
+      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
+      "url": "https://upendra-thunuguntla.github.io/",
+      "numberOfItems": 13,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Base64 Encoder & Decoder",
+            "url": "https://upendra-thunuguntla.github.io/tools/base64-converter/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Cron Expression Builder for Mule Pollers",
+            "url": "https://upendra-thunuguntla.github.io/tools/cron-builder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Postman cURL → Mule HTTP Request",
+            "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Gmail Compose URL Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "WebApplication",
+            "name": "JSON to RAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/json2raml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Log to cURL Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Properties to YAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "WebApplication",
+            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/raml2oas/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Salary Hike Calculator",
+            "url": "https://upendra-thunuguntla.github.io/tools/salary-calc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Secure Properties Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/secure-properties-generator/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "WebApplication",
+            "name": "WhatsApp Read More Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule XML SDK Helper",
+            "url": "https://upendra-thunuguntla.github.io/tools/xml-sdk/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "WebApplication",
+            "name": "YAML to Properties Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/yaml2props/"
+          }
+        }
+      ]
     }
     </script>
 </head>
 
 <body class="tool-page">
 
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">Upendra.dev</a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="/#tools">🛠 All Tools</a></li>
-                <li><a href="/#about">👤 About</a></li>
-                <li><a href="/#contact">📬 Contact</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
-                <button class="nav-hamburger" id="nav-hamburger"
-                    aria-label="Menu"><span></span><span></span><span></span></button>
-            </div>
-        </div>
-    </nav>
-
-    <div class="tool-hero">
-        <div class="container">
-            <div class="tool-breadcrumb">
-                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
-                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
-                <span>Properties to YAML</span>
-            </div>
-            <div class="tool-hero-inner">
-                <div class="tool-page-icon">📝</div>
-                <div class="tool-hero-text">
-                    <h1>Properties to YAML Converter</h1>
-                    <p>Convert flat <code>.properties</code> files into cleanly nested YAML. Reconstruct the logical
-                        hierarchy of your MuleSoft configurations with ease.</p>
-                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
-                        <span class="badge">MuleSoft</span>
-                        <span class="badge badge-purple">Properties</span>
-                        <span class="badge">YAML</span>
-                        <span class="badge badge-success">100% Client-Side</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Upendra.dev</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#tools">🛠 All Tools</a></li>
+        <li><a href="/#about">👤 About</a></li>
+        <li><a href="/#contact">📬 Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
+        <button class="nav-hamburger" id="nav-hamburger"
+          aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
     </div>
+  </nav>
 
-    <div class="tool-workspace">
-        <div class="container">
-
-            <div class="workspace-grid workspace-grid-3col">
-                <!-- ── Left Panel: Input ── -->
-                <div class="workspace-panel" style="display:flex; flex-direction:column;">
-                    <div class="panel-header">
-                        <span class="panel-title">Input: Properties</span>
-                        <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="p2y_loadExample()"><i class="fas fa-bolt"></i> Example</button>
-                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="p2y_clear()"><i class="fas fa-trash-alt"></i> Clear</button>
-                        </div>
-                    </div>
-
-                    <div class="editor-wrapper">
-                        <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()" spellcheck="false"
-                            placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"
-                            style="flex:1;"></textarea>
-                    </div>
-
-                    <div class="panel-footer-row">
-                        <label class="btn btn-outline" for="propFileInput"
-                            style="width:100%; border-style:dashed; margin:0; justify-content:center;">
-                            <i class="fas fa-file-upload"></i>&nbsp; <span id="prop-file-label">Upload .properties
-                                File</span>
-                            <input type="file" accept=".properties,.prop" id="propFileInput"
-                                onchange="p2y_openFile(event)" style="display:none;">
-                        </label>
-                    </div>
-                </div>
-
-                <!-- ── Middle Action: Convert ── -->
-                <div class="workspace-middle">
-                    <button class="btn-convert-middle" onclick="p2y_convert()" title="Convert">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-
-                <!-- ── Right Panel: Output ── -->
-                <div class="workspace-panel" style="display:flex; flex-direction:column;">
-                    <div class="panel-header">
-                        <span class="panel-title">Output: YAML</span>
-                        <div class="panel-actions">
-                            <button id="p2y-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="p2y_copy()"><i class="fas fa-copy"></i> Copy</button>
-                            <button id="p2y-save-btn" class="btn btn-ghost btn-sm" title="Download YAML" onclick="p2y_downloadPrompt()"><i class="fas fa-download"></i> Download</button>
-                        </div>
-                    </div>
-
-                    <div class="editor-wrapper">
-                        <textarea id="yamlOutput" class="code-output" readonly
-                            placeholder="YAML output will appear here…" style="flex:1; min-height:280px;"></textarea>
-                    </div>
-
-                    <div class="panel-footer-row">
-                        <input type="text" id="filterYaml" class="filter-input" placeholder="Filter results…"
-                            title="Filter output by property key or value" disabled oninput="p2y_convert()"
-                            style="flex:1; margin:0;">
-                    </div>
-                        <div id="p2y-filename-group" style="display:none; gap:var(--space-xs); align-items:center;">
-                            <input type="text" id="p2yFileName" class="filter-input"
-                                style="width:120px; margin:0; padding:6px 10px;" placeholder="config">
-                            <span
-                                style="color:var(--text-muted); font-size:0.8rem; font-family:var(--font-mono); margin-left:-4px;">.yaml</span>
-                            <button class="btn btn-success btn-sm" onclick="p2y_doDownload()">DL</button>
-                            <button class="btn btn-ghost btn-sm" onclick="p2y_cancelDownload()"
-                                style="padding:4px 8px;">✕</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-box" style="margin-top:var(--space-xl);">
-                <span class="info-box-icon">💡</span>
-                <span>The tool automatically converts dotted keys like <code>app.db.host</code> into a nested YAML
-                    structure. Line comments starting with <code>#</code> are preserved during input.</span>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ═══ SOCIAL PROOF BAR ═══ -->
-    <div class="tool-section tool-section-alt">
-        <div class="container">
-            <div class="social-proof-bar">
-                <div class="proof-item">
-                    <div class="proof-number">Nesting</div>
-                    <div class="proof-label">Reconstructs YAML<br>Hierarchy</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">MuleSoft</div>
-                    <div class="proof-label">Optimized for<br>Config Files</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">100%</div>
-                    <div class="proof-label">Client-Side<br>Privacy First</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">Fast</div>
-                    <div class="proof-label">Instant Live<br>Conversion</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">Free</div>
-                    <div class="proof-label">Always Free<br>No Sign-up</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ HOW TO USE ═══ -->
-    <div class="tool-section">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">Getting Started</div>
-                <h2>How to Use the Properties to YAML Converter</h2>
-                <p>Unflatten flat dotted property key-value configurations into nested hierarchical YAML in seconds.</p>
-            </div>
-            <div class="how-to-steps">
-                <div class="how-to-step">
-                    <h4>Paste Properties Content</h4>
-                    <p>Paste flat dotted properties straight into the input editor, or upload a <code>.properties</code> file.</p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Confirm Hierarchy</h4>
-                    <p>Review the keys to make sure they are dot-separated (e.g. <code>app.db.port</code>) to allow nested parsing.</p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Convert Instantly</h4>
-                    <p>The parser runs live as you edit or type, building cleanly nested levels and indentation instantly.</p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Copy or Download</h4>
-                    <p>Copy the generated YAML output to your clipboard, or download it as a <code>.yaml</code> file for your project.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ FAQ ═══ -->
-    <div class="tool-section tool-section-alt">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">FAQ</div>
-                <h2>Frequently Asked Questions</h2>
-            </div>
-            <div class="faq-list">
-                <details class="faq-item">
-                    <summary>Why convert Properties to YAML?</summary>
-                    <div class="faq-answer">YAML is much more readable for complex configurations. When migrating flat
-                        <code>.properties</code> files to <code>.yaml</code>, this tool saves time by automatically
-                        building the nested levels.
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Does it handle complex keys?</summary>
-                    <div class="faq-answer">Yes, it handles any number of nested levels. <code>a.b.c.d=value</code> will
-                        result in a 4-level deep YAML structure.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Is my data secure?</summary>
-                    <div class="faq-answer">Absolutely. Like all tools on Upendra.dev, the conversion happens entirely
-                        in your browser. No data ever leaves your machine.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Can I use comments in my properties file?</summary>
-                    <div class="faq-answer">Yes. Single line comments starting with <code>#</code> are preserved during input parsing to help you maintain contextual notes in your config configurations.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Does this tool support lists or arrays?</summary>
-                    <div class="faq-answer">Currently, properties files representing array elements (e.g., <code>list[0]=value</code>, <code>list[1]=value</code>) are parsed as standard dotted strings. You can easily adjust the resulting YAML indentation manually if list syntax is required.</div>
-                </details>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ BLOG SNIPPETS ═══ -->
-    <div class="tool-section tool-section-alt">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">Learn More</div>
-                <h2>From the Blog</h2>
-                <p>Deep-dives on YAML, Properties, and MuleSoft configuration patterns.</p>
-            </div>
-            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
-                <!-- Dynamic content from blogs-loader.js -->
-                <p style="color:var(--text-muted)">Loading latest articles...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ SUPPORT BANNER ═══ -->
+  <div class="tool-hero">
     <div class="container">
-        <div class="support-banner">
-            <div class="support-banner-text">
-                <h3>🤠 Find this tool useful?</h3>
-                <p>Built for the MuleSoft community. If it saves you time on your next deployment, a coffee goes a long
-                    way!</p>
-            </div>
-            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
-                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
-                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
-                data-coffee-color="#ffffff"></script>
+      <div class="tool-breadcrumb">
+        <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+        <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+        <span>Properties to YAML</span>
+      </div>
+      <div class="tool-hero-inner">
+        <div class="tool-page-icon">📝</div>
+        <div class="tool-hero-text">
+          <h1>Properties to YAML Converter</h1>
+          <p>Convert flat <code>.properties</code> files into cleanly nested YAML. Reconstruct the logical
+            hierarchy of your MuleSoft configurations with ease.</p>
+          <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">Properties</span>
+            <span class="badge">YAML</span>
+            <span class="badge badge-success">100% Client-Side</span>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tool-workspace">
+    <div class="container">
+
+      <div class="workspace-grid workspace-grid-3col">
+        <!-- ── Left Panel: Input ── -->
+        <div class="workspace-panel" style="display:flex; flex-direction:column;">
+          <div class="panel-header">
+            <span class="panel-title">Input: Properties</span>
+            <div class="panel-actions">
+              <button class="btn btn-ghost btn-sm" title="Load Example" onclick="p2y_loadExample()"><i
+                  class="fas fa-bolt"></i> Example</button>
+              <button class="btn btn-ghost btn-sm" title="Clear All" onclick="p2y_clear()"><i
+                  class="fas fa-trash-alt"></i> Clear</button>
+            </div>
+          </div>
+
+          <div class="editor-wrapper">
+            <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()" spellcheck="false"
+              placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"
+              style="flex:1;"></textarea>
+          </div>
+
+          <div class="panel-footer-row">
+            <label class="btn btn-outline" for="propFileInput"
+              style="width:100%; border-style:dashed; margin:0; justify-content:center;">
+              <i class="fas fa-file-upload"></i>&nbsp; <span id="prop-file-label">Upload .properties
+                File</span>
+              <input type="file" accept=".properties,.prop" id="propFileInput" onchange="p2y_openFile(event)"
+                style="display:none;">
+            </label>
+          </div>
+        </div>
+
+        <!-- ── Middle Action: Convert ── -->
+        <div class="workspace-middle">
+          <button class="btn-convert-middle" onclick="p2y_convert()" title="Convert">
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- ── Right Panel: Output ── -->
+        <div class="workspace-panel" style="display:flex; flex-direction:column;">
+          <div class="panel-header">
+            <span class="panel-title">Output: YAML</span>
+            <div class="panel-actions">
+              <button id="p2y-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="p2y_copy()"><i
+                  class="fas fa-copy"></i> Copy</button>
+              <button id="p2y-save-btn" class="btn btn-ghost btn-sm" title="Download YAML"
+                onclick="p2y_downloadPrompt()"><i class="fas fa-download"></i> Download</button>
+            </div>
+          </div>
+
+          <div class="editor-wrapper">
+            <textarea id="yamlOutput" class="code-output" readonly placeholder="YAML output will appear here…"
+              style="flex:1; min-height:280px;"></textarea>
+          </div>
+
+          <div class="panel-footer-row">
+            <input type="text" id="filterYaml" class="filter-input" placeholder="Filter results…"
+              title="Filter output by property key or value" disabled oninput="p2y_convert()" style="flex:1; margin:0;">
+          </div>
+          <div id="p2y-filename-group" style="display:none; gap:var(--space-xs); align-items:center;">
+            <input type="text" id="p2yFileName" class="filter-input" style="width:120px; margin:0; padding:6px 10px;"
+              placeholder="config">
+            <span
+              style="color:var(--text-muted); font-size:0.8rem; font-family:var(--font-mono); margin-left:-4px;">.yaml</span>
+            <button class="btn btn-success btn-sm" onclick="p2y_doDownload()">DL</button>
+            <button class="btn btn-ghost btn-sm" onclick="p2y_cancelDownload()" style="padding:4px 8px;">✕</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="related-tools">
-        <div class="container">
-            <h3
-                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
-                Other Tools</h3>
-            <div class="related-tools-grid">
-                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
-                    <div>
-                        <div class="name">YAML → Properties</div>
-                        <div class="desc">Flatten YAML configs</div>
-                    </div>
-                </a>
-                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
-                    <div>
-                        <div class="name">JSON → RAML</div>
-                        <div class="desc">MuleSoft DataType converter</div>
-                    </div>
-                </a>
-                <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
-                    <div>
-                        <div class="name">MuleSoft Log to cURL</div>
-                        <div class="desc">Logs to cURL converter</div>
-                    </div>
-                </a>
-                <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
-                    <div>
-                        <div class="name">XML SDK Helper</div>
-                        <div class="desc">Mule connector XML builder</div>
-                    </div>
-                </a>
-            </div>
-        </div>
+    <div class="info-box" style="margin-top:var(--space-xl);">
+      <span class="info-box-icon">💡</span>
+      <span>The tool automatically converts dotted keys like <code>app.db.host</code> into a nested YAML
+        structure. Line comments starting with <code>#</code> are preserved during input.</span>
     </div>
 
-    <footer class="footer">
-        <div class="container">
-            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
-                Thunuguntla</a> ❤️ ·
-            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
-            <br>
-            All tools are 100% client-side & no data ever leaves your browser.
-        </div>
-    </footer>
+  </div>
+  </div>
 
-    <script src="/assets/js/js-yaml.min.js"></script>
-    <script src="/assets/js/platform.js"></script>
-    <script src="/assets/js/blogs-loader.js"></script>
-    <script src="/assets/js/analytics.js"></script>
-    <script src="script.js"></script>
+  <!-- ═══ SOCIAL PROOF BAR ═══ -->
+  <div class="tool-section tool-section-alt">
+    <div class="container">
+      <div class="social-proof-bar">
+        <div class="proof-item">
+          <div class="proof-number">Nesting</div>
+          <div class="proof-label">Reconstructs YAML<br>Hierarchy</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">MuleSoft</div>
+          <div class="proof-label">Optimized for<br>Config Files</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">100%</div>
+          <div class="proof-label">Client-Side<br>Privacy First</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">Fast</div>
+          <div class="proof-label">Instant Live<br>Conversion</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">Free</div>
+          <div class="proof-label">Always Free<br>No Sign-up</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ HOW TO USE ═══ -->
+  <div class="tool-section">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">Getting Started</div>
+        <h2>How to Use the Properties to YAML Converter</h2>
+        <p>Unflatten flat dotted property key-value configurations into nested hierarchical YAML in seconds.</p>
+      </div>
+      <div class="how-to-steps">
+        <div class="how-to-step">
+          <h4>Paste Properties Content</h4>
+          <p>Paste flat dotted properties straight into the input editor, or upload a <code>.properties</code> file.</p>
+        </div>
+        <div class="how-to-step">
+          <h4>Confirm Hierarchy</h4>
+          <p>Review the keys to make sure they are dot-separated (e.g. <code>app.db.port</code>) to allow nested
+            parsing.</p>
+        </div>
+        <div class="how-to-step">
+          <h4>Convert Instantly</h4>
+          <p>The parser runs live as you edit or type, building cleanly nested levels and indentation instantly.</p>
+        </div>
+        <div class="how-to-step">
+          <h4>Copy or Download</h4>
+          <p>Copy the generated YAML output to your clipboard, or download it as a <code>.yaml</code> file for your
+            project.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FAQ ═══ -->
+  <div class="tool-section tool-section-alt">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">FAQ</div>
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Why convert Properties to YAML?</summary>
+          <div class="faq-answer">YAML is much more readable for complex configurations. When migrating flat
+            <code>.properties</code> files to <code>.yaml</code>, this tool saves time by automatically
+            building the nested levels.
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Does it handle complex keys?</summary>
+          <div class="faq-answer">Yes, it handles any number of nested levels. <code>a.b.c.d=value</code> will
+            result in a 4-level deep YAML structure.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is my data secure?</summary>
+          <div class="faq-answer">Absolutely. Like all tools on Upendra.dev, the conversion happens entirely
+            in your browser. No data ever leaves your machine.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use comments in my properties file?</summary>
+          <div class="faq-answer">Yes. Single line comments starting with <code>#</code> are preserved during input
+            parsing to help you maintain contextual notes in your config configurations.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Does this tool support lists or arrays?</summary>
+          <div class="faq-answer">Currently, properties files representing array elements (e.g.,
+            <code>list[0]=value</code>, <code>list[1]=value</code>) are parsed as standard dotted strings. You can
+            easily adjust the resulting YAML indentation manually if list syntax is required.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BLOG SNIPPETS ═══ -->
+  <div class="tool-section tool-section-alt">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">Learn More</div>
+        <h2>From the Blog</h2>
+        <p>Deep-dives on YAML, Properties, and MuleSoft configuration patterns.</p>
+      </div>
+      <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+        <!-- Dynamic content from blogs-loader.js -->
+        <p style="color:var(--text-muted)">Loading latest articles...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SUPPORT BANNER ═══ -->
+  <div class="container">
+    <div class="support-banner">
+      <div class="support-banner-text">
+        <h3>🤠 Find this tool useful?</h3>
+        <p>Built for the MuleSoft community. If it saves you time on your next deployment, a coffee goes a long
+          way!</p>
+      </div>
+      <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+        data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠" data-font="Cookie"
+        data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+        data-coffee-color="#ffffff"></script>
+    </div>
+  </div>
+
+  <div class="related-tools">
+    <div class="container">
+      <h3
+        style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+        Other Tools</h3>
+      <div class="related-tools-grid">
+        <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
+          <div>
+            <div class="name">YAML → Properties</div>
+            <div class="desc">Flatten YAML configs</div>
+          </div>
+        </a>
+        <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+          <div>
+            <div class="name">JSON → RAML</div>
+            <div class="desc">MuleSoft DataType converter</div>
+          </div>
+        </a>
+        <a href="/tools/mule2curl/" class="related-tool-link"><span class="icon">⚡</span>
+          <div>
+            <div class="name">MuleSoft Log to cURL</div>
+            <div class="desc">Logs to cURL converter</div>
+          </div>
+        </a>
+        <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
+          <div>
+            <div class="name">XML SDK Helper</div>
+            <div class="desc">Mule connector XML builder</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+        Thunuguntla</a> ❤️ ·
+      <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+      <br>
+      All tools are 100% client-side & no data ever leaves your browser.
+    </div>
+  </footer>
+
+  <script src="/assets/js/js-yaml.min.js"></script>
+  <script src="/assets/js/platform.js"></script>
+  <script src="/assets/js/blogs-loader.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  <script src="script.js"></script>
 </body>
 
 </html>

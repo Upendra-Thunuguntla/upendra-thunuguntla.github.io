@@ -1066,4 +1066,11 @@
 @keyframes card-jiggle {
     0% { transform: rotate(-0.3deg) translateY(-0.5px); }
     100% { transform: rotate(0.3deg) translateY(0.5px); }
+}
+
+/* Hide layout customization buttons on mobile */
+@media (max-width: 768px) {
+    #btn-edit-layout, #btn-reset-layout {
+        display: none !important;
+    }
 }

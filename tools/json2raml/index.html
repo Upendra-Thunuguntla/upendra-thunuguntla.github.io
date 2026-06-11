@@ -2,387 +2,585 @@
 <html lang="en" data-theme="">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON to RAML Converter | Upendra.dev</title>
-    <meta name="description"
-        content="Free online JSON to RAML DataType converter for MuleSoft API Designer. Supports optional keys, CamelCase conversion, and RAML 1.0 format.">
-    <meta name="author" content="Upendra Thunuguntla">
-    <link rel="icon" href="/portfolio.png" type="image/png">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="canonical" href="https://upendra-thunuguntla.github.io/tools/json2raml/">
-    <script src="/assets/js/theme.js"></script>
-    <link rel="stylesheet" href="/assets/css/core.css">
-    <link rel="stylesheet" href="/assets/css/home.css">
-    <link rel="stylesheet" href="/assets/css/tool.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        crossorigin="anonymous">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON to RAML Converter | Upendra.dev</title>
+  <meta name="description"
+    content="Free online JSON to RAML DataType converter for MuleSoft API Designer. Supports optional keys, CamelCase conversion, and RAML 1.0 format.">
+  <meta name="author" content="Upendra Venkata Muralidhar Thunuguntla">
+  <link rel="icon" href="/portfolio.png" type="image/png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="canonical" href="https://upendra-thunuguntla.github.io/tools/json2raml/">
+  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/assets/css/core.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+  <link rel="stylesheet" href="/assets/css/tool.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+  <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
 
-    <!-- Schema.org JSON-LD structured data for SEO and LLMs -->
-    <script type="application/ld+json">
+
+  <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "JSON to RAML Converter",
-        "description": "Free online JSON to RAML DataType converter for MuleSoft API Designer. Supports optional keys, CamelCase conversion, and RAML 1.0 format.",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "All",
-        "url": "https://upendra-thunuguntla.github.io/tools/json2raml/",
-        "author": {
-            "@type": "Person",
-            "name": "Upendra Venkata Muralidhar Thunuguntla"
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a RAML DataType?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A RAML DataType defines the structure and data types of JSON payloads used in your MuleSoft APIs. They live inside #%RAML 1.0 DataType files and are referenced from your RAML API specification to enforce schema validation on requests and responses."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool support nested JSON objects and arrays?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Nested objects become nested properties blocks. Arrays output as type: array and the item type is inferred from the first element, covering string, number, boolean, and nested object items."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the \"Optional Keys\" option do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Checking Optional Keys appends a ? to every property name in the output (e.g., name?: string). In RAML 1.0, this marks the field as not required, which is useful when your API accepts partial payloads in PATCH requests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the CamelCase conversion do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enabling CamelCase converts snake_case or kebab-case JSON keys into camelCase automatically. For example, first_name becomes firstName. This is the convention used in most MuleSoft and Anypoint API designs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my JSON data sent to any server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely not. All conversion logic runs entirely in your browser using JavaScript. No data is transmitted, stored, or logged anywhere. Your payloads, including any sensitive values, never leave your machine."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this for RAML 0.8 projects?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This tool targets RAML 1.0 DataType syntax, which is the current standard used in Anypoint Platform. RAML 0.8 used a different schema system. If you're still on Mule 3.x with RAML 0.8, minor manual adjustments to the output may be needed."
+          }
         }
+      ]
+    }
+    </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "browserRequirements": "Requires JavaScript",
+      "name": "JSON to RAML Converter",
+      "url": "https://upendra-thunuguntla.github.io/tools/json2raml/",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free online JSON to RAML DataType converter for MuleSoft API Designer. Supports optional keys, CamelCase conversion, and RAML 1.0 format.",
+      "author": {
+        "@type": "Person",
+        "name": "Upendra Venkata Muralidhar Thunuguntla",
+        "url": "https://upendra-thunuguntla.github.io/",
+        "sameAs": [
+          "https://www.linkedin.com/in/upendra-thunuguntla/",
+          "https://github.com/Upendra-Thunuguntla"
+        ]
+      }
+    }
+    </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
+      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
+      "url": "https://upendra-thunuguntla.github.io/",
+      "numberOfItems": 13,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Base64 Encoder & Decoder",
+            "url": "https://upendra-thunuguntla.github.io/tools/base64-converter/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Cron Expression Builder for Mule Pollers",
+            "url": "https://upendra-thunuguntla.github.io/tools/cron-builder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Postman cURL → Mule HTTP Request",
+            "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Gmail Compose URL Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "WebApplication",
+            "name": "JSON to RAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/json2raml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Log to cURL Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Properties to YAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "WebApplication",
+            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/raml2oas/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Salary Hike Calculator",
+            "url": "https://upendra-thunuguntla.github.io/tools/salary-calc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Secure Properties Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/secure-properties-generator/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "WebApplication",
+            "name": "WhatsApp Read More Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule XML SDK Helper",
+            "url": "https://upendra-thunuguntla.github.io/tools/xml-sdk/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "WebApplication",
+            "name": "YAML to Properties Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/yaml2props/"
+          }
+        }
+      ]
     }
     </script>
 </head>
 
 <body class="tool-page">
 
-    <!-- NAV -->
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">Upendra.dev</a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="/#tools">🛠 All Tools</a></li>
-                <li><a href="/#about">👤 About</a></li>
-                <li><a href="/#contact">📬 Contact</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
-                <button class="nav-hamburger" id="nav-hamburger"
-                    aria-label="Menu"><span></span><span></span><span></span></button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- TOOL HERO -->
-    <div class="tool-hero">
-        <div class="container">
-            <div class="tool-breadcrumb">
-                <a href="/">Home</a>
-                <span class="tool-breadcrumb-sep">/</span>
-                <a href="/#tools">Tools</a>
-                <span class="tool-breadcrumb-sep">/</span>
-                <span>JSON to RAML Converter</span>
-            </div>
-            <div class="tool-hero-inner">
-                <div class="tool-page-icon">🔄</div>
-                <div class="tool-hero-text">
-                    <h1>JSON to RAML Converter</h1>
-                    <p>Transform JSON examples into RAML 1.0 DataType definitions for MuleSoft API Designer. All
-                        processing happens in your browser, and no data ever leaves your machine.</p>
-                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
-                        <span class="badge">MuleSoft</span>
-                        <span class="badge badge-purple">RAML 1.0</span>
-                        <span class="badge">API Design</span>
-                        <span class="badge badge-success">100% Client-Side</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Upendra.dev</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#tools">🛠 All Tools</a></li>
+        <li><a href="/#about">👤 About</a></li>
+        <li><a href="/#contact">📬 Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle theme">☀️</button>
+        <button class="nav-hamburger" id="nav-hamburger"
+          aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
     </div>
+  </nav>
 
-    <!-- WORKSPACE -->
-    <div class="tool-workspace">
-        <div class="container">
-
-            <!-- Grid -->
-            <div class="workspace-grid workspace-grid-3col">
-                <!-- ── Left Panel: Input ── -->
-                <div class="workspace-panel">
-                    <div class="panel-header">
-                        <span class="panel-title">Input: JSON</span>
-                        <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="loadExample()"><i class="fas fa-bolt"></i> Example</button>
-                            <button class="btn btn-ghost btn-sm" title="Clear Content" onclick="clearContents()"><i class="fas fa-trash-alt"></i> Clear</button>
-                        </div>
-                    </div>
-                    <div class="editor-wrapper">
-                        <textarea id="json-input" class="code-textarea" oninput="convert()"
-                            placeholder='Paste your JSON here&#10;&#10;{&#10;  &quot;name&quot;: &quot;John&quot;,&#10;  &quot;age&quot;: 30,&#10;  &quot;active&quot;: true&#10;}'></textarea>
-                    </div>
-                    <label class="file-zone-card" for="json-file-input">
-                        <span class="file-zone-icon"><i class="fas fa-file-upload"></i></span>
-                        <span class="file-zone-text">Upload a <strong>.json</strong> file</span>
-                        <input type="file" id="json-file-input" accept=".json,application/json"
-                            onchange="loadJSONFile(event)">
-                    </label>
-                </div>
-
-                <!-- ── Middle Panel: Actions ── -->
-                <div class="workspace-middle" style="padding-top: 50px;">
-                    <div class="action-card">
-                        <!-- Optional Switch -->
-                        <div class="option-row-switch" style="flex-direction:column; gap:6px; width:100%; text-align:center;"
-                            title="Outputs key?: type instead of key: type. Useful for RAML fragments.">
-                            <label class="switch">
-                                <input type="checkbox" id="areKeysOptional" onchange="convert()">
-                                <span class="slider"></span>
-                            </label>
-                            <span class="option-label-main" style="font-size:0.65rem; opacity:0.8; letter-spacing:0.02em;">OPTIONAL</span>
-                        </div>
-
-                        <!-- CamelCase Switch -->
-                        <div class="option-row-switch" style="flex-direction:column; gap:6px; width:100%; text-align:center;"
-                            title="Converts snake_case or kebab-case keys to camelCase.">
-                            <label class="switch">
-                                <input type="checkbox" id="areKeysCamelCased" onchange="convert()">
-                                <span class="slider"></span>
-                            </label>
-                            <span class="option-label-main" style="font-size:0.65rem; opacity:0.8; letter-spacing:0.02em;">CAMELCASE</span>
-                        </div>
-
-                        <hr style="width:100%; border:0; border-top:1px solid var(--border); margin:4px 0;">
-
-                        <!-- Convert Button -->
-                        <button class="btn-convert-middle" style="margin:0; width:44px; height:44px; font-size:1rem;"
-                            onclick="convert()" title="Run JSON to RAML Conversion">
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- ── Right Panel: Output ── -->
-                <div class="workspace-panel">
-                    <div class="panel-header">
-                        <span class="panel-title">Output: RAML DataType</span>
-                        <div class="panel-actions">
-                            <button id="copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="copyResult()"><i class="fas fa-copy"></i> Copy</button>
-                            <button class="btn btn-ghost btn-sm" title="Download RAML" onclick="downloadRAML()"><i class="fas fa-download"></i> Download</button>
-                        </div>
-                    </div>
-                    <div class="editor-wrapper">
-                        <textarea id="raml-output" class="code-output" readonly
-                            placeholder="RAML DataType will appear here after conversion"
-                            style="min-height:360px;"></textarea>
-                    </div>
-                    <div class="file-zone-card" onclick="downloadRAML()" role="button" tabindex="0"
-                        title="Download .raml file">
-                        <span class="file-zone-icon"><i class="fas fa-file-download"></i></span>
-                        <span class="file-zone-text">Download as <strong>.raml</strong> file</span>
-                    </div>
-                    <div id="filename-wrap" style="display:none;">
-                        <div class="flex" style="gap:var(--space-sm);">
-                            <input type="text" id="raml-filename" class="form-control"
-                                style="font-family:var(--font-body);font-size:0.9rem;"
-                                placeholder="Enter filename (without extension)">
-                            <button class="btn btn-success btn-sm" onclick="doDownload()">Save</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Info box -->
-            <div class="info-box" style="margin-top:var(--space-xl);">
-                <span class="info-box-icon"><i class="fas fa-lightbulb"></i></span>
-                <span>Handles JSON objects and arrays. Arrays become <code>type: array</code> with auto-detected item
-                    type. Nested objects get nested <code>properties</code> blocks. Basically handles whatever you throw
-                    at it.</span>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- ═══ SOCIAL PROOF BAR ═══ -->
-    <div class="tool-section tool-section-alt">
-        <div class="container">
-            <div class="social-proof-bar">
-                <div class="proof-item">
-                    <div class="proof-number">7+</div>
-                    <div class="proof-label">Years of MuleSoft<br>Expertise</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">80+</div>
-                    <div class="proof-label">Enterprise APIs<br>Architected</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">100%</div>
-                    <div class="proof-label">Client-Side<br>Privacy First</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">RAML 1.0</div>
-                    <div class="proof-label">Fully Compliant<br>Output</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">Free</div>
-                    <div class="proof-label">Always Free<br>No Sign-up</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ HOW TO USE ═══ -->
-    <div class="tool-section">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">Getting Started</div>
-                <h2>How to Use the JSON to RAML Converter</h2>
-                <p>Paste or upload a JSON payload, tweak a couple options, and get clean RAML 1.0 DataType output
-                    instantly. Four steps, zero setup.</p>
-            </div>
-            <div class="how-to-steps">
-                <div class="how-to-step">
-                    <h4>Paste or Upload JSON</h4>
-                    <p>Paste a JSON payload straight into the input panel, or hit the file picker to upload a
-                        <code>.json</code> file from your machine. The output syncs immediately.
-                    </p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Set Options</h4>
-                    <p>Toggle <strong>Optional Keys</strong> (adds <code>?</code> suffix) or <strong>CamelCase</strong>
-                        conversion to match your RAML naming conventions. Both can be combined.</p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Convert Instantly</h4>
-                    <p>Click <strong>Convert to RAML</strong> or start typing. The output panel on the right updates
-                        live without you having to click anything extra.</p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Copy or Download</h4>
-                    <p>Hit <strong>Copy</strong> to paste into Anypoint Platform, or download as a <code>.raml</code>
-                        file and drop it straight into your project.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ FAQ ═══ -->
-    <div class="tool-section tool-section-alt">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">FAQ</div>
-                <h2>Frequently Asked Questions</h2>
-            </div>
-            <div class="faq-list">
-                <details class="faq-item">
-                    <summary>What is a RAML DataType?</summary>
-                    <div class="faq-answer">A RAML DataType defines the structure and data types of JSON payloads used
-                        in your MuleSoft APIs. They live inside <code>#%RAML 1.0 DataType</code> files and are
-                        referenced from your RAML API specification to enforce schema validation on requests and
-                        responses.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Does this tool support nested JSON objects and arrays?</summary>
-                    <div class="faq-answer">Yes. Nested objects become nested <code>properties</code> blocks. Arrays
-                        output as <code>type: array</code> and the item type is inferred from the first element,
-                        covering string, number, boolean, and nested object items.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>What does the "Optional Keys" option do?</summary>
-                    <div class="faq-answer">Checking <strong>Optional Keys</strong> appends a <code>?</code> to every
-                        property name in the output (e.g., <code>name?: string</code>). In RAML 1.0, this marks the
-                        field as not required, which is useful when your API accepts partial payloads in PATCH requests.
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>What does the CamelCase conversion do?</summary>
-                    <div class="faq-answer">Enabling <strong>CamelCase</strong> converts snake_case or kebab-case JSON
-                        keys into camelCase automatically. For example, <code>first_name</code> becomes
-                        <code>firstName</code>. This is the convention used in most MuleSoft and Anypoint API designs.
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Is my JSON data sent to any server?</summary>
-                    <div class="faq-answer">Absolutely not. All conversion logic runs entirely in your browser using
-                        JavaScript. No data is transmitted, stored, or logged anywhere. Your payloads, including any
-                        sensitive values, never leave your machine.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Can I use this for RAML 0.8 projects?</summary>
-                    <div class="faq-answer">This tool targets <strong>RAML 1.0</strong> DataType syntax, which is the
-                        current standard used in Anypoint Platform. RAML 0.8 used a different schema system. If you're
-                        still on Mule 3.x with RAML 0.8, minor manual adjustments to the output may be needed.</div>
-                </details>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ BLOG SNIPPETS ═══ -->
-    <div class="tool-section">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">Learn More</div>
-                <h2>From the Blog</h2>
-                <p>Deep-dives on RAML, DataWeave, and MuleSoft API design patterns.</p>
-            </div>
-            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
-                <!-- Dynamic content from blogs-loader.js -->
-                <p style="color:var(--text-muted)">Loading latest articles...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ SUPPORT BANNER ═══ -->
+  <!-- TOOL HERO -->
+  <div class="tool-hero">
     <div class="container">
-        <div class="support-banner">
-            <div class="support-banner-text">
-                <h3>🤠 Find this tool useful?</h3>
-                <p>This tool is 100% free and built in personal time. If it saves you even 5 minutes per sprint,
-                    consider buying me a coffee, as it keeps the tools coming!</p>
-            </div>
-            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
-                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
-                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
-                data-coffee-color="#ffffff"></script>
+      <div class="tool-breadcrumb">
+        <a href="/">Home</a>
+        <span class="tool-breadcrumb-sep">/</span>
+        <a href="/#tools">Tools</a>
+        <span class="tool-breadcrumb-sep">/</span>
+        <span>JSON to RAML Converter</span>
+      </div>
+      <div class="tool-hero-inner">
+        <div class="tool-page-icon">🔄</div>
+        <div class="tool-hero-text">
+          <h1>JSON to RAML Converter</h1>
+          <p>Transform JSON examples into RAML 1.0 DataType definitions for MuleSoft API Designer. All
+            processing happens in your browser, and no data ever leaves your machine.</p>
+          <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+            <span class="badge">MuleSoft</span>
+            <span class="badge badge-purple">RAML 1.0</span>
+            <span class="badge">API Design</span>
+            <span class="badge badge-success">100% Client-Side</span>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- RELATED TOOLS -->
-    <div class="related-tools">
-        <div class="container">
-            <h3
-                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
-                Other Tools</h3>
-            <div class="related-tools-grid">
-                <a href="/tools/yaml2props/" class="related-tool-link">
-                    <span class="icon">⚙️</span>
-                    <div>
-                        <div class="name">YAML → Properties</div>
-                        <div class="desc">Flatten YAML configs</div>
-                    </div>
-                </a>
-                <a href="/tools/xml-sdk/" class="related-tool-link">
-                    <span class="icon">🏗️</span>
-                    <div>
-                        <div class="name">XML SDK Helper</div>
-                        <div class="desc">Mule connector XML builder</div>
-                    </div>
-                </a>
-                <a href="/tools/gmail-url/" class="related-tool-link">
-                    <span class="icon">📧</span>
-                    <div>
-                        <div class="name">Gmail URL Generator</div>
-                        <div class="desc">Pre-filled compose links</div>
-                    </div>
-                </a>
-                <a href="/tools/salary-calc/" class="related-tool-link">
-                    <span class="icon">💰</span>
-                    <div>
-                        <div class="name">Salary Hike Calc</div>
-                        <div class="desc">Calculate your hike %</div>
-                    </div>
-                </a>
+  <!-- WORKSPACE -->
+  <div class="tool-workspace">
+    <div class="container">
+
+      <!-- Grid -->
+      <div class="workspace-grid workspace-grid-3col">
+        <!-- ── Left Panel: Input ── -->
+        <div class="workspace-panel">
+          <div class="panel-header">
+            <span class="panel-title">Input: JSON</span>
+            <div class="panel-actions">
+              <button class="btn btn-ghost btn-sm" title="Load Example" onclick="loadExample()"><i
+                  class="fas fa-bolt"></i> Example</button>
+              <button class="btn btn-ghost btn-sm" title="Clear Content" onclick="clearContents()"><i
+                  class="fas fa-trash-alt"></i> Clear</button>
             </div>
+          </div>
+          <div class="editor-wrapper">
+            <textarea id="json-input" class="code-textarea" oninput="convert()"
+              placeholder='Paste your JSON here&#10;&#10;{&#10;  &quot;name&quot;: &quot;John&quot;,&#10;  &quot;age&quot;: 30,&#10;  &quot;active&quot;: true&#10;}'></textarea>
+          </div>
+          <label class="file-zone-card" for="json-file-input">
+            <span class="file-zone-icon"><i class="fas fa-file-upload"></i></span>
+            <span class="file-zone-text">Upload a <strong>.json</strong> file</span>
+            <input type="file" id="json-file-input" accept=".json,application/json" onchange="loadJSONFile(event)">
+          </label>
         </div>
+
+        <!-- ── Middle Panel: Actions ── -->
+        <div class="workspace-middle" style="padding-top: 50px;">
+          <div class="action-card">
+            <!-- Optional Switch -->
+            <div class="option-row-switch" style="flex-direction:column; gap:6px; width:100%; text-align:center;"
+              title="Outputs key?: type instead of key: type. Useful for RAML fragments.">
+              <label class="switch">
+                <input type="checkbox" id="areKeysOptional" onchange="convert()">
+                <span class="slider"></span>
+              </label>
+              <span class="option-label-main"
+                style="font-size:0.65rem; opacity:0.8; letter-spacing:0.02em;">OPTIONAL</span>
+            </div>
+
+            <!-- CamelCase Switch -->
+            <div class="option-row-switch" style="flex-direction:column; gap:6px; width:100%; text-align:center;"
+              title="Converts snake_case or kebab-case keys to camelCase.">
+              <label class="switch">
+                <input type="checkbox" id="areKeysCamelCased" onchange="convert()">
+                <span class="slider"></span>
+              </label>
+              <span class="option-label-main"
+                style="font-size:0.65rem; opacity:0.8; letter-spacing:0.02em;">CAMELCASE</span>
+            </div>
+
+            <hr style="width:100%; border:0; border-top:1px solid var(--border); margin:4px 0;">
+
+            <!-- Convert Button -->
+            <button class="btn-convert-middle" style="margin:0; width:44px; height:44px; font-size:1rem;"
+              onclick="convert()" title="Run JSON to RAML Conversion">
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Right Panel: Output ── -->
+        <div class="workspace-panel">
+          <div class="panel-header">
+            <span class="panel-title">Output: RAML DataType</span>
+            <div class="panel-actions">
+              <button id="copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="copyResult()"><i
+                  class="fas fa-copy"></i> Copy</button>
+              <button class="btn btn-ghost btn-sm" title="Download RAML" onclick="downloadRAML()"><i
+                  class="fas fa-download"></i> Download</button>
+            </div>
+          </div>
+          <div class="editor-wrapper">
+            <textarea id="raml-output" class="code-output" readonly
+              placeholder="RAML DataType will appear here after conversion" style="min-height:360px;"></textarea>
+          </div>
+          <div class="file-zone-card" onclick="downloadRAML()" role="button" tabindex="0" title="Download .raml file">
+            <span class="file-zone-icon"><i class="fas fa-file-download"></i></span>
+            <span class="file-zone-text">Download as <strong>.raml</strong> file</span>
+          </div>
+          <div id="filename-wrap" style="display:none;">
+            <div class="flex" style="gap:var(--space-sm);">
+              <input type="text" id="raml-filename" class="form-control"
+                style="font-family:var(--font-body);font-size:0.9rem;" placeholder="Enter filename (without extension)">
+              <button class="btn btn-success btn-sm" onclick="doDownload()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info box -->
+      <div class="info-box" style="margin-top:var(--space-xl);">
+        <span class="info-box-icon"><i class="fas fa-lightbulb"></i></span>
+        <span>Handles JSON objects and arrays. Arrays become <code>type: array</code> with auto-detected item
+          type. Nested objects get nested <code>properties</code> blocks. Basically handles whatever you throw
+          at it.</span>
+      </div>
+
     </div>
+  </div>
 
-    <footer class="footer">
-        <div class="container">
-            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
-                Thunuguntla</a> ❤️ ·
-            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
-            <br>
-            All tools are 100% client-side & no data ever leaves your browser.
+  <!-- ═══ SOCIAL PROOF BAR ═══ -->
+  <div class="tool-section tool-section-alt">
+    <div class="container">
+      <div class="social-proof-bar">
+        <div class="proof-item">
+          <div class="proof-number">7+</div>
+          <div class="proof-label">Years of MuleSoft<br>Expertise</div>
         </div>
-    </footer>
+        <div class="proof-item">
+          <div class="proof-number">80+</div>
+          <div class="proof-label">Enterprise APIs<br>Architected</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">100%</div>
+          <div class="proof-label">Client-Side<br>Privacy First</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">RAML 1.0</div>
+          <div class="proof-label">Fully Compliant<br>Output</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">Free</div>
+          <div class="proof-label">Always Free<br>No Sign-up</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script src="/assets/js/voca.min.js"></script>
-    <script src="/assets/js/platform.js"></script>
-    <script src="/assets/js/blogs-loader.js"></script>
-    <script src="/assets/js/analytics.js"></script>
-    <script src="script.js"></script>
+  <!-- ═══ HOW TO USE ═══ -->
+  <div class="tool-section">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">Getting Started</div>
+        <h2>How to Use the JSON to RAML Converter</h2>
+        <p>Paste or upload a JSON payload, tweak a couple options, and get clean RAML 1.0 DataType output
+          instantly. Four steps, zero setup.</p>
+      </div>
+      <div class="how-to-steps">
+        <div class="how-to-step">
+          <h4>Paste or Upload JSON</h4>
+          <p>Paste a JSON payload straight into the input panel, or hit the file picker to upload a
+            <code>.json</code> file from your machine. The output syncs immediately.
+          </p>
+        </div>
+        <div class="how-to-step">
+          <h4>Set Options</h4>
+          <p>Toggle <strong>Optional Keys</strong> (adds <code>?</code> suffix) or <strong>CamelCase</strong>
+            conversion to match your RAML naming conventions. Both can be combined.</p>
+        </div>
+        <div class="how-to-step">
+          <h4>Convert Instantly</h4>
+          <p>Click <strong>Convert to RAML</strong> or start typing. The output panel on the right updates
+            live without you having to click anything extra.</p>
+        </div>
+        <div class="how-to-step">
+          <h4>Copy or Download</h4>
+          <p>Hit <strong>Copy</strong> to paste into Anypoint Platform, or download as a <code>.raml</code>
+            file and drop it straight into your project.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FAQ ═══ -->
+  <div class="tool-section tool-section-alt">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">FAQ</div>
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>What is a RAML DataType?</summary>
+          <div class="faq-answer">A RAML DataType defines the structure and data types of JSON payloads used
+            in your MuleSoft APIs. They live inside <code>#%RAML 1.0 DataType</code> files and are
+            referenced from your RAML API specification to enforce schema validation on requests and
+            responses.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Does this tool support nested JSON objects and arrays?</summary>
+          <div class="faq-answer">Yes. Nested objects become nested <code>properties</code> blocks. Arrays
+            output as <code>type: array</code> and the item type is inferred from the first element,
+            covering string, number, boolean, and nested object items.</div>
+        </details>
+        <details class="faq-item">
+          <summary>What does the "Optional Keys" option do?</summary>
+          <div class="faq-answer">Checking <strong>Optional Keys</strong> appends a <code>?</code> to every
+            property name in the output (e.g., <code>name?: string</code>). In RAML 1.0, this marks the
+            field as not required, which is useful when your API accepts partial payloads in PATCH requests.
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>What does the CamelCase conversion do?</summary>
+          <div class="faq-answer">Enabling <strong>CamelCase</strong> converts snake_case or kebab-case JSON
+            keys into camelCase automatically. For example, <code>first_name</code> becomes
+            <code>firstName</code>. This is the convention used in most MuleSoft and Anypoint API designs.
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Is my JSON data sent to any server?</summary>
+          <div class="faq-answer">Absolutely not. All conversion logic runs entirely in your browser using
+            JavaScript. No data is transmitted, stored, or logged anywhere. Your payloads, including any
+            sensitive values, never leave your machine.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use this for RAML 0.8 projects?</summary>
+          <div class="faq-answer">This tool targets <strong>RAML 1.0</strong> DataType syntax, which is the
+            current standard used in Anypoint Platform. RAML 0.8 used a different schema system. If you're
+            still on Mule 3.x with RAML 0.8, minor manual adjustments to the output may be needed.</div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BLOG SNIPPETS ═══ -->
+  <div class="tool-section">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">Learn More</div>
+        <h2>From the Blog</h2>
+        <p>Deep-dives on RAML, DataWeave, and MuleSoft API design patterns.</p>
+      </div>
+      <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+        <!-- Dynamic content from blogs-loader.js -->
+        <p style="color:var(--text-muted)">Loading latest articles...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SUPPORT BANNER ═══ -->
+  <div class="container">
+    <div class="support-banner">
+      <div class="support-banner-text">
+        <h3>🤠 Find this tool useful?</h3>
+        <p>This tool is 100% free and built in personal time. If it saves you even 5 minutes per sprint,
+          consider buying me a coffee, as it keeps the tools coming!</p>
+      </div>
+      <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+        data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠" data-font="Cookie"
+        data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+        data-coffee-color="#ffffff"></script>
+    </div>
+  </div>
+
+  <!-- RELATED TOOLS -->
+  <div class="related-tools">
+    <div class="container">
+      <h3
+        style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+        Other Tools</h3>
+      <div class="related-tools-grid">
+        <a href="/tools/yaml2props/" class="related-tool-link">
+          <span class="icon">⚙️</span>
+          <div>
+            <div class="name">YAML → Properties</div>
+            <div class="desc">Flatten YAML configs</div>
+          </div>
+        </a>
+        <a href="/tools/xml-sdk/" class="related-tool-link">
+          <span class="icon">🏗️</span>
+          <div>
+            <div class="name">XML SDK Helper</div>
+            <div class="desc">Mule connector XML builder</div>
+          </div>
+        </a>
+        <a href="/tools/gmail-url/" class="related-tool-link">
+          <span class="icon">📧</span>
+          <div>
+            <div class="name">Gmail URL Generator</div>
+            <div class="desc">Pre-filled compose links</div>
+          </div>
+        </a>
+        <a href="/tools/salary-calc/" class="related-tool-link">
+          <span class="icon">💰</span>
+          <div>
+            <div class="name">Salary Hike Calc</div>
+            <div class="desc">Calculate your hike %</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+        Thunuguntla</a> ❤️ ·
+      <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+      <br>
+      All tools are 100% client-side & no data ever leaves your browser.
+    </div>
+  </footer>
+
+  <script src="/assets/js/voca.min.js"></script>
+  <script src="/assets/js/platform.js"></script>
+  <script src="/assets/js/blogs-loader.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  <script src="script.js"></script>
 
 
 </body>

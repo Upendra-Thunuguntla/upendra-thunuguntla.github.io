@@ -2,352 +2,547 @@
 <html lang="en" data-theme="">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gmail Compose URL Generator | Upendra.dev</title>
-    <meta name="description"
-        content="Generate pre-filled Gmail compose URLs with To, CC, BCC, Subject and Body. Bookmark and reuse for recurring emails.">
-    <link rel="icon" href="/portfolio.png" type="image/png">
-    <link rel="manifest" href="/manifest.json">
-    <script src="/assets/js/theme.js"></script>
-    <link rel="stylesheet" href="/assets/css/core.css">
-    <link rel="stylesheet" href="/assets/css/home.css">
-    <link rel="stylesheet" href="/assets/css/tool.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        crossorigin="anonymous">
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gmail Compose URL Generator | Upendra.dev</title>
+  <meta name="description"
+    content="Generate pre-filled Gmail compose URLs with To, CC, BCC, Subject and Body. Bookmark and reuse for recurring emails.">
+  <meta name="author" content="Upendra Venkata Muralidhar Thunuguntla">
+  <link rel="icon" href="/portfolio.png" type="image/png">
+  <link rel="manifest" href="/manifest.json">
+  <script src="/assets/js/theme.js"></script>
+  <link rel="stylesheet" href="/assets/css/core.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+  <link rel="stylesheet" href="/assets/css/tool.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+  <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
 
-    <!-- Schema.org JSON-LD structured data for SEO and LLMs -->
-    <script type="application/ld+json">
+  <!-- Schema.org JSON-LD structured data for SEO and LLMs -->
+
+  <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Gmail Compose URL Generator",
-        "description": "Generate pre-filled Gmail compose URLs with To, CC, BCC, Subject and Body. Bookmark and reuse for recurring emails.",
-        "applicationCategory": "ProductivityApplication",
-        "operatingSystem": "All",
-        "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/",
-        "author": {
-            "@type": "Person",
-            "name": "Upendra Venkata Muralidhar Thunuguntla"
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a Gmail Compose URL and how does it work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Gmail Compose URL is a specially formatted mail.google.com link that, when opened, launches Gmail's compose window with fields pre-populated. It uses Gmail's URL parameters (to, su, body, etc.) to pass the data, so no API access is needed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I actually send the email automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nope. Gmail does not allow third-party tools to send emails directly for security reasons. The generated URL opens a compose window in Gmail where you review and manually click Send. You're always in control, which is a good thing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why doesn't my signature show up?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Gmail compose URLs don't trigger automatic signature insertion. After the compose window opens, you can manually select your signature from the compose toolbar. This is a Gmail behaviour and cannot be overridden by the URL."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add multiple recipients in the To or CC field?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Separate multiple email addresses with commas (e.g., alice@example.com, bob@example.com). The tool handles the URL encoding for multi-address fields automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my email content safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your email content never leaves your browser. All URL generation happens in JavaScript locally. The final URL you receive is a standard Gmail link, just like if you'd typed the Gmail address manually in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this for recurring email templates?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, that's the whole point! Generate the URL once, bookmark it in your browser or save it in Notion/Confluence. Every time you click it, Gmail opens a ready-to-send draft. Perfect for weekly reports, recurring notifications, or team templates."
+          }
         }
+      ]
+    }
+    </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "browserRequirements": "Requires JavaScript",
+      "name": "Gmail Compose URL Generator",
+      "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Generate pre-filled Gmail compose URLs with To, CC, BCC, Subject and Body. Bookmark and reuse for recurring emails.",
+      "author": {
+        "@type": "Person",
+        "name": "Upendra Venkata Muralidhar Thunuguntla",
+        "url": "https://upendra-thunuguntla.github.io/",
+        "sameAs": [
+          "https://www.linkedin.com/in/upendra-thunuguntla/",
+          "https://github.com/Upendra-Thunuguntla"
+        ]
+      }
+    }
+    </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
+      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
+      "url": "https://upendra-thunuguntla.github.io/",
+      "numberOfItems": 13,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Base64 Encoder & Decoder",
+            "url": "https://upendra-thunuguntla.github.io/tools/base64-converter/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Cron Expression Builder for Mule Pollers",
+            "url": "https://upendra-thunuguntla.github.io/tools/cron-builder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Postman cURL → Mule HTTP Request",
+            "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Gmail Compose URL Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "WebApplication",
+            "name": "JSON to RAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/json2raml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Log to cURL Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Properties to YAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "WebApplication",
+            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/raml2oas/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Salary Hike Calculator",
+            "url": "https://upendra-thunuguntla.github.io/tools/salary-calc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Secure Properties Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/secure-properties-generator/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "WebApplication",
+            "name": "WhatsApp Read More Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule XML SDK Helper",
+            "url": "https://upendra-thunuguntla.github.io/tools/xml-sdk/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "WebApplication",
+            "name": "YAML to Properties Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/yaml2props/"
+          }
+        }
+      ]
     }
     </script>
 </head>
 
 <body class="tool-page">
 
-    <nav class="nav">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">Upendra.dev</a>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="/#tools">🛠 All Tools</a></li>
-                <li><a href="/#about">👤 About</a></li>
-                <li><a href="/#contact">📬 Contact</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="theme-toggle">☀️</button>
-                <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
-            </div>
-        </div>
-    </nav>
-
-    <div class="tool-hero">
-        <div class="container">
-            <div class="tool-breadcrumb">
-                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
-                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
-                <span>Gmail Compose URL Generator</span>
-            </div>
-            <div class="tool-hero-inner">
-                <div class="tool-page-icon">📧</div>
-                <div class="tool-hero-text">
-                    <h1>Gmail Compose URL Generator</h1>
-                    <p>Create bookmarkable Gmail compose links pre-filled with recipients, subject, and body. Perfect
-                        for emails you send repeatedly.</p>
-                    <div style="display:flex; gap:var(--space-sm); margin-top:var(--space-md);">
-                        <span class="badge">Productivity</span>
-                        <span class="badge badge-purple">Gmail</span>
-                        <span class="badge badge-success">100% Client-Side</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Upendra.dev</a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#tools">🛠 All Tools</a></li>
+        <li><a href="/#about">👤 About</a></li>
+        <li><a href="/#contact">📬 Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-toggle">☀️</button>
+        <button class="nav-hamburger" id="nav-hamburger"><span></span><span></span><span></span></button>
+      </div>
     </div>
+  </nav>
 
-    <div class="tool-workspace">
-        <div class="container">
-            <div class="grid grid-2" style="align-items:start;">
-
-                <!-- Form -->
-                <div class="workspace-panel">
-                    <div class="form-group">
-                        <label class="form-label" for="gmail-to">To * <span
-                                style="color:var(--text-muted); font-weight:400;">(comma-separated)</span></label>
-                        <input type="text" id="gmail-to" class="form-control"
-                            placeholder="user@gmail.com, another@gmail.com" autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="gmail-cc">CC <span
-                                style="color:var(--text-muted); font-weight:400;">(optional)</span></label>
-                        <input type="text" id="gmail-cc" class="form-control" placeholder="cc@gmail.com"
-                            autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="gmail-bcc">BCC <span
-                                style="color:var(--text-muted); font-weight:400;">(optional)</span></label>
-                        <input type="text" id="gmail-bcc" class="form-control" placeholder="bcc@gmail.com"
-                            autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="gmail-subject">Subject *</label>
-                        <input type="text" id="gmail-subject" class="form-control" placeholder="Enter email subject"
-                            autocomplete="off">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="gmail-body">Body *</label>
-                        <textarea id="gmail-body" class="code-textarea"
-                            placeholder="Hello,&#10;&#10;Enter your email body here…"
-                            style="min-height:140px; font-family:var(--font-body);"></textarea>
-                    </div>
-                    <div class="action-row">
-                        <button class="btn btn-primary" onclick="generateURL()">
-                            <i class="fas fa-link"></i> Generate URL
-                        </button>
-                        <button class="btn btn-ghost btn-sm" onclick="loadTestValues()">Load Test Values</button>
-                        <button class="btn btn-ghost btn-sm" onclick="clearForm()">🗑 Clear</button>
-                    </div>
-                </div>
-
-                <!-- Result -->
-                <div class="workspace-panel">
-                    <div id="result-area" style="display:none;">
-                        <div class="panel-header" style="margin-bottom:var(--space-md);">
-                            <span class="panel-title">Generated URL</span>
-                        </div>
-                        <div id="gmail-url-display" class="url-result"></div>
-                        <div class="action-row" style="margin-top:var(--space-md);">
-                            <button class="btn btn-primary" id="open-gmail-btn" onclick="openGmail()">
-                                <i class="fas fa-external-link-alt"></i> Open in Gmail
-                            </button>
-                            <button class="btn btn-outline btn-sm" id="copy-url-btn" onclick="copyURL()">
-                                📋 Copy URL
-                            </button>
-                        </div>
-                    </div>
-
-                    <div id="placeholder-area">
-                        <div class="card" style="text-align:center; padding:var(--space-3xl);">
-                            <div style="font-size:3rem; margin-bottom:var(--space-md);">📬</div>
-                            <p>Fill in the form and click <strong style="color:var(--text)">Generate URL</strong> to
-                                create your Gmail compose link.</p>
-                        </div>
-                    </div>
-
-                    <div class="warn-box info-box" style="margin-top:var(--space-xl);">
-                        <span class="info-box-icon">⚠️</span>
-                        <span>Gmail signatures won't appear automatically; you'll need to select your signature
-                            manually after opening the compose window.</span>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ SOCIAL PROOF BAR ═══ -->
-    <div class="tool-section tool-section-alt">
-        <div class="container">
-            <div class="social-proof-bar">
-                <div class="proof-item">
-                    <div class="proof-number">1-Click</div>
-                    <div class="proof-label">Open Pre-filled<br>Gmail Draft</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">6</div>
-                    <div class="proof-label">Fields Supported<br>To, CC, BCC, Subject…</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">∞</div>
-                    <div class="proof-label">Reuse Forever<br>Bookmark &amp; Share</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">100%</div>
-                    <div class="proof-label">Client-Side<br>Privacy First</div>
-                </div>
-                <div class="proof-item">
-                    <div class="proof-number">Free</div>
-                    <div class="proof-label">Always Free<br>No Sign-up</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ HOW TO USE ═══ -->
-    <div class="tool-section">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">Getting Started</div>
-                <h2>How to Use the Gmail Compose URL Generator</h2>
-                <p>Generate a bookmarkable Gmail link pre-loaded with all your recipients, subject, and body in under
-                    a minute.</p>
-            </div>
-            <div class="how-to-steps">
-                <div class="how-to-step">
-                    <h4>Fill in Recipients</h4>
-                    <p>Enter the <strong>To</strong> address (required). Optionally add CC and BCC recipients. Use
-                        commas to separate multiple addresses.</p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Add Subject &amp; Body</h4>
-                    <p>Type your email subject and body. The body can include line breaks and the URL generator handles
-                        the encoding automatically.</p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Generate the URL</h4>
-                    <p>Click <strong>Generate URL</strong> (or just start typing, it updates live). The generated Gmail
-                        compose link appears instantly.</p>
-                </div>
-                <div class="how-to-step">
-                    <h4>Bookmark or Share</h4>
-                    <p>Click <strong>Open in Gmail</strong> to verify it, then copy and bookmark the URL. Share it with
-                        teammates or embed it in documents.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ FAQ ═══ -->
-    <div class="tool-section tool-section-alt">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">FAQ</div>
-                <h2>Frequently Asked Questions</h2>
-            </div>
-            <div class="faq-list">
-                <details class="faq-item">
-                    <summary>What is a Gmail Compose URL and how does it work?</summary>
-                    <div class="faq-answer">A Gmail Compose URL is a specially formatted <code>mail.google.com</code>
-                        link that, when opened, launches Gmail's compose window with fields pre-populated. It uses
-                        Gmail's URL parameters (<code>to</code>, <code>su</code>, <code>body</code>, etc.) to pass the
-                        data, so no API access is needed.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Can I actually send the email automatically?</summary>
-                    <div class="faq-answer">Nope. Gmail does not allow third-party tools to send emails directly for
-                        security reasons. The generated URL opens a compose window in Gmail where you review and
-                        manually click Send. You're always in control, which is a good thing.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Why doesn't my signature show up?</summary>
-                    <div class="faq-answer">Gmail compose URLs don't trigger automatic signature insertion. After the
-                        compose window opens, you can manually select your signature from the compose toolbar. This is a
-                        Gmail behaviour and cannot be overridden by the URL.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Can I add multiple recipients in the To or CC field?</summary>
-                    <div class="faq-answer">Yes. Separate multiple email addresses with commas (e.g.,
-                        <code>alice@example.com, bob@example.com</code>). The tool handles the URL encoding for
-                        multi-address fields automatically.
-                    </div>
-                </details>
-                <details class="faq-item">
-                    <summary>Is my email content safe?</summary>
-                    <div class="faq-answer">Your email content never leaves your browser. All URL generation happens in
-                        JavaScript locally. The final URL you receive is a standard Gmail link, just like if you'd typed
-                        the Gmail address into your browser manually.
-                        Gmail address manually in your browser.</div>
-                </details>
-                <details class="faq-item">
-                    <summary>Can I use this for recurring email templates?</summary>
-                    <div class="faq-answer">Yes, that's the whole point! Generate the URL once, bookmark it
-                        in your browser or save it in Notion/Confluence. Every time you click it, Gmail opens a
-                        ready-to-send draft. Perfect for weekly reports, recurring notifications, or team templates.
-                    </div>
-                </details>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ BLOG SNIPPETS ═══ -->
-    <div class="tool-section">
-        <div class="container">
-            <div class="tool-section-header">
-                <div class="tool-section-label">Learn More</div>
-                <h2>From the Blog</h2>
-                <p>Productivity tips and automation workflows for developers and teams.</p>
-            </div>
-            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
-                <!-- Dynamic content from blogs-loader.js -->
-                <p style="color:var(--text-muted)">Loading latest articles...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ═══ SUPPORT BANNER ═══ -->
+  <div class="tool-hero">
     <div class="container">
-        <div class="support-banner">
-            <div class="support-banner-text">
-                <h3>🤠 Find this tool useful?</h3>
-                <p>Free forever, no sign-up, no catches. If this saved you from manually typing the same email again, a
-                    coffee is always appreciated!</p>
-            </div>
-            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
-                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
-                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
-                data-coffee-color="#ffffff"></script>
+      <div class="tool-breadcrumb">
+        <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+        <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+        <span>Gmail Compose URL Generator</span>
+      </div>
+      <div class="tool-hero-inner">
+        <div class="tool-page-icon">📧</div>
+        <div class="tool-hero-text">
+          <h1>Gmail Compose URL Generator</h1>
+          <p>Create bookmarkable Gmail compose links pre-filled with recipients, subject, and body. Perfect
+            for emails you send repeatedly.</p>
+          <div style="display:flex; gap:var(--space-sm); margin-top:var(--space-md);">
+            <span class="badge">Productivity</span>
+            <span class="badge badge-purple">Gmail</span>
+            <span class="badge badge-success">100% Client-Side</span>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <div class="related-tools">
-        <div class="container">
-            <h3
-                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
-                Other Tools</h3>
-            <div class="related-tools-grid">
-                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
-                    <div>
-                        <div class="name">JSON → RAML</div>
-                        <div class="desc">MuleSoft DataType converter</div>
-                    </div>
-                </a>
-                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
-                    <div>
-                        <div class="name">YAML → Properties</div>
-                        <div class="desc">Flatten YAML configs</div>
-                    </div>
-                </a>
-                <a href="/tools/salary-calc/" class="related-tool-link"><span class="icon">💰</span>
-                    <div>
-                        <div class="name">Salary Hike Calc</div>
-                        <div class="desc">Calculate your hike %</div>
-                    </div>
-                </a>
-                <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
-                    <div>
-                        <div class="name">XML SDK Helper</div>
-                        <div class="desc">Mule connector XML</div>
-                    </div>
-                </a>
+  <div class="tool-workspace">
+    <div class="container">
+      <div class="grid grid-2" style="align-items:start;">
+
+        <!-- Form -->
+        <div class="workspace-panel">
+          <div class="form-group">
+            <label class="form-label" for="gmail-to">To * <span
+                style="color:var(--text-muted); font-weight:400;">(comma-separated)</span></label>
+            <input type="text" id="gmail-to" class="form-control" placeholder="user@gmail.com, another@gmail.com"
+              autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="gmail-cc">CC <span
+                style="color:var(--text-muted); font-weight:400;">(optional)</span></label>
+            <input type="text" id="gmail-cc" class="form-control" placeholder="cc@gmail.com" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="gmail-bcc">BCC <span
+                style="color:var(--text-muted); font-weight:400;">(optional)</span></label>
+            <input type="text" id="gmail-bcc" class="form-control" placeholder="bcc@gmail.com" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="gmail-subject">Subject *</label>
+            <input type="text" id="gmail-subject" class="form-control" placeholder="Enter email subject"
+              autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="gmail-body">Body *</label>
+            <textarea id="gmail-body" class="code-textarea" placeholder="Hello,&#10;&#10;Enter your email body here…"
+              style="min-height:140px; font-family:var(--font-body);"></textarea>
+          </div>
+          <div class="action-row">
+            <button class="btn btn-primary" onclick="generateURL()">
+              <i class="fas fa-link"></i> Generate URL
+            </button>
+            <button class="btn btn-ghost btn-sm" onclick="loadTestValues()">Load Test Values</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearForm()">🗑 Clear</button>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div class="workspace-panel">
+          <div id="result-area" style="display:none;">
+            <div class="panel-header" style="margin-bottom:var(--space-md);">
+              <span class="panel-title">Generated URL</span>
             </div>
+            <div id="gmail-url-display" class="url-result"></div>
+            <div class="action-row" style="margin-top:var(--space-md);">
+              <button class="btn btn-primary" id="open-gmail-btn" onclick="openGmail()">
+                <i class="fas fa-external-link-alt"></i> Open in Gmail
+              </button>
+              <button class="btn btn-outline btn-sm" id="copy-url-btn" onclick="copyURL()">
+                📋 Copy URL
+              </button>
+            </div>
+          </div>
+
+          <div id="placeholder-area">
+            <div class="card" style="text-align:center; padding:var(--space-3xl);">
+              <div style="font-size:3rem; margin-bottom:var(--space-md);">📬</div>
+              <p>Fill in the form and click <strong style="color:var(--text)">Generate URL</strong> to
+                create your Gmail compose link.</p>
+            </div>
+          </div>
+
+          <div class="warn-box info-box" style="margin-top:var(--space-xl);">
+            <span class="info-box-icon">⚠️</span>
+            <span>Gmail signatures won't appear automatically; you'll need to select your signature
+              manually after opening the compose window.</span>
+          </div>
         </div>
+
+      </div>
     </div>
+  </div>
 
-    <footer class="footer">
-        <div class="container">
-            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
-                Thunuguntla</a> ❤️ ·
-            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
-            <br>
-            All tools are 100% client-side & no data ever leaves your browser.
+  <!-- ═══ SOCIAL PROOF BAR ═══ -->
+  <div class="tool-section tool-section-alt">
+    <div class="container">
+      <div class="social-proof-bar">
+        <div class="proof-item">
+          <div class="proof-number">1-Click</div>
+          <div class="proof-label">Open Pre-filled<br>Gmail Draft</div>
         </div>
-    </footer>
+        <div class="proof-item">
+          <div class="proof-number">6</div>
+          <div class="proof-label">Fields Supported<br>To, CC, BCC, Subject…</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">∞</div>
+          <div class="proof-label">Reuse Forever<br>Bookmark &amp; Share</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">100%</div>
+          <div class="proof-label">Client-Side<br>Privacy First</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-number">Free</div>
+          <div class="proof-label">Always Free<br>No Sign-up</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script src="/assets/js/platform.js"></script>
-    <script src="/assets/js/blogs-loader.js"></script>
-    <script src="/assets/js/analytics.js"></script>
-    <script src="script.js"></script>
+  <!-- ═══ HOW TO USE ═══ -->
+  <div class="tool-section">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">Getting Started</div>
+        <h2>How to Use the Gmail Compose URL Generator</h2>
+        <p>Generate a bookmarkable Gmail link pre-loaded with all your recipients, subject, and body in under
+          a minute.</p>
+      </div>
+      <div class="how-to-steps">
+        <div class="how-to-step">
+          <h4>Fill in Recipients</h4>
+          <p>Enter the <strong>To</strong> address (required). Optionally add CC and BCC recipients. Use
+            commas to separate multiple addresses.</p>
+        </div>
+        <div class="how-to-step">
+          <h4>Add Subject &amp; Body</h4>
+          <p>Type your email subject and body. The body can include line breaks and the URL generator handles
+            the encoding automatically.</p>
+        </div>
+        <div class="how-to-step">
+          <h4>Generate the URL</h4>
+          <p>Click <strong>Generate URL</strong> (or just start typing, it updates live). The generated Gmail
+            compose link appears instantly.</p>
+        </div>
+        <div class="how-to-step">
+          <h4>Bookmark or Share</h4>
+          <p>Click <strong>Open in Gmail</strong> to verify it, then copy and bookmark the URL. Share it with
+            teammates or embed it in documents.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FAQ ═══ -->
+  <div class="tool-section tool-section-alt">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">FAQ</div>
+        <h2>Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>What is a Gmail Compose URL and how does it work?</summary>
+          <div class="faq-answer">A Gmail Compose URL is a specially formatted <code>mail.google.com</code>
+            link that, when opened, launches Gmail's compose window with fields pre-populated. It uses
+            Gmail's URL parameters (<code>to</code>, <code>su</code>, <code>body</code>, etc.) to pass the
+            data, so no API access is needed.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I actually send the email automatically?</summary>
+          <div class="faq-answer">Nope. Gmail does not allow third-party tools to send emails directly for
+            security reasons. The generated URL opens a compose window in Gmail where you review and
+            manually click Send. You're always in control, which is a good thing.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Why doesn't my signature show up?</summary>
+          <div class="faq-answer">Gmail compose URLs don't trigger automatic signature insertion. After the
+            compose window opens, you can manually select your signature from the compose toolbar. This is a
+            Gmail behaviour and cannot be overridden by the URL.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I add multiple recipients in the To or CC field?</summary>
+          <div class="faq-answer">Yes. Separate multiple email addresses with commas (e.g.,
+            <code>alice@example.com, bob@example.com</code>). The tool handles the URL encoding for
+            multi-address fields automatically.
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>Is my email content safe?</summary>
+          <div class="faq-answer">Your email content never leaves your browser. All URL generation happens in
+            JavaScript locally. The final URL you receive is a standard Gmail link, just like if you'd typed
+            the Gmail address into your browser manually.
+            Gmail address manually in your browser.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Can I use this for recurring email templates?</summary>
+          <div class="faq-answer">Yes, that's the whole point! Generate the URL once, bookmark it
+            in your browser or save it in Notion/Confluence. Every time you click it, Gmail opens a
+            ready-to-send draft. Perfect for weekly reports, recurring notifications, or team templates.
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ BLOG SNIPPETS ═══ -->
+  <div class="tool-section">
+    <div class="container">
+      <div class="tool-section-header">
+        <div class="tool-section-label">Learn More</div>
+        <h2>From the Blog</h2>
+        <p>Productivity tips and automation workflows for developers and teams.</p>
+      </div>
+      <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+        <!-- Dynamic content from blogs-loader.js -->
+        <p style="color:var(--text-muted)">Loading latest articles...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SUPPORT BANNER ═══ -->
+  <div class="container">
+    <div class="support-banner">
+      <div class="support-banner-text">
+        <h3>🤠 Find this tool useful?</h3>
+        <p>Free forever, no sign-up, no catches. If this saved you from manually typing the same email again, a
+          coffee is always appreciated!</p>
+      </div>
+      <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+        data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠" data-font="Cookie"
+        data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+        data-coffee-color="#ffffff"></script>
+    </div>
+  </div>
+
+  <div class="related-tools">
+    <div class="container">
+      <h3
+        style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+        Other Tools</h3>
+      <div class="related-tools-grid">
+        <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+          <div>
+            <div class="name">JSON → RAML</div>
+            <div class="desc">MuleSoft DataType converter</div>
+          </div>
+        </a>
+        <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
+          <div>
+            <div class="name">YAML → Properties</div>
+            <div class="desc">Flatten YAML configs</div>
+          </div>
+        </a>
+        <a href="/tools/salary-calc/" class="related-tool-link"><span class="icon">💰</span>
+          <div>
+            <div class="name">Salary Hike Calc</div>
+            <div class="desc">Calculate your hike %</div>
+          </div>
+        </a>
+        <a href="/tools/xml-sdk/" class="related-tool-link"><span class="icon">🏗️</span>
+          <div>
+            <div class="name">XML SDK Helper</div>
+            <div class="desc">Mule connector XML</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+        Thunuguntla</a> ❤️ ·
+      <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">View on GitHub</a>
+      <br>
+      All tools are 100% client-side & no data ever leaves your browser.
+    </div>
+  </footer>
+
+  <script src="/assets/js/platform.js"></script>
+  <script src="/assets/js/blogs-loader.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  <script src="script.js"></script>
 </body>
 
 </html>
