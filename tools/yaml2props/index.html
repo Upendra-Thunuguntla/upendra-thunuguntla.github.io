@@ -7,6 +7,7 @@
     <title>YAML to Properties Converter | Upendra.dev</title>
     <meta name="description"
         content="Free YAML to Properties converter for MuleSoft. Flatten YAML configs into flat properties, extract keys with ${key} or Mule::p() wrapping, and support secure properties prefix.">
+    <meta name="author" content="Upendra Venkata Muralidhar Thunuguntla">
     <link rel="icon" href="/portfolio.png" type="image/png">
     <link rel="manifest" href="/manifest.json">
     <script src="/assets/js/theme.js"></script>
@@ -84,13 +85,142 @@
       "description": "Free YAML to Properties converter for MuleSoft. Flatten YAML configs into flat properties, extract keys with ${key} or Mule::p() wrapping, and support secure properties prefix.",
       "author": {
         "@type": "Person",
-        "name": "Upendra Thunuguntla",
+        "name": "Upendra Venkata Muralidhar Thunuguntla",
         "url": "https://upendra-thunuguntla.github.io/",
         "sameAs": [
           "https://www.linkedin.com/in/upendra-thunuguntla/",
           "https://github.com/Upendra-Thunuguntla"
         ]
       }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
+      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
+      "url": "https://upendra-thunuguntla.github.io/",
+      "numberOfItems": 13,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Base64 Encoder & Decoder",
+            "url": "https://upendra-thunuguntla.github.io/tools/base64-converter/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Cron Expression Builder for Mule Pollers",
+            "url": "https://upendra-thunuguntla.github.io/tools/cron-builder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Postman cURL → Mule HTTP Request",
+            "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Gmail Compose URL Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "WebApplication",
+            "name": "JSON to RAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/json2raml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Log to cURL Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Properties to YAML Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "WebApplication",
+            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/raml2oas/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Salary Hike Calculator",
+            "url": "https://upendra-thunuguntla.github.io/tools/salary-calc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Secure Properties Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/secure-properties-generator/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "WebApplication",
+            "name": "WhatsApp Read More Generator",
+            "url": "https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule XML SDK Helper",
+            "url": "https://upendra-thunuguntla.github.io/tools/xml-sdk/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "WebApplication",
+            "name": "YAML to Properties Converter",
+            "url": "https://upendra-thunuguntla.github.io/tools/yaml2props/"
+          }
+        }
+      ]
     }
     </script>
 </head>
@@ -147,8 +277,10 @@
                     <div class="panel-header">
                         <span class="panel-title">Input: YAML</span>
                         <div class="panel-actions">
-                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="y2p_loadExample()"><i class="fas fa-bolt"></i> Example</button>
-                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="y2p_clear()"><i class="fas fa-trash-alt"></i> Clear</button>
+                            <button class="btn btn-ghost btn-sm" title="Load Example" onclick="y2p_loadExample()"><i
+                                    class="fas fa-bolt"></i> Example</button>
+                            <button class="btn btn-ghost btn-sm" title="Clear All" onclick="y2p_clear()"><i
+                                    class="fas fa-trash-alt"></i> Clear</button>
                         </div>
                     </div>
 
@@ -204,8 +336,10 @@
                     <div class="panel-header">
                         <span class="panel-title">Output: Properties</span>
                         <div class="panel-actions">
-                            <button id="y2p-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="y2p_copy()"><i class="fas fa-copy"></i> Copy</button>
-                            <button id="y2p-save-btn" class="btn btn-ghost btn-sm" title="Download Properties" onclick="y2p_downloadPrompt()"><i class="fas fa-download"></i> Download</button>
+                            <button id="y2p-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard"
+                                onclick="y2p_copy()"><i class="fas fa-copy"></i> Copy</button>
+                            <button id="y2p-save-btn" class="btn btn-ghost btn-sm" title="Download Properties"
+                                onclick="y2p_downloadPrompt()"><i class="fas fa-download"></i> Download</button>
                         </div>
                     </div>
 
@@ -220,26 +354,26 @@
                             title="Filter output by property key or value" disabled oninput="y2p_filter(this.value)"
                             style="flex:1; margin:0;">
                     </div>
-                        <div id="y2p-filename-group" style="display:none; gap:var(--space-xs); align-items:center;">
-                            <input type="text" id="y2pFileName" class="filter-input"
-                                style="width:120px; margin:0; padding:6px 10px;" placeholder="mule-config">
-                            <span
-                                style="color:var(--text-muted); font-size:0.8rem; font-family:var(--font-mono); margin-left:-4px;">.properties</span>
-                            <button class="btn btn-success btn-sm" onclick="y2p_doDownload()">DL</button>
-                            <button class="btn btn-ghost btn-sm" onclick="y2p_cancelDownload()"
-                                style="padding:4px 8px;">✕</button>
-                        </div>
+                    <div id="y2p-filename-group" style="display:none; gap:var(--space-xs); align-items:center;">
+                        <input type="text" id="y2pFileName" class="filter-input"
+                            style="width:120px; margin:0; padding:6px 10px;" placeholder="mule-config">
+                        <span
+                            style="color:var(--text-muted); font-size:0.8rem; font-family:var(--font-mono); margin-left:-4px;">.properties</span>
+                        <button class="btn btn-success btn-sm" onclick="y2p_doDownload()">DL</button>
+                        <button class="btn btn-ghost btn-sm" onclick="y2p_cancelDownload()"
+                            style="padding:4px 8px;">✕</button>
                     </div>
                 </div>
             </div>
-
-            <div class="info-box" style="margin-top:var(--space-xl);">
-                <span class="info-box-icon">💡</span>
-                <span>Encrypted values starting with <code>![</code> will automatically get the <code>secure::</code>
-                    prefix when using Keys Only mode.</span>
-            </div>
-
         </div>
+
+        <div class="info-box" style="margin-top:var(--space-xl);">
+            <span class="info-box-icon">💡</span>
+            <span>Encrypted values starting with <code>![</code> will automatically get the <code>secure::</code>
+                prefix when using Keys Only mode.</span>
+        </div>
+
+    </div>
     </div>
 
     <!-- ═══ SOCIAL PROOF BAR ═══ -->
@@ -281,19 +415,23 @@
             <div class="how-to-steps">
                 <div class="how-to-step">
                     <h4>Paste YAML Content</h4>
-                    <p>Paste your nested YAML configuration straight into the input editor, or upload a <code>.yaml</code> file.</p>
+                    <p>Paste your nested YAML configuration straight into the input editor, or upload a
+                        <code>.yaml</code> file.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>Choose Output Format</h4>
-                    <p>Select option filters such as "Keys Only", or wrap properties keys in <code>${key}</code> or <code>Mule::p("key")</code>.</p>
+                    <p>Select option filters such as "Keys Only", or wrap properties keys in <code>${key}</code> or
+                        <code>Mule::p("key")</code>.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>Convert Instantly</h4>
-                    <p>The conversion happens live as you type or change options, displaying structured dotted property key-value pairs.</p>
+                    <p>The conversion happens live as you type or change options, displaying structured dotted property
+                        key-value pairs.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>Copy or Download</h4>
-                    <p>Copy the flat properties output to your clipboard, or download it directly as a <code>.properties</code> file.</p>
+                    <p>Copy the flat properties output to your clipboard, or download it directly as a
+                        <code>.properties</code> file.</p>
                 </div>
             </div>
         </div>
@@ -327,11 +465,15 @@
                 </details>
                 <details class="faq-item">
                     <summary>How does the tool handle secure properties?</summary>
-                    <div class="faq-answer">If your YAML config contains encrypted values wrapped in <code>![val]</code>, selecting "Keys Only" mode will automatically prepend the <code>secure::</code> prefix to those property keys, keeping them aligned with MuleSoft's Secure Properties standards.</div>
+                    <div class="faq-answer">If your YAML config contains encrypted values wrapped in
+                        <code>![val]</code>, selecting "Keys Only" mode will automatically prepend the
+                        <code>secure::</code> prefix to those property keys, keeping them aligned with MuleSoft's Secure
+                        Properties standards.</div>
                 </details>
                 <details class="faq-item">
                     <summary>Is my configuration file sent to any server?</summary>
-                    <div class="faq-answer">No, all operations run entirely in local browser memory. None of your database credentials, system configs, or passwords ever leave your machine.</div>
+                    <div class="faq-answer">No, all operations run entirely in local browser memory. None of your
+                        database credentials, system configs, or passwords ever leave your machine.</div>
                 </details>
             </div>
         </div>

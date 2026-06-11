@@ -564,6 +564,7 @@ To ensure your tool reaches developers seeking solutions via both traditional Se
 
 ### Schema.org JSON-LD structured data
 - Every page must contain the `@type: WebApplication` JSON-LD schema referencing the direct URL, matching descriptions, categorizing as `DeveloperApplication`, and attributing authorship to `Upendra Venkata Muralidhar Thunuguntla`.
+- Every page must also contain an `ItemList` JSON-LD schema block listing all developer tools in the suite. When adding, removing, or modifying a tool, run `node scripts/generate-itemlist.js` from the repository root to automatically regenerate and inject the updated `ItemList` block into all files.
 
 ### Answer Engine Optimization (AEO) Copywriting
 - **Target Direct Questions:** Under the FAQ section, structure the `<summary>` tags to match real queries developers type into search boxes:
@@ -614,5 +615,6 @@ Before checking in code, execute the following validation tests:
 ### 3. SEO & Structured Data Compliance
 - [ ] Verify only one `<h1>` exists on the page.
 - [ ] Ensure the JSON-LD contains no JSON syntax errors and accurately lists the canonical URL path with trailing slash.
+- [ ] Run `node scripts/generate-itemlist.js` to automatically regenerate the `ItemList` schema across the root `index.html` and all tool-specific pages to include the new tool.
 - [ ] Run a local validator or review the links. Verify all internal links point to same-tab destinations.
 - [ ] Verify that Google Analytics is loaded at line 18-20 and tracking triggers dispatch when events complete.
