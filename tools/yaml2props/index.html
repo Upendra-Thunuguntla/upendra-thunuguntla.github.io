@@ -33,6 +33,54 @@
         }
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the difference between YAML and .properties in MuleSoft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MuleSoft supports both YAML and flat properties files. YAML is hierarchical and easier to read, while Properties files are flat key=value pairs often used for environment-specific overrides in CloudHub."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the \"Keys Only\" option do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It extracts just the dotted property keys (e.g., database.host) without the values. This is perfect for creating property placeholder templates or list of keys for DataWeave."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Mule::p(\"key\") format?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Mule::p(\"key\") is the DataWeave function to read a Mule property. This tool can auto-wrap all your keys in this format for quick use in transformations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the tool handle secure properties?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If your YAML config contains encrypted values wrapped in ![val], selecting \"Keys Only\" mode will automatically prepend the secure:: prefix to those property keys, keeping them aligned with MuleSoft's Secure Properties standards."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my configuration file sent to any server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, all operations run entirely in local browser memory. None of your database credentials, system configs, or passwords ever leave your machine."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

@@ -70,7 +70,39 @@
                     "@type": "Answer",
                     "text": "UTF-8 is the standard encoding for modern web systems. ASCII is suitable for plain English strings. Hexadecimal is useful when you want to convert raw bytes in hex format (e.g. key hashes) directly to Base64."
                 }
-            }
+            },
+            {
+          "@type": "Question",
+          "name": "Is my data sent to any server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The tool processes all inputs directly inside your browser. No data, payloads, keys, or text contents ever leave your local computer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why use URL-Safe Base64?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Standard Base64 encoding utilizes character symbols such as '+' and '/' which carry operational meanings in URL query strings. Converting to URL-safe options replaces these symbols with '-' and '_' to prevent transmission corruption."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this support emoji and special characters?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. When using the default UTF-8 Character Encoding setting, the encoder and decoder handle multi-byte Unicode strings (including emojis and international glyphs) correctly without character loss."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is Hexadecimal mode useful for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Hex mode is ideal for cryptographic keys and digests. You can input raw hexadecimal byte strings (like hash outputs) and encode them into Base64, or decode Base64 back into hex bytes."
+          }
+        }
         ]
     }
     </script>
@@ -123,7 +155,8 @@
                 <div class="tool-page-icon" aria-hidden="true">🔏</div>
                 <div class="tool-hero-text">
                     <h1>Base64 Encoder & Decoder</h1>
-                    <p>Instantly encode raw text or files to Base64, or decode Base64 data back to clear text. Works 100% locally in your browser for absolute data security.</p>
+                    <p>Instantly encode raw text or files to Base64, or decode Base64 data back to clear text. Works
+                        100% locally in your browser for absolute data security.</p>
 
                     <!-- Meta Badges -->
                     <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
@@ -183,7 +216,7 @@
                     <!-- Strip Padding & Formatting -->
                     <div class="config-item" id="format-options-col">
                         <label id="format-label">Output Formatting</label>
-                        
+
                         <!-- Output wrap options (Shown for Encode mode) -->
                         <select id="sel-wrap" class="form-control" onchange="processData()">
                             <option value="none">No Line Wrapping</option>
@@ -211,10 +244,12 @@
                     <div class="panel-header">
                         <span class="panel-title"><i class="fas fa-edit"></i> Source Input</span>
                         <div class="panel-actions">
-                            <button id="btn-load-example" class="btn btn-ghost btn-sm" title="Load Example data" onclick="loadExample()">
+                            <button id="btn-load-example" class="btn btn-ghost btn-sm" title="Load Example data"
+                                onclick="loadExample()">
                                 <i class="fas fa-bolt"></i> Example
                             </button>
-                            <button id="btn-clear-all" class="btn btn-ghost btn-sm" title="Clear inputs" onclick="clearAll()">
+                            <button id="btn-clear-all" class="btn btn-ghost btn-sm" title="Clear inputs"
+                                onclick="clearAll()">
                                 <i class="fas fa-trash-alt"></i> Clear
                             </button>
                         </div>
@@ -234,15 +269,18 @@
 
                         <!-- Text Input wrapper -->
                         <div id="text-input-wrapper" class="editor-wrapper">
-                            <textarea id="text-input" class="code-textarea" placeholder="Paste source contents here..." aria-label="Source Input Area"></textarea>
+                            <textarea id="text-input" class="code-textarea" placeholder="Paste source contents here..."
+                                aria-label="Source Input Area"></textarea>
                         </div>
 
                         <!-- File Input wrapper (Dropzone) -->
                         <div id="file-input-wrapper" class="file-dropzone" style="display:none;">
                             <i class="fas fa-cloud-upload-alt dropzone-icon" aria-hidden="true"></i>
                             <p style="margin-bottom: 4px;">Drag & drop a file here, or click to browse</p>
-                            <p id="file-name-display" style="font-size:0.8rem; font-weight:700; color:var(--accent); margin-top:8px;"></p>
-                            <input type="file" id="file-upload" class="file-hidden-input" onchange="handleFileUpload(event)">
+                            <p id="file-name-display"
+                                style="font-size:0.8rem; font-weight:700; color:var(--accent); margin-top:8px;"></p>
+                            <input type="file" id="file-upload" class="file-hidden-input"
+                                onchange="handleFileUpload(event)">
                         </div>
                     </div>
                 </div>
@@ -252,16 +290,19 @@
                     <div class="panel-header">
                         <span class="panel-title"><i class="fas fa-code"></i> Converted Output</span>
                         <div class="panel-actions">
-                            <button id="btn-copy" class="btn btn-ghost btn-sm" title="Copy to clipboard" onclick="copyResult()">
+                            <button id="btn-copy" class="btn btn-ghost btn-sm" title="Copy to clipboard"
+                                onclick="copyResult()">
                                 <i class="fas fa-copy"></i> Copy
                             </button>
-                            <button id="btn-download" class="btn btn-ghost btn-sm" title="Download output file" onclick="downloadResult()">
+                            <button id="btn-download" class="btn btn-ghost btn-sm" title="Download output file"
+                                onclick="downloadResult()">
                                 <i class="fas fa-download"></i> Download
                             </button>
                         </div>
                     </div>
                     <div class="editor-wrapper">
-                        <textarea id="text-output" class="code-output" readonly placeholder="Parsed output will display here..." aria-label="Parsed Output Area"></textarea>
+                        <textarea id="text-output" class="code-output" readonly
+                            placeholder="Parsed output will display here..." aria-label="Parsed Output Area"></textarea>
                     </div>
                 </div>
 
@@ -344,11 +385,13 @@
             <div class="how-to-steps">
                 <div class="how-to-step">
                     <h4>Step 1: Choose Mode</h4>
-                    <p>Select either "Encode" (Text to Base64) or "Decode" (Base64 to Text) using the top pill selector.</p>
+                    <p>Select either "Encode" (Text to Base64) or "Decode" (Base64 to Text) using the top pill selector.
+                    </p>
                 </div>
                 <div class="how-to-step">
                     <h4>Step 2: Configure Options</h4>
-                    <p>Set character encoding (UTF-8, Hex, etc.) and toggle URL-Safe or output line wrapping preferences.</p>
+                    <p>Set character encoding (UTF-8, Hex, etc.) and toggle URL-Safe or output line wrapping
+                        preferences.</p>
                 </div>
                 <div class="how-to-step">
                     <h4>Step 3: Provide Input</h4>
@@ -373,25 +416,31 @@
                 <details class="faq-item">
                     <summary>Is my data sent to any server?</summary>
                     <div class="faq-answer">
-                        No. The tool processes all inputs directly inside your browser. No data, payloads, keys, or text contents ever leave your local computer.
+                        No. The tool processes all inputs directly inside your browser. No data, payloads, keys, or text
+                        contents ever leave your local computer.
                     </div>
                 </details>
                 <details class="faq-item">
                     <summary>Why use URL-Safe Base64?</summary>
                     <div class="faq-answer">
-                        Standard Base64 encoding utilizes character symbols such as '+' and '/' which carry operational meanings in URL query strings. Converting to URL-safe options replaces these symbols with '-' and '_' to prevent transmission corruption.
+                        Standard Base64 encoding utilizes character symbols such as '+' and '/' which carry operational
+                        meanings in URL query strings. Converting to URL-safe options replaces these symbols with '-'
+                        and '_' to prevent transmission corruption.
                     </div>
                 </details>
                 <details class="faq-item">
                     <summary>Does this support emoji and special characters?</summary>
                     <div class="faq-answer">
-                        Yes. When using the default UTF-8 Character Encoding setting, the encoder and decoder handle multi-byte Unicode strings (including emojis and international glyphs) correctly without character loss.
+                        Yes. When using the default UTF-8 Character Encoding setting, the encoder and decoder handle
+                        multi-byte Unicode strings (including emojis and international glyphs) correctly without
+                        character loss.
                     </div>
                 </details>
                 <details class="faq-item">
                     <summary>What is Hexadecimal mode useful for?</summary>
                     <div class="faq-answer">
-                        Hex mode is ideal for cryptographic keys and digests. You can input raw hexadecimal byte strings (like hash outputs) and encode them into Base64, or decode Base64 back into hex bytes.
+                        Hex mode is ideal for cryptographic keys and digests. You can input raw hexadecimal byte strings
+                        (like hash outputs) and encode them into Base64, or decode Base64 back into hex bytes.
                     </div>
                 </details>
             </div>
@@ -429,7 +478,8 @@
     <!-- Related Tools Grid Section -->
     <div class="related-tools" role="navigation" aria-label="Related tools">
         <div class="container">
-            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+            <h3
+                style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
                 Related Tools
             </h3>
             <div class="related-tools-grid">
@@ -461,7 +511,8 @@
     <!-- Shared Footer -->
     <footer class="footer">
         <div class="container">
-            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra Thunuguntla</a> ❤️ ·
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
+                Thunuguntla</a> ❤️ ·
             <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">GitHub</a>
             <br>
             All tools run fully client-side. No sensitive data ever hits our hosting servers.
@@ -475,4 +526,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>

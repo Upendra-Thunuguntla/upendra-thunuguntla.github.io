@@ -35,6 +35,54 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What log format does this tool support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This tool parses standard MuleSoft HTTP connector debug logs, including output from org.mule.service.http.impl.service.HttpMessageLogger, org.mule.extension.http, and plain HTTP request lines like POST /api/v1/resource HTTP/1.1 followed by headers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I import the cURL into Postman?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Copy the generated cURL command, open Postman, and simply paste it directly into any New Request tab. Postman automatically detects the cURL format and populates all headers, query params, and the body. You can also use File → Import → Raw text."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool handle request bodies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. If the debug logs include a request body, the tool extracts it and includes it in the cURL command using the --data flag."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your debug logs never leave your browser. All parsing happens 100% client-side in JavaScript. No data is sent to any server. Logs may contain sensitive headers like Authorization, which stay on your machine only."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if my logs don't parse correctly?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Try extracting just the HTTP request portion (starting from the request line like GET /path HTTP/1.1 followed by headers). The parser is designed to be forgiving with extra noise from Mule log prefixes."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

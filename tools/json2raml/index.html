@@ -36,6 +36,62 @@
         }
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a RAML DataType?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A RAML DataType defines the structure and data types of JSON payloads used in your MuleSoft APIs. They live inside #%RAML 1.0 DataType files and are referenced from your RAML API specification to enforce schema validation on requests and responses."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool support nested JSON objects and arrays?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Nested objects become nested properties blocks. Arrays output as type: array and the item type is inferred from the first element, covering string, number, boolean, and nested object items."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the \"Optional Keys\" option do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Checking Optional Keys appends a ? to every property name in the output (e.g., name?: string). In RAML 1.0, this marks the field as not required, which is useful when your API accepts partial payloads in PATCH requests."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the CamelCase conversion do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enabling CamelCase converts snake_case or kebab-case JSON keys into camelCase automatically. For example, first_name becomes firstName. This is the convention used in most MuleSoft and Anypoint API designs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my JSON data sent to any server?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely not. All conversion logic runs entirely in your browser using JavaScript. No data is transmitted, stored, or logged anywhere. Your payloads, including any sensitive values, never leave your machine."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this for RAML 0.8 projects?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This tool targets RAML 1.0 DataType syntax, which is the current standard used in Anypoint Platform. RAML 0.8 used a different schema system. If you're still on Mule 3.x with RAML 0.8, minor manual adjustments to the output may be needed."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

@@ -34,6 +34,62 @@
         }
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a Gmail Compose URL and how does it work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A Gmail Compose URL is a specially formatted mail.google.com link that, when opened, launches Gmail's compose window with fields pre-populated. It uses Gmail's URL parameters (to, su, body, etc.) to pass the data, so no API access is needed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I actually send the email automatically?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nope. Gmail does not allow third-party tools to send emails directly for security reasons. The generated URL opens a compose window in Gmail where you review and manually click Send. You're always in control, which is a good thing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why doesn't my signature show up?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Gmail compose URLs don't trigger automatic signature insertion. After the compose window opens, you can manually select your signature from the compose toolbar. This is a Gmail behaviour and cannot be overridden by the URL."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add multiple recipients in the To or CC field?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Separate multiple email addresses with commas (e.g., alice@example.com, bob@example.com). The tool handles the URL encoding for multi-address fields automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my email content safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your email content never leaves your browser. All URL generation happens in JavaScript locally. The final URL you receive is a standard Gmail link, just like if you'd typed the Gmail address manually in your browser."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this for recurring email templates?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, that's the whole point! Generate the URL once, bookmark it in your browser or save it in Notion/Confluence. Every time you click it, Gmail opens a ready-to-send draft. Perfect for weekly reports, recurring notifications, or team templates."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

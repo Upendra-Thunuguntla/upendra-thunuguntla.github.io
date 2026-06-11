@@ -35,6 +35,54 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why should I migrate from RAML to OpenAPI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OpenAPI (OAS 3.0) has become the industry standard for API specification, with broader tooling support (Swagger UI, Postman, AWS API Gateway, Azure APIM, etc.). While MuleSoft still supports RAML natively, many organizations are standardizing on OAS 3.0 for cross-platform compatibility and future-proofing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What RAML features are NOT supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Some advanced RAML features don't have direct OAS equivalents: Traits, Resource Types, Overlays, and Extensions are not converted (they are flagged in conversion notes). RAML 0.8 is also not supported; only RAML 1.0 is supported. For complex specs, consider using the official raml-to-oas CLI tool for production migrations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use the output directly in Anypoint Platform?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Anypoint Design Center supports importing OpenAPI 3.0 specs. You can also use the output in Swagger Editor, Postman (Import → OpenAPI), or any OAS-compatible tool. The generated output follows the OAS 3.0 specification precisely."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are RAML types converted to OAS schemas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "RAML types are converted to components/schemas in OAS 3.0. RAML property types like string, integer, number, boolean, and object map directly. Arrays use type: array with items. Custom type references are preserved as $ref links."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my API spec safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. All conversion logic runs entirely in your browser using JavaScript. Your RAML content, which may contain internal API designs, security schemes, or business logic, is never sent to any server. The tool works fully offline after the page loads."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

@@ -35,6 +35,62 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What cURL formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This tool supports standard cURL commands including --header / -H, --data / -d, --request / -X, --location / -L, --user / -u, --insecure / -k, and URL with query parameters. Multi-line commands with backslash continuations are handled automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do I find the cURL in Postman?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Open any request in Postman. On the right sidebar, click the **Code** icon (</>). Ensure cURL is selected in the language dropdown, and click the Copy icon. Paste that result directly into this tool."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between output modes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Config + Processor generates a global <http:request-config> and a separate <http:request> that references it. Embedded generates a single <http:request> that uses the url attribute to define the connection, making it perfect for quick transformations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are headers and query params generated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Headers are added inside <http:headers> as a DataWeave map expression with each header key-value pair. Query parameters extracted from the URL are added inside <http:query-params> the same way. Both follow MuleSoft's recommended dynamic input parameter standards."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool handle authentication?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. If --user / -u is detected, basic authentication config is generated. Bearer tokens and API keys in headers are preserved as-is in the headers block. For OAuth, you'll want to configure that separately in Anypoint Studio."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your cURL commands never leave your browser. All parsing happens 100% client-side in JavaScript. No data is sent to any server. cURL commands often contain Authorization headers or API keys, which stay on your machine only."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

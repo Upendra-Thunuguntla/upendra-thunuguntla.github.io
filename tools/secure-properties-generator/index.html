@@ -35,6 +35,54 @@
         }
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is my security key safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. This tool is 100% client-side. Your key and data never leave your browser memory. Everything happens locally via the Web Crypto API."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why use ![ ] wrapper?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MuleSoft's Secure Properties Provider uses this syntax to identify which values need decryption at runtime. The wrapper is mandatory for secure property files."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which algorithm should I choose?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For modern Mule 4 apps, AES (CBC or ECB) is highly recommended. For older Mule 3 apps, Blowfish or DES might be required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you support YAML anchors?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Current batch processing supports standard key-value pairs. For complex YAML with anchors/aliases, we recommend processing individual values or the whole file."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does Random IV affect encryption outputs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Using Random IV (Initialization Vector) means encrypting the same text with the same key will produce a different ciphertext each time. This increases security by preventing attackers from identifying repeated patterns. Decryption is still successful because the IV is stored along with the ciphertext in the output."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

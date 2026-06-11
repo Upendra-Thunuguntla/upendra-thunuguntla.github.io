@@ -33,6 +33,54 @@
         }
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why convert Properties to YAML?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "YAML is much more readable for complex configurations. When migrating flat .properties files to .yaml, this tool saves time by automatically building the nested levels."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it handle complex keys?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it handles any number of nested levels. a.b.c.d=value will result in a 4-level deep YAML structure."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data secure?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Absolutely. Like all tools on Upendra.dev, the conversion happens entirely in your browser. No data ever leaves your machine."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use comments in my properties file?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Single line comments starting with # are preserved during input parsing to help you maintain contextual notes in your config configurations."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool support lists or arrays?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Currently, properties files representing array elements (e.g., list[0]=value, list[1]=value) are parsed as standard dotted strings. You can easily adjust the resulting YAML indentation manually if list syntax is required."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

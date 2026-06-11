@@ -36,6 +36,62 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the Mule XML SDK?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Mule XML SDK is a framework for building custom MuleSoft connectors using XML descriptor files and Java code. It lets teams create reusable, published connectors for internal or public use in Anypoint Exchange, without the complexity of the older DevKit approach."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are the Operation and Parameter tabs for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An Operation is a single action your connector exposes (e.g., \"get-records\", \"send-message\"). Parameters are the inputs that operation accepts (e.g., a query string, a timeout, a payload). This tool helps you configure both and generates the correct XML block for your module-info.xml."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does the \"Role\" field mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Role controls how the parameter appears in the Anypoint Studio UI: BEHAVIOUR makes it an attribute field (small config option), CONTENT makes it a content/body input (e.g., payload), and PRIMARY marks it as the main connector input at the top of the config panel."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I add multiple parameters to one operation?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The tool is designed for this. Fill in and click Add Parameter for each field. Each one is appended to the live XML output. You can add as many parameters as your operation needs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is my name auto-converted to kebab-case?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The XML SDK specification requires operation and parameter names in kebab-case (e.g., my-operation, not myOperation). The tool converts your input automatically so you don't have to remember the convention."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens when I click Reset All?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Reset All clears the entire operation, including its name, description, and all added parameters. The XML output is wiped so you can start fresh with a new operation definition from scratch."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

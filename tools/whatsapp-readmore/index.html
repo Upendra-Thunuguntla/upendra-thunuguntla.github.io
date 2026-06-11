@@ -286,6 +286,54 @@
             text-align: right;
         }
     </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does this tool work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WhatsApp truncates messages when they exceed certain length criteria. Since zero-width characters (like zero-width space \\u200B) are technically valid Unicode characters but have no visible width, inserting 4,000 of them between your intro and hidden message tricks WhatsApp into treating it as a very long message, forcing a \"... Read more\" break."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does the separator repeated count matter?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "WhatsApp limits vary by client platform (iOS, Android, Web). For example, Android requires about 3,000–4,000 characters to trigger truncation, whereas Web might require more. 4,000 repetitions is the sweet spot that works across almost all mobile devices."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which separator character should I choose?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Zero-Width Space (\\u200B) is the standard, clean choice. On some clients, a combination of LTR/RTL marks (\\u200E\\u200F) or Zero-Width Non-Joiner (\\u200C) performs better if standard spaces fail to force truncation. We offer options to ensure compatibility."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this safe and private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, 100%. This tool runs completely inside your browser via local JavaScript. No message text is sent to our servers or third parties. All text generation happens on your device."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this tool work on all versions of WhatsApp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, this tool works on Android, iOS, WhatsApp Web, and Desktop. The truncation behaviour is standard across the official WhatsApp clients. However, the exact number of characters needed to trigger the \"... Read more\" link may vary slightly depending on screen size, font size settings, and system version."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">

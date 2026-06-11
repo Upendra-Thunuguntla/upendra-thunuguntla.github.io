@@ -35,6 +35,62 @@
     </script>
 
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What cron format does MuleSoft use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MuleSoft Scheduler uses Quartz cron expressions, which have 6 or 7 fields: Seconds Minutes Hours Day-of-Month Month Day-of-Week [Year]. This is different from Unix cron (5 fields). Notably, you cannot specify both Day-of-Month and Day-of-Week; one must be ?"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the difference between * and ? in Quartz cron?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "* means \"every value\" and is used for fields like seconds, minutes, and hours. ? means \"no specific value\" and is used to leave either Day-of-Month or Day-of-Week unspecified, since both cannot be set simultaneously in Quartz. Always use ? in one of them."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I run a job every N minutes in Mule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Use the step notation: 0 0/N * * * ?. For example, 0 0/15 * * * ? runs every 15 minutes starting at the top of the hour. Alternatively, for simpler intervals, use the Fixed Frequency scheduler in MuleSoft instead of cron by setting frequency=\"15000\" timeUnit=\"MILLISECONDS\"."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I run on weekdays only?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Set Day-of-Week to MON-FRI and Day-of-Month to ?. A full example: 0 0 8 ? * MON-FRI fires every weekday at 8:00 AM. You can also use numbers: 2-6 maps to Mon–Fri (Quartz day numbering: 1=SUN, 7=SAT)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is the generated Mule XML structured?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The generated XML uses the standard MuleSoft Scheduler XML structure: <scheduler:cron-scheduling-strategy expression=\"...\" timeZone=\"UTC\"/> wrapped inside a <scheduler:scheduling-strategy> and <scheduler> element. The doc:name is included for Anypoint Studio display."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data safe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. All cron parsing and next-execution calculation happens entirely in your browser. No data is sent to any server. This tool works fully offline after the page loads."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body class="tool-page">
