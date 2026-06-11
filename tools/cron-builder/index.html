@@ -94,6 +94,7 @@
         "priceCurrency": "USD"
       },
       "description": "Visually build Quartz/Mule cron expressions for MuleSoft Schedulers. See the next 5 execution times instantly. 100% browser-based and free.",
+      "dateModified": "2026-06-11",
       "author": {
         "@type": "Person",
         "name": "Upendra Venkata Muralidhar Thunuguntla",
@@ -108,128 +109,32 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
-      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
-      "url": "https://upendra-thunuguntla.github.io/",
-      "numberOfItems": 13,
-      "itemListElement": [
+      "@type": "HowTo",
+      "name": "How to Use Cron Expression Builder for Mule Pollers",
+      "step": [
         {
-          "@type": "ListItem",
-          "position": 1,
-          "item": {
-            "@type": "WebApplication",
-            "name": "Base64 Encoder & Decoder",
-            "url": "https://upendra-thunuguntla.github.io/tools/base64-converter/"
-          }
+          "@type": "HowToStep",
+          "position": "1",
+          "name": "1. Choose a Preset",
+          "text": "Pick from common presets like Every Hour, Weekdays at 8 AM, or Monthly to instantly populate all fields."
         },
         {
-          "@type": "ListItem",
-          "position": 2,
-          "item": {
-            "@type": "WebApplication",
-            "name": "Cron Expression Builder for Mule Pollers",
-            "url": "https://upendra-thunuguntla.github.io/tools/cron-builder/"
-          }
+          "@type": "HowToStep",
+          "position": "2",
+          "name": "2. Fine-tune Fields",
+          "text": "Edit individual fields like Second, Minute, Hour, and Day of Week using Quartz cron syntax to get exactly the schedule you need."
         },
         {
-          "@type": "ListItem",
-          "position": 3,
-          "item": {
-            "@type": "WebApplication",
-            "name": "Postman cURL → Mule HTTP Request",
-            "url": "https://upendra-thunuguntla.github.io/tools/curl2mule/"
-          }
+          "@type": "HowToStep",
+          "position": "3",
+          "name": "3. Verify Execution Times",
+          "text": "Check the Next 5 Execution Times panel on the right to confirm your schedule runs exactly when expected before adding it to your Mule flow."
         },
         {
-          "@type": "ListItem",
-          "position": 4,
-          "item": {
-            "@type": "WebApplication",
-            "name": "Gmail Compose URL Generator",
-            "url": "https://upendra-thunuguntla.github.io/tools/gmail-url/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 5,
-          "item": {
-            "@type": "WebApplication",
-            "name": "JSON to RAML Converter",
-            "url": "https://upendra-thunuguntla.github.io/tools/json2raml/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 6,
-          "item": {
-            "@type": "WebApplication",
-            "name": "MuleSoft Log to cURL Converter",
-            "url": "https://upendra-thunuguntla.github.io/tools/mule2curl/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 7,
-          "item": {
-            "@type": "WebApplication",
-            "name": "Properties to YAML Converter",
-            "url": "https://upendra-thunuguntla.github.io/tools/props2yaml/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 8,
-          "item": {
-            "@type": "WebApplication",
-            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
-            "url": "https://upendra-thunuguntla.github.io/tools/raml2oas/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 9,
-          "item": {
-            "@type": "WebApplication",
-            "name": "Salary Hike Calculator",
-            "url": "https://upendra-thunuguntla.github.io/tools/salary-calc/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 10,
-          "item": {
-            "@type": "WebApplication",
-            "name": "MuleSoft Secure Properties Generator",
-            "url": "https://upendra-thunuguntla.github.io/tools/secure-properties-generator/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 11,
-          "item": {
-            "@type": "WebApplication",
-            "name": "WhatsApp Read More Generator",
-            "url": "https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 12,
-          "item": {
-            "@type": "WebApplication",
-            "name": "Mule XML SDK Helper",
-            "url": "https://upendra-thunuguntla.github.io/tools/xml-sdk/"
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 13,
-          "item": {
-            "@type": "WebApplication",
-            "name": "YAML to Properties Converter",
-            "url": "https://upendra-thunuguntla.github.io/tools/yaml2props/"
-          }
+          "@type": "HowToStep",
+          "position": "4",
+          "name": "4. Copy Mule XML",
+          "text": "Click Copy Mule XML to get a production-ready <scheduler:scheduling-strategy> block to paste directly into your Mule flow XML."
         }
       ]
     }
