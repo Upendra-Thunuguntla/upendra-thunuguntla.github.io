@@ -63,7 +63,7 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
         content="Free [Tool Name] for developers. [Primary Action Statement]. 100% client-side, browser-local processing for absolute data security.">
     
     <!-- Brand / Identity Elements -->
-    <link rel="icon" href="/portfolio.png" type="image/png">
+    <link rel="icon" href="/assets/favicons/[tool-name].svg" type="image/svg+xml">
     <link rel="manifest" href="/manifest.json">
     <link rel="canonical" href="https://upendra-thunuguntla.github.io/tools/[tool-slug]/">
     
