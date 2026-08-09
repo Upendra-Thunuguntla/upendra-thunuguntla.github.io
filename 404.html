@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Page Not Found | Upendra.dev</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0d1b2a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f6fb" media="(prefers-color-scheme: light)">
+  <link rel="icon" href="/portfolio.png" type="image/png">
+  <script src="/assets/js/theme.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/assets/css/core.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+  <style>
+    .not-found-wrap {
+      min-height: calc(100vh - var(--nav-height));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-4xl) var(--space-xl);
+    }
+    .not-found-code {
+      font-family: var(--font-heading);
+      font-size: clamp(6rem, 20vw, 11rem);
+      font-weight: 900;
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: var(--space-lg);
+    }
+    .not-found-title {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: var(--space-md);
+    }
+    .not-found-desc {
+      color: var(--text-muted);
+      max-width: 460px;
+      margin: 0 auto var(--space-2xl);
+      line-height: 1.7;
+    }
+    .not-found-actions {
+      display: flex;
+      gap: var(--space-md);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <a href="/#tools" class="skip-link">Skip to main content</a>
+
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo" aria-label="Home">Upendra.dev</a>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀️</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="not-found-wrap" aria-labelledby="not-found-heading">
+      <div>
+        <div class="not-found-code" aria-hidden="true">404</div>
+        <h1 class="not-found-title" id="not-found-heading">Page Not Found</h1>
+        <p class="not-found-desc">
+          This page doesn't exist or may have been moved.
+          Head back to the homepage or explore one of the free developer tools.
+        </p>
+        <div class="not-found-actions">
+          <a href="/" class="btn btn-primary">← Back to Home</a>
+          <a href="/#tools" class="btn btn-outline"><span aria-hidden="true">🛠</span> Browse Tools</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/js/platform.js"></script>
+</body>
+
+</html>
