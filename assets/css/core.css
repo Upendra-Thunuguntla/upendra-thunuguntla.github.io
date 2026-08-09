@@ -2,8 +2,6 @@
    UPENDRA DEV PLATFORM — Core Design System
    ═══════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 /* ─── CSS Custom Properties ─── */
 :root {
   /* Dark theme (default) */
@@ -109,6 +107,23 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* Skip-to-content for keyboard/screen-reader users */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-md);
+  background: var(--accent);
+  color: #000;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: var(--space-md);
 }
 
 html {

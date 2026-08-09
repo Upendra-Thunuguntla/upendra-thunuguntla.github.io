@@ -31,11 +31,17 @@
         if (p.includes('/json2raml')) return 'json2raml';
         if (p.includes('/yaml2props')) return 'yaml2props';
         if (p.includes('/props2yaml')) return 'props2yaml';
-        if (p.includes('/yaml-tools')) return 'yaml_tools'; // Keep for legacy if needed, or remove
+        if (p.includes('/yaml-tools')) return 'yaml_tools';
         if (p.includes('/xml-sdk')) return 'xml_sdk';
         if (p.includes('/gmail-url')) return 'gmail_url';
         if (p.includes('/salary-calc')) return 'salary_calc';
         if (p.includes('/mule2curl')) return 'mule2curl';
+        if (p.includes('/curl2mule')) return 'curl2mule';
+        if (p.includes('/raml2oas')) return 'raml2oas';
+        if (p.includes('/cron-builder')) return 'cron_builder';
+        if (p.includes('/base64-converter')) return 'base64_converter';
+        if (p.includes('/secure-properties-generator')) return 'secure_properties';
+        if (p.includes('/whatsapp-readmore')) return 'whatsapp_readmore';
         return 'home';
     })();
 
@@ -46,7 +52,7 @@
         track('page_context', {
             page_tool: PAGE_TOOL,
             page_path: window.location.pathname,
-            referrer: document.referrer || 'direct',
+            referrer: document.referrer ? new URL(document.referrer).hostname : 'direct',
             screen_width: window.screen.width,
             color_scheme: window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light',
             theme_stored: localStorage.getItem('upendra-theme') || 'default',
@@ -265,10 +271,10 @@
         fileInputs.forEach(function (input) {
             input.addEventListener('change', function () {
                 if (input.files && input.files[0]) {
+                    var sizeKB = Math.round(input.files[0].size / 1024);
                     track('file_upload', {
-                        file_name: input.files[0].name,
-                        file_size_bytes: input.files[0].size,
                         file_type: input.files[0].name.split('.').pop(),
+                        file_size_bucket: sizeKB < 10 ? '<10KB' : sizeKB < 100 ? '<100KB' : sizeKB < 1024 ? '<1MB' : '>=1MB',
                         page_tool: PAGE_TOOL,
                     });
                 }
@@ -309,7 +315,6 @@
                 sel.addEventListener('change', function () {
                     track('select_change', {
                         select_id: sel.id,
-                        selected_value: sel.value,
                         page_tool: PAGE_TOOL,
                     });
                 });
@@ -378,8 +383,10 @@
                 link.classList.contains('related-tool-link') ||
                 link.classList.contains('blog-card')) return;
 
+            var extUrl = new URL(href);
             track('external_link_click', {
-                href: href,
+                href_host: extUrl.hostname,
+                href_path: extUrl.pathname,
                 link_text: link.textContent.trim().substring(0, 60),
                 page_tool: PAGE_TOOL,
             });
@@ -558,8 +565,8 @@
         /* ─── XML SDK Actions ─── */
         if (PAGE_TOOL === 'xml_sdk') {
             // Track operation name set
-            wireGlobalFn('op_name_change', 'xml_sdk_operation_name_set', function (args) {
-                return { operation_name: args && args[0] ? args[0] : '' };
+            wireGlobalFn('op_name_change', 'xml_sdk_operation_name_set', function () {
+                return {};
             });
 
             // Track operation description set
@@ -567,12 +574,10 @@
 
             // Track parameter added
             wireGlobalFn('param_convert', 'xml_sdk_parameter_added', function () {
-                var paramName = document.getElementById('param_name');
                 var paramType = document.getElementById('param_type');
                 var paramRole = document.getElementById('param_role');
                 var paramUse = document.getElementById('param_use');
                 return {
-                    param_name: paramName ? paramName.value : '',
                     param_type: paramType ? paramType.value : '',
                     param_role: paramRole ? paramRole.value : '',
                     param_required: paramUse ? paramUse.value : '',
@@ -643,7 +648,6 @@
                     has_current: currentEl ? currentEl.value.length > 0 : false,
                     has_revised: revisedEl ? revisedEl.value.length > 0 : false,
                     has_hike_pct: pctEl ? pctEl.value.length > 0 : false,
-                    result_text: resultEl ? resultEl.textContent.trim() : '',
                     calculation_mode: revisedEl && revisedEl.value ? 'revised_to_pct' : 'pct_to_revised',
                 };
             }, true); // debounced = true

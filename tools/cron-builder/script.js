@@ -21,7 +21,7 @@ function humanReadable(expr) {
     // Hour/Min/Sec
     if (hr === '*' && min === '*') {
         desc.push('Every minute');
-    } else if (min.startsWith('0/') && hr === '*') {
+    } else if (hr === '*' && /^(\*|0)\/\d+$/.test(min)) {
         const step = min.split('/')[1];
         desc.push(`Every ${step} minutes`);
     } else if (hr === '*') {
@@ -84,14 +84,24 @@ function parseField(val, min, max, nameMap) {
         return arr;
     }
 
-    // Handle 'L' (last) — treat as max for calculation purposes
+    // Handle 'L' (last) — resolved to actual last day in getNextRuns; treated as max here
     if (val === 'L') return [max];
+
+    // List — must check before range/step so "MON-FRI,SUN" → "2-6,1" parses correctly
+    if (val.includes(',')) {
+        const set = new Set();
+        val.split(',').forEach(function (token) {
+            parseField(token.trim(), min, max, null).forEach(function (n) { set.add(n); });
+        });
+        return Array.from(set).filter(function (n) { return n >= min && n <= max; }).sort(function (a, b) { return a - b; });
+    }
 
     // Step: */n or a/n
     if (val.includes('/')) {
         const [startStr, stepStr] = val.split('/');
-        const start = startStr === '*' ? min : parseInt(startStr);
+        const start = (startStr === '*' || startStr === '') ? min : parseInt(startStr);
         const step = parseInt(stepStr);
+        if (isNaN(start) || isNaN(step) || step <= 0) return [];
         const arr = [];
         for (let i = start; i <= max; i += step) arr.push(i);
         return arr;
@@ -100,14 +110,17 @@ function parseField(val, min, max, nameMap) {
     // Range: a-b
     if (val.includes('-')) {
         const [a, b] = val.split('-').map(Number);
+        if (isNaN(a) || isNaN(b)) return [];
+        if (a <= b) {
+            const arr = [];
+            for (let i = a; i <= b; i++) arr.push(i);
+            return arr;
+        }
+        // Wrap-around range (e.g. FRI-MON = 6,7,1,2)
         const arr = [];
-        for (let i = a; i <= b; i++) arr.push(i);
+        for (let i = a; i <= max; i++) arr.push(i);
+        for (let i = min; i <= b; i++) arr.push(i);
         return arr;
-    }
-
-    // List: a,b,c
-    if (val.includes(',')) {
-        return val.split(',').map(Number).filter(n => n >= min && n <= max);
     }
 
     // Single value
@@ -131,6 +144,7 @@ function getNextRuns(expression, count = 5) {
 
         const useDow = dowStr !== '?' && dowStr !== '*';
         const useDom = domStr !== '?' && domStr !== '*';
+        const domIsL = domStr.toUpperCase() === 'L';
 
         const results = [];
         let d = new Date();
@@ -147,7 +161,7 @@ function getNextRuns(expression, count = 5) {
             if (!months.includes(d.getMonth() + 1)) {
                 d.setDate(1);
                 d.setMonth(d.getMonth() + 1);
-                d.setHours(0, 0, 0);
+                d.setHours(0, 0, 0, 0);
                 continue;
             }
 
@@ -158,17 +172,18 @@ function getNextRuns(expression, count = 5) {
                 const quartzDow = jsDow + 1; // 1=Sun
                 if (!dows.includes(quartzDow)) {
                     d.setDate(d.getDate() + 1);
-                    d.setHours(0, 0, 0);
+                    d.setHours(0, 0, 0, 0);
                     continue;
                 }
             }
 
-            // Day of month check
+            // Day of month check — L means actual last day of the current month
             if (useDom) {
-                const doms = parseField(domStr, 1, 31);
+                const lastDayOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+                const doms = domIsL ? [lastDayOfMonth] : parseField(domStr, 1, 31);
                 if (!doms.includes(d.getDate())) {
                     d.setDate(d.getDate() + 1);
-                    d.setHours(0, 0, 0);
+                    d.setHours(0, 0, 0, 0);
                     continue;
                 }
             }

@@ -12,6 +12,9 @@
     <link rel="icon" href="/portfolio.png" type="image/png">
     <link rel="manifest" href="/manifest.json">
     <script src="/assets/js/theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="/assets/css/core.css">
     <link rel="stylesheet" href="/assets/css/home.css">
     <link rel="stylesheet" href="/assets/css/tool.css">
@@ -201,6 +204,11 @@
                                     onclick="generateRandomKey()"
                                     style="font-size:0.8rem; width:28px; height:28px; color:var(--accent);"><i
                                         class="fas fa-dice"></i></button>
+                                <button id="btn-saved-keys" class="sk-toggle-btn"
+                                    title="Saved Keys" onclick="savedKeys.toggle()"
+                                    aria-expanded="false" aria-controls="saved-keys-panel">
+                                    <i class="fas fa-save"></i> Save / Load
+                                </button>
                             </div>
                         </div>
                         <div class="input-with-icon">
@@ -208,6 +216,27 @@
                             <input type="password" id="inp-key" class="form-control"
                                 placeholder="Your encryption key..." oninput="onKeyInput()">
                             <i id="eye-key" class="fas fa-eye icon-right" onclick="toggleKeyVisibility()"></i>
+                        </div>
+                        <!-- Saved keys panel — opens below key input -->
+                        <div id="saved-keys-panel" class="sk-panel" role="dialog" aria-label="Saved Keys">
+                            <div class="sk-panel-header">
+                                <span class="sk-panel-title"><i class="fas fa-bookmark"></i> Saved Keys</span>
+                                <span class="sk-panel-hint">Save your key + algorithm settings so you don't retype them next time.</span>
+                            </div>
+                            <div class="sk-save-row">
+                                <input type="text" id="sk-name-input" class="sk-name-field"
+                                    placeholder="Give this key a name — e.g. &quot;Prod AES&quot; or &quot;Dev Project&quot;"
+                                    maxlength="40"
+                                    onkeydown="if(event.key==='Enter') savedKeys.save()">
+                                <button class="sk-save-btn" onclick="savedKeys.save()" title="Save current key, algorithm and mode">
+                                    <i class="fas fa-save"></i> Save current key
+                                </button>
+                            </div>
+                            <div id="sk-list"></div>
+                            <p class="sk-disclaimer">
+                                <i class="fas fa-lock"></i>
+                                Stored in <strong>your browser only</strong> (localStorage) - NEVER uploaded, synced, or transmitted anywhere.
+                            </p>
                         </div>
                     </div>
 
@@ -511,6 +540,7 @@
     <script src="/assets/js/platform.js"></script>
     <script src="/assets/js/blogs-loader.js"></script>
     <script src="/assets/js/analytics.js"></script>
+    <script src="saved-keys.js"></script>
     <script src="script.js"></script>
 </body>
 

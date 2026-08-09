@@ -18,7 +18,11 @@
   <meta property="og:url" content="https://upendra-thunuguntla.github.io/">
   <meta property="og:image" content="https://upendra-thunuguntla.github.io/images/avat.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Upendra Thunuguntla | MuleSoft Architect &amp; Tool Builder">
+  <meta name="twitter:description" content="Creator of MuleSoft developer tools. Salesforce Certified MuleSoft Integration Architect. Senior Engineer at NTT DATA.">
   <meta name="twitter:image" content="https://upendra-thunuguntla.github.io/images/avat.jpg">
+  <meta name="theme-color" content="#0d1b2a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f4f6fb" media="(prefers-color-scheme: light)">
   <link rel="icon" href="/portfolio.png" type="image/png">
   <link rel="manifest" href="/manifest.json">
   <link rel="canonical" href="https://upendra-thunuguntla.github.io/">
@@ -26,7 +30,14 @@
   <!-- Apply theme before render to avoid flash -->
   <script src="/assets/js/theme.js"></script>
 
+  <!-- Preconnect to external origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+
   <!-- Styles -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="/assets/css/core.css">
   <link rel="stylesheet" href="/assets/css/home.css">
 
@@ -246,6 +257,7 @@
 </head>
 
 <body>
+  <a href="#tools" class="skip-link">Skip to main content</a>
 
   <!-- ═══════════════════════════════════════════
      NAVIGATION
@@ -255,12 +267,12 @@
       <a href="/" class="nav-logo" aria-label="Home">Upendra.dev</a>
 
       <ul class="nav-links" id="nav-links">
-        <li><a href="#tools">🛠 Tools</a></li>
-        <li><a href="#about">👤 About</a></li>
-        <li><a href="#experience">💼 Experience</a></li>
-        <li><a href="#publications">📝 Articles</a></li>
-        <li><a href="#hire-me">💼 Hire Me</a></li>
-        <li><a href="#contact">📬 Contact</a></li>
+        <li><a href="#tools"><span aria-hidden="true">🛠</span> Tools</a></li>
+        <li><a href="#about"><span aria-hidden="true">👤</span> About</a></li>
+        <li><a href="#experience"><span aria-hidden="true">💼</span> Experience</a></li>
+        <li><a href="#publications"><span aria-hidden="true">📝</span> Articles</a></li>
+        <li><a href="#hire-me"><span aria-hidden="true">💼</span> Hire Me</a></li>
+        <li><a href="#contact"><span aria-hidden="true">📬</span> Contact</a></li>
         <li><a href="https://docs.google.com/document/d/1lFxZsurq577mSmrpP7myvaFWSUFi6Ylh4sSRh4KOZbg/export?format=pdf"
             target="_blank" rel="noopener"
             style="color:var(--accent); border:1px solid rgba(var(--accent-rgb),0.4); padding:0.25rem 0.75rem; border-radius:var(--radius-full); font-size:0.8rem;">📄
@@ -454,7 +466,7 @@
         </a>
 
         <!-- Tool 2: JSON2RAML -->
-        <a href="/tools/json2raml/" target="_blank" rel="noopener" class="card tool-card" data-id="json2raml">
+        <a href="/tools/json2raml/" class="card tool-card" data-id="json2raml">
           <div class="tool-card-icon">🔄</div>
           <h3 class="tool-card-title">JSON to RAML Converter</h3>
           <p class="tool-card-desc">Transform your JSON examples into RAML DataType definitions instantly. Supports
