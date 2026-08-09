@@ -10,6 +10,12 @@
   
   <!-- Developer Tools -->
   <url>
+    <loc>https://upendra-thunuguntla.github.io/tools/base64-converter/</loc>
+    <lastmod>2026-08-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://upendra-thunuguntla.github.io/tools/secure-properties-generator/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
