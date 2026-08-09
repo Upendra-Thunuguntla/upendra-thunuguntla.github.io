@@ -40,6 +40,9 @@
     border-radius: var(--radius-md);
     padding: var(--space-md);
     animation: skFadeIn 0.15s ease;
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
 }
 .sk-panel.open { display: block; }
 
@@ -205,6 +208,49 @@
     margin: var(--space-sm) 0 0;
     padding-top: var(--space-sm);
     border-top: 1px solid var(--border);
+}
+
+/* ─── Saved Keys: Mobile ─── */
+@media (max-width: 540px) {
+    .sk-panel {
+        padding: var(--space-sm);
+    }
+    .sk-save-row {
+        flex-direction: column;
+    }
+    .sk-save-btn {
+        white-space: normal;
+        width: 100%;
+        text-align: center;
+        padding: 0.6rem 0.85rem;
+    }
+    .sk-name-field {
+        width: 100%;
+        font-size: 1rem; /* prevents iOS auto-zoom on focus */
+    }
+    .sk-list {
+        max-height: 150px;
+    }
+    .sk-item {
+        padding: 0.55rem 0.6rem;
+    }
+    .sk-btn-del {
+        min-width: 38px;
+        min-height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+    /* Allow label + action buttons to wrap on very narrow screens */
+    .config-label-row {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .sk-meta {
+        white-space: normal;
+        word-break: break-all;
+    }
 }
 .mode-btn {
     border: none;
