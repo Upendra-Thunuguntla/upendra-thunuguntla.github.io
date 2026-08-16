@@ -10,7 +10,7 @@
 
 .tool-hero {
     padding: var(--space-3xl) 0 var(--space-2xl);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-subtle);
     background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
 }
 
@@ -554,8 +554,8 @@
 
 /* ─── Related Tools ─── */
 .related-tools {
-    padding: var(--space-2xl) 0;
-    border-top: 1px solid var(--border);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--border-subtle);
 }
 
 .related-tools-grid {
@@ -754,8 +754,8 @@
 
 /* ─── Section wrapper shared ─── */
 .tool-section {
-    padding: var(--space-3xl) 0;
-    border-top: 1px solid var(--border);
+    padding: var(--space-2xl) 0;
+    border-top: 1px solid var(--border-subtle);
 }
 
 .tool-section-alt {
@@ -1009,29 +1009,61 @@
 }
 
 /* ─── Support / Buy Me a Coffee Banner ─── */
+.support-banner-wrapper {
+    padding: 0;
+    margin: 0;
+}
+
 .support-banner {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: var(--space-lg);
-    padding: var(--space-xl) var(--space-2xl);
-    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08) 0%, rgba(var(--accent2-rgb, 124, 58, 237), 0.08) 100%);
-    border: 1px solid rgba(var(--accent-rgb), 0.2);
-    border-radius: var(--radius-xl);
-    margin: var(--space-2xl) 0 0;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-xl);
+    background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.06) 0%, rgba(var(--accent2-rgb, 124, 58, 237), 0.06) 100%);
+    border: 1px solid rgba(var(--accent-rgb), 0.12);
+    border-radius: var(--radius-lg);
+    margin: var(--space-md) auto;
+    box-sizing: border-box;
+}
+
+.support-banner-text {
+    flex: 1;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .support-banner-text h3 {
     font-size: 1rem;
-    margin-bottom: var(--space-xs);
+    margin: 0 0 2px 0;
+    font-weight: 700;
+    line-height: 1.25;
 }
 
 .support-banner-text p {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
     margin: 0;
+    line-height: 1.4;
 }
+
+/* Force vertical alignment for Buy Me a Coffee Button Widget */
+.support-banner > a,
+.support-banner > div:not(.support-banner-text),
+.support-banner .bmc-btn-container,
+.support-banner a[data-name="bmc-button"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    margin: 0 !important;
+    flex-shrink: 0;
+}
+
+
 
 /* ─── Hire Me Section (homepage) ─── */
 .hire-me-section {
@@ -1274,31 +1306,63 @@
         grid-template-columns: 1fr;
     }
 
+    /* Support Banner Mobile Alignment */
+    .support-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--space-md) var(--space-lg);
+        gap: var(--space-md);
+    }
 
-/* ─── Global Drag & Drop System for Tools ─── */
+    .support-banner-text {
+        text-align: center;
+        min-width: 100%;
+    }
+
+    .support-banner > a,
+    .support-banner > div:not(.support-banner-text),
+    .support-banner .bmc-btn-container,
+    .support-banner a[data-name="bmc-button"] {
+        margin: var(--space-xs) auto 0 !important;
+    }
+
+    /* Drag & Drop Modal Mobile Responsiveness */
+    .drag-drop-modal-box {
+        padding: var(--space-xl) var(--space-lg);
+    }
+
+    .drag-drop-title {
+        font-size: 1.3rem;
+    }
+
+    .drag-drop-icon {
+        font-size: 3rem;
+    }
+}
+
+/* ─── Full-Screen Glassmorphic Drag & Drop Popup Modal ─── */
 .drag-drop-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(13, 27, 42, 0.88);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    z-index: 9999;
+    z-index: 99999;
+    background: rgba(13, 27, 42, 0.78);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 4px dashed var(--accent);
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 3px dashed var(--accent);
     box-sizing: border-box;
 }
 
 [data-theme="light"] .drag-drop-overlay {
-    background: rgba(244, 246, 251, 0.92);
+    background: rgba(244, 246, 251, 0.85);
 }
 
 .drag-drop-overlay.active {
@@ -1306,16 +1370,16 @@
     pointer-events: auto;
 }
 
-.drag-drop-box {
+.drag-drop-modal-box {
     background: var(--surface);
     border: 1px solid var(--border-accent);
     border-radius: var(--radius-xl);
     padding: var(--space-2xl) var(--space-3xl);
     text-align: center;
-    box-shadow: 0 0 50px rgba(0, 212, 255, 0.35);
-    transform: scale(0.92);
-    transition: transform 0.25s cubic-bezier(0, 0, 0.2, 1);
-    max-width: 480px;
+    box-shadow: 0 0 60px rgba(0, 212, 255, 0.4);
+    transform: scale(0.9);
+    transition: transform 0.2s cubic-bezier(0, 0, 0.2, 1);
+    max-width: 500px;
     width: 90%;
 }
 

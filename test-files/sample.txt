@@ -1,0 +1,1 @@
+Hello! This is a standard plain text file used to test drag and drop file loading into text-based developer tools.

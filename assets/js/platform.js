@@ -1,6 +1,6 @@
 /* ════════════════════════════════
    Shared JavaScript — platform.js
-   Nav, scroll animations, mobile menu, toast, utils, global drag & drop
+   Nav, scroll animations, mobile menu, toast, utils, full-screen drag & drop popup with blur + strict file validation
    ════════════════════════════════ */
 
 /* ─── Global Tool Drag & Drop Engine Definition ─── */
@@ -13,17 +13,17 @@ function initGlobalToolDragAndDrop() {
         }, false);
     });
 
-    // 2. Create Global Glassmorphic Drag Overlay if not existing
+    // 2. Ensure global full-screen popup modal with blur backdrop exists
     let overlay = document.getElementById('global-drag-overlay');
     if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'global-drag-overlay';
         overlay.className = 'drag-drop-overlay';
         overlay.innerHTML = `
-            <div class="drag-drop-box">
+            <div class="drag-drop-modal-box">
                 <div class="drag-drop-icon">📥</div>
-                <h3 class="drag-drop-title">Drop File to Import</h3>
-                <p class="drag-drop-subtitle" id="drag-overlay-subtitle">Load file directly into tool editor</p>
+                <h3 class="drag-drop-title">Drop File Anywhere</h3>
+                <p class="drag-drop-subtitle" id="drag-overlay-subtitle">Release file to load contents into tool</p>
             </div>
         `;
         document.body.appendChild(overlay);
@@ -31,44 +31,113 @@ function initGlobalToolDragAndDrop() {
 
     let dragCounter = 0;
 
+    function hidePopup() {
+        dragCounter = 0;
+        if (overlay) overlay.classList.remove('active');
+    }
+
+    function showPopup() {
+        if (!overlay) return;
+        const toolName = document.querySelector('.tool-hero-text h1, h1')?.textContent?.trim() || 'Developer Tool';
+        const sub = overlay.querySelector('#drag-overlay-subtitle');
+        if (sub) sub.textContent = `Release to load file directly into ${toolName}`;
+        overlay.classList.add('active');
+    }
+
+    // Helper: Determine allowed extensions for current tool
+    function getAllowedExtensions() {
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput && fileInput.getAttribute('accept')) {
+            const acceptAttr = fileInput.getAttribute('accept');
+            const exts = acceptAttr.split(',')
+                .map(s => s.trim().toLowerCase())
+                .filter(s => s.startsWith('.'))
+                .map(s => s.substring(1));
+            if (exts.length) return exts;
+        }
+
+        const path = window.location.pathname.toLowerCase();
+        if (path.includes('json2raml')) {
+            return ['json', 'txt'];
+        } else if (path.includes('yaml2props')) {
+            return ['yaml', 'yml', 'txt'];
+        } else if (path.includes('props2yaml')) {
+            return ['properties', 'prop', 'txt'];
+        } else if (path.includes('raml2oas')) {
+            return ['raml', 'yaml', 'yml', 'json', 'txt'];
+        } else if (path.includes('secure-properties-generator')) {
+            return ['properties', 'prop', 'yaml', 'yml', 'txt'];
+        } else if (path.includes('mule2curl')) {
+            return ['log', 'txt', 'xml'];
+        } else if (path.includes('curl2mule')) {
+            return ['txt', 'sh', 'curl', 'log'];
+        } else if (path.includes('xml-sdk')) {
+            return ['xml', 'txt'];
+        }
+
+        return ['txt', 'json', 'yaml', 'yml', 'properties', 'prop', 'raml', 'xml', 'csv', 'log', 'dwl', 'md', 'js', 'html', 'css', 'b64', 'base64'];
+    }
+
+    // Helper: Validate file extension strictly
+    function validateFileExtension(file) {
+        const name = file.name || '';
+        const extMatch = name.match(/\.([a-zA-Z0-9]+)$/);
+        const ext = extMatch ? extMatch[1].toLowerCase() : '';
+
+        const BLOCKED_EXTENSIONS = ['exe', 'dll', 'sys', 'bat', 'cmd', 'ps1', 'vbs', 'bin', 'iso', 'img', 'zip', 'tar', 'gz', '7z', 'rar', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'mp3', 'mp4', 'avi', 'mov', 'mkv'];
+        
+        if (BLOCKED_EXTENSIONS.includes(ext)) {
+            return { valid: false, reason: `Extension '.${ext}' is binary/unsupported for this code tool.` };
+        }
+
+        const allowedList = getAllowedExtensions();
+        if (allowedList && allowedList.length > 0) {
+            if (!ext || !allowedList.includes(ext)) {
+                return { 
+                    valid: false, 
+                    reason: `File format '.${ext || 'unknown'}' is not allowed. Allowed formats: ${allowedList.map(e => '.' + e).join(', ')}` 
+                };
+            }
+        }
+
+        return { valid: true };
+    }
+
     window.addEventListener('dragenter', function (e) {
         if (e.dataTransfer && e.dataTransfer.types && Array.from(e.dataTransfer.types).includes('Files')) {
             dragCounter++;
-            const toolTitle = document.querySelector('.tool-hero-text h1, h1')?.textContent?.trim() || 'Developer Tool';
-            const sub = document.getElementById('drag-overlay-subtitle');
-            if (sub) sub.textContent = `Open file directly inside ${toolTitle}`;
-            
-            overlay.classList.add('active');
-
-            document.querySelectorAll('.file-dropzone, .code-textarea, .editor-wrapper').forEach(el => {
-                el.classList.add('drag-active');
-            });
+            showPopup();
         }
     });
 
     window.addEventListener('dragleave', function (e) {
         dragCounter--;
         if (dragCounter <= 0) {
-            dragCounter = 0;
-            overlay.classList.remove('active');
-            document.querySelectorAll('.file-dropzone, .code-textarea, .editor-wrapper').forEach(el => {
-                el.classList.remove('drag-active');
-            });
+            hidePopup();
+        }
+    });
+
+    window.addEventListener('dragover', function (e) {
+        if (e.dataTransfer && e.dataTransfer.types && Array.from(e.dataTransfer.types).includes('Files')) {
+            if (!overlay.classList.contains('active')) {
+                showPopup();
+            }
         }
     });
 
     window.addEventListener('drop', function (e) {
-        dragCounter = 0;
-        overlay.classList.remove('active');
-        document.querySelectorAll('.file-dropzone, .code-textarea, .editor-wrapper').forEach(el => {
-            el.classList.remove('drag-active');
-        });
+        // ALWAYS REMOVE POPUP IMMEDIATELY ON DROP / RELEASE
+        hidePopup();
 
         const files = e.dataTransfer ? e.dataTransfer.files : null;
         if (!files || !files.length) return;
 
         const file = files[0];
         handleFileImport(file);
+    });
+
+    window.addEventListener('dragend', function () {
+        hidePopup();
     });
 
     // Make explicit file dropzones clickable to browse
@@ -81,7 +150,18 @@ function initGlobalToolDragAndDrop() {
     });
 
     function handleFileImport(file) {
-        // A. If hidden file input exists, populate its FileList using DataTransfer and trigger change handler
+        // STRICT FILE EXTENSION VALIDATION
+        const validation = validateFileExtension(file);
+        if (!validation.valid) {
+            if (typeof showToast === 'function') {
+                showToast(`❌ ${validation.reason}`, 'error');
+            } else {
+                alert(`File Rejected: ${validation.reason}`);
+            }
+            return; // REJECT FILE DO NOT READ
+        }
+
+        // A. If hidden file input exists, populate FileList & dispatch change event
         const hiddenFileInput = document.querySelector('input[type="file"]');
         if (hiddenFileInput) {
             try {
@@ -115,11 +195,9 @@ function initGlobalToolDragAndDrop() {
             if (primaryTextarea) {
                 primaryTextarea.value = content;
                 
-                // Dispatch events to trigger auto-converters
                 primaryTextarea.dispatchEvent(new Event('input', { bubbles: true }));
                 primaryTextarea.dispatchEvent(new Event('change', { bubbles: true }));
 
-                // Call tool-specific conversion functions if exported
                 if (typeof processData === 'function') processData();
                 if (typeof convert === 'function') convert();
                 if (typeof y2p_convert === 'function') y2p_convert();

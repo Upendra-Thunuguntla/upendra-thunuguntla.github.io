@@ -1,0 +1,18 @@
+{
+  "id": "CUST-98214",
+  "name": "Acme Integration Corp",
+  "active": true,
+  "mulesoftVersion": "4.4.0",
+  "contacts": [
+    {
+      "name": "Upendra Thunuguntla",
+      "role": "Integration Architect",
+      "email": "upendra@example.com"
+    }
+  ],
+  "settings": {
+    "retryCount": 3,
+    "timeoutMs": 5000,
+    "autoReconnect": true
+  }
+}

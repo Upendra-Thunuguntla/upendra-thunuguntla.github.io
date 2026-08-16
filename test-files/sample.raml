@@ -1,0 +1,21 @@
+#%RAML 1.0
+title: Customer Experience API
+version: v1
+baseUri: https://api.example.com/{version}
+
+types:
+  Customer:
+    type: object
+    properties:
+      id: string
+      name: string
+      email: string
+
+/customers:
+  get:
+    description: Retrieve a list of active customers
+    responses:
+      200:
+        body:
+          application/json:
+            type: Customer[]

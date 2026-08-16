@@ -556,6 +556,31 @@
       border-radius: var(--radius-lg);
       color: var(--text-muted);
     }
+
+    @media (max-width: 640px) {
+      .tools-grid-404 {
+        grid-template-columns: 1fr;
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+      .hero-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .tools-control-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box-wrap {
+        width: 100%;
+        min-width: 100%;
+      }
+      .not-found-hero {
+        padding: var(--space-2xl) var(--space-md);
+      }
+    }
   </style>
 </head>
 

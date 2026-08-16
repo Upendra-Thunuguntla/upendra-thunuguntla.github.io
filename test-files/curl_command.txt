@@ -1,0 +1,4 @@
+curl -X POST https://api.example.com/v1/orders \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer my_token_secret" \
+  -d '{"orderId": "ORD-9912", "amount": 149.99}'
