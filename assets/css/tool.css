@@ -1274,8 +1274,108 @@
         grid-template-columns: 1fr;
     }
 
-    .support-banner {
-        flex-direction: column;
-        text-align: center;
-    }
+
+/* ─── Global Drag & Drop System for Tools ─── */
+.drag-drop-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(13, 27, 42, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 4px dashed var(--accent);
+    box-sizing: border-box;
 }
+
+[data-theme="light"] .drag-drop-overlay {
+    background: rgba(244, 246, 251, 0.92);
+}
+
+.drag-drop-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.drag-drop-box {
+    background: var(--surface);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl) var(--space-3xl);
+    text-align: center;
+    box-shadow: 0 0 50px rgba(0, 212, 255, 0.35);
+    transform: scale(0.92);
+    transition: transform 0.25s cubic-bezier(0, 0, 0.2, 1);
+    max-width: 480px;
+    width: 90%;
+}
+
+.drag-drop-overlay.active .drag-drop-box {
+    transform: scale(1);
+}
+
+.drag-drop-icon {
+    font-size: 3.5rem;
+    margin-bottom: var(--space-md);
+    display: inline-block;
+    animation: bounce-drop 1.2s infinite ease-in-out;
+}
+
+@keyframes bounce-drop {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+}
+
+.drag-drop-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+}
+
+.drag-drop-subtitle {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+/* File Dropzone & Editor Drag Active States */
+.file-dropzone {
+    border: 2px dashed var(--border-accent);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl) var(--space-xl);
+    text-align: center;
+    background: rgba(0, 212, 255, 0.03);
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+}
+
+.file-dropzone:hover,
+.file-dropzone.drag-active {
+    border-color: var(--accent);
+    background: rgba(0, 212, 255, 0.08);
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.2);
+}
+
+.code-textarea.drag-active,
+.editor-wrapper.drag-active {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.25) !important;
+    background: rgba(0, 212, 255, 0.04) !important;
+}
+
+.file-hidden-input {
+    display: none !important;
+}
