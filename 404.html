@@ -4,90 +4,1098 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 — Page Not Found | Upendra.dev</title>
-  <meta name="robots" content="noindex, nofollow">
+  <title>404 — Route Not Found | Upendra.dev Toolkit Matrix</title>
+  <meta name="description" content="Oops! The page you requested could not be found. Explore Upendra Thunuguntla's full collection of free MuleSoft and developer productivity tools.">
+  <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#0d1b2a" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#f4f6fb" media="(prefers-color-scheme: light)">
   <link rel="icon" href="/assets/favicons/home.svg" type="image/svg+xml">
+
+  <!-- Apply theme before render to avoid flash -->
   <script src="/assets/js/theme.js"></script>
+
+  <!-- Typography & Styling -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="/assets/css/core.css">
   <link rel="stylesheet" href="/assets/css/home.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+
   <style>
-    .not-found-wrap {
-      min-height: calc(100vh - var(--nav-height));
+    /* ─── 404 Page Custom Styles ─── */
+    .not-found-hero {
+      position: relative;
+      min-height: calc(82vh - var(--nav-height));
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: var(--space-4xl) var(--space-xl);
+      padding: var(--space-3xl) var(--space-xl) var(--space-2xl);
+      overflow: hidden;
     }
+
+    #matrix-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 820px;
+      width: 100%;
+    }
+
+    .not-found-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 1rem;
+      background: rgba(0, 212, 255, 0.08);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-full);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: var(--space-md);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+    }
+
+    .not-found-badge .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulse-glow 1.8s infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.5; }
+    }
+
+    .not-found-code-wrap {
+      position: relative;
+      display: inline-block;
+      margin-bottom: var(--space-sm);
+    }
+
     .not-found-code {
       font-family: var(--font-heading);
-      font-size: clamp(6rem, 20vw, 11rem);
+      font-size: clamp(5.5rem, 18vw, 10.5rem);
       font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
       background: var(--grad-primary);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-      line-height: 1;
-      margin-bottom: var(--space-lg);
+      filter: drop-shadow(0 0 35px rgba(0, 212, 255, 0.25));
+      user-select: none;
     }
+
     .not-found-title {
       font-family: var(--font-heading);
-      font-size: 1.75rem;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
       font-weight: 700;
       color: var(--text);
       margin-bottom: var(--space-md);
+      letter-spacing: -0.02em;
     }
+
     .not-found-desc {
-      color: var(--text-muted);
-      max-width: 460px;
-      margin: 0 auto var(--space-2xl);
-      line-height: 1.7;
+      color: var(--text-subtle);
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      max-width: 640px;
+      margin: 0 auto var(--space-xl);
+      line-height: 1.65;
     }
-    .not-found-actions {
+
+    .not-found-desc code {
+      background: var(--surface-2);
+      color: var(--accent);
+      padding: 0.15rem 0.45rem;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 0.9em;
+      border: 1px solid var(--border);
+    }
+
+    /* Action Toolbar */
+    .hero-actions {
       display: flex;
       gap: var(--space-md);
       justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
+      margin-bottom: var(--space-xl);
+    }
+
+    .btn-warp {
+      background: var(--grad-primary);
+      color: #ffffff;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.35);
+      position: relative;
+      overflow: hidden;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-warp:hover {
+      box-shadow: 0 6px 25px rgba(124, 58, 237, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-shuffle {
+      background: var(--surface-2);
+      border: 1px solid var(--border-accent);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .btn-shuffle:hover {
+      background: var(--surface-3);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Tools Section Container */
+    .tools-matrix-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-xl) var(--space-4xl);
+    }
+
+    .tools-matrix-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tools-matrix-title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .shuffle-status-tag {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: var(--surface-2);
+      padding: 0.3rem 0.85rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Search & Filter Bar */
+    .tools-control-bar {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box-wrap {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.15);
+    }
+
+    .category-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .cat-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-subtle);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .cat-pill:hover,
+    .cat-pill.active {
+      background: var(--surface-3);
+      color: var(--accent);
+      border-color: var(--border-accent);
+    }
+
+    /* Tools Grid Cards */
+    .tools-grid-404 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--space-lg);
+      margin-bottom: var(--space-3xl);
+    }
+
+    .tool-card-404 {
+      background: var(--grad-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s var(--ease), opacity 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      animation: card-appear 0.4s var(--ease-out) backwards;
+    }
+
+    @keyframes card-appear {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .tool-card-404:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-accent);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .tool-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-md);
+    }
+
+    .tool-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: rgba(0, 212, 255, 0.08);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      transition: var(--transition);
+    }
+
+    .tool-card-404:hover .tool-icon-box {
+      background: rgba(0, 212, 255, 0.2);
+      border-color: var(--accent);
+      transform: scale(1.08);
+    }
+
+    .tool-rank-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--surface-2);
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .tool-card-404:hover .tool-rank-badge {
+      color: var(--accent);
+      border-color: var(--border-accent);
+    }
+
+    .tool-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.35;
+    }
+
+    .tool-card-desc {
+      color: var(--text-subtle);
+      font-size: 0.88rem;
+      line-height: 1.55;
+      margin-bottom: var(--space-lg);
+      flex: 1;
+    }
+
+    .tool-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px dashed var(--border);
+      padding-top: 0.75rem;
+    }
+
+    .tool-cat-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tool-launch-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: transform var(--transition);
+    }
+
+    .tool-card-404:hover .tool-launch-link {
+      transform: translateX(4px);
+    }
+
+    /* Interactive Terminal Section */
+    .terminal-section {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: var(--space-3xl);
+      box-shadow: var(--shadow-md);
+    }
+
+    .terminal-header {
+      background: var(--surface-2);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .terminal-body {
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: var(--text);
+      min-height: 160px;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .terminal-line {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    .terminal-line .cmd { color: var(--accent); }
+    .terminal-line .out { color: var(--text-subtle); }
+    .terminal-line .success { color: var(--success); }
+    .terminal-line .highlight { color: var(--warning); }
+
+    .terminal-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .terminal-prompt {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    .terminal-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+    }
+
+    .terminal-input:focus {
+      outline: none;
+    }
+
+    /* Modal for Warp Redirect */
+    .warp-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(13, 27, 42, 0.88);
+      backdrop-filter: blur(14px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .warp-modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .warp-modal {
+      background: var(--surface);
+      border: 1px solid var(--border-accent);
+      border-radius: var(--radius-xl);
+      padding: var(--space-2xl);
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 50px rgba(0, 212, 255, 0.35);
+      transform: scale(0.9);
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .warp-modal-overlay.active .warp-modal {
+      transform: scale(1);
+    }
+
+    .warp-icon-spin {
+      font-size: 3rem;
+      margin-bottom: var(--space-md);
+      animation: spin-warp 0.7s infinite linear;
+      display: inline-block;
+    }
+
+    @keyframes spin-warp {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.2); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    .warp-target-name {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .warp-target-desc {
+      color: var(--text-subtle);
+      font-size: 0.9rem;
+      margin-bottom: var(--space-lg);
+    }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: var(--space-3xl) var(--space-xl);
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-lg);
+      color: var(--text-muted);
     }
   </style>
 </head>
 
 <body>
-  <a href="/#tools" class="skip-link">Skip to main content</a>
+  <a href="#tools-matrix" class="skip-link">Skip to developer tools matrix</a>
 
+  <!-- Top Navigation -->
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <div class="nav-inner">
-      <a href="/" class="nav-logo" aria-label="Home">Upendra.dev</a>
+      <a href="/" class="nav-logo" aria-label="Upendra.dev Home">Upendra.dev</a>
+      
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#tools">Tools</a></li>
+        <li><a href="/#blogs">Blogs</a></li>
+        <li><a href="https://github.com/upendra-thunuguntla" target="_blank" rel="noopener">GitHub ↗</a></li>
+      </ul>
+
       <div class="nav-actions">
-        <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀️</button>
+        <button class="theme-toggle" aria-label="Toggle dark/light theme" title="Toggle theme">☀️</button>
+        <button class="hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </div>
   </nav>
 
   <main>
-    <section class="not-found-wrap" aria-labelledby="not-found-heading">
-      <div>
-        <div class="not-found-code" aria-hidden="true">404</div>
-        <h1 class="not-found-title" id="not-found-heading">Page Not Found</h1>
+    <!-- 404 Hero Section -->
+    <section class="not-found-hero" aria-labelledby="hero-404-heading">
+      <canvas id="matrix-canvas"></canvas>
+      
+      <div class="hero-content">
+        <div class="not-found-badge">
+          <span class="pulse-dot"></span>
+          <span>HTTP 404 — UNMAPPED INTEGRATION ENDPOINT</span>
+        </div>
+
+        <div class="not-found-code-wrap">
+          <div class="not-found-code" aria-hidden="true">404</div>
+        </div>
+
+        <h1 class="not-found-title" id="hero-404-heading">Lost in the Integration Cosmos?</h1>
+        
         <p class="not-found-desc">
-          This page doesn't exist or may have been moved.
-          Head back to the homepage or explore one of the free developer tools.
+          The requested route <code id="current-url-path">/unknown-route</code> could not be located on this server.
+          Don't worry—the toolkit matrix below dynamically shuffles all <strong>13 developer tools</strong> on every load!
         </p>
-        <div class="not-found-actions">
-          <a href="/" class="btn btn-primary">← Back to Home</a>
-          <a href="/#tools" class="btn btn-outline"><span aria-hidden="true">🛠</span> Browse Tools</a>
+
+        <div class="hero-actions">
+          <button class="btn btn-warp btn-lg" id="warp-btn" onclick="warpToRandomTool()">
+            🎲 Warp to Random Tool 🚀
+          </button>
+
+          <button class="btn btn-shuffle btn-lg" onclick="reshuffleTools()">
+            🔀 Reshuffle Matrix
+          </button>
+
+          <a href="/" class="btn btn-outline btn-lg">
+            🏠 Back to Home
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Developer Tools Matrix -->
+    <section class="tools-matrix-container" id="tools-matrix" aria-labelledby="tools-matrix-heading">
+      <div class="tools-matrix-header">
+        <h2 class="tools-matrix-title" id="tools-matrix-heading">
+          🛠️ Available Developer Toolkit
+        </h2>
+        <div class="shuffle-status-tag" id="shuffle-status">
+          <span>✨ Randomized Order Active (13 Tools)</span>
+        </div>
+      </div>
+
+      <!-- Control Bar: Live Search & Category Filter -->
+      <div class="tools-control-bar">
+        <div class="search-box-wrap">
+          <input type="text" id="tool-search" class="search-input" placeholder="🔍 Search developer tools by keyword, specification, or category..." aria-label="Search tools">
+        </div>
+
+        <div class="category-pills" id="category-pills">
+          <button class="cat-pill active" data-cat="all">All Tools</button>
+          <button class="cat-pill" data-cat="mulesoft">MuleSoft & Specs</button>
+          <button class="cat-pill" data-cat="converter">Converters</button>
+          <button class="cat-pill" data-cat="productivity">Productivity & Fun</button>
+        </div>
+      </div>
+
+      <!-- Dynamic Shuffled Grid -->
+      <div class="tools-grid-404" id="tools-grid">
+        <!-- Rendered dynamically via JS -->
+      </div>
+
+      <!-- Retro Console / Easter Egg -->
+      <div class="terminal-section" aria-label="Interactive 404 Console">
+        <div class="terminal-header">
+          <div class="terminal-dots">
+            <span class="dot dot-red"></span>
+            <span class="dot dot-yellow"></span>
+            <span class="dot dot-green"></span>
+          </div>
+          <div class="terminal-title">404-interactive-shell.sh</div>
+          <div>💻</div>
+        </div>
+        <div class="terminal-body" id="terminal-logs">
+          <div class="terminal-line"><span class="out">System initialization completed. All 13 tools indexed.</span></div>
+          <div class="terminal-line"><span class="out">Type </span><span class="cmd">'help'</span><span class="out"> for available commands or </span><span class="cmd">'warp'</span><span class="out"> to jump to a random tool.</span></div>
+        </div>
+        <div class="terminal-input-wrap">
+          <span class="terminal-prompt">guest@upendra-dev:~$</span>
+          <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false" placeholder="Type a command (e.g. warp, list, help, clear)...">
         </div>
       </div>
     </section>
   </main>
 
+  <!-- Warp Modal Overlay -->
+  <div class="warp-modal-overlay" id="warp-modal" role="dialog" aria-modal="true" aria-labelledby="warp-modal-title">
+    <div class="warp-modal">
+      <div class="warp-icon-spin" id="warp-icon">⚛️</div>
+      <h3 id="warp-modal-title" class="warp-target-name">Warping to Random Tool...</h3>
+      <p id="warp-modal-desc" class="warp-target-desc">Initializing quantum tunnel to destination...</p>
+      <div class="progress-bar-wrap" style="height: 6px; background: var(--surface-2); border-radius: 10px; overflow: hidden; margin-top: 1rem;">
+        <div id="warp-progress" style="width: 0%; height: 100%; background: var(--grad-primary); transition: width 1s linear;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared Scripts -->
   <script src="/assets/js/platform.js"></script>
+
+  <!-- 404 Interactive Script -->
+  <script>
+    /* ════════════════════════════════════════════════════════════════
+       404 RANDOM TOOLKIT MATRIX & INTERACTIVE MATRIX LOGIC
+       ════════════════════════════════════════════════════════════════ */
+    
+    // Master List of 13 Available Tools
+    const ALL_TOOLS = [
+      {
+        id: "base64-converter",
+        name: "Base64 Encoder / Decoder",
+        path: "/tools/base64-converter/",
+        emoji: "🔤",
+        category: "converter",
+        categoryName: "Converter",
+        desc: "Fast client-side Base64 encoding, decoding, URL-safe variants, and file conversion."
+      },
+      {
+        id: "secure-properties-generator",
+        name: "MuleSoft Secure Properties Generator",
+        path: "/tools/secure-properties-generator/",
+        emoji: "🔐",
+        category: "mulesoft",
+        categoryName: "MuleSoft & Security",
+        desc: "Encrypt and decrypt MuleSoft configuration properties with AES, Blowfish, DES algorithms."
+      },
+      {
+        id: "json2raml",
+        name: "JSON to RAML / DataWeave Converter",
+        path: "/tools/json2raml/",
+        emoji: "🔄",
+        category: "mulesoft",
+        categoryName: "MuleSoft & Specs",
+        desc: "Instantly generate RAML 1.0 Data Types and DataWeave mapping schemas from raw JSON payloads."
+      },
+      {
+        id: "yaml2props",
+        name: "YAML to Properties Converter",
+        path: "/tools/yaml2props/",
+        emoji: "⚙️",
+        category: "converter",
+        categoryName: "Converter",
+        desc: "Convert nested YAML configuration structures into flat Java/Spring/Mule application properties."
+      },
+      {
+        id: "props2yaml",
+        name: "Properties to YAML Converter",
+        path: "/tools/props2yaml/",
+        emoji: "📝",
+        category: "converter",
+        categoryName: "Converter",
+        desc: "Transform flat dot-separated application properties back into clean, formatted YAML trees."
+      },
+      {
+        id: "mule2curl",
+        name: "MuleSoft HTTP to cURL Converter",
+        path: "/tools/mule2curl/",
+        emoji: "⚡",
+        category: "mulesoft",
+        categoryName: "MuleSoft & HTTP",
+        desc: "Extract MuleSoft HTTP request configurations and convert them into executable cURL commands."
+      },
+      {
+        id: "curl2mule",
+        name: "cURL to MuleSoft HTTP Converter",
+        path: "/tools/curl2mule/",
+        emoji: "🔁",
+        category: "mulesoft",
+        categoryName: "MuleSoft & HTTP",
+        desc: "Convert raw cURL commands directly into production-ready MuleSoft <http:request> XML blocks."
+      },
+      {
+        id: "xml-sdk",
+        name: "MuleSoft XML SDK Scaffold Generator",
+        path: "/tools/xml-sdk/",
+        emoji: "🏗️",
+        category: "mulesoft",
+        categoryName: "MuleSoft & SDK",
+        desc: "Generate custom MuleSoft XML SDK module boilerplates, operations, structures, and schemas."
+      },
+      {
+        id: "cron-builder",
+        name: "Cron Expression Builder & Visualizer",
+        path: "/tools/cron-builder/",
+        emoji: "⏱️",
+        category: "productivity",
+        categoryName: "Utility",
+        desc: "Visually construct Quartz and Unix cron expressions with human-readable schedule summaries."
+      },
+      {
+        id: "raml2oas",
+        name: "RAML 1.0 to OpenAPI 3.0 Converter",
+        path: "/tools/raml2oas/",
+        emoji: "🔀",
+        category: "mulesoft",
+        categoryName: "API Specs",
+        desc: "Seamlessly convert RAML 1.0 API specifications into OpenAPI 3.0 (Swagger) JSON or YAML formats."
+      },
+      {
+        id: "gmail-url",
+        name: "Gmail Compose Link Generator",
+        path: "/tools/gmail-url/",
+        emoji: "📧",
+        category: "productivity",
+        categoryName: "Productivity",
+        desc: "Build pre-filled mailto: and mail.google.com direct compose links with subject, body, CC & BCC."
+      },
+      {
+        id: "salary-calc",
+        name: "Hourly Rate & Salary Calculator",
+        path: "/tools/salary-calc/",
+        emoji: "💰",
+        category: "productivity",
+        categoryName: "Finance",
+        desc: "Calculate hourly, daily, monthly, and yearly earnings with custom work hours, taxes, and bonuses."
+      },
+      {
+        id: "whatsapp-readmore",
+        name: "WhatsApp Read More Spoiler Generator",
+        path: "/tools/whatsapp-readmore/",
+        emoji: "💬",
+        category: "productivity",
+        categoryName: "Fun & Social",
+        desc: "Inject hidden zero-width character breaks into WhatsApp text messages to create spoiler tags."
+      }
+    ];
+
+    let currentToolsList = [...ALL_TOOLS];
+    let activeCategory = 'all';
+    let searchQuery = '';
+
+    // Fisher-Yates Shuffle Algorithm
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Render Tools Grid
+    function renderTools(toolsToRender) {
+      const grid = document.getElementById('tools-grid');
+      grid.innerHTML = '';
+
+      if (!toolsToRender.length) {
+        grid.innerHTML = `
+          <div class="no-results">
+            <p style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔍</p>
+            <p style="font-size: 1.1rem; font-weight: 600;">No matching tools found</p>
+            <p style="font-size: 0.9rem;">Try adjusting your search criteria or click 'All Tools'</p>
+          </div>
+        `;
+        return;
+      }
+
+      toolsToRender.forEach((tool, index) => {
+        const card = document.createElement('a');
+        card.href = tool.path;
+        card.className = 'tool-card-404';
+        card.style.animationDelay = `${Math.min(index * 0.05, 0.5)}s`;
+
+        card.innerHTML = `
+          <div>
+            <div class="tool-card-top">
+              <div class="tool-icon-box">
+                <span>${tool.emoji}</span>
+              </div>
+              <span class="tool-rank-badge">🎲 Pick #${index + 1}</span>
+            </div>
+            <h3 class="tool-card-title">${tool.name}</h3>
+            <p class="tool-card-desc">${tool.desc}</p>
+          </div>
+          <div class="tool-card-footer">
+            <span class="tool-cat-tag">${tool.categoryName}</span>
+            <span class="tool-launch-link">Launch Tool →</span>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Filter and Search update
+    function applyFilters() {
+      let filtered = currentToolsList;
+
+      if (activeCategory !== 'all') {
+        filtered = filtered.filter(t => t.category === activeCategory);
+      }
+
+      if (searchQuery.trim() !== '') {
+        const q = searchQuery.toLowerCase().trim();
+        filtered = filtered.filter(t => 
+          t.name.toLowerCase().includes(q) || 
+          t.desc.toLowerCase().includes(q) || 
+          t.categoryName.toLowerCase().includes(q)
+        );
+      }
+
+      renderTools(filtered);
+    }
+
+    // Reshuffle Matrix Function
+    function reshuffleTools() {
+      currentToolsList = shuffleArray(ALL_TOOLS);
+      const statusEl = document.getElementById('shuffle-status');
+      statusEl.innerHTML = `<span>✨ Reshuffled ${ALL_TOOLS.length} Tools (${new Date().toLocaleTimeString()})</span>`;
+      applyFilters();
+      addTerminalLog(`Executed matrix reshuffle. Random seed updated.`, 'success');
+    }
+
+    // Warp to Random Tool Modal & Redirect
+    function warpToRandomTool() {
+      const randomTool = ALL_TOOLS[Math.floor(Math.random() * ALL_TOOLS.length)];
+      const modal = document.getElementById('warp-modal');
+      const titleEl = document.getElementById('warp-modal-title');
+      const descEl = document.getElementById('warp-modal-desc');
+      const iconEl = document.getElementById('warp-icon');
+      const progressEl = document.getElementById('warp-progress');
+
+      iconEl.textContent = randomTool.emoji;
+      titleEl.textContent = `Warping to ${randomTool.name}...`;
+      descEl.textContent = randomTool.desc;
+      progressEl.style.width = '0%';
+
+      modal.classList.add('active');
+      addTerminalLog(`Warping user to random target: ${randomTool.name} (${randomTool.path})`, 'highlight');
+
+      setTimeout(() => {
+        progressEl.style.width = '100%';
+      }, 50);
+
+      setTimeout(() => {
+        window.location.href = randomTool.path;
+      }, 1100);
+    }
+
+    // Terminal Command Handler
+    function addTerminalLog(text, type = 'out') {
+      const logs = document.getElementById('terminal-logs');
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      line.innerHTML = `<span class="${type}">${text}</span>`;
+      logs.appendChild(line);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    function processCommand(cmdStr) {
+      const cmd = cmdStr.trim().toLowerCase();
+      addTerminalLog(`guest@upendra-dev:~$ ${cmdStr}`, 'cmd');
+
+      if (cmd === 'help') {
+        addTerminalLog(`Available commands:`, 'success');
+        addTerminalLog(`  warp / random - Redirect to a random developer tool`);
+        addTerminalLog(`  list          - List all 13 available tools`);
+        addTerminalLog(`  shuffle       - Randomly re-order the matrix`);
+        addTerminalLog(`  ping          - Test integration server connection`);
+        addTerminalLog(`  theme         - Toggle dark/light theme`);
+        addTerminalLog(`  clear         - Clear terminal console logs`);
+      } else if (cmd === 'warp' || cmd === 'random') {
+        warpToRandomTool();
+      } else if (cmd === 'shuffle') {
+        reshuffleTools();
+      } else if (cmd === 'list') {
+        addTerminalLog(`--- INDEXED DEVELOPER TOOLS (${ALL_TOOLS.length}) ---`, 'success');
+        ALL_TOOLS.forEach((t, i) => {
+          addTerminalLog(` [${i+1}] ${t.name} -> ${t.path}`);
+        });
+      } else if (cmd === 'ping') {
+        addTerminalLog(`PONG! Server status: 200 OK | Latency: 12ms`, 'success');
+      } else if (cmd === 'theme') {
+        const toggleBtn = document.querySelector('.theme-toggle');
+        if (toggleBtn) toggleBtn.click();
+        addTerminalLog(`Theme toggled successfully.`, 'success');
+      } else if (cmd === 'clear') {
+        document.getElementById('terminal-logs').innerHTML = '';
+      } else if (cmd !== '') {
+        addTerminalLog(`Command not recognized: '${cmdStr}'. Type 'help' for options.`, 'highlight');
+      }
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       CANVAS PARTICLE BACKGROUND SYSTEM
+       ════════════════════════════════════════════════════════════════ */
+    function initCanvas() {
+      const canvas = document.getElementById('matrix-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = canvas.offsetWidth;
+      let height = canvas.height = canvas.offsetHeight;
+
+      let particles = [];
+      const particleCount = Math.floor(Math.min(width, 1000) / 18);
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.6;
+          this.vy = (Math.random() - 0.5) * 0.6;
+          this.radius = Math.random() * 2 + 1;
+          this.alpha = Math.random() * 0.5 + 0.2;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, 212, 255, ${this.alpha})`;
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw connections
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < 110) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(0, 212, 255, ${0.15 * (1 - dist / 110)})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = canvas.offsetWidth;
+        height = canvas.height = canvas.offsetHeight;
+      });
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       PAGE INITIALIZATION & EVENT LISTENERS
+       ════════════════════════════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded', () => {
+      // Display current URL path in hero
+      const pathEl = document.getElementById('current-url-path');
+      if (pathEl && window.location.pathname) {
+        pathEl.textContent = window.location.pathname !== '/404.html' ? window.location.pathname : '/unmapped-route';
+      }
+
+      // Initial random shuffle on every page load
+      currentToolsList = shuffleArray(ALL_TOOLS);
+      renderTools(currentToolsList);
+
+      // Search input handler
+      const searchInput = document.getElementById('tool-search');
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        applyFilters();
+      });
+
+      // Category filter pills handler
+      const catPills = document.querySelectorAll('.cat-pill');
+      catPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          catPills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          activeCategory = pill.getAttribute('data-cat');
+          applyFilters();
+        });
+      });
+
+      // Terminal Input handler
+      const termInput = document.getElementById('terminal-input');
+      termInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = termInput.value;
+          termInput.value = '';
+          processCommand(val);
+        }
+      });
+
+      // Init Particle Background
+      initCanvas();
+    });
+  </script>
 </body>
 
 </html>
