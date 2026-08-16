@@ -1,0 +1,9 @@
+DEBUG 2026-08-16 15:30:00,123 [http.listener.01] org.mule.service.http.impl.service.HttpMessageLogger: HTTP/1.1 200 OK
+Content-Type: application/json
+Authorization: Bearer sample_token_12345
+X-Correlation-ID: e8291f0a-81a2
+
+{
+  "status": "SUCCESS",
+  "message": "Payload processed cleanly"
+}

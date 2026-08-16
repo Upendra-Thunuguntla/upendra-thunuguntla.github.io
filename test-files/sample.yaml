@@ -1,0 +1,11 @@
+server:
+  port: 8081
+  host: 0.0.0.0
+mule:
+  environment: Production
+  appName: customer-papi
+  secure:
+    key: "![encrypted_value_here]"
+  http:
+    listener:
+      timeout: 30000
