@@ -1,0 +1,21 @@
+name: Submit Sitemap to IndexNow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  submit-sitemap:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Submit sitemap URLs to IndexNow
+        uses: jakob-bagterp/index-now-submit-sitemap-urls-action@v1
+        with:
+          host: upendra.fyi
+          api_key: ${{ secrets.INDEX_NOW_API_KEY }}
+          api_key_location: https://upendra.fyi/${{ secrets.INDEX_NOW_API_KEY }}.txt
+          sitemap_locations: https://upendra.fyi/sitemap.xml
