@@ -5,7 +5,7 @@
    Event Categories:
      navigation      — nav clicks, breadcrumbs, back-to-home
      engagement      — scroll depth, time on page, visibility
-     tool_usage      — per-tool convert / generate / clear / load
+     tool_usage      — per-tool convert / encrypt / decrypt / load / clear
      clipboard       — copy actions per page / section
      download        — file downloads per tool
      theme           — dark/light toggle
@@ -46,7 +46,7 @@
     })();
 
     /* ════════════════════════════════════════
-       1. PAGE VIEW with context
+       1. PAGE VIEW & INITIALIZATION
     ════════════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', function () {
         track('page_context', {
@@ -69,14 +69,140 @@
         wireExternalLinks();
         wireSearchOrFilter();
         wireHireMeSection();
+
+        /* ── Fail-safe universal click tracker ── */
+        wireUniversalClickTracker();
+
+        /* ── Wire tool-specific function proxies ── */
+        wireToolSpecificActions();
+    });
+
+    /* Also attempt wiring on window load to catch late inline scripts */
+    window.addEventListener('load', function () {
         wireToolSpecificActions();
     });
 
     /* ════════════════════════════════════════
-       2. NAVIGATION EVENTS
+       2. FAIL-SAFE UNIVERSAL CLICK TRACKER
+       Guarantees GA4 event calls fire whenever user
+       clicks Convert, Encrypt, Decrypt, Run, Load, Clear, etc.
+    ════════════════════════════════════════ */
+    function wireUniversalClickTracker() {
+        document.addEventListener('click', function (e) {
+            var target = e.target.closest('button, a, input[type="button"], input[type="submit"], [role="button"], .btn, .btn-icon, .mode-btn, .type-tab, .source-btn, .btn-convert-middle, .mode-toggle-btn, .file-zone-card, .sk-save-btn, .sk-item');
+            if (!target) return;
+
+            var text = (target.textContent || target.value || target.title || '').trim();
+            var textLower = text.toLowerCase();
+            var id = (target.id || '').toLowerCase();
+            var onclickAttr = (target.getAttribute('onclick') || '').toLowerCase();
+            var titleAttr = (target.getAttribute('title') || '').toLowerCase();
+            var ariaLabel = (target.getAttribute('aria-label') || '').toLowerCase();
+
+            /* A. CONVERT / ENCRYPT / DECRYPT / RUN / CALCULATE / GENERATE / BUILD ACTIONS */
+            if (
+                textLower.includes('convert') || textLower.includes('encrypt') || textLower.includes('decrypt') ||
+                textLower.includes('run') || textLower.includes('generate') || textLower.includes('calculate') ||
+                textLower.includes('encode') || textLower.includes('decode') || textLower.includes('build') ||
+                textLower.includes('flatten') || textLower.includes('add parameter') || textLower.includes('open in gmail') ||
+                id.includes('convert') || id.includes('run') || id.includes('encrypt') || id.includes('decrypt') ||
+                id.includes('generate') || id.includes('calc') || id.includes('encode') || id.includes('decode') ||
+                onclickAttr.includes('convert') || onclickAttr.includes('runoperation') || onclickAttr.includes('encrypt') ||
+                onclickAttr.includes('decrypt') || onclickAttr.includes('y2p_convert') || onclickAttr.includes('p2y_convert') ||
+                onclickAttr.includes('generate') || onclickAttr.includes('calc') || onclickAttr.includes('encode') ||
+                onclickAttr.includes('decode') || onclickAttr.includes('param_convert') || onclickAttr.includes('buildcron')
+            ) {
+                var actionType = 'convert';
+                if (textLower.includes('encrypt') || id.includes('encrypt') || onclickAttr.includes('encrypt')) actionType = 'encrypt';
+                else if (textLower.includes('decrypt') || id.includes('decrypt') || onclickAttr.includes('decrypt')) actionType = 'decrypt';
+                else if (textLower.includes('generate') || id.includes('generate') || onclickAttr.includes('generate')) actionType = 'generate';
+                else if (textLower.includes('calculate') || id.includes('calc') || onclickAttr.includes('calc')) actionType = 'calculate';
+                else if (textLower.includes('encode') || onclickAttr.includes('encode')) actionType = 'encode';
+                else if (textLower.includes('decode') || onclickAttr.includes('decode')) actionType = 'decode';
+
+                track('tool_action_click', {
+                    action_type: actionType,
+                    button_text: text.substring(0, 50) || target.title || target.id,
+                    button_id: target.id || 'none',
+                    page_tool: PAGE_TOOL
+                });
+
+                // Also fire explicit top-level GA4 event names for simple reports
+                if (actionType === 'encrypt') track('encrypt_click', { page_tool: PAGE_TOOL });
+                else if (actionType === 'decrypt') track('decrypt_click', { page_tool: PAGE_TOOL });
+                else if (actionType === 'convert') track('convert_click', { page_tool: PAGE_TOOL });
+                else if (actionType === 'generate') track('generate_click', { page_tool: PAGE_TOOL });
+                else if (actionType === 'calculate') track('calculate_click', { page_tool: PAGE_TOOL });
+            }
+
+            /* B. LOAD EXAMPLE / TEST VALUES / SAMPLES */
+            if (
+                textLower.includes('example') || textLower.includes('test value') || textLower.includes('sample') ||
+                titleAttr.includes('example') || titleAttr.includes('sample') ||
+                id.includes('example') || onclickAttr.includes('example') || onclickAttr.includes('loadtestvalues')
+            ) {
+                track('tool_load_example_click', {
+                    button_text: text.substring(0, 50) || target.title || target.id,
+                    page_tool: PAGE_TOOL
+                });
+                track('load_example_click', { page_tool: PAGE_TOOL });
+            }
+
+            /* C. CLEAR / RESET / TRASH */
+            if (
+                textLower.includes('clear') || textLower.includes('reset') ||
+                titleAttr.includes('clear') || titleAttr.includes('reset') ||
+                id.includes('clear') || onclickAttr.includes('clear') || onclickAttr.includes('reset') || onclickAttr.includes('op_reset')
+            ) {
+                track('tool_clear_click', {
+                    button_text: text.substring(0, 50) || target.title || target.id,
+                    page_tool: PAGE_TOOL
+                });
+                track('clear_click', { page_tool: PAGE_TOOL });
+            }
+
+            /* D. COPY TO CLIPBOARD */
+            if (
+                textLower.includes('copy') || titleAttr.includes('copy') ||
+                id.includes('copy') || onclickAttr.includes('copy')
+            ) {
+                track('tool_copy_click', {
+                    button_text: text.substring(0, 50) || target.title || target.id,
+                    page_tool: PAGE_TOOL
+                });
+                track('copy_click', { page_tool: PAGE_TOOL });
+            }
+
+            /* E. DOWNLOAD */
+            if (
+                textLower.includes('download') || titleAttr.includes('download') ||
+                id.includes('download') || onclickAttr.includes('download') || onclickAttr.includes('dodownload')
+            ) {
+                track('tool_download_click', {
+                    button_text: text.substring(0, 50) || target.title || target.id,
+                    page_tool: PAGE_TOOL
+                });
+                track('download_click', { page_tool: PAGE_TOOL });
+            }
+
+            /* F. MODE / TAB / OPTION CAPSULE SWITCHERS & SAVED KEYS */
+            if (
+                target.classList.contains('mode-btn') || target.classList.contains('type-tab') ||
+                target.classList.contains('source-btn') || target.classList.contains('mode-toggle-btn') ||
+                target.classList.contains('sk-save-btn') || target.classList.contains('sk-item')
+            ) {
+                track('tool_option_switch', {
+                    option_name: text.substring(0, 50) || target.title || target.id,
+                    page_tool: PAGE_TOOL
+                });
+            }
+        });
+    }
+
+    /* ════════════════════════════════════════
+       3. NAVIGATION EVENTS
     ════════════════════════════════════════ */
     function wireNavigation() {
-        /* Nav links */
         var navLinks = document.querySelectorAll('.nav-links a');
         navLinks.forEach(function (link) {
             link.addEventListener('click', function () {
@@ -88,7 +214,6 @@
             });
         });
 
-        /* Logo click */
         var logo = document.querySelector('.nav-logo');
         if (logo) {
             logo.addEventListener('click', function () {
@@ -96,7 +221,6 @@
             });
         }
 
-        /* Breadcrumb clicks (tool pages) */
         var breadcrumbs = document.querySelectorAll('.tool-breadcrumb a');
         breadcrumbs.forEach(function (bc) {
             bc.addEventListener('click', function () {
@@ -106,96 +230,54 @@
                 });
             });
         });
-
-        /* CTA buttons in hero */
-        var ctaBtns = document.querySelectorAll('.hero-actions .btn');
-        ctaBtns.forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                track('hero_cta_click', {
-                    button_text: btn.textContent.trim(),
-                    button_href: btn.getAttribute('href'),
-                });
-            });
-        });
-
-        /* Tool cards on home page */
-        var toolCards = document.querySelectorAll('.tool-card');
-        toolCards.forEach(function (card) {
-            card.addEventListener('click', function () {
-                var titleEl = card.querySelector('.tool-card-title');
-                track('tool_card_click', {
-                    tool_name: titleEl ? titleEl.textContent.trim() : 'unknown',
-                    card_href: card.getAttribute('href') || '',
-                });
-            });
-        });
-
-        /* Related tool links (on tool pages) */
-        var relatedLinks = document.querySelectorAll('.related-tool-link');
-        relatedLinks.forEach(function (link) {
-            link.addEventListener('click', function () {
-                var nameEl = link.querySelector('.name');
-                track('related_tool_click', {
-                    from_tool: PAGE_TOOL,
-                    to_tool: nameEl ? nameEl.textContent.trim() : link.href,
-                });
-            });
-        });
     }
 
     /* ════════════════════════════════════════
-       3. SOCIAL LINK CLICKS
+       4. SOCIAL LINKS
     ════════════════════════════════════════ */
     function wireSocialLinks() {
-        var socialLinks = document.querySelectorAll('.social-link, .hero-social a');
+        var socialLinks = document.querySelectorAll('.social-link');
         socialLinks.forEach(function (link) {
             link.addEventListener('click', function () {
-                track('social_link_click', {
+                track('social_click', {
                     platform: link.getAttribute('title') || link.href,
                     page_tool: PAGE_TOOL,
                 });
             });
         });
-
-        /* Footer links */
-        var footerLinks = document.querySelectorAll('.footer a');
-        footerLinks.forEach(function (link) {
-            link.addEventListener('click', function () {
-                track('footer_link_click', {
-                    link_text: link.textContent.trim(),
-                    link_href: link.href,
-                    page_tool: PAGE_TOOL,
-                });
-            });
-        });
     }
 
     /* ════════════════════════════════════════
-       4. THEME TOGGLE
+       5. THEME TOGGLE
     ════════════════════════════════════════ */
     function wireThemeToggle() {
-        var toggleBtns = document.querySelectorAll('.theme-toggle');
-        toggleBtns.forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var newTheme = (localStorage.getItem('upendra-theme') === 'light') ? 'dark' : 'light';
-                track('theme_toggle', {
-                    new_theme: newTheme,
-                    page_tool: PAGE_TOOL,
-                });
+        var toggles = document.querySelectorAll('.theme-toggle');
+        toggles.forEach(function (toggle) {
+            toggle.addEventListener('click', function () {
+                setTimeout(function () {
+                    var currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+                    track('theme_toggle', {
+                        new_theme: currentTheme,
+                        page_tool: PAGE_TOOL,
+                    });
+                }, 50);
             });
         });
     }
 
     /* ════════════════════════════════════════
-       5. SCROLL DEPTH (25 / 50 / 75 / 100%)
+       6. SCROLL DEPTH
     ════════════════════════════════════════ */
     function wireScrollDepth() {
         var milestones = { 25: false, 50: false, 75: false, 100: false };
 
         function onScroll() {
-            var scrollTop = window.scrollY || document.documentElement.scrollTop;
-            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            var pct = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 100;
+            var h = document.documentElement;
+            var b = document.body;
+            var st = h.scrollTop || b.scrollTop;
+            var sh = h.scrollHeight || b.scrollHeight;
+            var ch = h.clientHeight;
+            var pct = Math.round((st / (sh - ch)) * 100);
 
             [25, 50, 75, 100].forEach(function (mark) {
                 if (!milestones[mark] && pct >= mark) {
@@ -212,7 +294,7 @@
     }
 
     /* ════════════════════════════════════════
-       6. PUBLICATION CARD CLICKS
+       7. PUBLICATIONS & ARTICLES
     ════════════════════════════════════════ */
     function wirePublications() {
         var pubCards = document.querySelectorAll('.pub-card');
@@ -226,7 +308,6 @@
             });
         });
 
-        /* Blog cards on tool pages */
         var blogCards = document.querySelectorAll('.blog-card');
         blogCards.forEach(function (card) {
             card.addEventListener('click', function () {
@@ -241,10 +322,9 @@
     }
 
     /* ════════════════════════════════════════
-       7. TOOL-SPECIFIC ACTIONS
+       8. GENERIC FORM & UI INTERACTIONS
     ════════════════════════════════════════ */
     function wireToolActions() {
-        /* Generic: monitor any button with data-track attribute */
         var trackedBtns = document.querySelectorAll('[data-track]');
         trackedBtns.forEach(function (btn) {
             btn.addEventListener('click', function () {
@@ -255,7 +335,6 @@
             });
         });
 
-        /* Tab switches */
         var tabBtns = document.querySelectorAll('.tab-btn');
         tabBtns.forEach(function (btn) {
             btn.addEventListener('click', function () {
@@ -266,7 +345,6 @@
             });
         });
 
-        /* File upload zones */
         var fileInputs = document.querySelectorAll('input[type="file"]');
         fileInputs.forEach(function (input) {
             input.addEventListener('change', function () {
@@ -281,20 +359,17 @@
             });
         });
 
-        /* Options / checkbox changes */
-        var checkboxes = document.querySelectorAll('.options-bar input[type="checkbox"], .option-row input[type="checkbox"]');
+        var checkboxes = document.querySelectorAll('.options-bar input[type="checkbox"], .option-row input[type="checkbox"], .switch input[type="checkbox"]');
         checkboxes.forEach(function (cb) {
             cb.addEventListener('change', function () {
                 track('option_toggle', {
                     option_id: cb.id || 'unknown',
-                    option_label: cb.nextElementSibling ? cb.nextElementSibling.textContent.trim().substring(0, 60) : '',
                     checked: cb.checked,
                     page_tool: PAGE_TOOL,
                 });
             });
         });
 
-        /* Details / accordion (XML SDK optional fields, FAQ) */
         var details = document.querySelectorAll('details');
         details.forEach(function (d) {
             d.addEventListener('toggle', function () {
@@ -308,37 +383,22 @@
             });
         });
 
-        /* Select dropdown changes in forms */
         var selects = document.querySelectorAll('.form-control[id]');
         selects.forEach(function (sel) {
             if (sel.tagName === 'SELECT') {
                 sel.addEventListener('change', function () {
                     track('select_change', {
                         select_id: sel.id,
+                        selected_value: sel.value,
                         page_tool: PAGE_TOOL,
                     });
                 });
             }
         });
-
-        /* Textarea focus tracking — user started working */
-        var textareas = document.querySelectorAll('.code-textarea, .code-output');
-        textareas.forEach(function (ta) {
-            var hasFired = false;
-            ta.addEventListener('focus', function () {
-                if (!hasFired) {
-                    hasFired = true;
-                    track('textarea_focus', {
-                        textarea_id: ta.id || 'unknown',
-                        page_tool: PAGE_TOOL,
-                    });
-                }
-            });
-        });
     }
 
     /* ════════════════════════════════════════
-       8. TIME ON PAGE / ENGAGEMENT
+       9. TIME ON PAGE / ENGAGEMENT
     ════════════════════════════════════════ */
     function wireEngagementTime() {
         var START = Date.now();
@@ -359,7 +419,6 @@
 
         setInterval(checkTime, 10000);
 
-        /* Before unload — fire final engagement */
         window.addEventListener('beforeunload', function () {
             var elapsed = Math.round((Date.now() - START) / 1000);
             track('page_exit', {
@@ -370,34 +429,35 @@
     }
 
     /* ════════════════════════════════════════
-       9. EXTERNAL LINK CLICKS
+       10. EXTERNAL LINKS
     ════════════════════════════════════════ */
     function wireExternalLinks() {
         document.addEventListener('click', function (e) {
             var link = e.target.closest('a[target="_blank"]');
             if (!link) return;
             var href = link.href || '';
-            /* Exclude already-tracked social / pub / related */
             if (link.classList.contains('social-link') ||
                 link.classList.contains('pub-card') ||
                 link.classList.contains('related-tool-link') ||
                 link.classList.contains('blog-card')) return;
 
-            var extUrl = new URL(href);
-            track('external_link_click', {
-                href_host: extUrl.hostname,
-                href_path: extUrl.pathname,
-                link_text: link.textContent.trim().substring(0, 60),
-                page_tool: PAGE_TOOL,
-            });
+            try {
+                var extUrl = new URL(href);
+                track('external_link_click', {
+                    href_host: extUrl.hostname,
+                    href_path: extUrl.pathname,
+                    link_text: link.textContent.trim().substring(0, 60),
+                    page_tool: PAGE_TOOL,
+                });
+            } catch (err) { }
         });
     }
 
     /* ════════════════════════════════════════
-       10. FILTER / SEARCH INPUT
+       11. FILTER / SEARCH INPUT
     ════════════════════════════════════════ */
     function wireSearchOrFilter() {
-        var filterInputs = document.querySelectorAll('#filterProp, .filter-input');
+        var filterInputs = document.querySelectorAll('#filterProp, .filter-input, #tool-search');
         filterInputs.forEach(function (input) {
             var debounceTimer;
             input.addEventListener('input', function () {
@@ -415,10 +475,9 @@
     }
 
     /* ════════════════════════════════════════
-       11. HIRE ME SECTION
+       12. HIRE ME SECTION
     ════════════════════════════════════════ */
     function wireHireMeSection() {
-        /* Hire Me CTA buttons */
         var hireMeLinks = document.querySelectorAll('.hire-me-cta-card .btn');
         hireMeLinks.forEach(function (btn) {
             btn.addEventListener('click', function () {
@@ -435,7 +494,6 @@
             });
         });
 
-        /* Service card visibility / interest (hover tracking) */
         var serviceCards = document.querySelectorAll('.service-card');
         serviceCards.forEach(function (card) {
             var hoverTimer;
@@ -446,293 +504,197 @@
                         service_name: h4 ? h4.textContent.trim() : 'unknown',
                         page_tool: PAGE_TOOL,
                     });
-                }, 2000); // Only track if hovered for 2+ seconds (genuine interest)
+                }, 2000);
             });
             card.addEventListener('mouseleave', function () {
                 clearTimeout(hoverTimer);
             });
         });
-
-        /* Contact section CTA buttons */
-        var contactBtns = document.querySelectorAll('#contact .btn');
-        contactBtns.forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                track('contact_cta_click', {
-                    button_text: btn.textContent.trim(),
-                    button_href: btn.href || '',
-                    page_tool: PAGE_TOOL,
-                });
-            });
-        });
     }
 
     /* ════════════════════════════════════════
-       12. TOOL-SPECIFIC GRANULAR TRACKING
-       ─── JSON2RAML ───────────────────────
-       ─── YAML Tools ──────────────────────
-       ─── XML SDK ─────────────────────────
-       ─── Gmail URL ───────────────────────
-       ─── Salary Calc ─────────────────────
+       13. DYNAMIC GLOBAL FUNCTION PROXY INTERCEPTOR
+       Interceptors for inline tool function calls
+    ════════════════════════════════════════ */
+    function wireGlobalFn(fnName, eventName, paramsFn, debounced) {
+        var debounceTimer;
+
+        function attachProxy() {
+            if (typeof window[fnName] !== 'function') return false;
+            if (window[fnName]._ga_tracked) return true; // already attached
+
+            var original = window[fnName];
+            var proxied = function () {
+                var args = arguments;
+                var result = original.apply(this, args);
+
+                if (debounced) {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(function () {
+                        var params = Object.assign({ page_tool: PAGE_TOOL }, paramsFn ? paramsFn(args) : {});
+                        track(eventName, params);
+                    }, 800);
+                } else {
+                    var params = Object.assign({ page_tool: PAGE_TOOL }, paramsFn ? paramsFn(args) : {});
+                    track(eventName, params);
+                }
+                return result;
+            };
+            proxied._ga_tracked = true;
+            window[fnName] = proxied;
+            return true;
+        }
+
+        if (!attachProxy()) {
+            window.addEventListener('load', attachProxy);
+            setTimeout(attachProxy, 300);
+            setTimeout(attachProxy, 1000);
+            setTimeout(attachProxy, 2500);
+        }
+    }
+
+    /* ════════════════════════════════════════
+       14. TOOL-SPECIFIC GRANULAR FUNCTION PROXIES
     ════════════════════════════════════════ */
     function wireToolSpecificActions() {
 
-        /* ─── JSON2RAML Tool Actions ─── */
+        /* ── Secure Properties Generator ── */
+        if (PAGE_TOOL === 'secure_properties') {
+            wireGlobalFn('runOperation', 'secure_properties_run', function () {
+                var algo = document.getElementById('sel-algo');
+                var mode = document.getElementById('sel-mode');
+                var inpStr = document.getElementById('inp-string');
+                var inpVal = document.getElementById('inp-value');
+                return {
+                    algorithm: algo ? algo.value : 'AES',
+                    operation_mode: mode ? mode.value : 'CBC',
+                    input_length: (inpStr && inpStr.value ? inpStr.value.length : 0) || (inpVal && inpVal.value ? inpVal.value.length : 0)
+                };
+            });
+            wireGlobalFn('setMode', 'secure_properties_mode_set', function (args) {
+                return { mode: args && args[0] ? args[0] : 'unknown' };
+            });
+            wireGlobalFn('setInputType', 'secure_properties_input_type_set', function (args) {
+                return { input_type: args && args[0] ? args[0] : 'unknown' };
+            });
+            wireGlobalFn('generateRandomKey', 'secure_properties_gen_key', function () { return {}; });
+            wireGlobalFn('generateRandomValue', 'secure_properties_gen_val', function () { return {}; });
+            wireGlobalFn('clearAll', 'secure_properties_clear', function () { return {}; });
+            wireGlobalFn('downloadResult', 'secure_properties_download', function () { return {}; });
+            wireGlobalFn('copyResult', 'secure_properties_copy', function (args) {
+                return { wrapped: args && args[0] ? true : false };
+            });
+        }
+
+        /* ── JSON2RAML ── */
         if (PAGE_TOOL === 'json2raml') {
-            wireBtn('convert', 'converted_to_raml', function () {
+            wireGlobalFn('convert', 'json2raml_converted', function () {
                 var jsonInput = document.getElementById('json-input');
                 var ramlOutput = document.getElementById('raml-output');
-                var keysOptional = document.getElementById('areKeysOptional');
-                var keysCamelCase = document.getElementById('areKeysCamelCased');
                 return {
                     input_length: jsonInput ? jsonInput.value.length : 0,
-                    output_length: ramlOutput ? ramlOutput.value.length : 0,
-                    keys_optional: keysOptional ? keysOptional.checked : false,
-                    keys_camelcase: keysCamelCase ? keysCamelCase.checked : false,
-                    has_output: ramlOutput ? ramlOutput.value.length > 0 : false,
+                    output_length: ramlOutput ? ramlOutput.value.length : 0
                 };
             });
-
-            // Track option changes specifically
-            wireCheckbox('areKeysOptional', 'json2raml_option_optional_keys');
-            wireCheckbox('areKeysCamelCased', 'json2raml_option_camelcase_keys');
-
-            // Track Load Example
-            wireBtnById(null, 'json2raml_load_example', function () { return {}; }, '.panel-actions .btn-ghost');
-
-            // Track Copy
-            wireBtnById('copy-btn', 'json2raml_copied_raml', function () {
-                var ramlOutput = document.getElementById('raml-output');
-                return { output_length: ramlOutput ? ramlOutput.value.length : 0 };
-            });
-
-            // Track Download
-            wireBtnByText('Download .raml', 'json2raml_downloaded_raml', function () {
-                return {};
-            });
+            wireGlobalFn('convertJsonToRaml', 'json2raml_converted', function () { return {}; });
+            wireGlobalFn('loadExample', 'json2raml_load_example', function () { return {}; });
+            wireGlobalFn('clearContents', 'json2raml_cleared', function () { return {}; });
+            wireGlobalFn('copyRaml', 'json2raml_copied', function () { return {}; });
+            wireGlobalFn('downloadRaml', 'json2raml_downloaded', function () { return {}; });
         }
 
-        /* ─── YAML Tools Actions ─── */
-        if (PAGE_TOOL === 'yaml_tools') {
-            // YAML → Properties conversion
+        /* ── YAML Tools / YAML2Props / Props2YAML ── */
+        if (PAGE_TOOL === 'yaml_tools' || PAGE_TOOL === 'yaml2props' || PAGE_TOOL === 'props2yaml') {
             wireGlobalFn('y2p_convert', 'converted_yaml_to_properties', function () {
                 var keysOnly = document.getElementById('keysOnly');
-                var addGenericProp = document.getElementById('addGenericProp');
-                var addMuleProp = document.getElementById('addMuleProp');
-                return {
-                    keys_only: keysOnly ? keysOnly.checked : false,
-                    generic_prop_format: addGenericProp ? addGenericProp.checked : false,
-                    mule_p_format: addMuleProp ? addMuleProp.checked : false,
-                };
+                return { keys_only: keysOnly ? keysOnly.checked : false };
             });
-
-            // Properties → YAML conversion
-            wireGlobalFn('p2y_convert', 'converted_properties_to_yaml', function () {
-                var propInput = document.getElementById('propTextarea');
-                return {
-                    input_length: propInput ? propInput.value.length : 0,
-                    input_lines: propInput ? propInput.value.split('\n').length : 0,
-                };
-            });
-
-            // Track option checkboxes
-            wireCheckbox('keysOnly', 'yaml_tools_option_keys_only');
-            wireCheckbox('addGenericProp', 'yaml_tools_option_generic_prop_format');
-            wireCheckbox('addMuleProp', 'yaml_tools_option_mule_p_format');
-
-            // Track YAML remove values
-            wireGlobalFn('y2p_removeValues', 'yaml_tools_remove_values', function () { return {}; });
-
-            // Track copy actions
-            wireBtnById('y2p-copy-btn', 'yaml_tools_copied_properties', function () {
-                var output = document.getElementById('propertiesOutput');
-                return { output_length: output ? output.value.length : 0 };
-            });
-            wireBtnById('p2y-copy-btn', 'yaml_tools_copied_yaml', function () {
-                var output = document.getElementById('yamlOutput');
-                return { output_length: output ? output.value.length : 0 };
-            });
-
-            // Track downloads
+            wireGlobalFn('p2y_convert', 'converted_properties_to_yaml', function () { return {}; });
+            wireGlobalFn('y2p_loadExample', 'yaml_tools_load_example_y2p', function () { return {}; });
+            wireGlobalFn('p2y_loadExample', 'yaml_tools_load_example_p2y', function () { return {}; });
+            wireGlobalFn('y2p_clear', 'yaml_tools_clear_y2p', function () { return {}; });
+            wireGlobalFn('p2y_clear', 'yaml_tools_clear_p2y', function () { return {}; });
+            wireGlobalFn('y2p_copy', 'yaml_tools_copied_properties', function () { return {}; });
+            wireGlobalFn('p2y_copy', 'yaml_tools_copied_yaml', function () { return {}; });
             wireGlobalFn('y2p_doDownload', 'yaml_tools_downloaded_properties', function () { return {}; });
             wireGlobalFn('p2y_download', 'yaml_tools_downloaded_yaml', function () { return {}; });
-
-            // Track tab switches
-            wireGlobalFn('switchTab', 'yaml_tools_tab_switch', function (args) {
-                return { tab_id: args && args[0] ? args[0] : 'unknown' };
-            });
         }
 
-        /* ─── XML SDK Actions ─── */
+        /* ── Mule2cURL ── */
+        if (PAGE_TOOL === 'mule2curl') {
+            wireGlobalFn('convertMuleToCurl', 'mule2curl_converted', function () { return {}; });
+            wireGlobalFn('loadExample', 'mule2curl_load_example', function () { return {}; });
+            wireGlobalFn('clearInput', 'mule2curl_clear', function () { return {}; });
+            wireGlobalFn('copyCurl', 'mule2curl_copied', function () { return {}; });
+        }
+
+        /* ── cURL2Mule ── */
+        if (PAGE_TOOL === 'curl2mule') {
+            wireGlobalFn('convertCurlToMule', 'curl2mule_converted', function () { return {}; });
+            wireGlobalFn('loadExample', 'curl2mule_load_example', function () { return {}; });
+            wireGlobalFn('clearInput', 'curl2mule_clear', function () { return {}; });
+            wireGlobalFn('copyMuleXml', 'curl2mule_copied', function () { return {}; });
+        }
+
+        /* ── RAML2OAS ── */
+        if (PAGE_TOOL === 'raml2oas') {
+            wireGlobalFn('convertRaml', 'raml2oas_converted', function () { return {}; });
+            wireGlobalFn('loadExample', 'raml2oas_load_example', function () { return {}; });
+            wireGlobalFn('copyOutput', 'raml2oas_copied', function () { return {}; });
+            wireGlobalFn('downloadOutput', 'raml2oas_downloaded', function () { return {}; });
+        }
+
+        /* ── Cron Builder ── */
+        if (PAGE_TOOL === 'cron_builder') {
+            wireGlobalFn('buildCron', 'cron_builder_built', function () { return {}; });
+            wireGlobalFn('copyCron', 'cron_builder_copied', function () { return {}; });
+        }
+
+        /* ── Base64 Converter ── */
+        if (PAGE_TOOL === 'base64_converter') {
+            wireGlobalFn('encodeBase64', 'base64_encoded', function () { return {}; });
+            wireGlobalFn('decodeBase64', 'base64_decoded', function () { return {}; });
+            wireGlobalFn('loadExample', 'base64_load_example', function () { return {}; });
+            wireGlobalFn('clearAll', 'base64_clear', function () { return {}; });
+            wireGlobalFn('copyOutput', 'base64_copied', function () { return {}; });
+        }
+
+        /* ── XML SDK ── */
         if (PAGE_TOOL === 'xml_sdk') {
-            // Track operation name set
-            wireGlobalFn('op_name_change', 'xml_sdk_operation_name_set', function () {
-                return {};
-            });
-
-            // Track operation description set
-            wireGlobalFn('op_desc_change', 'xml_sdk_operation_description_set', function () { return {}; });
-
-            // Track parameter added
-            wireGlobalFn('param_convert', 'xml_sdk_parameter_added', function () {
-                var paramType = document.getElementById('param_type');
-                var paramRole = document.getElementById('param_role');
-                var paramUse = document.getElementById('param_use');
-                return {
-                    param_type: paramType ? paramType.value : '',
-                    param_role: paramRole ? paramRole.value : '',
-                    param_required: paramUse ? paramUse.value : '',
-                };
-            });
-
-            // Track reset
-            wireGlobalFn('resetAll', 'xml_sdk_reset_all', function () { return {}; });
+            wireGlobalFn('param_convert', 'xml_sdk_parameter_added', function () { return {}; });
             wireGlobalFn('op_reset', 'xml_sdk_operation_reset', function () { return {}; });
-
-            // Track copy
-            wireBtnById('xml-copy-btn', 'xml_sdk_copied_xml', function () {
-                var xmlOutput = document.getElementById('xml-output');
-                return { output_length: xmlOutput ? xmlOutput.value.length : 0 };
-            });
-
-            // Track download
+            wireGlobalFn('resetAll', 'xml_sdk_reset_all', function () { return {}; });
+            wireGlobalFn('copyXML', 'xml_sdk_copied_xml', function () { return {}; });
             wireGlobalFn('downloadXML', 'xml_sdk_downloaded_xml', function () { return {}; });
-
-            // Track tab switch
-            wireGlobalFn('switchTab', 'xml_sdk_tab_switch', function (args) {
-                return { tab_id: args && args[0] ? args[0] : 'unknown' };
-            });
         }
 
-        /* ─── Gmail URL Actions ─── */
+        /* ── Gmail URL ── */
         if (PAGE_TOOL === 'gmail_url') {
-            // Track URL generated
-            wireGlobalFn('generateURL', 'gmail_url_generated', function () {
-                var to = document.getElementById('gmail-to');
-                var cc = document.getElementById('gmail-cc');
-                var bcc = document.getElementById('gmail-bcc');
-                var subject = document.getElementById('gmail-subject');
-                var body = document.getElementById('gmail-body');
-                return {
-                    has_to: to ? to.value.trim().length > 0 : false,
-                    has_cc: cc ? cc.value.trim().length > 0 : false,
-                    has_bcc: bcc ? bcc.value.trim().length > 0 : false,
-                    subject_length: subject ? subject.value.length : 0,
-                    body_length: body ? body.value.length : 0,
-                    recipient_count: to ? to.value.split(',').filter(function (e) { return e.trim(); }).length : 0,
-                };
-            });
-
-            // Track Open in Gmail
+            wireGlobalFn('generateURL', 'gmail_url_generated', function () { return {}; });
             wireGlobalFn('openGmail', 'gmail_url_opened_in_gmail', function () { return {}; });
-
-            // Track Copy URL
-            wireBtnById('copy-url-btn', 'gmail_url_copied', function () { return {}; });
-
-            // Track Load Test Values
             wireGlobalFn('loadTestValues', 'gmail_url_loaded_test_values', function () { return {}; });
-
-            // Track Clear
             wireGlobalFn('clearForm', 'gmail_url_cleared_form', function () { return {}; });
+            wireGlobalFn('copyUrl', 'gmail_url_copied', function () { return {}; });
         }
 
-        /* ─── Salary Calc Actions ─── */
+        /* ── Salary Calc ── */
         if (PAGE_TOOL === 'salary_calc') {
-            // Track calculations (debounced to avoid spamming on every keystroke)
-            var calcDebounce;
-            wireGlobalFn('calc', 'salary_calc_calculated', function () {
-                var currentEl = document.getElementById('current-salary');
-                var revisedEl = document.getElementById('revised-salary');
-                var pctEl = document.getElementById('hike-percentage');
-                var resultEl = document.getElementById('hike-result');
-                return {
-                    has_current: currentEl ? currentEl.value.length > 0 : false,
-                    has_revised: revisedEl ? revisedEl.value.length > 0 : false,
-                    has_hike_pct: pctEl ? pctEl.value.length > 0 : false,
-                    calculation_mode: revisedEl && revisedEl.value ? 'revised_to_pct' : 'pct_to_revised',
-                };
-            }, true); // debounced = true
+            wireGlobalFn('calc', 'salary_calc_calculated', function () { return {}; }, true);
         }
-    }
 
-    /* ── Helper: wire a button by ID ── */
-    function wireBtnById(id, eventName, paramsFn) {
-        if (!id) return;
-        var btn = document.getElementById(id);
-        if (btn) {
-            btn.addEventListener('click', function () {
-                var params = Object.assign({ page_tool: PAGE_TOOL }, paramsFn ? paramsFn() : {});
-                track(eventName, params);
-            });
+        /* ── WhatsApp Read More ── */
+        if (PAGE_TOOL === 'whatsapp_readmore') {
+            wireGlobalFn('generateReadMore', 'whatsapp_readmore_generated', function () { return {}; });
+            wireGlobalFn('copyResult', 'whatsapp_readmore_copied', function () { return {}; });
         }
-    }
-
-    /* ── Helper: wire a button by text content ── */
-    function wireBtnByText(text, eventName, paramsFn) {
-        var btns = document.querySelectorAll('.btn');
-        btns.forEach(function (btn) {
-            if (btn.textContent.trim().includes(text)) {
-                btn.addEventListener('click', function () {
-                    var params = Object.assign({ page_tool: PAGE_TOOL }, paramsFn ? paramsFn() : {});
-                    track(eventName, params);
-                });
-            }
-        });
-    }
-
-    /* ── Helper: wire a checkbox by ID ── */
-    function wireCheckbox(id, eventName) {
-        var cb = document.getElementById(id);
-        if (cb) {
-            cb.addEventListener('change', function () {
-                track(eventName, {
-                    checked: cb.checked,
-                    page_tool: PAGE_TOOL,
-                });
-            });
-        }
-    }
-
-    /* ── Helper: wire a button matching onclick function name ── */
-    function wireBtn(fnName, eventName, paramsFn) {
-        var btns = document.querySelectorAll('[onclick*="' + fnName + '"]');
-        btns.forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var params = Object.assign({ page_tool: PAGE_TOOL }, paramsFn ? paramsFn() : {});
-                track(eventName, params);
-            });
-        });
-    }
-
-    /* ── Helper: intercept a global function ── */
-    function wireGlobalFn(fnName, eventName, paramsFn, debounced) {
-        if (typeof window[fnName] !== 'function') return;
-        var original = window[fnName];
-        var debounceTimer;
-        window[fnName] = function () {
-            var args = arguments;
-            var result = original.apply(this, args);
-
-            if (debounced) {
-                clearTimeout(debounceTimer);
-                debounceTimer = setTimeout(function () {
-                    var params = Object.assign({ page_tool: PAGE_TOOL }, paramsFn ? paramsFn(args) : {});
-                    track(eventName, params);
-                }, 1000);
-            } else {
-                var params = Object.assign({ page_tool: PAGE_TOOL }, paramsFn ? paramsFn(args) : {});
-                track(eventName, params);
-            }
-            return result;
-        };
     }
 
     /* ════════════════════════════════════════
-       PUBLIC HELPERS — called from inline scripts
-       e.g. track_event('convert', { input_len: n })
+       15. PUBLIC HELPERS — called from inline scripts
     ════════════════════════════════════════ */
     window.track_event = function (eventName, params) {
         var merged = Object.assign({ page_tool: PAGE_TOOL }, params || {});
-        track(eventName, merged);
+        track(eventName, params ? eventName : 'custom_event', merged);
     };
 
 })();
