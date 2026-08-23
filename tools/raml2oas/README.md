@@ -1,7 +1,7 @@
 # RAML to OAS (OpenAPI) Converter
 
 ## 🟢 Live Tool
-**[Use RAML to OAS (OpenAPI) Converter →](https://upendra-thunuguntla.github.io/tools/raml2oas/)**
+**[Use RAML to OAS (OpenAPI) Converter →](https://upendra.fyi/tools/raml2oas/)**
 
 ## Description
 Convert RAML 1.0 API specifications to OpenAPI 3.0 YAML or JSON instantly. 100% browser-based.

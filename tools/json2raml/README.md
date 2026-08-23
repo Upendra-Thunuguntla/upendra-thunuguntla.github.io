@@ -1,7 +1,7 @@
 # JSON to RAML Converter
 
 ## 🟢 Live Tool
-**[Use JSON to RAML Converter →](https://upendra-thunuguntla.github.io/tools/json2raml/)**
+**[Use JSON to RAML Converter →](https://upendra.fyi/tools/json2raml/)**
 
 ## Description
 Free online JSON to RAML DataType converter for MuleSoft API Designer. Supports optional keys, CamelCase conversion, and RAML 1.0 format.

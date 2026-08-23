@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Main Portfolio -->
   <url>
-    <loc>https://upendra-thunuguntla.github.io/</loc>
+    <loc>https://upendra.fyi/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -10,61 +10,61 @@
   
   <!-- Developer Tools -->
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/base64-converter/</loc>
+    <loc>https://upendra.fyi/tools/base64-converter/</loc>
     <lastmod>2026-08-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/secure-properties-generator/</loc>
+    <loc>https://upendra.fyi/tools/secure-properties-generator/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/json2raml/</loc>
+    <loc>https://upendra.fyi/tools/json2raml/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/yaml2props/</loc>
+    <loc>https://upendra.fyi/tools/yaml2props/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/props2yaml/</loc>
+    <loc>https://upendra.fyi/tools/props2yaml/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/mule2curl/</loc>
+    <loc>https://upendra.fyi/tools/mule2curl/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/curl2mule/</loc>
+    <loc>https://upendra.fyi/tools/curl2mule/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/xml-sdk/</loc>
+    <loc>https://upendra.fyi/tools/xml-sdk/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/cron-builder/</loc>
+    <loc>https://upendra.fyi/tools/cron-builder/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/raml2oas/</loc>
+    <loc>https://upendra.fyi/tools/raml2oas/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -72,19 +72,19 @@
   
   <!-- Goofy Zone / Casual Playground Tools -->
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/gmail-url/</loc>
+    <loc>https://upendra.fyi/tools/gmail-url/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/salary-calc/</loc>
+    <loc>https://upendra.fyi/tools/salary-calc/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/</loc>
+    <loc>https://upendra.fyi/tools/whatsapp-readmore/</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

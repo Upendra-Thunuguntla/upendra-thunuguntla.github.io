@@ -1,7 +1,7 @@
 # MuleSoft Log to cURL Converter
 
 ## 🟢 Live Tool
-**[Use MuleSoft Log to cURL Converter →](https://upendra-thunuguntla.github.io/tools/mule2curl/)**
+**[Use MuleSoft Log to cURL Converter →](https://upendra.fyi/tools/mule2curl/)**
 
 ## Description
 Instantly convert MuleSoft HTTP debug logs into ready-to-use cURL commands. Parses method, host, path, query params, headers, and body automatically.

@@ -1,6 +1,6 @@
 {
-  "name": "Upendra.dev Tool Suite",
-  "short_name": "Upendra Tools",
+  "name": "upendra.fyi (for your integrations)",
+  "short_name": "upendra.fyi",
   "description": "Developer tools for MuleSoft, DataWeave, and productivity.",
   "start_url": "/",
   "display": "standalone",

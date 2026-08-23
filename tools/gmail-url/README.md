@@ -1,7 +1,7 @@
 # Gmail Compose URL Generator
 
 ## 🟢 Live Tool
-**[Use Gmail Compose URL Generator →](https://upendra-thunuguntla.github.io/tools/gmail-url/)**
+**[Use Gmail Compose URL Generator →](https://upendra.fyi/tools/gmail-url/)**
 
 ## Description
 Generate pre-filled Gmail compose URLs with To, CC, BCC, Subject, and Body. Bookmark and reuse for recurring emails.
