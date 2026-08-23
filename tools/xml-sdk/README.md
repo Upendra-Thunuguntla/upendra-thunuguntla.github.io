@@ -1,7 +1,7 @@
 # Mule XML SDK Helper
 
 ## 🟢 Live Tool
-**[Use Mule XML SDK Helper →](https://upendra-thunuguntla.github.io/tools/xml-sdk/)**
+**[Use Mule XML SDK Helper →](https://upendra.fyi/tools/xml-sdk/)**
 
 ## Description
 GUI-driven XML builder for Mule XML SDK connectors. Generate operation and parameter XML blocks without memorising the schema.

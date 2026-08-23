@@ -1,7 +1,7 @@
 # WhatsApp Read More Generator
 
 ## 🟢 Live Tool
-**[Use WhatsApp Read More Generator →](https://upendra-thunuguntla.github.io/tools/whatsapp-readmore/)**
+**[Use WhatsApp Read More Generator →](https://upendra.fyi/tools/whatsapp-readmore/)**
 
 ## Description
 Force WhatsApp to truncate your messages and show the '... Read more' link. Insert thousands of zero-width characters to hide your punchlines.

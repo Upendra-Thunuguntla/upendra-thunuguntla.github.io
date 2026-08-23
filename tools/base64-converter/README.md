@@ -1,7 +1,7 @@
 # Base64 Encoder & Decoder
 
 ## 🟢 Live Tool
-**[Use Base64 Encoder & Decoder Live →](https://upendra-thunuguntla.github.io/tools/base64-converter/)**
+**[Use Base64 Encoder & Decoder Live →](https://upendra.fyi/tools/base64-converter/)**
 
 ## Description
 A fast, secure, and client-side Base64 converter. Encode and decode text or files directly in your browser without sending any data to external servers, protecting sensitive API credentials and payload logs.

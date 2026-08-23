@@ -43,6 +43,35 @@
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.03em;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.nav-tagline-sub {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    opacity: 0.9;
+    margin-left: 0.5rem;
+    background: var(--surface-2);
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border);
+    letter-spacing: normal;
+    -webkit-text-fill-color: var(--text-muted);
+    transition: all var(--transition);
+}
+
+.nav-logo:hover .nav-tagline-sub {
+    border-color: var(--border-accent);
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
+}
+
+@media (max-width: 850px) {
+    .nav-tagline-sub {
+        display: none;
+    }
 }
 
 .nav-links {
@@ -263,7 +292,7 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--accent);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-md);
 }
 
 .hero-eyebrow-dot {
@@ -272,6 +301,61 @@
     border-radius: 50%;
     background: var(--accent);
     animation: pulse 2s ease-in-out infinite;
+}
+
+/* Playful hero tagline badge */
+.hero-tagline-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 1.15rem;
+    margin-bottom: var(--space-lg);
+    border-radius: var(--radius-full);
+    background: rgba(13, 27, 42, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-accent);
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.12);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="light"] .hero-tagline-badge {
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.hero-tagline-badge:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.28);
+    border-color: var(--accent);
+}
+
+.hero-tagline-badge .tagline-domain {
+    background: var(--grad-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.hero-tagline-badge .tagline-sub {
+    color: var(--text-subtle);
+    font-weight: 500;
+    font-size: 0.88rem;
+}
+
+.hero-tagline-badge .tagline-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 1.05rem;
+}
+
+.hero-tagline-badge:hover .tagline-icon {
+    transform: rotate(15deg) scale(1.25);
 }
 
 .hero-name {

@@ -1,7 +1,7 @@
 # MuleSoft Secure Properties Generator
 
 ## 🟢 Live Tool
-**[Use MuleSoft Secure Properties Generator →](https://upendra-thunuguntla.github.io/tools/secure-properties-generator/)**
+**[Use MuleSoft Secure Properties Generator →](https://upendra.fyi/tools/secure-properties-generator/)**
 
 ## Description
 Free MuleSoft Secure Properties generator. Encrypt and decrypt configuration properties.

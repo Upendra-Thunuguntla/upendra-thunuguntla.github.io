@@ -1,7 +1,7 @@
 # YAML to Properties Converter
 
 ## 🟢 Live Tool
-**[Use YAML to Properties Converter →](https://upendra-thunuguntla.github.io/tools/yaml2props/)**
+**[Use YAML to Properties Converter →](https://upendra.fyi/tools/yaml2props/)**
 
 ## Description
 Free YAML to Properties converter for MuleSoft. Flatten YAML configs into flat properties, extract keys with ${key} or Mule::p() wrapping, and support secure properties prefix.

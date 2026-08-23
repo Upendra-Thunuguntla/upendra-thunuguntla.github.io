@@ -1,7 +1,7 @@
 # Postman cURL to Mule Converter
 
 ## 🟢 Live Tool
-**[Use Postman cURL to Mule Converter →](https://upendra-thunuguntla.github.io/tools/curl2mule/)**
+**[Use Postman cURL to Mule Converter →](https://upendra.fyi/tools/curl2mule/)**
 
 ## Description
 Instantly convert cURL commands (from Postman, DevTools, or terminal) into MuleSoft HTTP Request Configuration and Processor XML. 100% browser-based and secure.

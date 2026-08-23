@@ -1,7 +1,7 @@
 # Salary Hike Calculator
 
 ## 🟢 Live Tool
-**[Use Salary Hike Calculator →](https://upendra-thunuguntla.github.io/tools/salary-calc/)**
+**[Use Salary Hike Calculator →](https://upendra.fyi/tools/salary-calc/)**
 
 ## Description
 Instantly calculate your salary hike percentage from current and revised CTC. Simple, fast, and accurate.

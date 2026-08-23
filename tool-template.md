@@ -1,6 +1,6 @@
 # Developer Tool Template & Specification (`tool-template.md`)
 
-This document serves as the master specification, blueprint, and implementation guideline for creating new developer utilities on [Upendra.dev](https://upendra-thunuguntla.github.io/). It is 100% LLM-readable and structured to allow any agent or human developer to instantly build, refine, and validate a tool with zero regressions.
+This document serves as the master specification, blueprint, and implementation guideline for creating new developer utilities on [Upendra.dev](https://upendra.fyi/). It is 100% LLM-readable and structured to allow any agent or human developer to instantly build, refine, and validate a tool with zero regressions.
 
 ---
 
@@ -9,7 +9,7 @@ This document serves as the master specification, blueprint, and implementation 
 Every tool must be self-contained in its own subdirectory under `/tools/` using a slug-based folder name (e.g., `/tools/mule-log-parser/`).
 
 ```text
-upendra-thunuguntla.github.io/
+upendra.fyi/
 ├── assets/
 │   ├── css/
 │   │   ├── core.css           # Global typography, color variables, shared styles
@@ -65,7 +65,7 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
     <!-- Brand / Identity Elements -->
     <link rel="icon" href="/assets/favicons/[tool-name].svg" type="image/svg+xml">
     <link rel="manifest" href="/manifest.json">
-    <link rel="canonical" href="https://upendra-thunuguntla.github.io/tools/[tool-slug]/">
+    <link rel="canonical" href="https://upendra.fyi/tools/[tool-slug]/">
     
     <!-- Pre-render Theme Injection (Important: Prevents page flash) -->
     <script src="/assets/js/theme.js"></script>
@@ -100,7 +100,7 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
         "description": "[Comprehensive meta description]",
         "applicationCategory": "DeveloperApplication",
         "operatingSystem": "All",
-        "url": "https://upendra-thunuguntla.github.io/tools/[tool-slug]/",
+        "url": "https://upendra.fyi/tools/[tool-slug]/",
         "author": {
             "@type": "Person",
             "name": "Upendra Venkata Muralidhar Thunuguntla"
@@ -582,7 +582,7 @@ Each tool folder must contain a `README.md` to document the utility inside GitHu
 # [Tool Name]
 
 ## 🟢 Live Tool
-**[Use [Tool Name] Live →](https://upendra-thunuguntla.github.io/tools/[tool-slug]/)**
+**[Use [Tool Name] Live →](https://upendra.fyi/tools/[tool-slug]/)**
 
 ## Description
 [1-2 sentences summarizing the utility's goal, privacy policies, and who it is built for.]

@@ -29,7 +29,7 @@ function getToolData(dirName) {
   // Extract Canonical URL
   const canonicalMatch = content.match(/<link\s+rel=["']canonical["']\s+href=["'](.*?)["']/i)
     || content.match(/href=["'](.*?)["']\s+rel=["']canonical["']/i);
-  const url = canonicalMatch ? canonicalMatch[1].trim() : `https://upendra-thunuguntla.github.io/tools/${dirName}/`;
+  const url = canonicalMatch ? canonicalMatch[1].trim() : `https://upendra.fyi/tools/${dirName}/`;
 
   return { name, url };
 }
@@ -56,7 +56,7 @@ const itemList = {
   "@type": "ItemList",
   "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
   "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
-  "url": "https://upendra-thunuguntla.github.io/",
+  "url": "https://upendra.fyi/",
   "numberOfItems": tools.length,
   "itemListElement": tools.map((tool, index) => ({
     "@type": "ListItem",
