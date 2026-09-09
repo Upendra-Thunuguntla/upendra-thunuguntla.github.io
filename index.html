@@ -274,8 +274,7 @@
         <li><a href="#publications"><span aria-hidden="true">📝</span> Articles</a></li>
         <li><a href="#hire-me"><span aria-hidden="true">💼</span> Hire Me</a></li>
         <li><a href="#contact"><span aria-hidden="true">📬</span> Contact</a></li>
-        <li><a href="https://docs.google.com/document/d/1lFxZsurq577mSmrpP7myvaFWSUFi6Ylh4sSRh4KOZbg/export?format=pdf"
-            target="_blank" rel="noopener"
+        <li><a href="javascript:void(0)" class="resume-gate-trigger"
             style="color:var(--accent); border:1px solid rgba(var(--accent-rgb),0.4); padding:0.25rem 0.75rem; border-radius:var(--radius-full); font-size:0.8rem;">📄
             Resume</a></li>
       </ul>
@@ -1147,6 +1146,10 @@
               class="btn btn-outline">
               <i class="fab fa-linkedin-in"></i> Connect on LinkedIn
             </a>
+            <a href="javascript:void(0)" class="btn btn-outline resume-gate-trigger"
+              style="border-color:rgba(var(--accent-rgb),0.4);">
+              <i class="far fa-file-pdf" style="color:var(--accent);"></i> Request Full Resume
+            </a>
           </div>
 
           <div style="font-size:0.75rem; color:var(--text-muted); text-align:center;">
@@ -1360,6 +1363,42 @@
         All tools are 100% client-side & no data ever leaves your browser.
       </div>
     </div>
+  <!-- ═══════════════════════════════════════════
+       RESUME GATE MODAL
+  ════════════════════════════════════════════ -->
+  <div id="resume-gate-modal" class="resume-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="resume-modal-title">
+    <div class="resume-modal-card">
+      <button type="button" class="resume-modal-close" id="resume-modal-close-btn" aria-label="Close modal">✕</button>
+      <div class="resume-modal-header">
+        <div class="resume-modal-icon">📄</div>
+        <h3 id="resume-modal-title">Request Upendra's Resume</h3>
+        <p class="resume-modal-subtitle">Enter your email and I'll deliver my latest PDF resume directly to your inbox!</p>
+      </div>
+      <form id="resume-gate-form" class="resume-modal-form">
+        <div class="form-group">
+          <label for="resume-input-email">Work Email <span class="required">*</span></label>
+          <input type="email" id="resume-input-email" name="email" placeholder="name@company.com" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="resume-input-name">Your Name <span class="optional">(Optional)</span></label>
+          <input type="text" id="resume-input-name" name="name" placeholder="John Doe" autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="resume-input-company">Company / Role <span class="optional">(Optional)</span></label>
+          <input type="text" id="resume-input-company" name="company" placeholder="e.g. NTT DATA / Tech Lead" />
+        </div>
+        <div id="resume-form-status" class="resume-form-status" style="display:none;"></div>
+        <button type="submit" id="resume-submit-btn" class="resume-submit-btn">
+          <span class="btn-text">Send Resume to Inbox 🚀</span>
+          <span class="btn-spinner" style="display:none;"><i class="fas fa-circle-notch fa-spin"></i> Sending...</span>
+        </button>
+        <div class="resume-privacy-note">
+          🔒 100% private. Your email is only used to deliver the resume. Zero spam.
+        </div>
+      </form>
+    </div>
+  </div>
+
   </footer>
 
   <!-- Platform JS -->
