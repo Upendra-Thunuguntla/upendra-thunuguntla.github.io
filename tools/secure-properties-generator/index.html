@@ -80,6 +80,38 @@
             "@type": "Answer",
             "text": "Using Random IV (Initialization Vector) means encrypting the same text with the same key will produce a different ciphertext each time. This increases security by preventing attackers from identifying repeated patterns. Decryption is still successful because the IV is stored along with the ciphertext in the output."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I save and load my encryption keys and configurations?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Click the Save / Load button next to the Security Key input. You can save your key, algorithm, operation mode, and Random IV setting under a custom label (e.g. 'Prod AES' or 'Dev Project') for quick 1-click retrieval. All saved configurations are stored exclusively in your browser's local storage (localStorage) and are never uploaded or transmitted anywhere."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I encrypt or decrypt an entire YAML or Properties file at once?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes! Switch to the File Content tab. For encryption, it scans key-value pairs in your YAML or properties file, encrypts each secret value, and wraps it in ![...] while retaining comments and structure. For decryption, it automatically scans for all ![...] patterns and decrypts them in-place."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between Plain Copy and the ![ ] Wrapped Copy button?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Plain Copy copies the raw Base64 ciphertext string. The ![ ] Wrapped Copy button encapsulates the string in MuleSoft's mandatory ![value] syntax, allowing you to paste it directly into application-dev.yaml or application-dev.properties files."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do the Random Key generator and password auto-masking work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Clicking the dice icon generates a random security key for quick setup. The eye icon toggles key visibility and automatically re-masks your security key after 5 seconds to prevent shoulder surfing."
+          }
         }
       ]
     }
@@ -471,6 +503,22 @@
                 <details class="faq-item">
                     <summary>How does Random IV affect encryption outputs?</summary>
                     <div class="faq-answer">Using Random IV (Initialization Vector) means encrypting the same text with the same key will produce a different ciphertext each time. This increases security by preventing attackers from identifying repeated patterns. Decryption is still successful because the IV is stored along with the ciphertext in the output.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I save and load my encryption keys and configurations?</summary>
+                    <div class="faq-answer">Yes! Click the <strong>Save / Load</strong> button next to the Security Key input. You can save your key, algorithm, mode, and Random IV setting under a custom name (e.g., "Prod AES" or "Dev Project") for instant 1-click loading in future sessions. All saved profiles are stored strictly in your browser's <code>localStorage</code>—never uploaded, synced, or sent to any server.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>Can I encrypt or decrypt an entire YAML or Properties file at once?</summary>
+                    <div class="faq-answer">Yes! Switch to the <strong>File Content</strong> tab. When encrypting, the tool automatically scans your property keys and values, encrypts all secret values, and wraps them in <code>![...]</code> while preserving your comments and formatting. When decrypting, it automatically detects all <code>![encrypted]</code> patterns in your file and decrypts them in-place.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>What is the difference between Plain Copy and the ![ ] Wrapped Copy button?</summary>
+                    <div class="faq-answer">The plain copy button (<i class="fas fa-copy"></i>) copies only the raw Base64 encrypted string. The wrapped copy button (<strong>![]</strong>) automatically adds MuleSoft's required <code>![encrypted_value]</code> syntax around the string, making it ready to paste directly into your <code>.yaml</code> or <code>.properties</code> files.</div>
+                </details>
+                <details class="faq-item">
+                    <summary>How do the Random Key generator and password auto-masking work?</summary>
+                    <div class="faq-answer">Clicking the dice icon (<i class="fas fa-dice"></i>) next to the Key input instantly generates a strong, random security key. For protection against shoulder surfing, clicking the eye icon reveals your key as plain text, and the tool will automatically re-mask it back to a password field after 5 seconds.</div>
                 </details>
             </div>
         </div>
