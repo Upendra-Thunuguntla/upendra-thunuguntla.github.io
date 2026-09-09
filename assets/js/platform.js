@@ -289,7 +289,134 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ─── Initialize Global Drag & Drop for Developer Tools ─── */
     initGlobalToolDragAndDrop();
 
+    /* ─── Check & Display Domain Redirect Notice ─── */
+    checkDomainRedirectNotice();
+
 });
+
+/* ─── Domain Redirect Notice Banner ─── */
+function checkDomainRedirectNotice() {
+    try {
+        const currentHost = window.location.hostname.toLowerCase();
+        
+        // Target domain is upendra.fyi. If already on upendra.fyi or subdomains, do not display.
+        if (currentHost === 'upendra.fyi' || currentHost.endsWith('.upendra.fyi')) {
+            return;
+        }
+
+        // Check if user dismissed notice in the last 15 days (15 * 24 * 60 * 60 * 1000 ms)
+        const STORAGE_KEY = 'upendra_domain_banner_dismissed_at';
+        const FIFTEEN_DAYS_MS = 15 * 24 * 60 * 60 * 1000;
+        
+        const lastDismissed = localStorage.getItem(STORAGE_KEY);
+        if (lastDismissed) {
+            const timePassed = Date.now() - parseInt(lastDismissed, 10);
+            if (!isNaN(timePassed) && timePassed < FIFTEEN_DAYS_MS) {
+                return; // Dismissed less than 15 days ago
+            }
+        }
+
+        // Create domain redirect banner element
+        const banner = document.createElement('div');
+        banner.id = 'domain-redirect-banner';
+        banner.className = 'domain-redirect-banner';
+        banner.setAttribute('role', 'banner');
+        banner.setAttribute('aria-label', 'Domain Redirect Notice');
+
+        const currentDisplayHost = currentHost || 'this location';
+
+        banner.innerHTML = `
+            <div class="domain-banner-content">
+                <div class="domain-banner-icon">🌐</div>
+                <div class="domain-banner-text">
+                    <div class="domain-banner-title">
+                        Official Domain: <strong>upendra.fyi</strong>
+                    </div>
+                    <div class="domain-banner-desc">
+                        Visiting via <code>${currentDisplayHost}</code>? Switch to <strong>upendra.fyi</strong> for the newest tools!
+                        <span style="display:block; margin-top:0.25rem; opacity:0.85; font-size:0.78rem; font-style:italic;">(Hit ✕ & I promise not to disturb your peace for 15 whole days! 🤫)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="domain-banner-actions">
+                <button id="domain-banner-switch-btn" class="domain-banner-btn primary">
+                    Switch to upendra.fyi <i class="fas fa-arrow-right"></i>
+                </button>
+                <button id="domain-banner-dismiss-btn" class="domain-banner-btn close" aria-label="Dismiss notice for 15 days" title="Dismiss for 15 days">
+                    ✕
+                </button>
+            </div>
+        `;
+
+        document.body.appendChild(banner);
+
+        // Track GA4 Impression Event
+        if (typeof gtag === 'function') {
+            gtag('event', 'domain_banner_impression', {
+                source_host: currentHost,
+                page_path: window.location.pathname
+            });
+        }
+
+        // Animate in smoothly after page render
+        setTimeout(() => {
+            banner.classList.add('show');
+        }, 800);
+
+        // Event listener: Switch button
+        const switchBtn = document.getElementById('domain-banner-switch-btn');
+        if (switchBtn) {
+            switchBtn.addEventListener('click', function () {
+                const targetUrl = 'https://upendra.fyi' + window.location.pathname + window.location.search + window.location.hash;
+                
+                // Track GA4 Switch Event
+                if (typeof gtag === 'function') {
+                    gtag('event', 'domain_banner_switch_click', {
+                        source_host: currentHost,
+                        target_url: targetUrl,
+                        page_path: window.location.pathname
+                    });
+                }
+
+                window.location.href = targetUrl;
+            });
+        }
+
+        // Event listener: Dismiss button
+        const dismissBtn = document.getElementById('domain-banner-dismiss-btn');
+        if (dismissBtn) {
+            dismissBtn.addEventListener('click', function () {
+                // Track GA4 Dismiss Event
+                if (typeof gtag === 'function') {
+                    gtag('event', 'domain_banner_dismiss_click', {
+                        source_host: currentHost,
+                        suppression_days: 15,
+                        page_path: window.location.pathname
+                    });
+                }
+
+                try {
+                    localStorage.setItem(STORAGE_KEY, Date.now().toString());
+                } catch (e) {
+                    console.warn('[DomainNotice] Storage permission error:', e);
+                }
+                banner.classList.remove('show');
+                setTimeout(() => {
+                    if (banner.parentNode) {
+                        banner.parentNode.removeChild(banner);
+                    }
+                }, 400);
+
+                if (typeof showToast === 'function') {
+                    showToast("Got it! Hibernating for 15 days... Happy building! 😴✨", "info");
+                }
+            });
+        }
+
+    } catch (e) {
+        console.warn('[DomainNotice] Error initializing domain banner:', e);
+    }
+}
 
 /* ─── Toast notification ─── */
 function showToast(message, type = 'success') {
