@@ -85,7 +85,7 @@ function initGlobalToolDragAndDrop() {
         const ext = extMatch ? extMatch[1].toLowerCase() : '';
 
         const BLOCKED_EXTENSIONS = ['exe', 'dll', 'sys', 'bat', 'cmd', 'ps1', 'vbs', 'bin', 'iso', 'img', 'zip', 'tar', 'gz', '7z', 'rar', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'mp3', 'mp4', 'avi', 'mov', 'mkv'];
-        
+
         if (BLOCKED_EXTENSIONS.includes(ext)) {
             return { valid: false, reason: `Extension '.${ext}' is binary/unsupported for this code tool.` };
         }
@@ -93,9 +93,9 @@ function initGlobalToolDragAndDrop() {
         const allowedList = getAllowedExtensions();
         if (allowedList && allowedList.length > 0) {
             if (!ext || !allowedList.includes(ext)) {
-                return { 
-                    valid: false, 
-                    reason: `File format '.${ext || 'unknown'}' is not allowed. Allowed formats: ${allowedList.map(e => '.' + e).join(', ')}` 
+                return {
+                    valid: false,
+                    reason: `File format '.${ext || 'unknown'}' is not allowed. Allowed formats: ${allowedList.map(e => '.' + e).join(', ')}`
                 };
             }
         }
@@ -142,7 +142,7 @@ function initGlobalToolDragAndDrop() {
 
     // Make explicit file dropzones clickable to browse
     document.querySelectorAll('.file-dropzone, #file-input-wrapper').forEach(zone => {
-        zone.addEventListener('click', function(e) {
+        zone.addEventListener('click', function (e) {
             if (e.target.tagName === 'INPUT') return;
             const fileInput = zone.querySelector('input[type="file"]') || document.querySelector('input[type="file"]');
             if (fileInput) fileInput.click();
@@ -168,7 +168,7 @@ function initGlobalToolDragAndDrop() {
                 const dt = new DataTransfer();
                 dt.items.add(file);
                 hiddenFileInput.files = dt.files;
-                
+
                 hiddenFileInput.dispatchEvent(new Event('change', { bubbles: true }));
 
                 if (typeof handleFileUpload === 'function') {
@@ -194,7 +194,7 @@ function initGlobalToolDragAndDrop() {
 
             if (primaryTextarea) {
                 primaryTextarea.value = content;
-                
+
                 primaryTextarea.dispatchEvent(new Event('input', { bubbles: true }));
                 primaryTextarea.dispatchEvent(new Event('change', { bubbles: true }));
 
@@ -292,13 +292,186 @@ document.addEventListener('DOMContentLoaded', function () {
     /* ─── Check & Display Domain Redirect Notice ─── */
     checkDomainRedirectNotice();
 
+    /* ─── Initialize Resume Gate Modal ─── */
+    initResumeGate();
+
 });
+
+/* ─── Resume Gate Modal Handler ─── */
+function initResumeGate() {
+    const triggers = document.querySelectorAll('.resume-gate-trigger');
+    const modal = document.getElementById('resume-gate-modal');
+    const closeBtn = document.getElementById('resume-modal-close-btn');
+    const form = document.getElementById('resume-gate-form');
+    const emailInput = document.getElementById('resume-input-email');
+    const statusDiv = document.getElementById('resume-form-status');
+    const submitBtn = document.getElementById('resume-submit-btn');
+
+    if (!modal || !form) return;
+
+    // Primary Vercel Backend Host & Fallback Vercel App Host
+    const PRIMARY_BACKEND_URL = window.RESUME_BACKEND_URL || 'https://api.upendra.fyi/api/send-resume';
+    const FALLBACK_BACKEND_URL = 'https://upendra-thunuguntla-backend.vercel.app/api/send-resume';
+
+    async function sendResumeRequest(payload) {
+        const urls = [PRIMARY_BACKEND_URL];
+        if (PRIMARY_BACKEND_URL !== FALLBACK_BACKEND_URL) {
+            urls.push(FALLBACK_BACKEND_URL);
+        }
+
+        let lastErr = null;
+        for (const url of urls) {
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok || (res.status >= 400 && res.status < 500)) {
+                    return res;
+                }
+                lastErr = new Error(`HTTP ${res.status}`);
+            } catch (err) {
+                console.warn(`[ResumeGate] Connection attempt failed for ${url}:`, err);
+                lastErr = err;
+            }
+        }
+        throw lastErr || new Error('Connection error');
+    }
+
+    function openModal() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (emailInput) setTimeout(() => emailInput.focus(), 150);
+
+        if (typeof gtag === 'function') {
+            gtag('event', 'resume_modal_open', {
+                page_path: window.location.pathname
+            });
+        }
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    triggers.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            openModal();
+        });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    // Close on backdrop click
+    modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeModal();
+    });
+
+    // Close on Escape key
+    window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Handle Form Submission
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const email = emailInput ? emailInput.value.trim() : '';
+        const name = document.getElementById('resume-input-name')?.value.trim() || '';
+        const company = document.getElementById('resume-input-company')?.value.trim() || '';
+
+        if (!email || !email.includes('@')) {
+            showStatus('Please enter a valid email address.', 'error');
+            return;
+        }
+
+        setSubmitting(true);
+        hideStatus();
+
+        try {
+            const response = await sendResumeRequest({
+                email: email,
+                name: name,
+                company: company,
+                source_page: window.location.href,
+                timestamp: new Date().toISOString()
+            });
+
+            const data = await response.json().catch(() => ({}));
+
+            if (response.ok && data.success !== false) {
+                showStatus('✨ Success! Resume sent to your inbox. Check your email shortly.', 'success');
+                form.reset();
+
+                if (typeof gtag === 'function') {
+                    gtag('event', 'resume_request_success', {
+                        email_domain: email.split('@')[1] || 'unknown',
+                        company: company || 'none'
+                    });
+                }
+
+                // Auto close modal after 4 seconds
+                setTimeout(() => {
+                    closeModal();
+                    hideStatus();
+                }, 4000);
+
+            } else {
+                const errMsg = data.error || 'Unable to send email right now. Please try again or contact me directly.';
+                showStatus(`❌ ${errMsg}`, 'error');
+
+                if (typeof gtag === 'function') {
+                    gtag('event', 'resume_request_error', { error: errMsg });
+                }
+            }
+        } catch (err) {
+            console.error('[ResumeGate] Fetch error:', err);
+
+            showStatus('❌ Connection error. Could not reach server. Please contact upendra.thunuguntla@gmail.com directly.', 'error');
+
+            if (typeof gtag === 'function') {
+                gtag('event', 'resume_request_error', { error: err.message || 'network_error' });
+            }
+        } finally {
+            setSubmitting(false);
+        }
+    });
+
+    function setSubmitting(isSubmitting) {
+        if (!submitBtn) return;
+        submitBtn.disabled = isSubmitting;
+        const txt = submitBtn.querySelector('.btn-text');
+        const spinner = submitBtn.querySelector('.btn-spinner');
+        if (txt && spinner) {
+            txt.style.display = isSubmitting ? 'none' : 'inline';
+            spinner.style.display = isSubmitting ? 'inline' : 'none';
+        }
+    }
+
+    function showStatus(msg, type) {
+        if (!statusDiv) return;
+        statusDiv.textContent = msg;
+        statusDiv.className = `resume-form-status ${type}`;
+        statusDiv.style.display = 'block';
+    }
+
+    function hideStatus() {
+        if (!statusDiv) return;
+        statusDiv.style.display = 'none';
+    }
+}
 
 /* ─── Domain Redirect Notice Banner ─── */
 function checkDomainRedirectNotice() {
     try {
         const currentHost = window.location.hostname.toLowerCase();
-        
+
         // Target domain is upendra.fyi. If already on upendra.fyi or subdomains, do not display.
         if (currentHost === 'upendra.fyi' || currentHost.endsWith('.upendra.fyi')) {
             return;
@@ -307,7 +480,7 @@ function checkDomainRedirectNotice() {
         // Check if user dismissed notice in the last 15 days (15 * 24 * 60 * 60 * 1000 ms)
         const STORAGE_KEY = 'upendra_domain_banner_dismissed_at';
         const FIFTEEN_DAYS_MS = 15 * 24 * 60 * 60 * 1000;
-        
+
         const lastDismissed = localStorage.getItem(STORAGE_KEY);
         if (lastDismissed) {
             const timePassed = Date.now() - parseInt(lastDismissed, 10);
@@ -368,7 +541,7 @@ function checkDomainRedirectNotice() {
         if (switchBtn) {
             switchBtn.addEventListener('click', function () {
                 const targetUrl = 'https://upendra.fyi' + window.location.pathname + window.location.search + window.location.hash;
-                
+
                 // Track GA4 Switch Event
                 if (typeof gtag === 'function') {
                     gtag('event', 'domain_banner_switch_click', {
