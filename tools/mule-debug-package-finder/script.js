@@ -92,6 +92,7 @@ function getLevel() {
 /* ─── Filtering (show/hide pre-rendered rows) ─── */
 function applyFilter() {
     const q = document.getElementById('pkg-filter').value.trim().toLowerCase();
+    const terms = q.split(/\s+/).filter(Boolean);
     const rows = getAllRows();
     let visibleCount = 0;
 
@@ -101,7 +102,9 @@ function applyFilter() {
             row.dataset.description + ' ' +
             row.dataset.packages
         ).toLowerCase();
-        const match = !q || haystack.includes(q);
+        // Every typed word must appear somewhere in the row (any order), so a
+        // search matches across connector, description, and packages together.
+        const match = terms.every(term => haystack.includes(term));
         row.style.display = match ? '' : 'none';
         if (match) visibleCount++;
     });
@@ -132,18 +135,4 @@ function copyLog4j(btn) {
         .join('\n');
     copyToClipboard(snippet, btn);
     packages.forEach(trackCopy);
-}
-
-function copyAllVisible() {
-    const level = getLevel();
-    const rows = getAllRows().filter(row => row.style.display !== 'none');
-    if (!rows.length) { showToast('Nothing to copy — no rows visible!', 'error'); return; }
-
-    const lines = [];
-    rows.forEach(row => {
-        row.dataset.packages.split(',').map(p => p.trim()).filter(Boolean)
-            .forEach(p => lines.push(`    <AsyncLogger name="${p}" level="${level}"/>`));
-    });
-    const snippet = `<Loggers>\n${lines.join('\n')}\n</Loggers>`;
-    copyToClipboard(snippet, document.getElementById('btn-copy-all'));
 }

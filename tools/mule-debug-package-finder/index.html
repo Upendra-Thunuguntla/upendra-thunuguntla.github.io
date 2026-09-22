@@ -301,23 +301,20 @@
             <div class="pkg-toolbar">
                 <div class="pkg-toolbar-search">
                     <i class="fas fa-search" aria-hidden="true"></i>
-                    <input type="text" id="pkg-filter" class="filter-input" placeholder="Filter by connector, package, or keyword… (e.g. salesforce, aws, http)" aria-label="Filter connectors">
+                    <input type="text" id="pkg-filter" class="filter-input" placeholder="Filter by connector, package, or keyword… (e.g. db, salesforce, aws, http)" aria-label="Filter connectors">
                 </div>
                 <div class="pkg-toolbar-actions">
+                    <label for="pkg-level" class="pkg-level-label">Level</label>
+                    <select id="pkg-level" class="filter-input pkg-level-select" aria-label="Logger level">
+                        <option value="DEBUG" selected>DEBUG</option>
+                        <option value="TRACE">TRACE</option>
+                    </select>             
                     <label for="pkg-sort" class="pkg-level-label">Sort</label>
                     <select id="pkg-sort" class="filter-input pkg-level-select" aria-label="Sort connectors">
                         <option value="rank" selected>Most Copied</option>
                         <option value="az">A–Z</option>
                         <option value="za">Z–A</option>
                     </select>
-                    <label for="pkg-level" class="pkg-level-label">Level</label>
-                    <select id="pkg-level" class="filter-input pkg-level-select" aria-label="Logger level">
-                        <option value="DEBUG" selected>DEBUG</option>
-                        <option value="TRACE">TRACE</option>
-                    </select>
-                    <button id="btn-copy-all" class="btn btn-ghost btn-sm" title="Copy log4j2 snippet for all visible rows" onclick="copyAllVisible()">
-                        <i class="fas fa-layer-group"></i> Copy Visible as log4j2
-                    </button>
                 </div>
             </div>
 

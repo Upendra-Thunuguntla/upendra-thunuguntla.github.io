@@ -7,10 +7,10 @@ Searchable directory of MuleSoft connector debug/logger package names, with one-
 **Live:** https://upendra.fyi/tools/mule-debug-package-finder/
 
 ## Features
-- Filter connectors by name, description, or package keyword
+- Filter connectors by name, description, or package keyword (multi-word, order-independent)
 - Toggle DEBUG / TRACE level for generated snippets
-- Copy a single connector's package(s) or full log4j2 XML block
-- "Copy Visible as log4j2" bulk-copies a `<Loggers>` block for all currently filtered rows
+- Click a package chip to copy just that package, or use the log4j icon to copy the row's full `<AsyncLogger>` snippet
+- Sort by Most Copied (live, anonymous usage counts), A–Z, or Z–A
 - 100% client-side — connector list is a static CSV, no data ever leaves the browser
 
 ## Data

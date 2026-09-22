@@ -6,7 +6,7 @@ Salesforce Marketing Cloud,Integration with SFDC Marketing Cloud,com.mulesoft.ex
 FTP,File Transfer Protocol connector,org.mule.extension.ftp
 SFTP,Secure File Transfer Protocol connector,"org.mule.extension.sftp, com.jcraft.jsch"
 FTPS,FTP over SSL/TLS connector,com.mulesoft.extension.ftps
-Database,Connects to relational databases via JDBC,"org.mule.extension.db, org.mule.db.commons"
+Database (DB),Connects to relational databases via JDBC,"org.mule.extension.db, org.mule.db.commons"
 File,Reads and writes files on the local filesystem,org.mule.extension.file
 Sockets,TCP/UDP socket connections,org.mule.extension.socket
 Email,"POP3, IMAP, and SMTP operations","org.mule.extension.email, com.sun.mail.smtp, com.sun.mail.imap"
