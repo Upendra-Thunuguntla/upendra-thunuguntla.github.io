@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://upendra.fyi/tools/mule-debug-package-finder/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mule Debug Package Finder | Log4j2 & Runtime Manager Logger Names | upendra.fyi</title>
+    <meta name="description"
+        content="Find the exact Java package name to enable DEBUG/TRACE logging for any MuleSoft connector (HTTP, Salesforce, SFTP, JMS, AWS & more). Instantly copy ready-to-use log4j2.xml AsyncLogger snippets.">
+    <meta name="author" content="Upendra Venkata Muralidhar Thunuguntla">
+    <meta name="google-site-verification" content="BCjSwBqP4XS2yH1CVwXNsntcBvNIjNuhN8M8aGM670Q" />
+    <meta property="og:title" content="Mule Debug Package Finder | log4j2 & Runtime Manager Logger Names">
+    <meta property="og:description" content="Search 60+ MuleSoft connectors for their debug logging package names. Copy log4j2.xml AsyncLogger snippets instantly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://upendra.fyi/tools/mule-debug-package-finder/">
+    <meta property="og:image" content="https://upendra.fyi/images/avat.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mule Debug Package Finder | upendra.fyi">
+    <meta name="twitter:description" content="Search 60+ MuleSoft connectors for their debug logging package names. Copy log4j2.xml AsyncLogger snippets instantly.">
+    <meta name="twitter:image" content="https://upendra.fyi/images/avat.jpg">
+    <link rel="icon" href="/assets/favicons/debug-finder.svg" type="image/svg+xml">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What package should I set to DEBUG to see full HTTP request/response logs in MuleSoft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Set org.mule.service.http.impl.service.HttpMessageLogger (and org.mule.module.http for older Mule 3 apps) to DEBUG level in your log4j2.xml to see full HTTP request and response payloads and headers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do I add these logger packages in a Mule application?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Add an <AsyncLogger name=\"package.name\" level=\"DEBUG\"/> entry inside the <Loggers> block of your project's log4j2.xml file, then redeploy. In CloudHub / Anypoint Runtime Manager, you can also add the same package and level under Settings > Logging without redeploying."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does enabling DEBUG logging expose sensitive data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. DEBUG/TRACE logging on connectors like HTTP, Database, or Salesforce can print full payloads, headers, and credentials to your logs. Only enable it temporarily while troubleshooting and disable it afterward, especially in production environments."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this list of debug packages complete?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "This is a community-maintained list covering the most commonly used MuleSoft connectors. It is updated periodically as new connectors and Mule runtime versions are released."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Mule Debug Package Finder",
+        "description": "Searchable directory of MuleSoft connector debug/logger package names with one-click log4j2.xml AsyncLogger snippet generation.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra.fyi/tools/mule-debug-package-finder/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
+      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
+      "url": "https://upendra.fyi/",
+      "numberOfItems": 14,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Base64 Encoder & Decoder",
+            "url": "https://upendra.fyi/tools/base64-converter/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Cron Expression Builder for Mule Pollers",
+            "url": "https://upendra.fyi/tools/cron-builder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Gmail Compose URL Generator",
+            "url": "https://upendra.fyi/tools/gmail-url/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "WebApplication",
+            "name": "JSON to RAML Converter",
+            "url": "https://upendra.fyi/tools/json2raml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule Debug Package Finder",
+            "url": "https://upendra.fyi/tools/mule-debug-package-finder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule XML SDK Helper",
+            "url": "https://upendra.fyi/tools/xml-sdk/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Log to cURL Converter",
+            "url": "https://upendra.fyi/tools/mule2curl/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Secure Properties Generator",
+            "url": "https://upendra.fyi/tools/secure-properties-generator/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Postman cURL → Mule HTTP Request",
+            "url": "https://upendra.fyi/tools/curl2mule/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Properties to YAML Converter",
+            "url": "https://upendra.fyi/tools/props2yaml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "WebApplication",
+            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
+            "url": "https://upendra.fyi/tools/raml2oas/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Salary Hike Calculator",
+            "url": "https://upendra.fyi/tools/salary-calc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "WebApplication",
+            "name": "WhatsApp Read More Generator",
+            "url": "https://upendra.fyi/tools/whatsapp-readmore/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 14,
+          "item": {
+            "@type": "WebApplication",
+            "name": "YAML to Properties Converter",
+            "url": "https://upendra.fyi/tools/yaml2props/"
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo" aria-label="Home">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-label="Open menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <nav class="tool-breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>Mule Debug Package Finder</span>
+            </nav>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon" aria-hidden="true">🪲</div>
+                <div class="tool-hero-text">
+                    <h1>Mule Debug Package Finder</h1>
+                    <p>Search every MuleSoft connector to find its exact debug/logger package name. Copy a
+                        ready-to-paste <code>log4j2.xml</code> snippet or the raw package name for Anypoint Runtime
+                        Manager in one click.</p>
+
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">log4j2</span>
+                        <span class="badge">Runtime Manager</span>
+                        <span class="badge badge-info">🔒 100% Client-Side</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <details class="debug-banner-collapsible" style="margin-bottom: var(--space-lg);">
+                <summary class="debug-banner-summary">
+                    <span class="debug-banner-summary-left">
+                        <i class="fas fa-info-circle"></i>
+                        How logger names work in Mule
+                    </span>
+                    <span class="debug-banner-summary-right">
+                        <span class="debug-banner-hint">expand for setup details</span>
+                        <i class="fas fa-chevron-down debug-chevron"></i>
+                    </span>
+                </summary>
+                <div style="padding: var(--space-md); font-size: 0.85rem; color: var(--text-subtle); line-height:1.7;">
+                    Every connector ships with an internal Java package that its log statements are written under.
+                    Pointing a logger at that package name (via <code>log4j2.xml</code> or Anypoint Runtime Manager's
+                    Logging settings) raises its verbosity to <strong>DEBUG</strong> or <strong>TRACE</strong>
+                    without touching application code. Pick a level below, find your connector, then copy the
+                    package or the full <code>&lt;AsyncLogger&gt;</code> XML entry.
+                </div>
+            </details>
+
+            <div class="pkg-toolbar">
+                <div class="pkg-toolbar-search">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="pkg-filter" class="filter-input" placeholder="Filter by connector, package, or keyword… (e.g. salesforce, aws, http)" aria-label="Filter connectors">
+                </div>
+                <div class="pkg-toolbar-actions">
+                    <label for="pkg-level" class="pkg-level-label">Level</label>
+                    <select id="pkg-level" class="filter-input pkg-level-select" aria-label="Logger level">
+                        <option value="DEBUG" selected>DEBUG</option>
+                        <option value="TRACE">TRACE</option>
+                    </select>
+                    <button id="btn-copy-all" class="btn btn-ghost btn-sm" title="Copy log4j2 snippet for all visible rows" onclick="copyAllVisible()">
+                        <i class="fas fa-layer-group"></i> Copy Visible as log4j2
+                    </button>
+                </div>
+            </div>
+
+            <!--
+                NOTE FOR CONTRIBUTORS: the rows below (between PKG_ROWS_START/END) are
+                statically generated from debug-packages.csv by scripts/render-debug-packages.js
+                so search engines & AI crawlers see the full connector list without running JS.
+                Do NOT hand-edit the rows — edit the CSV and run:
+                  node scripts/render-debug-packages.js
+            -->
+            <div class="pkg-count" id="pkg-count" aria-live="polite"><!--PKG_COUNT-->Showing all 64 connectors<!--/PKG_COUNT--></div>
+
+            <div class="pkg-table" id="pkg-table" role="table" aria-label="Connector debug package list">
+                <div class="pkg-row pkg-row-head" role="row">
+                    <div class="pkg-col-connector" role="columnheader">Connector</div>
+                    <div class="pkg-col-desc" role="columnheader">Description</div>
+                    <div class="pkg-col-packages" role="columnheader">Debug Package(s)</div>
+                    <div class="pkg-col-actions" role="columnheader">Copy</div>
+                </div>
+                <div id="pkg-rows"><!--PKG_ROWS_START-->
+                    <div class="pkg-row" role="row" data-connector="HTTP" data-description="Core connector for handling HTTP requests and responses" data-packages="org.mule.service.http.impl.service.HttpMessageLogger, org.mule.module.http">
+                        <div class="pkg-col-connector" role="cell">HTTP</div>
+                        <div class="pkg-col-desc" role="cell">Core connector for handling HTTP requests and responses</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.service.http.impl.service.HttpMessageLogger" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.service.http.impl.service.HttpMessageLogger</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="org.mule.module.http" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.module.http</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for HTTP">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Salesforce" data-description="Integration with Salesforce CRM APIs" data-packages="org.mule.extension.salesforce">
+                        <div class="pkg-col-connector" role="cell">Salesforce</div>
+                        <div class="pkg-col-desc" role="cell">Integration with Salesforce CRM APIs</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.salesforce" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.salesforce</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Salesforce">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Salesforce Composite" data-description="Batched requests to Salesforce" data-packages="org.mule.extension.salesforce.composite">
+                        <div class="pkg-col-connector" role="cell">Salesforce Composite</div>
+                        <div class="pkg-col-desc" role="cell">Batched requests to Salesforce</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.salesforce.composite" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.salesforce.composite</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Salesforce Composite">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Salesforce Marketing Cloud" data-description="Integration with SFDC Marketing Cloud" data-packages="com.mulesoft.extension.sfdc.marketing">
+                        <div class="pkg-col-connector" role="cell">Salesforce Marketing Cloud</div>
+                        <div class="pkg-col-desc" role="cell">Integration with SFDC Marketing Cloud</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.sfdc.marketing" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.sfdc.marketing</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Salesforce Marketing Cloud">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="FTP" data-description="File Transfer Protocol connector" data-packages="org.mule.extension.ftp">
+                        <div class="pkg-col-connector" role="cell">FTP</div>
+                        <div class="pkg-col-desc" role="cell">File Transfer Protocol connector</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.ftp" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.ftp</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for FTP">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="SFTP" data-description="Secure File Transfer Protocol connector" data-packages="org.mule.extension.sftp, com.jcraft.jsch">
+                        <div class="pkg-col-connector" role="cell">SFTP</div>
+                        <div class="pkg-col-desc" role="cell">Secure File Transfer Protocol connector</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.sftp" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.sftp</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.jcraft.jsch" title="Click to copy this package name"><span class="pkg-chip-text">com.jcraft.jsch</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for SFTP">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="FTPS" data-description="FTP over SSL/TLS connector" data-packages="com.mulesoft.extension.ftps">
+                        <div class="pkg-col-connector" role="cell">FTPS</div>
+                        <div class="pkg-col-desc" role="cell">FTP over SSL/TLS connector</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.ftps" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.ftps</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for FTPS">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Database" data-description="Connects to relational databases via JDBC" data-packages="org.mule.extension.db, org.mule.db.commons">
+                        <div class="pkg-col-connector" role="cell">Database</div>
+                        <div class="pkg-col-desc" role="cell">Connects to relational databases via JDBC</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.db" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.db</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="org.mule.db.commons" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.db.commons</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Database">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="File" data-description="Reads and writes files on the local filesystem" data-packages="org.mule.extension.file">
+                        <div class="pkg-col-connector" role="cell">File</div>
+                        <div class="pkg-col-desc" role="cell">Reads and writes files on the local filesystem</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.file" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.file</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for File">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Sockets" data-description="TCP/UDP socket connections" data-packages="org.mule.extension.socket">
+                        <div class="pkg-col-connector" role="cell">Sockets</div>
+                        <div class="pkg-col-desc" role="cell">TCP/UDP socket connections</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.socket" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.socket</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Sockets">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Email" data-description="POP3, IMAP, and SMTP operations" data-packages="org.mule.extension.email, com.sun.mail.smtp, com.sun.mail.imap">
+                        <div class="pkg-col-connector" role="cell">Email</div>
+                        <div class="pkg-col-desc" role="cell">POP3, IMAP, and SMTP operations</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.email" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.email</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.sun.mail.smtp" title="Click to copy this package name"><span class="pkg-chip-text">com.sun.mail.smtp</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.sun.mail.imap" title="Click to copy this package name"><span class="pkg-chip-text">com.sun.mail.imap</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Email">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="JMS" data-description="Java Message Service connector" data-packages="org.mule.extensions.jms, org.apache.activemq">
+                        <div class="pkg-col-connector" role="cell">JMS</div>
+                        <div class="pkg-col-desc" role="cell">Java Message Service connector</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extensions.jms" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extensions.jms</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="org.apache.activemq" title="Click to copy this package name"><span class="pkg-chip-text">org.apache.activemq</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for JMS">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Web Service Consumer" data-description="Consumes SOAP web services" data-packages="org.mule.service.soap, org.apache.cxf">
+                        <div class="pkg-col-connector" role="cell">Web Service Consumer</div>
+                        <div class="pkg-col-desc" role="cell">Consumes SOAP web services</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.service.soap" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.service.soap</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="org.apache.cxf" title="Click to copy this package name"><span class="pkg-chip-text">org.apache.cxf</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Web Service Consumer">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Object Store" data-description="Key-value data storage" data-packages="org.mule.extension.objectstore">
+                        <div class="pkg-col-connector" role="cell">Object Store</div>
+                        <div class="pkg-col-desc" role="cell">Key-value data storage</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.objectstore" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.objectstore</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Object Store">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Validation" data-description="Validates payloads and parameters" data-packages="org.mule.extension.validation">
+                        <div class="pkg-col-connector" role="cell">Validation</div>
+                        <div class="pkg-col-desc" role="cell">Validates payloads and parameters</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.validation" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.validation</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Validation">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Cryptography" data-description="Encryption, decryption, and signing" data-packages="org.mule.extension.cryptography">
+                        <div class="pkg-col-connector" role="cell">Cryptography</div>
+                        <div class="pkg-col-desc" role="cell">Encryption, decryption, and signing</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.cryptography" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.cryptography</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Cryptography">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="VM" data-description="Asynchronous in-memory messaging" data-packages="org.mule.extensions.vm">
+                        <div class="pkg-col-connector" role="cell">VM</div>
+                        <div class="pkg-col-desc" role="cell">Asynchronous in-memory messaging</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extensions.vm" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extensions.vm</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for VM">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="AMQP" data-description="Advanced Message Queuing Protocol" data-packages="org.mule.extension.amqp, com.rabbitmq">
+                        <div class="pkg-col-connector" role="cell">AMQP</div>
+                        <div class="pkg-col-desc" role="cell">Advanced Message Queuing Protocol</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.amqp" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.amqp</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.rabbitmq" title="Click to copy this package name"><span class="pkg-chip-text">com.rabbitmq</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for AMQP">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Anypoint MQ" data-description="MuleSoft's cloud messaging service" data-packages="com.mulesoft.extension.mq, com.mulesoft.mq">
+                        <div class="pkg-col-connector" role="cell">Anypoint MQ</div>
+                        <div class="pkg-col-desc" role="cell">MuleSoft's cloud messaging service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.mq" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.mq</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.mq" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.mq</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Anypoint MQ">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="IBM MQ" data-description="IBM's message queuing service" data-packages="com.mulesoft.extension.mq.ibm, com.ibm.mq">
+                        <div class="pkg-col-connector" role="cell">IBM MQ</div>
+                        <div class="pkg-col-desc" role="cell">IBM's message queuing service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.mq.ibm" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.mq.ibm</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.ibm.mq" title="Click to copy this package name"><span class="pkg-chip-text">com.ibm.mq</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for IBM MQ">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Apache Kafka" data-description="Integration with Kafka topics" data-packages="org.mule.extension.kafka, org.apache.kafka">
+                        <div class="pkg-col-connector" role="cell">Apache Kafka</div>
+                        <div class="pkg-col-desc" role="cell">Integration with Kafka topics</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.kafka" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.kafka</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="org.apache.kafka" title="Click to copy this package name"><span class="pkg-chip-text">org.apache.kafka</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Apache Kafka">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Amazon S3" data-description="AWS Simple Storage Service" data-packages="org.mule.extension.s3, com.amazonaws.services.s3">
+                        <div class="pkg-col-connector" role="cell">Amazon S3</div>
+                        <div class="pkg-col-desc" role="cell">AWS Simple Storage Service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.s3" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.s3</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.amazonaws.services.s3" title="Click to copy this package name"><span class="pkg-chip-text">com.amazonaws.services.s3</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Amazon S3">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Amazon SQS" data-description="AWS Simple Queue Service" data-packages="org.mule.extension.sqs, com.amazonaws.services.sqs">
+                        <div class="pkg-col-connector" role="cell">Amazon SQS</div>
+                        <div class="pkg-col-desc" role="cell">AWS Simple Queue Service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.sqs" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.sqs</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.amazonaws.services.sqs" title="Click to copy this package name"><span class="pkg-chip-text">com.amazonaws.services.sqs</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Amazon SQS">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Amazon SNS" data-description="AWS Simple Notification Service" data-packages="org.mule.extension.sns, com.amazonaws.services.sns">
+                        <div class="pkg-col-connector" role="cell">Amazon SNS</div>
+                        <div class="pkg-col-desc" role="cell">AWS Simple Notification Service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.sns" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.sns</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.amazonaws.services.sns" title="Click to copy this package name"><span class="pkg-chip-text">com.amazonaws.services.sns</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Amazon SNS">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Amazon DynamoDB" data-description="AWS NoSQL Database" data-packages="org.mule.extension.dynamodb, com.amazonaws.services.dynamodbv2">
+                        <div class="pkg-col-connector" role="cell">Amazon DynamoDB</div>
+                        <div class="pkg-col-desc" role="cell">AWS NoSQL Database</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.dynamodb" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.dynamodb</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.amazonaws.services.dynamodbv2" title="Click to copy this package name"><span class="pkg-chip-text">com.amazonaws.services.dynamodbv2</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Amazon DynamoDB">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Amazon Kinesis" data-description="AWS data streaming service" data-packages="org.mule.extension.kinesis, com.amazonaws.services.kinesis">
+                        <div class="pkg-col-connector" role="cell">Amazon Kinesis</div>
+                        <div class="pkg-col-desc" role="cell">AWS data streaming service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.kinesis" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.kinesis</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.amazonaws.services.kinesis" title="Click to copy this package name"><span class="pkg-chip-text">com.amazonaws.services.kinesis</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Amazon Kinesis">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Amazon EC2" data-description="AWS Elastic Compute Cloud" data-packages="org.mule.extension.ec2">
+                        <div class="pkg-col-connector" role="cell">Amazon EC2</div>
+                        <div class="pkg-col-desc" role="cell">AWS Elastic Compute Cloud</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.ec2" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.ec2</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Amazon EC2">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Amazon RDS" data-description="AWS Relational Database Service" data-packages="org.mule.extension.rds">
+                        <div class="pkg-col-connector" role="cell">Amazon RDS</div>
+                        <div class="pkg-col-desc" role="cell">AWS Relational Database Service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.rds" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.rds</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Amazon RDS">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Microsoft Dynamics 365" data-description="Integration with MS Dynamics 365" data-packages="org.mule.extension.microsoftdynamics365">
+                        <div class="pkg-col-connector" role="cell">Microsoft Dynamics 365</div>
+                        <div class="pkg-col-desc" role="cell">Integration with MS Dynamics 365</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.microsoftdynamics365" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.microsoftdynamics365</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Microsoft Dynamics 365">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Microsoft SharePoint" data-description="Integration with SharePoint" data-packages="org.mule.extension.sharepoint, org.apache.http.wire">
+                        <div class="pkg-col-connector" role="cell">Microsoft SharePoint</div>
+                        <div class="pkg-col-desc" role="cell">Integration with SharePoint</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.sharepoint" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.sharepoint</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="org.apache.http.wire" title="Click to copy this package name"><span class="pkg-chip-text">org.apache.http.wire</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Microsoft SharePoint">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Azure Service Bus" data-description="Azure's messaging service" data-packages="com.mulesoft.extension.azure.servicebus">
+                        <div class="pkg-col-connector" role="cell">Azure Service Bus</div>
+                        <div class="pkg-col-desc" role="cell">Azure's messaging service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.azure.servicebus" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.azure.servicebus</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Azure Service Bus">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Azure Storage" data-description="Azure Blob Storage integration" data-packages="com.mulesoft.extension.azure.storage">
+                        <div class="pkg-col-connector" role="cell">Azure Storage</div>
+                        <div class="pkg-col-desc" role="cell">Azure Blob Storage integration</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.azure.storage" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.azure.storage</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Azure Storage">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Azure Key Vault" data-description="Azure secrets management" data-packages="com.mulesoft.extension.azure.keyvault">
+                        <div class="pkg-col-connector" role="cell">Azure Key Vault</div>
+                        <div class="pkg-col-desc" role="cell">Azure secrets management</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.azure.keyvault" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.azure.keyvault</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Azure Key Vault">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="NetSuite" data-description="Oracle NetSuite ERP" data-packages="org.mule.module.netsuite, com.netsuite.webservices">
+                        <div class="pkg-col-connector" role="cell">NetSuite</div>
+                        <div class="pkg-col-desc" role="cell">Oracle NetSuite ERP</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.module.netsuite" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.module.netsuite</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.netsuite.webservices" title="Click to copy this package name"><span class="pkg-chip-text">com.netsuite.webservices</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for NetSuite">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="SAP" data-description="Integration with SAP systems (JCo)" data-packages="com.mulesoft.extension.sap, com.sap.conn.jco">
+                        <div class="pkg-col-connector" role="cell">SAP</div>
+                        <div class="pkg-col-desc" role="cell">Integration with SAP systems (JCo)</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.sap" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.sap</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                            <button type="button" class="pkg-chip" data-package="com.sap.conn.jco" title="Click to copy this package name"><span class="pkg-chip-text">com.sap.conn.jco</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for SAP">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="SAP SuccessFactors" data-description="SAP's cloud HR solution" data-packages="org.mule.extension.sapsuccessfactors">
+                        <div class="pkg-col-connector" role="cell">SAP SuccessFactors</div>
+                        <div class="pkg-col-desc" role="cell">SAP's cloud HR solution</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.sapsuccessfactors" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.sapsuccessfactors</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for SAP SuccessFactors">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Workday" data-description="Workday HCM and Financials" data-packages="org.mule.extension.workday">
+                        <div class="pkg-col-connector" role="cell">Workday</div>
+                        <div class="pkg-col-desc" role="cell">Workday HCM and Financials</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.workday" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.workday</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Workday">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="ServiceNow" data-description="ServiceNow IT service management" data-packages="org.mule.extension.servicenow">
+                        <div class="pkg-col-connector" role="cell">ServiceNow</div>
+                        <div class="pkg-col-desc" role="cell">ServiceNow IT service management</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.servicenow" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.servicenow</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for ServiceNow">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Oracle EBS" data-description="Oracle E-Business Suite" data-packages="com.mulesoft.extension.oracleebs">
+                        <div class="pkg-col-connector" role="cell">Oracle EBS</div>
+                        <div class="pkg-col-desc" role="cell">Oracle E-Business Suite</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.oracleebs" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.oracleebs</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Oracle EBS">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Snowflake" data-description="Snowflake cloud data warehouse" data-packages="org.mule.extension.snowflake">
+                        <div class="pkg-col-connector" role="cell">Snowflake</div>
+                        <div class="pkg-col-desc" role="cell">Snowflake cloud data warehouse</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.snowflake" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.snowflake</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Snowflake">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="MongoDB" data-description="MongoDB NoSQL database" data-packages="org.mule.extension.mongodb">
+                        <div class="pkg-col-connector" role="cell">MongoDB</div>
+                        <div class="pkg-col-desc" role="cell">MongoDB NoSQL database</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.mongodb" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.mongodb</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for MongoDB">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Redis" data-description="Redis in-memory data structure store" data-packages="org.mule.extension.redis">
+                        <div class="pkg-col-connector" role="cell">Redis</div>
+                        <div class="pkg-col-desc" role="cell">Redis in-memory data structure store</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.redis" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.redis</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Redis">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Cassandra" data-description="Apache Cassandra database" data-packages="org.mule.extension.cassandra">
+                        <div class="pkg-col-connector" role="cell">Cassandra</div>
+                        <div class="pkg-col-desc" role="cell">Apache Cassandra database</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.cassandra" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.cassandra</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Cassandra">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="LDAP" data-description="Lightweight Directory Access Protocol" data-packages="org.mule.extension.ldap">
+                        <div class="pkg-col-connector" role="cell">LDAP</div>
+                        <div class="pkg-col-desc" role="cell">Lightweight Directory Access Protocol</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.ldap" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.ldap</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for LDAP">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="AS2" data-description="Applicability Statement 2 for B2B" data-packages="com.mulesoft.extension.as2">
+                        <div class="pkg-col-connector" role="cell">AS2</div>
+                        <div class="pkg-col-desc" role="cell">Applicability Statement 2 for B2B</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.as2" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.as2</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for AS2">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="HL7 (MLLP)" data-description="Healthcare messaging standard" data-packages="com.mulesoft.extension.mllp">
+                        <div class="pkg-col-connector" role="cell">HL7 (MLLP)</div>
+                        <div class="pkg-col-desc" role="cell">Healthcare messaging standard</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.mllp" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.mllp</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for HL7 (MLLP)">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="X12 EDI" data-description="EDI X12 standard for B2B" data-packages="com.mulesoft.extension.x12">
+                        <div class="pkg-col-connector" role="cell">X12 EDI</div>
+                        <div class="pkg-col-desc" role="cell">EDI X12 standard for B2B</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.x12" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.x12</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for X12 EDI">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="EDIFACT" data-description="EDIFACT standard for B2B" data-packages="com.mulesoft.extension.edifact">
+                        <div class="pkg-col-connector" role="cell">EDIFACT</div>
+                        <div class="pkg-col-desc" role="cell">EDIFACT standard for B2B</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.extension.edifact" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.extension.edifact</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for EDIFACT">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Jira" data-description="Atlassian Jira integration" data-packages="org.mule.extension.jira">
+                        <div class="pkg-col-connector" role="cell">Jira</div>
+                        <div class="pkg-col-desc" role="cell">Atlassian Jira integration</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.jira" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.jira</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Jira">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Slack" data-description="Slack messaging integration" data-packages="org.mule.extension.slack">
+                        <div class="pkg-col-connector" role="cell">Slack</div>
+                        <div class="pkg-col-desc" role="cell">Slack messaging integration</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.slack" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.slack</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Slack">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Twilio" data-description="Twilio SMS and voice API" data-packages="org.mule.extension.twilio">
+                        <div class="pkg-col-connector" role="cell">Twilio</div>
+                        <div class="pkg-col-desc" role="cell">Twilio SMS and voice API</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.twilio" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.twilio</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Twilio">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Stripe" data-description="Stripe payment processing" data-packages="org.mule.extension.stripe">
+                        <div class="pkg-col-connector" role="cell">Stripe</div>
+                        <div class="pkg-col-desc" role="cell">Stripe payment processing</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.stripe" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.stripe</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Stripe">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Box" data-description="Box cloud content management" data-packages="org.mule.extension.box">
+                        <div class="pkg-col-connector" role="cell">Box</div>
+                        <div class="pkg-col-desc" role="cell">Box cloud content management</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.box" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.box</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Box">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Dropbox" data-description="Dropbox cloud storage" data-packages="org.mule.extension.dropbox">
+                        <div class="pkg-col-connector" role="cell">Dropbox</div>
+                        <div class="pkg-col-desc" role="cell">Dropbox cloud storage</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.dropbox" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.dropbox</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Dropbox">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Google Drive" data-description="Google Drive cloud storage" data-packages="org.mule.extension.googledrive">
+                        <div class="pkg-col-connector" role="cell">Google Drive</div>
+                        <div class="pkg-col-desc" role="cell">Google Drive cloud storage</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.googledrive" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.googledrive</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Google Drive">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Google Sheets" data-description="Google Sheets API integration" data-packages="org.mule.extension.googlesheets">
+                        <div class="pkg-col-connector" role="cell">Google Sheets</div>
+                        <div class="pkg-col-desc" role="cell">Google Sheets API integration</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.googlesheets" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.googlesheets</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Google Sheets">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Google BigQuery" data-description="Google Cloud BigQuery" data-packages="org.mule.extension.bigquery">
+                        <div class="pkg-col-connector" role="cell">Google BigQuery</div>
+                        <div class="pkg-col-desc" role="cell">Google Cloud BigQuery</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.bigquery" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.bigquery</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Google BigQuery">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Google Pub/Sub" data-description="GCP messaging service" data-packages="org.mule.extension.googlepubsub">
+                        <div class="pkg-col-connector" role="cell">Google Pub/Sub</div>
+                        <div class="pkg-col-desc" role="cell">GCP messaging service</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.googlepubsub" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.googlepubsub</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Google Pub/Sub">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="GraphQL" data-description="GraphQL query API routing" data-packages="org.mule.extension.graphql">
+                        <div class="pkg-col-connector" role="cell">GraphQL</div>
+                        <div class="pkg-col-desc" role="cell">GraphQL query API routing</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.graphql" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.graphql</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for GraphQL">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="OData" data-description="OData API creation and routing" data-packages="org.mule.extension.odata">
+                        <div class="pkg-col-connector" role="cell">OData</div>
+                        <div class="pkg-col-desc" role="cell">OData API creation and routing</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.extension.odata" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.extension.odata</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for OData">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Agent Broker" data-description="MuleSoft Agent Fabric Broker" data-packages="com.mulesoft.modules.agent.broker">
+                        <div class="pkg-col-connector" role="cell">Agent Broker</div>
+                        <div class="pkg-col-desc" role="cell">MuleSoft Agent Fabric Broker</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.modules.agent.broker" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.modules.agent.broker</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Agent Broker">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Cache Scope" data-description="Mule 4 Cache Scope execution" data-packages="com.mulesoft.mule.runtime.cache">
+                        <div class="pkg-col-connector" role="cell">Cache Scope</div>
+                        <div class="pkg-col-desc" role="cell">Mule 4 Cache Scope execution</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.mule.runtime.cache" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.mule.runtime.cache</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Cache Scope">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="Mule Gateway" data-description="API Gateway Message Logging" data-packages="org.mule.runtime.logging">
+                        <div class="pkg-col-connector" role="cell">Mule Gateway</div>
+                        <div class="pkg-col-desc" role="cell">API Gateway Message Logging</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="org.mule.runtime.logging" title="Click to copy this package name"><span class="pkg-chip-text">org.mule.runtime.logging</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for Mule Gateway">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="pkg-row" role="row" data-connector="A2A" data-description="Anypoint to Anypoint (A2A) Connector" data-packages="com.mulesoft.connectors.a2a">
+                        <div class="pkg-col-connector" role="cell">A2A</div>
+                        <div class="pkg-col-desc" role="cell">Anypoint to Anypoint (A2A) Connector</div>
+                        <div class="pkg-col-packages" role="cell">
+                            <button type="button" class="pkg-chip" data-package="com.mulesoft.connectors.a2a" title="Click to copy this package name"><span class="pkg-chip-text">com.mulesoft.connectors.a2a</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="pkg-col-actions" role="cell">
+                            <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for A2A">
+                                <i class="fas fa-file-code"></i>
+                            </button>
+                        </div>
+                    </div>
+                <!--PKG_ROWS_END--></div>
+                <div id="pkg-empty" class="pkg-empty" style="display:none;">
+                    <i class="fas fa-circle-question"></i> No connectors match your filter. Try another keyword.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="tool-section tool-section-alt" role="region" aria-label="Key Advantages">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">60+</div>
+                    <div class="proof-label">Connectors<br>indexed & searchable</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">2-Click</div>
+                    <div class="proof-label">Copy package or<br>full log4j2 snippet</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Secure</div>
+                    <div class="proof-label">100% local<br>No cloud storage</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Open source<br>No registrations</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-section" id="how-to-use" role="region" aria-label="How-to Guide">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">Getting Started</span>
+                <h2>How to Use the Debug Package Finder</h2>
+                <p>Go from "which package do I need?" to a pasted logger config in seconds.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Step 1: Search Your Connector</h4>
+                    <p>Type a connector name, vendor, or keyword (e.g. "salesforce", "aws", "sftp") into the filter box.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 2: Pick a Log Level</h4>
+                    <p>Choose DEBUG or TRACE — this controls the level attribute used in the generated log4j2 snippet.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 3: Copy What You Need</h4>
+                    <p>Click any package name chip to copy just that single package (handy for Anypoint Runtime Manager, which takes one package at a time), or use the log4j icon to copy a ready-made <code>&lt;AsyncLogger&gt;</code> XML block for all packages in that row.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 4: Paste & Redeploy</h4>
+                    <p>Paste into your project's <code>log4j2.xml</code> under <code>&lt;Loggers&gt;</code>, or into Anypoint Runtime Manager → Settings → Logging, then redeploy or save.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-section tool-section-alt" id="faq" role="region" aria-label="FAQ">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">FAQ</span>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>What package should I set to DEBUG for HTTP request/response logs?</summary>
+                    <div class="faq-answer">
+                        Set <code>org.mule.service.http.impl.service.HttpMessageLogger</code> (and
+                        <code>org.mule.module.http</code> for Mule 3 apps) to DEBUG to see full HTTP payloads and headers.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Where do I add these logger packages?</summary>
+                    <div class="faq-answer">
+                        Add an <code>&lt;AsyncLogger name="package.name" level="DEBUG"/&gt;</code> entry inside the
+                        <code>&lt;Loggers&gt;</code> block of your <code>log4j2.xml</code>, then redeploy. In
+                        Anypoint Runtime Manager, add the same package/level under Settings → Logging without a redeploy.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does enabling DEBUG/TRACE logging expose sensitive data?</summary>
+                    <div class="faq-answer">
+                        Yes. Connectors like HTTP, Database, and Salesforce can log full payloads, headers, and
+                        credentials at DEBUG/TRACE. Enable it only temporarily and disable it once you're done troubleshooting.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data sent to any server?</summary>
+                    <div class="faq-answer">
+                        No. The connector list is a static file and all filtering/copying happens directly inside your browser.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is this list complete? Can I suggest a connector?</summary>
+                    <div class="faq-answer">
+                        This is a community-maintained, continuously growing list covering the most common MuleSoft
+                        connectors. Reach out via the contact section if you'd like a connector added.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-section" id="blog-articles" role="region" aria-label="From the Blog">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">Learn More</span>
+                <h2>From the Blog</h2>
+                <p>Read in-depth explanations, architect tips, and tutorials about API integrations.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>All utilities are free and open source. If this saved you time, a coffee is always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools" role="navigation" aria-label="Related tools">
+        <div class="container">
+            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Related Tools
+            </h3>
+            <div class="related-tools-grid">
+                <a href="/tools/mule2curl/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">⚡</span>
+                    <div>
+                        <div class="name">MuleLog to cURL</div>
+                        <div class="desc">Extract HTTP requests from logs</div>
+                    </div>
+                </a>
+                <a href="/tools/secure-properties-generator/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">🔐</span>
+                    <div>
+                        <div class="name">Secure Properties Generator</div>
+                        <div class="desc">Encrypt/decrypt Mule properties</div>
+                    </div>
+                </a>
+                <a href="/tools/cron-builder/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">⏱️</span>
+                    <div>
+                        <div class="name">Cron Expression Builder</div>
+                        <div class="desc">Visually build Quartz cron schedules</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">GitHub</a>
+            <br>
+            All tools run fully client-side. No sensitive data ever hits our hosting servers.
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

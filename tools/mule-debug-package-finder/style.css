@@ -1,0 +1,175 @@
+/* Mule Debug Package Finder — tool-specific styles */
+
+.pkg-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-md);
+}
+
+.pkg-toolbar-search {
+    position: relative;
+    flex: 1 1 320px;
+    display: flex;
+    align-items: center;
+}
+
+.pkg-toolbar-search i {
+    position: absolute;
+    left: var(--space-md);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+
+.pkg-toolbar-search .filter-input {
+    padding-left: 2.25rem;
+}
+
+.pkg-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+}
+
+.pkg-level-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.pkg-level-select {
+    width: auto;
+    padding-right: var(--space-lg);
+    cursor: pointer;
+}
+
+.pkg-count {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-sm);
+}
+
+/* ─── Table ─── */
+.pkg-table {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface-2);
+}
+
+.pkg-row {
+    display: grid;
+    grid-template-columns: 1.1fr 1.6fr 2fr auto;
+    gap: var(--space-md);
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--border);
+}
+
+.pkg-row:last-child {
+    border-bottom: none;
+}
+
+.pkg-row:not(.pkg-row-head):hover {
+    background: rgba(var(--accent-rgb), 0.04);
+}
+
+.pkg-row-head {
+    background: var(--bg-alt);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+}
+
+.pkg-col-connector {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.pkg-col-desc {
+    color: var(--text-subtle);
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.pkg-col-packages {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.pkg-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.55rem;
+    background: var(--surface-3, var(--bg-alt));
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.pkg-chip:hover {
+    border-color: var(--border-accent);
+    background: rgba(var(--accent-rgb), 0.08);
+}
+
+.pkg-chip-copied {
+    border-color: var(--success);
+    box-shadow: 0 0 0 2px #00d4ff;
+}
+
+.pkg-chip-copy-icon {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    transition: color var(--transition);
+}
+
+.pkg-chip:hover .pkg-chip-copy-icon {
+    color: var(--accent);
+}
+
+.pkg-col-actions {
+    display: flex;
+    gap: var(--space-xs);
+    justify-content: flex-end;
+}
+
+.pkg-empty {
+    padding: var(--space-xl);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.pkg-empty i {
+    margin-right: var(--space-sm);
+}
+
+@media (max-width: 860px) {
+    .pkg-row-head {
+        display: none;
+    }
+
+    .pkg-row {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+
+    .pkg-col-actions {
+        justify-content: flex-start;
+        border-top: 1px dashed var(--border);
+        padding-top: var(--space-sm);
+    }
+}
