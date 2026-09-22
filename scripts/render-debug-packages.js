@@ -15,6 +15,9 @@ const rootDir = path.resolve(__dirname, '..');
 const toolDir = path.join(rootDir, 'tools', 'mule-debug-package-finder');
 const csvPath = path.join(toolDir, 'debug-packages.csv');
 const htmlPath = path.join(toolDir, 'index.html');
+// Published publicly (served by GitHub Pages) so the Worker can fetch the current
+// package list live at request time — adding a CSV row never requires a Worker redeploy.
+const allowlistPath = path.join(toolDir, 'packages.json');
 
 function parseCsv(text) {
     const rows = [];
@@ -94,6 +97,12 @@ function main() {
 
     fs.writeFileSync(htmlPath, html, 'utf8');
     console.log(`Rendered ${data.length} connector rows into ${path.relative(rootDir, htmlPath)}`);
+
+    // Keep the Worker's live-fetched package list in sync with the CSV.
+    const allPackages = [...new Set(data.flatMap(item => item.packages))].sort();
+    fs.mkdirSync(path.dirname(allowlistPath), { recursive: true });
+    fs.writeFileSync(allowlistPath, JSON.stringify(allPackages, null, 2) + '\n', 'utf8');
+    console.log(`Wrote ${allPackages.length} package names into ${path.relative(rootDir, allowlistPath)}`);
 }
 
 main();

@@ -268,7 +268,7 @@
                         <span class="badge">MuleSoft</span>
                         <span class="badge badge-purple">log4j2</span>
                         <span class="badge">Runtime Manager</span>
-                        <span class="badge badge-info">🔒 100% Client-Side</span>
+                        <span class="badge badge-info">🔒 No Payloads or Credentials Sent</span>
                     </div>
                 </div>
             </div>
@@ -304,6 +304,12 @@
                     <input type="text" id="pkg-filter" class="filter-input" placeholder="Filter by connector, package, or keyword… (e.g. salesforce, aws, http)" aria-label="Filter connectors">
                 </div>
                 <div class="pkg-toolbar-actions">
+                    <label for="pkg-sort" class="pkg-level-label">Sort</label>
+                    <select id="pkg-sort" class="filter-input pkg-level-select" aria-label="Sort connectors">
+                        <option value="rank" selected>Most Copied</option>
+                        <option value="az">A–Z</option>
+                        <option value="za">Z–A</option>
+                    </select>
                     <label for="pkg-level" class="pkg-level-label">Level</label>
                     <select id="pkg-level" class="filter-input pkg-level-select" aria-label="Logger level">
                         <option value="DEBUG" selected>DEBUG</option>
@@ -1141,7 +1147,7 @@
                 </div>
                 <div class="proof-item">
                     <div class="proof-number">Secure</div>
-                    <div class="proof-label">100% local<br>No cloud storage</div>
+                    <div class="proof-label">No payloads or<br>credentials sent</div>
                 </div>
                 <div class="proof-item">
                     <div class="proof-number">Free</div>
@@ -1211,7 +1217,19 @@
                 <details class="faq-item">
                     <summary>Is my data sent to any server?</summary>
                     <div class="faq-answer">
-                        No. The connector list is a static file and all filtering/copying happens directly inside your browser.
+                        The connector list itself is static and all filtering happens directly inside your browser.
+                        The only network activity is an anonymous, non-personal counter increment (just a package
+                        name, no payloads or identifiers) sent when you click a package or copy a log4j2 snippet —
+                        this powers the "Most Copied" sort order. No request bodies, logs, or credentials ever leave
+                        your browser.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How does "Most Copied" sorting work?</summary>
+                    <div class="faq-answer">
+                        Every time a package name or log4j2 snippet is copied, an anonymous counter for that package
+                        is incremented via a lightweight Cloudflare Worker. Sorting by "Most Copied" ranks connectors
+                        using those aggregate, anonymous counts — no cookies, accounts, or personal data involved.
                     </div>
                 </details>
                 <details class="faq-item">

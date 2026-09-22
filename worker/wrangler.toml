@@ -1,0 +1,13 @@
+name = "upendra-debug-package-ranks"
+main = "worker.js"
+compatibility_date = "2026-09-22"
+
+# Same-zone path route — only /api/pkg-ranks/* is intercepted, everything else
+# on upendra.fyi (including the existing api.upendra.fyi Vercel backend) is untouched.
+routes = [
+  { pattern = "upendra.fyi/api/pkg-ranks/*", zone_name = "upendra.fyi" }
+]
+
+kv_namespaces = [
+  { binding = "PACKAGE_RANKS", id = "a0929804f2de43f890adf71f7bd2cb97" }
+]
