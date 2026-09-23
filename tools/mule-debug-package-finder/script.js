@@ -97,11 +97,11 @@ function applyFilter() {
     let visibleCount = 0;
 
     rows.forEach(row => {
-        const haystack = (
-            row.dataset.connector + ' ' +
-            row.dataset.description + ' ' +
+        const haystack = (row.dataset.search || [
+            row.dataset.connector,
+            row.dataset.description,
             row.dataset.packages
-        ).toLowerCase();
+        ].join(' ')).toLowerCase();
         // Every typed word must appear somewhere in the row (any order), so a
         // search matches across connector, description, and packages together.
         const match = terms.every(term => haystack.includes(term));
