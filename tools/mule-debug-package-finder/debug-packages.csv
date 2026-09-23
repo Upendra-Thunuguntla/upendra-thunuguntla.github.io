@@ -1,65 +1,92 @@
 Connector Name,Description,Debug Package Name(s)
-HTTP,Core connector for handling HTTP requests and responses,"org.mule.service.http.impl.service.HttpMessageLogger, org.mule.module.http"
+HTTP,Core connector for handling HTTP requests and responses,org.mule.service.http.impl.service.HttpMessageLogger
 Salesforce,Integration with Salesforce CRM APIs,org.mule.extension.salesforce
-Salesforce Composite,Batched requests to Salesforce,org.mule.extension.salesforce.composite
-Salesforce Marketing Cloud,Integration with SFDC Marketing Cloud,com.mulesoft.extension.sfdc.marketing
-FTP,File Transfer Protocol connector,org.mule.extension.ftp
-SFTP,Secure File Transfer Protocol connector,"org.mule.extension.sftp, com.jcraft.jsch"
+⚠️ Salesforce Composite,Batched requests to Salesforce,org.mule.extension.salesforce.composite
+⚠️ Salesforce Marketing Cloud,Integration with SFDC Marketing Cloud,com.mulesoft.extension.sfdc.marketing
+Ftp,Ftp in Mule applications.,org.mule.extension.ftp
+Sftp,Transfers and manages files using the Secure File Transfer Protocol.,org.mule.extension.sftp
 FTPS,FTP over SSL/TLS connector,com.mulesoft.extension.ftps
-Database (DB),Connects to relational databases via JDBC,"org.mule.extension.db, org.mule.db.commons"
+Database (DB),Connects to relational databases via JDBC,org.mule.extension.db
 File,Reads and writes files on the local filesystem,org.mule.extension.file
 Sockets,TCP/UDP socket connections,org.mule.extension.socket
-Email,"POP3, IMAP, and SMTP operations","org.mule.extension.email, com.sun.mail.smtp, com.sun.mail.imap"
-JMS,Java Message Service connector,"org.mule.extensions.jms, org.apache.activemq"
+Email,"POP3, IMAP, and SMTP operations","org.mule.extension.email"
+JMS,Java Message Service connector,"org.mule.extensions.jms"
 Web Service Consumer,Consumes SOAP web services,"org.mule.service.soap, org.apache.cxf"
 Object Store,Key-value data storage,org.mule.extension.objectstore
 Validation,Validates payloads and parameters,org.mule.extension.validation
-Cryptography,"Encryption, decryption, and signing",org.mule.extension.cryptography
+Cryptography,"Encryption, decryption, and signing",com.mulesoft.modules.cryptography
 VM,Asynchronous in-memory messaging,org.mule.extensions.vm
-AMQP,Advanced Message Queuing Protocol,"org.mule.extension.amqp, com.rabbitmq"
+AMQP,Advanced Message Queuing Protocol,"org.mule.extensions.amqp"
 Anypoint MQ,MuleSoft's cloud messaging service,"com.mulesoft.extension.mq, com.mulesoft.mq"
-IBM MQ,IBM's message queuing service,"com.mulesoft.extension.mq.ibm, com.ibm.mq"
-Apache Kafka,Integration with Kafka topics,"org.mule.extension.kafka, org.apache.kafka"
-Amazon S3,AWS Simple Storage Service,"org.mule.extension.s3, com.amazonaws.services.s3"
-Amazon SQS,AWS Simple Queue Service,"org.mule.extension.sqs, com.amazonaws.services.sqs"
-Amazon SNS,AWS Simple Notification Service,"org.mule.extension.sns, com.amazonaws.services.sns"
-Amazon DynamoDB,AWS NoSQL Database,"org.mule.extension.dynamodb, com.amazonaws.services.dynamodbv2"
-Amazon Kinesis,AWS data streaming service,"org.mule.extension.kinesis, com.amazonaws.services.kinesis"
-Amazon EC2,AWS Elastic Compute Cloud,org.mule.extension.ec2
-Amazon RDS,AWS Relational Database Service,org.mule.extension.rds
-Microsoft Dynamics 365,Integration with MS Dynamics 365,org.mule.extension.microsoftdynamics365
-Microsoft SharePoint,Integration with SharePoint,"org.mule.extension.sharepoint, org.apache.http.wire"
-Azure Service Bus,Azure's messaging service,com.mulesoft.extension.azure.servicebus
-Azure Storage,Azure Blob Storage integration,com.mulesoft.extension.azure.storage
-Azure Key Vault,Azure secrets management,com.mulesoft.extension.azure.keyvault
-NetSuite,Oracle NetSuite ERP,"org.mule.module.netsuite, com.netsuite.webservices"
-SAP,Integration with SAP systems (JCo),"com.mulesoft.extension.sap, com.sap.conn.jco"
-SAP SuccessFactors,SAP's cloud HR solution,org.mule.extension.sapsuccessfactors
-Workday,Workday HCM and Financials,org.mule.extension.workday
-ServiceNow,ServiceNow IT service management,org.mule.extension.servicenow
-Oracle EBS,Oracle E-Business Suite,com.mulesoft.extension.oracleebs
-Snowflake,Snowflake cloud data warehouse,org.mule.extension.snowflake
-MongoDB,MongoDB NoSQL database,org.mule.extension.mongodb
-Redis,Redis in-memory data structure store,org.mule.extension.redis
+IBM MQ,Connects Mule applications to IBM MQ messaging queues.,"com.mulesoft.connectors.ibmmq, org.mule.jms.commons"
+⚠️ Apache Kafka,Integration with Kafka topics,"org.mule.extension.kafka, org.apache.kafka"
+⚠️ Amazon S3,AWS Simple Storage Service,"org.mule.extension.s3, com.amazonaws.services.s3"
+Amazon SQS,AWS Simple Queue Service,"org.mule.extension.sqs, org.apache.http"
+⚠️ Amazon SNS,AWS Simple Notification Service,"org.mule.extension.sns, com.amazonaws.services.sns"
+⚠️ Amazon DynamoDB,AWS NoSQL Database,"org.mule.extension.dynamodb, com.amazonaws.services.dynamodbv2"
+⚠️ Amazon Kinesis,AWS data streaming service,"org.mule.extension.kinesis, com.amazonaws.services.kinesis"
+⚠️ Amazon EC2,AWS Elastic Compute Cloud,org.mule.extension.ec2
+⚠️ Amazon RDS,AWS Relational Database Service,org.mule.extension.rds
+Microsoft Dynamics 365,Integration with MS Dynamics 365,"org.mule.service.http.impl.service.HttpMessageLogger, org.apache.http, org.mule.extension.microsoftdynamics365"
+Microsoft SharePoint,Integration with SharePoint (version 3.x),"org.apache.http.wire, org.apache.http"
+⚠️ Azure Service Bus,Azure's messaging service,com.mulesoft.extension.azure.servicebus
+⚠️ Azure Storage,Azure Blob Storage integration,com.mulesoft.extension.azure.storage
+⚠️ Azure Key Vault,Azure secrets management,com.mulesoft.extension.azure.keyvault
+NetSuite,Oracle NetSuite ERP,"httpclient.wire.header, httpclient.wire.content, httpclient.wire, org.apache.commons.httpclient, org.apache.http, org.mule.module.netsuite, com.netsuite.webservices, org.mule.service.http.impl.service.HttpMessageLogger, org.mule.module.netsuite.extension.internal.connection.provider.soap.JavaWSDispatcher"
+SAP,Integration with SAP systems (JCo),org.mule.modules.sap
+⚠️ SAP SuccessFactors,SAP's cloud HR solution,org.mule.extension.sapsuccessfactors
+⚠️ Workday,Workday HCM and Financials,org.mule.extension.workday
+⚠️ ServiceNow,ServiceNow IT service management,org.mule.extension.servicenow
+⚠️ Oracle EBS,Oracle E-Business Suite,com.mulesoft.extension.oracleebs
+⚠️ Snowflake,Snowflake cloud data warehouse,org.mule.extension.snowflake
+⚠️ MongoDB,MongoDB NoSQL database,org.mule.extension.mongodb
+⚠️ Redis,Redis in-memory data structure store,org.mule.extension.redis
 Cassandra,Apache Cassandra database,org.mule.extension.cassandra
-LDAP,Lightweight Directory Access Protocol,org.mule.extension.ldap
-AS2,Applicability Statement 2 for B2B,com.mulesoft.extension.as2
-HL7 (MLLP),Healthcare messaging standard,com.mulesoft.extension.mllp
-X12 EDI,EDI X12 standard for B2B,com.mulesoft.extension.x12
-EDIFACT,EDIFACT standard for B2B,com.mulesoft.extension.edifact
-Jira,Atlassian Jira integration,org.mule.extension.jira
-Slack,Slack messaging integration,org.mule.extension.slack
-Twilio,Twilio SMS and voice API,org.mule.extension.twilio
-Stripe,Stripe payment processing,org.mule.extension.stripe
-Box,Box cloud content management,org.mule.extension.box
-Dropbox,Dropbox cloud storage,org.mule.extension.dropbox
-Google Drive,Google Drive cloud storage,org.mule.extension.googledrive
-Google Sheets,Google Sheets API integration,org.mule.extension.googlesheets
-Google BigQuery,Google Cloud BigQuery,org.mule.extension.bigquery
-Google Pub/Sub,GCP messaging service,org.mule.extension.googlepubsub
-GraphQL,GraphQL query API routing,org.mule.extension.graphql
-OData,OData API creation and routing,org.mule.extension.odata
-Agent Broker,MuleSoft Agent Fabric Broker,com.mulesoft.modules.agent.broker
-Cache Scope,Mule 4 Cache Scope execution,com.mulesoft.mule.runtime.cache
-Mule Gateway,API Gateway Message Logging,org.mule.runtime.logging
-A2A,Anypoint to Anypoint (A2A) Connector,com.mulesoft.connectors.a2a
+⚠️ LDAP,Lightweight Directory Access Protocol,org.mule.extension.ldap
+⚠️ AS2,Applicability Statement 2 for B2B,com.mulesoft.extension.as2
+⚠️ HL7 (MLLP),Healthcare messaging standard,com.mulesoft.extension.mllp
+⚠️ X12 EDI,EDI X12 standard for B2B,com.mulesoft.extension.x12
+⚠️ EDIFACT,EDIFACT standard for B2B,com.mulesoft.extension.edifact
+⚠️ Jira,Atlassian Jira integration,org.mule.extension.jira
+⚠️ Slack,Slack messaging integration,org.mule.extension.slack
+⚠️ Twilio,Twilio SMS and voice API,org.mule.extension.twilio
+⚠️ Stripe,Stripe payment processing,org.mule.extension.stripe
+⚠️ Box,Box cloud content management,org.mule.extension.box
+⚠️ Dropbox,Dropbox cloud storage,org.mule.extension.dropbox
+⚠️ Google Drive,Google Drive cloud storage,org.mule.extension.googledrive
+⚠️ Google Sheets,Google Sheets API integration,org.mule.extension.googlesheets
+⚠️ Google BigQuery,Google Cloud BigQuery,org.mule.extension.bigquery
+⚠️ Google Pub/Sub,GCP messaging service,org.mule.extension.googlepubsub
+⚠️ GraphQL,GraphQL query API routing,org.mule.extension.graphql
+⚠️ OData,OData API creation and routing,org.mule.extension.odata
+⚠️ Agent Broker,MuleSoft Agent Fabric Broker,com.mulesoft.modules.agent.broker
+⚠️ Cache Scope,Mule 4 Cache Scope execution,com.mulesoft.mule.runtime.cache
+⚠️ Mule Gateway,API Gateway Message Logging,org.mule.runtime.logging
+⚠️ A2A,Anypoint to Anypoint (A2A) Connector,com.mulesoft.connectors.a2a
+Aggregator,Aggregator in Mule applications.,org.mule.extension.aggregator
+Cassandradb,Connects Mule applications to Apache Cassandra databases.,"com.mulesoft.connector.cassandradb, org.apache.commons.cassandradb, org.mule.extension.cassandradb"
+Spring Web Client,Spring Web Client in Mule applications.,org.springframework.web.client
+Commons,Commons in Mule applications.,"org.mule.db.commons, org.mule.jms.commons"
+Compress,Compress in Mule applications.,org.apache.commons.compress
+Compression,Compression in Mule applications.,org.mule.extension.compression
+Core Message Receiver,Core Message Receiver in Mule applications.,com.microsoft.azure.servicebus.primitives.CoreMessageReceiver
+Ctgserviceimpl,Ctgserviceimpl in Mule applications.,org.mule.modules.ibmctg.internal.service.CTGServiceImpl
+Driver,Driver in Mule applications.,com.datastax.oss.driver
+Azure Event Hubs,Azure Event Hubs messaging connector,"com.azure.messaging.eventhubs.checkpointstore.blob, com.azure.messaging.eventhubs, com.azure.core.amqp, com.azure.identity"
+Extension,Extension in Mule applications.,com.mulesoft.connectors.rosettanet.extension
+Identity,Identity in Mule applications.,com.azure.identity
+Infab360Connection,Infab360Connection in Mule applications.,com.mulesoft.connectors.informatica.b360.internal.connection.InfaB360Connection
+Java,Java in Mule applications.,org.mule.extensions.java
+Json,Json in Mule applications.,org.mule.module.json
+Jsr47Logger,Publishes and consumes messages through MQTT brokers.,org.eclipse.paho.client.mqttv3.logging.JSR47Logger
+Mqtt3,Publishes and consumes messages through MQTT brokers.,com.mulesoft.connectors.mqtt3
+Net,Net in Mule applications.,org.apache.commons.net
+Oauth2,Oauth2 in Mule applications.,org.mule.extension.oauth2
+Peoplesoftserviceimpl,Peoplesoftserviceimpl in Mule applications.,org.mule.modules.peoplesoft.extension.internal.service.PeopleSoftServiceImpl
+Requestbuilderbase,Requestbuilderbase in Mule applications.,com.ning.http.client.RequestBuilderBase
+Scripting,Scripting in Mule applications.,org.mule.plugin.scripting
+Service,Service in Mule applications.,"org.apache.cxf.service, org.mule.modules.siebel.internal.service"
+Spring,Spring in Mule applications.,org.mule.extension.spring
+Sshd,Sshd in Mule applications.,org.apache.sshd
+Ws,Provides bidirectional real-time communication using WebSockets.,com.mulesoft.connectors.ws
+Xml,Xml in Mule applications.,org.mule.module.xml
