@@ -42,14 +42,34 @@ function parseCsv(text) {
     }
     if (field !== '' || row.length) { row.push(field); rows.push(row); }
 
-    const [, ...body] = rows;
+    const [header, ...body] = rows;
+    const headerNames = header.map(value => value.trim().toLowerCase());
+    const connectorIndex = headerNames.indexOf('connector name');
+    const descriptionIndex = headerNames.indexOf('description');
+    const connectorPackagesIndex = headerNames.indexOf('connector package name(s)');
+    const legacyPackagesIndex = headerNames.indexOf('debug package name(s)');
+    const driverPackagesIndex = headerNames.indexOf('driver package name(s)');
+    const instructionsIndex = headerNames.indexOf('special instructions');
+    const versionIndex = headerNames.indexOf('version notes');
+
+    if (connectorIndex < 0 || descriptionIndex < 0 || (connectorPackagesIndex < 0 && legacyPackagesIndex < 0)) {
+        throw new Error('CSV must include Connector Name, Description, and package name columns.');
+    }
+
     return body
-        .filter(r => r.length >= 3 && r[0].trim())
+        .filter(r => r.length > connectorIndex && r[connectorIndex].trim())
         .map(r => ({
-            connector: r[0].trim(),
-            description: r[1].trim(),
-            packages: r[2].split(',').map(p => p.trim()).filter(Boolean)
+            connector: r[connectorIndex].trim(),
+            description: r[descriptionIndex].trim(),
+            connectorPackages: splitPackages(r[connectorPackagesIndex >= 0 ? connectorPackagesIndex : legacyPackagesIndex]),
+            driverPackages: splitPackages(driverPackagesIndex >= 0 ? r[driverPackagesIndex] : ''),
+            instructions: instructionsIndex >= 0 ? (r[instructionsIndex] || '').trim() : '',
+            versionNotes: versionIndex >= 0 ? (r[versionIndex] || '').trim() : ''
         }));
+}
+
+function splitPackages(value) {
+    return String(value || '').split(/[;,]/).map(p => p.trim()).filter(Boolean);
 }
 
 function escapeHtml(str) {
@@ -60,14 +80,25 @@ function escapeHtml(str) {
         .replace(/"/g, '&quot;');
 }
 
+function renderPackages(packages, kind) {
+    if (!packages.length) return '<span class="pkg-muted">Not specified</span>';
+    return packages.map(p => `<button type="button" class="pkg-chip${kind === 'driver' ? ' pkg-chip-driver' : ''}" data-package="${escapeHtml(p)}" title="Click to copy this package name"><span class="pkg-chip-text">${escapeHtml(p)}</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>`).join('\n                            ');
+}
+
 function renderRow(item) {
-    const packagesAttr = escapeHtml(item.packages.join(', '));
-    return `                    <div class="pkg-row" role="row" data-connector="${escapeHtml(item.connector)}" data-description="${escapeHtml(item.description)}" data-packages="${packagesAttr}">
+    const allPackages = [...item.connectorPackages, ...item.driverPackages];
+    const packagesAttr = escapeHtml(allPackages.join(', '));
+    const searchText = escapeHtml([item.connector, item.description, ...allPackages, item.instructions, item.versionNotes].join(' '));
+    const notes = [item.instructions, item.versionNotes].filter(Boolean).map(note => `<div class="pkg-note">${escapeHtml(note)}</div>`).join('');
+    return `                    <div class="pkg-row" role="row" data-connector="${escapeHtml(item.connector)}" data-description="${escapeHtml(item.description)}" data-packages="${packagesAttr}" data-search="${searchText}">
                         <div class="pkg-col-connector" role="cell">${escapeHtml(item.connector)}</div>
                         <div class="pkg-col-desc" role="cell">${escapeHtml(item.description)}</div>
                         <div class="pkg-col-packages" role="cell">
-                            ${item.packages.map(p => `<button type="button" class="pkg-chip" data-package="${escapeHtml(p)}" title="Click to copy this package name"><span class="pkg-chip-text">${escapeHtml(p)}</span><i class="fas fa-copy pkg-chip-copy-icon" aria-hidden="true"></i></button>`).join('\n                            ')}
+                            <div class="pkg-package-label">Connector</div>
+                            ${renderPackages(item.connectorPackages, 'connector')}
+                            ${item.driverPackages.length ? `<div class="pkg-package-label">Driver</div>${renderPackages(item.driverPackages, 'driver')}` : ''}
                         </div>
+                        <div class="pkg-col-notes" role="cell">${notes || '<span class="pkg-muted">No additional notes</span>'}</div>
                         <div class="pkg-col-actions" role="cell">
                             <button class="btn-icon pkg-copy-log4j" type="button" title="Copy log4j2 AsyncLogger snippet" aria-label="Copy log4j2 snippet for ${escapeHtml(item.connector)}">
                                 <i class="fas fa-file-code"></i>
@@ -99,7 +130,7 @@ function main() {
     console.log(`Rendered ${data.length} connector rows into ${path.relative(rootDir, htmlPath)}`);
 
     // Keep the Worker's live-fetched package list in sync with the CSV.
-    const allPackages = [...new Set(data.flatMap(item => item.packages))].sort();
+    const allPackages = [...new Set(data.flatMap(item => [...item.connectorPackages, ...item.driverPackages]))].sort();
     fs.mkdirSync(path.dirname(allowlistPath), { recursive: true });
     fs.writeFileSync(allowlistPath, JSON.stringify(allPackages, null, 2) + '\n', 'utf8');
     console.log(`Wrote ${allPackages.length} package names into ${path.relative(rootDir, allowlistPath)}`);

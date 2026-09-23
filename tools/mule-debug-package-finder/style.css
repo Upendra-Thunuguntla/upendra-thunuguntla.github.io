@@ -81,9 +81,10 @@
 
 .pkg-row {
     display: grid;
-    grid-template-columns: 1.1fr 1.6fr 2fr auto;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.35fr) minmax(0, 2fr) minmax(0, 1.25fr) auto;
     gap: var(--space-md);
-    align-items: center;
+    align-items: start;
+    min-width: 0;
     padding: var(--space-md) var(--space-lg);
     border-bottom: 1px solid var(--border);
 }
@@ -109,18 +110,57 @@
     font-weight: 600;
     color: var(--text);
     font-size: 0.9rem;
+    min-width: 0;
 }
 
 .pkg-col-desc {
     color: var(--text-subtle);
     font-size: 0.82rem;
     line-height: 1.5;
+    min-width: 0;
 }
 
 .pkg-col-packages {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-xs);
+    min-width: 0;
+}
+
+.pkg-package-label,
+.pkg-group-label {
+    flex: 0 0 100%;
+    width: 100%;
+    color: var(--text-muted);
+    font-size: 0.68rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.pkg-group {
+    display: contents;
+}
+
+.pkg-col-notes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    color: var(--text-subtle);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    min-width: 0;
+}
+
+.pkg-note {
+    color: var(--text-subtle);
+}
+
+.pkg-muted {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-style: italic;
 }
 
 .pkg-chip {
@@ -134,7 +174,9 @@
     font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--accent);
-    white-space: nowrap;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
     cursor: pointer;
     transition: all var(--transition);
 }
@@ -155,8 +197,18 @@
     transition: color var(--transition);
 }
 
+.pkg-chip-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
 .pkg-chip:hover .pkg-chip-copy-icon {
     color: var(--accent);
+}
+
+.pkg-chip-driver {
+    color: var(--accent2, var(--warning));
+    border-style: dashed;
 }
 
 .pkg-col-actions {

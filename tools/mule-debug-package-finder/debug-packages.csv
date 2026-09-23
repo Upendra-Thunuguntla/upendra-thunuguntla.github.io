@@ -1,62 +1,62 @@
-Connector Name,Description,Debug Package Name(s)
-HTTP,Core connector for handling HTTP requests and responses,org.mule.service.http.impl.service.HttpMessageLogger
-Salesforce,Integration with Salesforce CRM APIs,org.mule.extension.salesforce
-⚠️ Salesforce Composite,Batched requests to Salesforce,org.mule.extension.salesforce.composite
+Connector Name,Description,Connector Package Name(s),Driver Package Name(s),Special Instructions,Version Notes
+HTTP,Core connector for handling HTTP requests and responses,org.mule.service.http.impl.service.HttpMessageLogger,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Salesforce,Integration with Salesforce CRM APIs,"org.mule.extension.salesforce, org.mule.extension.salesforce.internal.service.streaming","com.sforce, com.sforce.async, org.cometd.client, org.cometd.3.1.5.shade, org.eclipse.jetty",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Salesforce Composite,Batched requests to Salesforce,com.mulesoft.connectors.salesforce.composite,org.apache.http,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 ⚠️ Salesforce Marketing Cloud,Integration with SFDC Marketing Cloud,com.mulesoft.extension.sfdc.marketing
-Ftp,Ftp in Mule applications.,org.mule.extension.ftp
-Sftp,Transfers and manages files using the Secure File Transfer Protocol.,org.mule.extension.sftp
-FTPS,FTP over SSL/TLS connector,com.mulesoft.extension.ftps
-Database (DB),Connects to relational databases via JDBC,org.mule.extension.db
-File,Reads and writes files on the local filesystem,org.mule.extension.file
+Ftp,Ftp in Mule applications.,org.mule.extension.ftp,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Sftp,Transfers and manages files using the Secure File Transfer Protocol.,org.mule.extension.sftp,"com.jcraft, org.apache.sshd",,Connector 1.x uses com.jcraft; Connector 2.x uses org.apache.sshd,https://help.salesforce.com/s/articleView?id=001116192&type=1
+FTPS,FTPS over TLS,com.mulesoft.extension.ftps,org.mule.extension.ftp,Enable the FTP package as well because FTPS uses the FTP connector.,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Database (DB),Connects to relational databases via JDBC,org.mule.extension.db,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+File,Reads and writes files on the local filesystem,org.mule.extension.file,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Sockets,TCP/UDP socket connections,org.mule.extension.socket
-Email,"POP3, IMAP, and SMTP operations","org.mule.extension.email"
-JMS,Java Message Service connector,"org.mule.extensions.jms"
-Web Service Consumer,Consumes SOAP web services,"org.mule.service.soap, org.apache.cxf"
-Object Store,Key-value data storage,org.mule.extension.objectstore
+Email,Email messaging,org.mule.extension.email,"com.sun.mail, javax.mail",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+JMS,JMS messaging connector,"org.mule.extensions.jms, org.mule.jms",,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Web Service Consumer,Consumes SOAP web services,"org.mule.service.http.impl.service.HttpMessageLogger, org.mule.extension.ws, org.mule.soap, org.mule.wsdl",org.apache.cxf,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Object Store,Key-value data storage,org.mule.extension.objectstore,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Validation,Validates payloads and parameters,org.mule.extension.validation
 Cryptography,"Encryption, decryption, and signing",com.mulesoft.modules.cryptography
-VM,Asynchronous in-memory messaging,org.mule.extensions.vm
-AMQP,Advanced Message Queuing Protocol,"org.mule.extensions.amqp"
+VM,VM messaging connector,org.mule.extensions.vm,"org.apache.http, com.mulesoft.cloudhub.extensions.sqs, com.amazonaws.services.sqs.mode",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+AMQP,Advanced Message Queuing Protocol,com.mule.extensions.amqp,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Anypoint MQ,MuleSoft's cloud messaging service,"com.mulesoft.extension.mq, com.mulesoft.mq"
-IBM MQ,Connects Mule applications to IBM MQ messaging queues.,"com.mulesoft.connectors.ibmmq, org.mule.jms.commons"
-⚠️ Apache Kafka,Integration with Kafka topics,"org.mule.extension.kafka, org.apache.kafka"
-⚠️ Amazon S3,AWS Simple Storage Service,"org.mule.extension.s3, com.amazonaws.services.s3"
-Amazon SQS,AWS Simple Queue Service,"org.mule.extension.sqs, org.apache.http"
-⚠️ Amazon SNS,AWS Simple Notification Service,"org.mule.extension.sns, com.amazonaws.services.sns"
-⚠️ Amazon DynamoDB,AWS NoSQL Database,"org.mule.extension.dynamodb, com.amazonaws.services.dynamodbv2"
-⚠️ Amazon Kinesis,AWS data streaming service,"org.mule.extension.kinesis, com.amazonaws.services.kinesis"
-⚠️ Amazon EC2,AWS Elastic Compute Cloud,org.mule.extension.ec2
-⚠️ Amazon RDS,AWS Relational Database Service,org.mule.extension.rds
-Microsoft Dynamics 365,Integration with MS Dynamics 365,"org.mule.service.http.impl.service.HttpMessageLogger, org.apache.http, org.mule.extension.microsoftdynamics365"
-Microsoft SharePoint,Integration with SharePoint (version 3.x),"org.apache.http.wire, org.apache.http"
+IBM MQ,Connects Mule applications to IBM MQ messaging queues.,"com.mulesoft.connectors.ibmmq, org.mule.jms.commons",com.ibm.mq,"Set com.ibm.msg.client.commonservices.trace.level=8, trace.outputName=/tmp/mule_mqjms_%PID%.log, and trace.status=ON for IBM MQ JMS driver tracing.",,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Apache Kafka,Integration with Kafka topics,com.mulesoft.connectors.kafka,org.apache.kafka,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Amazon S3,AWS Simple Storage Service,org.mule.extension.s3,"com.amazonaws, com.amazonaws.services",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Amazon SQS,AWS Simple Queue Service,org.mule.extension.sqs,org.apache.http,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Amazon SNS,AWS Simple Notification Service,org.mule.extension.sns,"com.amazonaws, com.amazonaws.services",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Amazon DynamoDB,AWS NoSQL Database,"org.mule.extension.dynamodb, org.mule.service.http.impl.service.HttpMessageLogger","com.amazonaws, com.amazonaws.services",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Amazon Kinesis,AWS data streaming service,org.mule.extension.kinesis,"com.amazonaws, com.amazonaws.services",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Amazon EC2,AWS Elastic Compute Cloud,org.mule.extension.ec2,"com.amazonaws, com.amazonaws.services",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Amazon RDS,AWS Relational Database Service,"org.mule.extension.rds, org.mule.service.http.impl.service.HttpMessageLogger, org.apache.http","com.amazonaws, com.amazonaws.services",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Microsoft Dynamics 365,Integration with MS Dynamics 365,"org.mule.extension.microsoftdynamics365, org.mule.service.http.impl.service.HttpMessageLogger",org.apache.http,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Microsoft SharePoint,Integration with SharePoint (version 3.x),"com.mulesoft.connectors.sharepoint, org.mule.modules.security.microsoft, org.mule.service.http.impl.service.HttpMessageLogger",org.apache.http,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 ⚠️ Azure Service Bus,Azure's messaging service,com.mulesoft.extension.azure.servicebus
 ⚠️ Azure Storage,Azure Blob Storage integration,com.mulesoft.extension.azure.storage
 ⚠️ Azure Key Vault,Azure secrets management,com.mulesoft.extension.azure.keyvault
-NetSuite,Oracle NetSuite ERP,"httpclient.wire.header, httpclient.wire.content, httpclient.wire, org.apache.commons.httpclient, org.apache.http, org.mule.module.netsuite, com.netsuite.webservices, org.mule.service.http.impl.service.HttpMessageLogger, org.mule.module.netsuite.extension.internal.connection.provider.soap.JavaWSDispatcher"
-SAP,Integration with SAP systems (JCo),org.mule.modules.sap
+NetSuite,Oracle NetSuite ERP,"org.mule.service.http.impl.service.HttpMessageLogger, com.mulesoft.connector.netsuite","httpclient.wire.header, httpclient.wire.content, httpclient.wire, org.apache.commons.httpclient, org.apache.http, com.netsuite.webservices, com.mulesoft.connector.netsuite",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+SAP,Integration with SAP systems (JCo),org.mule.modules.sap,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 ⚠️ SAP SuccessFactors,SAP's cloud HR solution,org.mule.extension.sapsuccessfactors
-⚠️ Workday,Workday HCM and Financials,org.mule.extension.workday
-⚠️ ServiceNow,ServiceNow IT service management,org.mule.extension.servicenow
+Workday,Workday HCM and Financials,"com.mulesoft.connector.workday, org.mule.service.http.impl.service.HttpMessageLogger",,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+ServiceNow,ServiceNow IT service management,com.mulesoft.connectors.servicenow,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 ⚠️ Oracle EBS,Oracle E-Business Suite,com.mulesoft.extension.oracleebs
-⚠️ Snowflake,Snowflake cloud data warehouse,org.mule.extension.snowflake
+Snowflake,Snowflake cloud data warehouse,com.mulesoft.connector.snowflake,net.snowflake.client.jdbc,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 ⚠️ MongoDB,MongoDB NoSQL database,org.mule.extension.mongodb
-⚠️ Redis,Redis in-memory data structure store,org.mule.extension.redis
+Redis,Redis in-memory data structure store,org.mule.extension.redis,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Cassandra,Apache Cassandra database,org.mule.extension.cassandra
 ⚠️ LDAP,Lightweight Directory Access Protocol,org.mule.extension.ldap
-⚠️ AS2,Applicability Statement 2 for B2B,com.mulesoft.extension.as2
-⚠️ HL7 (MLLP),Healthcare messaging standard,com.mulesoft.extension.mllp
+AS2,Applicability Statement 2 for B2B,"com.mulesoft.connector.as2, org.mule.service.http.impl.service.HttpMessageLogger",,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+HL7 (MLLP),Healthcare messaging standard,com.mulesoft.connectors.hl7.mllp,,,Version-specific HL7 EDI parser scopes may also be required.,https://help.salesforce.com/s/articleView?id=001116192&type=1
 ⚠️ X12 EDI,EDI X12 standard for B2B,com.mulesoft.extension.x12
 ⚠️ EDIFACT,EDIFACT standard for B2B,com.mulesoft.extension.edifact
 ⚠️ Jira,Atlassian Jira integration,org.mule.extension.jira
 ⚠️ Slack,Slack messaging integration,org.mule.extension.slack
 ⚠️ Twilio,Twilio SMS and voice API,org.mule.extension.twilio
-⚠️ Stripe,Stripe payment processing,org.mule.extension.stripe
+Stripe,Stripe payment processing,com.mulesoft.connectors.stripe,"com.mulesoft.connectivity.rest.commons, com.fasterxml.jackson",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 ⚠️ Box,Box cloud content management,org.mule.extension.box
 ⚠️ Dropbox,Dropbox cloud storage,org.mule.extension.dropbox
 ⚠️ Google Drive,Google Drive cloud storage,org.mule.extension.googledrive
 ⚠️ Google Sheets,Google Sheets API integration,org.mule.extension.googlesheets
-⚠️ Google BigQuery,Google Cloud BigQuery,org.mule.extension.bigquery
-⚠️ Google Pub/Sub,GCP messaging service,org.mule.extension.googlepubsub
+Google BigQuery,Google Cloud BigQuery,com.mulesoft.connectors.google.bigquery,com.google.api.client,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Google Pub/Sub,GCP messaging service,com.mulesoft.connector.googlepubsub,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 ⚠️ GraphQL,GraphQL query API routing,org.mule.extension.graphql
 ⚠️ OData,OData API creation and routing,org.mule.extension.odata
 ⚠️ Agent Broker,MuleSoft Agent Fabric Broker,com.mulesoft.modules.agent.broker
@@ -79,14 +79,23 @@ Infab360Connection,Infab360Connection in Mule applications.,com.mulesoft.connect
 Java,Java in Mule applications.,org.mule.extensions.java
 Json,Json in Mule applications.,org.mule.module.json
 Jsr47Logger,Publishes and consumes messages through MQTT brokers.,org.eclipse.paho.client.mqttv3.logging.JSR47Logger
-Mqtt3,Publishes and consumes messages through MQTT brokers.,com.mulesoft.connectors.mqtt3
+MQTT,MQTT messaging connector,com.mulesoft.connectors.mqtt3,org.eclipse.paho.client.mqttv3,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Net,Net in Mule applications.,org.apache.commons.net
-Oauth2,Oauth2 in Mule applications.,org.mule.extension.oauth2
+Oauth2,Oauth2 in Mule applications.,org.mule.extension.oauth2,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Peoplesoftserviceimpl,Peoplesoftserviceimpl in Mule applications.,org.mule.modules.peoplesoft.extension.internal.service.PeopleSoftServiceImpl
 Requestbuilderbase,Requestbuilderbase in Mule applications.,com.ning.http.client.RequestBuilderBase
 Scripting,Scripting in Mule applications.,org.mule.plugin.scripting
 Service,Service in Mule applications.,"org.apache.cxf.service, org.mule.modules.siebel.internal.service"
 Spring,Spring in Mule applications.,org.mule.extension.spring
 Sshd,Sshd in Mule applications.,org.apache.sshd
-Ws,Provides bidirectional real-time communication using WebSockets.,com.mulesoft.connectors.ws
+WebSockets,Provides bidirectional real-time communication using WebSockets.,com.mulesoft.connectors.ws,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Xml,Xml in Mule applications.,org.mule.module.xml
+Adobe Marketo,Adobe Marketo integration,org.mule.service.http.impl.service.HttpMessageLogger,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+HL7 EDI,HL7 EDI message parsing,"com.mulesoft.flatfile.schema.hl7.HL7SchemaParser, com.mulesoft.flatfile.schema.hl7.HL7SchemaWriter, com.mulesoft.connectors.hl7",,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Salesforce Einstein Analytics,Salesforce Einstein Analytics integration,org.mule.modules.salesforce.analytics,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+SAP S/4HANA OData,SAP S/4HANA OData integration,"com.mulesoft.connector.sap.s4hana, org.mule.service.http.impl.service.HttpMessageLogger",,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+SAP S/4HANA SOAP,SAP S/4HANA SOAP integration,com.mulesoft.connector.sap.s4hana.soap,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Salesforce Pub/Sub,Salesforce Pub/Sub integration,com.mulesoft.connector.salesforce.pubsub,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Salesforce CDP,Salesforce CDP integration,"com.mulesoft.connectors.sdc, org.mule.service.http.impl.service.HttpMessageLogger",,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Windows PowerShell,Windows PowerShell connector,"org.mule.extension.powershell, org.mule.connector, com.jcraft",,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+WMQ,WebSphere MQ connector,com.mulesoft.connectors.ibmmq,com.ibm.mq,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
