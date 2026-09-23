@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://upendra.fyi/tools/mule-debug-package-finder/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mule Debug Package Finder | Log4j2 & Runtime Manager Logger Names | upendra.fyi</title>
+    <meta name="description"
+        content="Find the exact Java package name to enable DEBUG/TRACE logging for any MuleSoft connector (HTTP, Salesforce, SFTP, JMS, AWS & more). Instantly copy ready-to-use log4j2.xml AsyncLogger snippets.">
+    <meta name="author" content="Upendra Venkata Muralidhar Thunuguntla">
+    <meta name="google-site-verification" content="BCjSwBqP4XS2yH1CVwXNsntcBvNIjNuhN8M8aGM670Q" />
+    <meta property="og:title" content="Mule Debug Package Finder | log4j2 & Runtime Manager Logger Names">
+    <meta property="og:description" content="Search 90+ MuleSoft connectors for their debug logging package names. Copy log4j2.xml AsyncLogger snippets instantly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://upendra.fyi/tools/mule-debug-package-finder/">
+    <meta property="og:image" content="https://upendra.fyi/images/avat.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mule Debug Package Finder | upendra.fyi">
+    <meta name="twitter:description" content="Search 90+ MuleSoft connectors for their debug logging package names. Copy log4j2.xml AsyncLogger snippets instantly.">
+    <meta name="twitter:image" content="https://upendra.fyi/images/avat.jpg">
+    <link rel="icon" href="/assets/favicons/debug-finder.svg" type="image/svg+xml">
+    <link rel="manifest" href="/manifest.json">
+    <script src="/assets/js/theme.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="/assets/css/core.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/tool.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-9YH1D05QCJ');</script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "Can I contribute a MuleSoft debug package?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes. Update the debug-packages.csv file at https://github.com/Upendra-Thunuguntla/upendra-thunuguntla.github.io/blob/main/tools/mule-debug-package-finder/debug-packages.csv and create a pull request. The CSV is periodically reviewed and merged by Me."
+                    }
+                },
+        {
+          "@type": "Question",
+          "name": "What package should I set to DEBUG to see full HTTP request/response logs in MuleSoft?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Set org.mule.service.http.impl.service.HttpMessageLogger (and org.mule.module.http for older Mule 3 apps) to DEBUG level in your log4j2.xml to see full HTTP request and response payloads and headers."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do I add these logger packages in a Mule application?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Add an <AsyncLogger name=\"package.name\" level=\"DEBUG\"/> entry inside the <Loggers> block of your project's log4j2.xml file, then redeploy. In CloudHub / Anypoint Runtime Manager, you can also add the same package and level under Settings > Logging without redeploying."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does enabling DEBUG logging expose sensitive data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. DEBUG/TRACE logging on connectors like HTTP, Database, or Salesforce can print full payloads, headers, and credentials to your logs. Only enable it temporarily while troubleshooting and disable it afterward, especially in production environments."
+          }
+        },
+                {
+                    "@type": "Question",
+                    "name": "Is this list of debug packages complete?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "This is a community-maintained list covering the most commonly used MuleSoft connectors. It is updated periodically as new connectors and Mule runtime versions are released."
+                    }
+                }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Mule Debug Package Finder",
+        "description": "Searchable directory of MuleSoft connector debug/logger package names with one-click log4j2.xml AsyncLogger snippet generation.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://upendra.fyi/tools/mule-debug-package-finder/",
+        "author": {
+            "@type": "Person",
+            "name": "Upendra Venkata Muralidhar Thunuguntla"
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Free MuleSoft Developer Tools by Upendra Thunuguntla",
+      "description": "A suite of free browser-based tools for MuleSoft developers covering RAML, YAML, DataWeave, and API design.",
+      "url": "https://upendra.fyi/",
+      "numberOfItems": 14,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Base64 Encoder & Decoder",
+            "url": "https://upendra.fyi/tools/base64-converter/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Cron Expression Builder for Mule Pollers",
+            "url": "https://upendra.fyi/tools/cron-builder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Gmail Compose URL Generator",
+            "url": "https://upendra.fyi/tools/gmail-url/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "item": {
+            "@type": "WebApplication",
+            "name": "JSON to RAML Converter",
+            "url": "https://upendra.fyi/tools/json2raml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule Debug Package Finder",
+            "url": "https://upendra.fyi/tools/mule-debug-package-finder/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Mule XML SDK Helper",
+            "url": "https://upendra.fyi/tools/xml-sdk/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Log to cURL Converter",
+            "url": "https://upendra.fyi/tools/mule2curl/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 8,
+          "item": {
+            "@type": "WebApplication",
+            "name": "MuleSoft Secure Properties Generator",
+            "url": "https://upendra.fyi/tools/secure-properties-generator/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 9,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Postman cURL → Mule HTTP Request",
+            "url": "https://upendra.fyi/tools/curl2mule/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 10,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Properties to YAML Converter",
+            "url": "https://upendra.fyi/tools/props2yaml/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 11,
+          "item": {
+            "@type": "WebApplication",
+            "name": "RAML 1.0 → OpenAPI 3.0 Converter",
+            "url": "https://upendra.fyi/tools/raml2oas/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "WebApplication",
+            "name": "Salary Hike Calculator",
+            "url": "https://upendra.fyi/tools/salary-calc/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "WebApplication",
+            "name": "WhatsApp Read More Generator",
+            "url": "https://upendra.fyi/tools/whatsapp-readmore/"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 14,
+          "item": {
+            "@type": "WebApplication",
+            "name": "YAML to Properties Converter",
+            "url": "https://upendra.fyi/tools/yaml2props/"
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body class="tool-page">
+
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo" aria-label="Home">Upendra.dev</a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="/#tools">🛠 All Tools</a></li>
+                <li><a href="/#about">👤 About</a></li>
+                <li><a href="/#contact">📬 Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">☀️</button>
+                <button class="nav-hamburger" id="nav-hamburger" aria-expanded="false" aria-label="Open menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="tool-hero">
+        <div class="container">
+            <nav class="tool-breadcrumb" aria-label="Breadcrumb">
+                <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
+                <a href="/#tools">Tools</a><span class="tool-breadcrumb-sep">/</span>
+                <span>Mule Debug Package Finder</span>
+            </nav>
+            <div class="tool-hero-inner">
+                <div class="tool-page-icon" aria-hidden="true">🪲</div>
+                <div class="tool-hero-text">
+                    <h1>Mule Debug Package Finder</h1>
+                    <p>Search every MuleSoft connector to find its exact debug/logger package name. Copy a
+                        ready-to-paste <code>log4j2.xml</code> snippet or the raw package name for Anypoint Runtime
+                        Manager in one click.</p>
+
+                    <div style="display:flex; gap:var(--space-sm); flex-wrap:wrap; margin-top:var(--space-md);">
+                        <span class="badge">MuleSoft</span>
+                        <span class="badge badge-purple">log4j2</span>
+                        <span class="badge">Runtime Manager</span>
+                        <span class="badge badge-info">🔒 No Payloads or Credentials Sent</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-workspace">
+        <div class="container">
+
+            <details class="debug-banner-collapsible" style="margin-bottom: var(--space-lg);">
+                <summary class="debug-banner-summary">
+                    <span class="debug-banner-summary-left">
+                        <i class="fas fa-info-circle"></i>
+                        How logger names work in Mule
+                    </span>
+                    <span class="debug-banner-summary-right">
+                        <span class="debug-banner-hint">expand for setup details</span>
+                        <i class="fas fa-chevron-down debug-chevron"></i>
+                    </span>
+                </summary>
+                <div style="padding: var(--space-md); font-size: 0.85rem; color: var(--text-subtle); line-height:1.7;">
+                    Every connector ships with an internal Java package that its log statements are written under.
+                    Pointing a logger at that package name (via <code>log4j2.xml</code> or Anypoint Runtime Manager's
+                    Logging settings) raises its verbosity to <strong>DEBUG</strong> or <strong>TRACE</strong>
+                    without touching application code. Pick a level below, find your connector, then copy the
+                    package or the full <code>&lt;AsyncLogger&gt;</code> XML entry.
+                </div>
+            </details>
+
+            <div class="pkg-toolbar">
+                <div class="pkg-toolbar-search">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="pkg-filter" class="filter-input" placeholder="Filter by connector, package, or keyword… (e.g. db, salesforce, aws, http)" aria-label="Filter connectors">
+                </div>
+                <div class="pkg-toolbar-actions">
+                    <label for="pkg-level" class="pkg-level-label">Level</label>
+                    <select id="pkg-level" class="filter-input pkg-level-select" aria-label="Logger level">
+                        <option value="DEBUG" selected>DEBUG</option>
+                        <option value="TRACE">TRACE</option>
+                    </select>             
+                    <label for="pkg-sort" class="pkg-level-label">Sort</label>
+                    <select id="pkg-sort" class="filter-input pkg-level-select" aria-label="Sort connectors">
+                        <option value="rank" selected>Most Copied</option>
+                        <option value="az">A–Z</option>
+                        <option value="za">Z–A</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--
+                NOTE FOR CONTRIBUTORS: the rows below (between PKG_ROWS_START/END) are
+                statically generated from debug-packages.csv by scripts/render-debug-packages.js
+                so search engines & AI crawlers see the full connector list without running JS.
+                Do NOT hand-edit the rows — edit the CSV and run:
+                  node scripts/render-debug-packages.js
+            -->
+            <div class="pkg-count" id="pkg-count" aria-live="polite"><!--PKG_COUNT-->Showing all 93 connectors<!--/PKG_COUNT--></div>
+            <div class="pkg-warning-legend" role="note">
+                <!-- <span class="pkg-warning-symbol" aria-hidden="true">⚠️</span> -->
+                <span><strong>🚩 Note:</strong> Rows marked with ⚠️ might not be accurate.. Confirm
+                    the package in your connector JAR or official documentation before enabling</span>
+            </div>
+
+            <div class="pkg-table" id="pkg-table" role="table" aria-label="Connector debug package list">
+                <div class="pkg-row pkg-row-head" role="row">
+                    <div class="pkg-col-connector" role="columnheader">Connector</div>
+                    <div class="pkg-col-desc" role="columnheader">Description</div>
+                    <div class="pkg-col-packages" role="columnheader">Debug Package(s)</div>
+                    <div class="pkg-col-actions" role="columnheader">Copy</div>
+                </div>
+                <div id="pkg-rows"><!--PKG_ROWS_START-->
+                    <!--PKG_ROWS_END--></div>
+                <div id="pkg-empty" class="pkg-empty" style="display:none;">
+                    <i class="fas fa-circle-question"></i> No connectors match your filter. Try another keyword.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="tool-section tool-section-alt" role="region" aria-label="Key Advantages">
+        <div class="container">
+            <div class="social-proof-bar">
+                <div class="proof-item">
+                    <div class="proof-number">90+</div>
+                    <div class="proof-label">Connectors<br>indexed & searchable</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">2-Click</div>
+                    <div class="proof-label">Copy package or<br>full log4j2 snippet</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Secure</div>
+                    <div class="proof-label">No payloads or<br>credentials sent</div>
+                </div>
+                <div class="proof-item">
+                    <div class="proof-number">Free</div>
+                    <div class="proof-label">Open source<br>No registrations</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-section" id="how-to-use" role="region" aria-label="How-to Guide">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">Getting Started</span>
+                <h2>How to Use the Debug Package Finder</h2>
+                <p>Go from "which package do I need?" to a pasted logger config in seconds.</p>
+            </div>
+            <div class="how-to-steps">
+                <div class="how-to-step">
+                    <h4>Step 1: Search Your Connector</h4>
+                    <p>Type a connector name, vendor, or keyword (e.g. "salesforce", "aws", "sftp") into the filter box.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 2: Pick a Log Level</h4>
+                    <p>Choose DEBUG or TRACE — this controls the level attribute used in the generated log4j2 snippet.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 3: Copy What You Need</h4>
+                    <p>Click any package name chip to copy just that single package (handy for Anypoint Runtime Manager, which takes one package at a time), or use the log4j icon to copy a ready-made <code>&lt;AsyncLogger&gt;</code> XML block for all packages in that row.</p>
+                </div>
+                <div class="how-to-step">
+                    <h4>Step 4: Paste & Redeploy</h4>
+                    <p>Paste into your project's <code>log4j2.xml</code> under <code>&lt;Loggers&gt;</code>, or into Anypoint Runtime Manager → Settings → Logging, then redeploy or save.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-section tool-section-alt" id="faq" role="region" aria-label="FAQ">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">FAQ</span>
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            <div class="faq-list">
+                <details class="faq-item">
+                    <summary>Can I contribute a MuleSoft debug package?</summary>
+                    <div class="faq-answer">
+                        Yes. Update the <a href="https://github.com/Upendra-Thunuguntla/upendra-thunuguntla.github.io/blob/main/tools/mule-debug-package-finder/debug-packages.csv" target="_blank" rel="noopener"><code>debug-packages.csv</code></a>
+                        file in the repository, then create a pull request with the change. I will
+                        periodically review and merge contributions.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>What package should I set to DEBUG for HTTP request/response logs?</summary>
+                    <div class="faq-answer">
+                        Set <code>org.mule.service.http.impl.service.HttpMessageLogger</code> (and
+                        <code>org.mule.module.http</code> for Mule 3 apps) to DEBUG to see full HTTP payloads and headers.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Where do I add these logger packages?</summary>
+                    <div class="faq-answer">
+                        Add an <code>&lt;AsyncLogger name="package.name" level="DEBUG"/&gt;</code> entry inside the
+                        <code>&lt;Loggers&gt;</code> block of your <code>log4j2.xml</code>, then redeploy. In
+                        Anypoint Runtime Manager, add the same package/level under Settings → Logging without a redeploy.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Does enabling DEBUG/TRACE logging expose sensitive data?</summary>
+                    <div class="faq-answer">
+                        Yes. Connectors like HTTP, Database, and Salesforce can log full payloads, headers, and
+                        credentials at DEBUG/TRACE. Enable it only temporarily and disable it once you're done troubleshooting.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>Is my data sent to any server?</summary>
+                    <div class="faq-answer">
+                        The connector list itself is static and all filtering happens directly inside your browser.
+                        The only network activity is an anonymous, non-personal counter increment (just a package
+                        name, no payloads or identifiers) sent when you click a package or copy a log4j2 snippet —
+                        this powers the "Most Copied" sort order. No request bodies, logs, or credentials ever leave
+                        your browser.
+                    </div>
+                </details>
+                <details class="faq-item">
+                    <summary>How does "Most Copied" sorting work?</summary>
+                    <div class="faq-answer">
+                        Every time a package name or log4j2 snippet is copied, an anonymous counter for that package
+                        is incremented via a lightweight Cloudflare Worker. Sorting by "Most Copied" ranks connectors
+                        using those aggregate, anonymous counts — no cookies, accounts, or personal data involved.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-section" id="blog-articles" role="region" aria-label="From the Blog">
+        <div class="container">
+            <div class="tool-section-header">
+                <span class="tool-section-label">Learn More</span>
+                <h2>From the Blog</h2>
+                <p>Read in-depth explanations, architect tips, and tutorials about API integrations.</p>
+            </div>
+            <div class="blog-grid" data-blog-type="blog-card" data-blog-limit="2">
+                <p style="color:var(--text-muted)">Loading latest articles...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="support-banner">
+            <div class="support-banner-text">
+                <h3>🤠 Find this tool useful?</h3>
+                <p>All utilities are free and open source. If this saved you time, a coffee is always appreciated!</p>
+            </div>
+            <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                data-name="bmc-button" data-slug="upendra.thunuguntla" data-color="#FFDD00" data-emoji="🤠"
+                data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000"
+                data-coffee-color="#ffffff"></script>
+        </div>
+    </div>
+
+    <div class="related-tools" role="navigation" aria-label="Related tools">
+        <div class="container">
+            <h3 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
+                Related Tools
+            </h3>
+            <div class="related-tools-grid">
+                <a href="/tools/mule2curl/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">⚡</span>
+                    <div>
+                        <div class="name">MuleLog to cURL</div>
+                        <div class="desc">Extract HTTP requests from logs</div>
+                    </div>
+                </a>
+                <a href="/tools/secure-properties-generator/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">🔐</span>
+                    <div>
+                        <div class="name">Secure Properties Generator</div>
+                        <div class="desc">Encrypt/decrypt Mule properties</div>
+                    </div>
+                </a>
+                <a href="/tools/cron-builder/" class="related-tool-link">
+                    <span class="icon" aria-hidden="true">⏱️</span>
+                    <div>
+                        <div class="name">Cron Expression Builder</div>
+                        <div class="desc">Visually build Quartz cron schedules</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra Thunuguntla</a> ❤️ ·
+            <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">GitHub</a>
+            <br>
+            All tools run fully client-side. No sensitive data ever hits our hosting servers.
+        </div>
+    </footer>
+
+    <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/blogs-loader.js"></script>
+    <script src="/assets/js/analytics.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
