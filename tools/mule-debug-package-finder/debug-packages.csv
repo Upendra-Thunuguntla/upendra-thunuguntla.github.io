@@ -6,7 +6,7 @@ Salesforce Composite,Batched requests to Salesforce,com.mulesoft.connectors.sale
 Ftp,Ftp in Mule applications.,org.mule.extension.ftp,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Sftp,Transfers and manages files using the Secure File Transfer Protocol.,org.mule.extension.sftp,"com.jcraft, org.apache.sshd",,Connector 1.x uses com.jcraft; Connector 2.x uses org.apache.sshd,https://help.salesforce.com/s/articleView?id=001116192&type=1
 FTPS,FTPS over TLS,com.mulesoft.extension.ftps,org.mule.extension.ftp,Enable the FTP package as well because FTPS uses the FTP connector.,,https://help.salesforce.com/s/articleView?id=001116192&type=1
-Database (DB),Connects to relational databases via JDBC,org.mule.extension.db,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
+Database (DB),Connects to relational databases via JDBC,"org.mule.extension.db,org.mule.db.commons",,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 File,Reads and writes files on the local filesystem,org.mule.extension.file,,,,https://help.salesforce.com/s/articleView?id=001116192&type=1
 Sockets,TCP/UDP socket connections,org.mule.extension.socket
 Email,Email messaging,org.mule.extension.email,"com.sun.mail, javax.mail",,,https://help.salesforce.com/s/articleView?id=001116192&type=1
