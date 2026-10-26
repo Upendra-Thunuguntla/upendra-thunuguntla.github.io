@@ -68,7 +68,7 @@
           "name": "How does the tool handle secure properties?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "If your YAML config contains encrypted values wrapped in ![val], selecting \"Keys Only\" mode will automatically prepend the secure:: prefix to those property keys, keeping them aligned with MuleSoft's Secure Properties standards."
+            "text": "Keys Only mode lets you prefix keys containing ![encrypted] values, all keys, or use a custom prefix before applying an optional wrapper."
           }
         },
         {
@@ -282,7 +282,7 @@
     </script>
 </head>
 
-<body class="tool-page">
+<body class="tool-page converter-page">
 
     <nav class="nav">
         <div class="nav-inner">
@@ -328,7 +328,69 @@
     <div class="tool-workspace">
         <div class="container">
 
-            <div class="workspace-grid workspace-grid-3col">
+        <div class="converter-direction">
+          <span>Reverse conversion</span>
+          <a href="/tools/props2yaml/">Properties to YAML <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <fieldset class="converter-options">
+          <legend>Output options</legend>
+          <div class="converter-mode-control">
+            <span class="converter-mode-label">Output mode</span>
+            <div class="converter-mode-segmented" role="group" aria-label="Output mode">
+              <button type="button" class="active" data-output-mode="values" aria-pressed="true" tabindex="0"
+                onclick="y2p_setOutputMode('values')" onkeydown="y2p_outputModeKeydown(event)">Key/value</button>
+              <button type="button" data-output-mode="strip" aria-pressed="false" tabindex="-1"
+                onclick="y2p_setOutputMode('strip')" onkeydown="y2p_outputModeKeydown(event)">Blank values</button>
+              <button type="button" data-output-mode="keys" aria-pressed="false" tabindex="-1"
+                onclick="y2p_setOutputMode('keys')" onkeydown="y2p_outputModeKeydown(event)">Keys only</button>
+            </div>
+          </div>
+          <label class="converter-option converter-option-select converter-mode-option" data-visible-modes="keys" hidden>
+            <span>Key wrapper</span>
+            <select id="keyWrapper" class="form-control" onchange="y2p_convert()" disabled>
+              <option value="none">None</option>
+              <option value="placeholder">${key}</option>
+              <option value="mule">Mule::p("key")</option>
+            </select>
+          </label>
+          <label class="converter-option converter-option-select converter-prefix-option converter-mode-option" data-visible-modes="keys" hidden>
+            <span>Key prefix</span>
+            <select id="keyPrefixMode" class="form-control" onchange="y2p_updatePrefixOptions()" disabled>
+              <option value="encrypted">Add secure:: to ![...] keys</option>
+              <option value="all">Add secure:: to all keys</option>
+              <option value="custom">Add a custom prefix to keys</option>
+            </select>
+            <input type="text" id="customKeyPrefix" class="form-control converter-custom-prefix"
+              placeholder="e.g. secure::" aria-label="Custom key prefix" oninput="y2p_convert()" hidden disabled>
+          </label>
+          <label class="converter-option converter-option-select converter-mode-option" data-visible-modes="values,strip">
+            <span>Property delimiter</span>
+            <select id="propertyDelimiter" class="form-control" title="YAML has no property delimiter; Auto uses the standard equals sign." onchange="y2p_convert()">
+              <option value="auto">Auto (=)</option>
+              <option value="=">Equals (=)</option>
+              <option value=":">Colon (:)</option>
+            </select>
+          </label>
+          <label class="converter-option converter-option-select">
+            <span>Array indexes</span>
+            <select id="arrayNotation" class="form-control" title="YAML does not specify property index notation; Auto uses dotted indexes." onchange="y2p_convert()">
+              <option value="auto">Auto (dotted)</option>
+              <option value="dot">Dotted (items.0)</option>
+              <option value="bracket">Bracketed (items[0])</option>
+            </select>
+          </label>
+          <label class="converter-option">
+            <input type="checkbox" id="sortKeys" onchange="y2p_convert()">
+            <span>Sort keys alphabetically</span>
+          </label>
+          <label class="converter-option">
+            <input type="checkbox" id="preserveYamlComments" checked onchange="y2p_convert()">
+            <span>Keep standalone comments at top</span>
+          </label>
+        </fieldset>
+
+            <div class="workspace-grid workspace-grid-3col converter-grid">
                 <!-- ── Left Panel: Input ── -->
                 <div class="workspace-panel" style="display:flex; flex-direction:column;">
                     <div class="panel-header">
@@ -341,57 +403,35 @@
                         </div>
                     </div>
 
-                    <div class="editor-wrapper">
-                        <textarea id="yamlTextarea" class="code-textarea" oninput="y2p_convert()" spellcheck="false"
+                      <div class="panel-footer-row converter-control-row">
+                        <label class="btn btn-outline converter-upload" for="yamlFileInput">
+                          <i class="fas fa-file-upload"></i>&nbsp; <span id="yaml-file-label">Upload .yaml File</span>
+                          <input type="file" accept=".yaml,.yml" id="yamlFileInput" onchange="y2p_openFile(event)"
+                            style="display:none;">
+                        </label>
+                      </div>
+
+                    <div class="editor-wrapper converter-editor-wrap">
+                      <textarea id="yamlTextarea" class="code-textarea converter-editor" oninput="y2p_convert()" spellcheck="false"
                             placeholder="Paste YAML content here&#10;&#10;database:&#10;  host: &quot;localhost&quot;&#10;  port: 5432"
                             style="flex:1;"></textarea>
                     </div>
 
-                    <div class="options-bar"
-                        style="margin-top:var(--space-md); margin-bottom:0; background:var(--surface-2); border-radius:var(--radius-sm); padding:var(--space-xs) var(--space-sm);">
-                        <div class="option-row" style="margin-bottom:0;">
-                            <input type="checkbox" id="keysOnly" onclick="checkCheckboxes('keysOnly'); y2p_convert()">
-                            <label for="keysOnly" style="font-size:0.75rem;">Get <strong>Keys only</strong> (no
-                                values)</label>
-                        </div>
-                        <div class="option-row" style="margin-bottom:0; padding-left:1rem;">
-                            <input type="checkbox" id="addGenericProp"
-                                onclick="checkCheckboxes('addGenericProp'); y2p_convert()" disabled>
-                            <label for="addGenericProp" style="font-size:0.75rem;">Wrap in
-                                <code>${<!-- -->key}</code></label>
-                        </div>
-                        <div class="option-row" style="margin-bottom:0; padding-left:1rem;">
-                            <input type="checkbox" id="addMuleProp"
-                                onclick="checkCheckboxes('addMuleProp'); y2p_convert()" disabled>
-                            <label for="addMuleProp" style="font-size:0.75rem;">Wrap in
-                                <code>Mule::p("key")</code></label>
-                        </div>
-                    </div>
-
-                    <div class="panel-footer-row">
-                        <label class="btn btn-outline" for="yamlFileInput"
-                            style="width:100%; border-style:dashed; margin:0; justify-content:center;">
-                            <i class="fas fa-file-upload"></i>&nbsp; <span id="yaml-file-label">Upload .yaml File</span>
-                            <input type="file" accept=".yaml,.yml" id="yamlFileInput" onchange="y2p_openFile(event)"
-                                style="display:none;">
-                        </label>
-                    </div>
                 </div>
 
                 <!-- ── Middle Action: Convert ── -->
-                <div class="workspace-middle" style="flex-direction:column; gap:var(--space-md);">
-                    <button class="btn-convert-middle" onclick="y2p_convert()" title="Flatten YAML">
+                <div class="workspace-middle converter-actions">
+                  <button class="btn-convert-middle" onclick="y2p_convert()" title="Convert YAML to Properties">
                         <i class="fas fa-arrow-right"></i>
+                    <span class="btn-convert-text">Convert</span>
                     </button>
-                    <button class="btn btn-ghost btn-sm" onclick="y2p_removeValues()"
-                        style="font-size:0.7rem; white-space:nowrap; opacity:0.8; padding:3px 6px;"
-                        title="Strip Values Only">Strip Vals</button>
+                  <span class="converter-live"><i class="fas fa-bolt"></i> Live preview</span>
                 </div>
 
                 <!-- ── Right Panel: Output ── -->
                 <div class="workspace-panel" style="display:flex; flex-direction:column;">
                     <div class="panel-header">
-                        <span class="panel-title">Output: Properties</span>
+                        <span id="y2p-output-title" class="panel-title">Output: Properties</span>
                         <div class="panel-actions">
                             <button id="y2p-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard"
                                 onclick="y2p_copy()"><i class="fas fa-copy"></i> Copy</button>
@@ -400,17 +440,19 @@
                         </div>
                     </div>
 
-                    <div class="editor-wrapper">
-                        <textarea id="propertiesOutput" class="code-output" readonly
+                      <div class="panel-footer-row converter-control-row">
+                        <label for="filterProp" class="converter-filter-label">Filter output</label>
+                        <input type="text" id="filterProp" class="filter-input" placeholder="Filter results…"
+                          title="Filter output by property key or value" disabled oninput="y2p_filter(this.value)"
+                          style="flex:1; margin:0;">
+                      </div>
+
+                    <div class="editor-wrapper converter-editor-wrap">
+                      <textarea id="propertiesOutput" class="code-output converter-editor" readonly
                             placeholder="Properties output will appear here…"
-                            style="flex:1; min-height:280px;"></textarea>
+                        style="flex:1;"></textarea>
                     </div>
 
-                    <div class="panel-footer-row">
-                        <input type="text" id="filterProp" class="filter-input" placeholder="Filter results…"
-                            title="Filter output by property key or value" disabled oninput="y2p_filter(this.value)"
-                            style="flex:1; margin:0;">
-                    </div>
                     <div id="y2p-filename-group" style="display:none; gap:var(--space-xs); align-items:center;">
                         <input type="text" id="y2pFileName" class="filter-input"
                             style="width:120px; margin:0; padding:6px 10px;" placeholder="mule-config">
@@ -426,8 +468,7 @@
 
         <div class="info-box" style="margin-top:var(--space-xl);">
             <span class="info-box-icon">💡</span>
-            <span>Encrypted values starting with <code>![</code> will automatically get the <code>secure::</code>
-                prefix when using Keys Only mode.</span>
+            <span>In Keys only mode, choose whether to prefix encrypted keys, all keys, or use your own prefix.</span>
         </div>
 
     </div>
@@ -522,10 +563,8 @@
                 </details>
                 <details class="faq-item">
                     <summary>How does the tool handle secure properties?</summary>
-                    <div class="faq-answer">If your YAML config contains encrypted values wrapped in
-                        <code>![val]</code>, selecting "Keys Only" mode will automatically prepend the
-                        <code>secure::</code> prefix to those property keys, keeping them aligned with MuleSoft's Secure
-                        Properties standards.</div>
+                    <div class="faq-answer">Keys Only mode lets you prefix keys containing <code>![encrypted]</code>
+                      values, all keys, or use a custom prefix before applying an optional wrapper.</div>
                 </details>
                 <details class="faq-item">
                     <summary>Is my configuration file sent to any server?</summary>

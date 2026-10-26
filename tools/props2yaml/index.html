@@ -68,7 +68,7 @@
           "name": "Can I use comments in my properties file?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Single line comments starting with # are preserved during input parsing to help you maintain contextual notes in your config configurations."
+            "text": "Standalone # and ! comments can be retained at the top of the generated YAML. Their original positions are not retained."
           }
         },
         {
@@ -76,7 +76,15 @@
           "name": "Does this tool support lists or arrays?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Currently, properties files representing array elements (e.g., list[0]=value, list[1]=value) are parsed as standard dotted strings. You can easily adjust the resulting YAML indentation manually if list syntax is required."
+            "text": "Auto mode recognizes bracketed and dotted numeric indexes and converts them to YAML sequences. Use the dropdown to force sequences or preserve indexed keys."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are property value types inferred?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "MuleSoft-safe mode converts booleans and numbers to YAML scalar types. Null-like values are passed through as text for developers to handle manually."
           }
         }
       ]
@@ -282,7 +290,7 @@
     </script>
 </head>
 
-<body class="tool-page">
+<body class="tool-page converter-page">
 
   <nav class="nav">
     <div class="nav-inner">
@@ -327,7 +335,81 @@
   <div class="tool-workspace">
     <div class="container">
 
-      <div class="workspace-grid workspace-grid-3col">
+      <div class="converter-direction">
+        <span>Reverse conversion</span>
+        <a href="/tools/yaml2props/">YAML to Properties <i class="fas fa-arrow-right"></i></a>
+      </div>
+
+      <fieldset class="converter-options">
+        <legend>Output options</legend>
+        <label class="converter-option converter-option-select">
+          <span>Input separator</span>
+          <select id="p2y-separator" class="form-control" onchange="p2y_convert()">
+            <option value="auto">Auto-detect (=, :, whitespace)</option>
+            <option value="equals">Equals (=)</option>
+            <option value="colon">Colon (:)</option>
+            <option value="whitespace">Whitespace</option>
+          </select>
+        </label>
+        <label class="converter-option converter-mode-option" data-visible-modes="values,strip">
+          <input type="checkbox" id="p2y-nest-dotted" checked onchange="p2y_convert()">
+          <span>Nest dotted keys</span>
+        </label>
+        <div class="converter-mode-control">
+          <span class="converter-mode-label">Output mode</span>
+          <div class="converter-mode-segmented" role="group" aria-label="Output mode">
+            <button type="button" class="active" data-output-mode="values" aria-pressed="true" tabindex="0"
+              onclick="p2y_setOutputMode('values')" onkeydown="p2y_outputModeKeydown(event)">Key/value</button>
+            <button type="button" data-output-mode="strip" aria-pressed="false" tabindex="-1"
+              onclick="p2y_setOutputMode('strip')" onkeydown="p2y_outputModeKeydown(event)">Blank values</button>
+            <button type="button" data-output-mode="keys" aria-pressed="false" tabindex="-1"
+              onclick="p2y_setOutputMode('keys')" onkeydown="p2y_outputModeKeydown(event)">Keys only</button>
+          </div>
+        </div>
+        <label class="converter-option converter-option-select converter-mode-option" data-visible-modes="keys" hidden>
+          <span>Surround keys</span>
+          <select id="p2y-key-wrapper" class="form-control" onchange="p2y_convert()" disabled>
+            <option value="none">None</option>
+            <option value="placeholder">${key}</option>
+            <option value="mule">Mule::p("key")</option>
+          </select>
+        </label>
+        <label class="converter-option converter-option-select converter-prefix-option converter-mode-option" data-visible-modes="keys" hidden>
+          <span>Key prefix</span>
+          <select id="p2y-prefix-mode" class="form-control" onchange="p2y_updatePrefixOptions()" disabled>
+            <option value="encrypted">Add secure:: to ![...] keys</option>
+            <option value="all">Add secure:: to all keys</option>
+            <option value="custom">Add a custom prefix to keys</option>
+          </select>
+          <input type="text" id="p2y-custom-prefix" class="form-control converter-custom-prefix"
+            placeholder="e.g. secure::" aria-label="Custom key prefix" oninput="p2y_convert()" hidden disabled>
+        </label>
+        <label class="converter-option converter-option-select converter-mode-option" data-visible-modes="values,strip">
+          <span>Indexed arrays</span>
+          <select id="p2y-array-mode" class="form-control" onchange="p2y_convert()">
+            <option value="auto">Auto-detect indexed keys</option>
+            <option value="sequence">Always make sequences</option>
+            <option value="preserve">Keep indexes as keys</option>
+          </select>
+        </label>
+        <label class="converter-option converter-option-select converter-mode-option" data-visible-modes="values">
+          <span>Scalar types</span>
+          <select id="p2y-value-types" class="form-control" title="MuleSoft-safe mode infers booleans and numbers. Null-like values, placeholders, expressions, and secure values stay as text." onchange="p2y_convert()">
+            <option value="mulesoft">Auto (MuleSoft-safe)</option>
+            <option value="text">Keep all values as text</option>
+          </select>
+        </label>
+        <label class="converter-option">
+          <input type="checkbox" id="p2y-sort-keys" onchange="p2y_convert()">
+          <span>Sort keys alphabetically</span>
+        </label>
+        <label class="converter-option">
+          <input type="checkbox" id="p2y-preserve-comments" checked onchange="p2y_convert()">
+          <span>Keep comments at top</span>
+        </label>
+      </fieldset>
+
+      <div class="workspace-grid workspace-grid-3col converter-grid">
         <!-- ── Left Panel: Input ── -->
         <div class="workspace-panel" style="display:flex; flex-direction:column;">
           <div class="panel-header">
@@ -340,34 +422,35 @@
             </div>
           </div>
 
-          <div class="editor-wrapper">
-            <textarea id="propTextarea" class="code-textarea" oninput="p2y_convert()" spellcheck="false"
-              placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"
-              style="flex:1;"></textarea>
-          </div>
-
-          <div class="panel-footer-row">
-            <label class="btn btn-outline" for="propFileInput"
-              style="width:100%; border-style:dashed; margin:0; justify-content:center;">
-              <i class="fas fa-file-upload"></i>&nbsp; <span id="prop-file-label">Upload .properties
-                File</span>
+          <div class="panel-footer-row converter-control-row">
+            <label class="btn btn-outline converter-upload" for="propFileInput">
+              <i class="fas fa-file-upload"></i>&nbsp; <span id="prop-file-label">Upload .properties File</span>
               <input type="file" accept=".properties,.prop" id="propFileInput" onchange="p2y_openFile(event)"
                 style="display:none;">
             </label>
           </div>
+
+          <div class="editor-wrapper converter-editor-wrap">
+            <textarea id="propTextarea" class="code-textarea converter-editor" oninput="p2y_convert()" spellcheck="false"
+              placeholder="Paste Properties content here&#10;&#10;database.host=localhost&#10;database.port=5432"
+              style="flex:1;"></textarea>
+          </div>
+
         </div>
 
         <!-- ── Middle Action: Convert ── -->
-        <div class="workspace-middle">
-          <button class="btn-convert-middle" onclick="p2y_convert()" title="Convert">
+        <div class="workspace-middle converter-actions">
+          <button class="btn-convert-middle" onclick="p2y_convert()" title="Convert Properties to YAML">
             <i class="fas fa-arrow-right"></i>
+            <span class="btn-convert-text">Convert</span>
           </button>
+          <span class="converter-live"><i class="fas fa-bolt"></i> Live preview</span>
         </div>
 
         <!-- ── Right Panel: Output ── -->
         <div class="workspace-panel" style="display:flex; flex-direction:column;">
           <div class="panel-header">
-            <span class="panel-title">Output: YAML</span>
+            <span id="p2y-output-title" class="panel-title">Output: YAML</span>
             <div class="panel-actions">
               <button id="p2y-copy-btn" class="btn btn-ghost btn-sm" title="Copy to Clipboard" onclick="p2y_copy()"><i
                   class="fas fa-copy"></i> Copy</button>
@@ -376,19 +459,21 @@
             </div>
           </div>
 
-          <div class="editor-wrapper">
-            <textarea id="yamlOutput" class="code-output" readonly placeholder="YAML output will appear here…"
-              style="flex:1; min-height:280px;"></textarea>
+          <div class="panel-footer-row converter-control-row">
+            <label for="filterYaml" class="converter-filter-label">Filter output</label>
+            <input type="text" id="filterYaml" class="filter-input" placeholder="Filter by key or value…"
+              title="Show YAML for matching property keys or values" disabled oninput="p2y_convert()" style="flex:1; margin:0;">
           </div>
 
-          <div class="panel-footer-row">
-            <input type="text" id="filterYaml" class="filter-input" placeholder="Filter results…"
-              title="Filter output by property key or value" disabled oninput="p2y_convert()" style="flex:1; margin:0;">
+          <div class="editor-wrapper converter-editor-wrap">
+            <textarea id="yamlOutput" class="code-output converter-editor" readonly placeholder="YAML output will appear here…"
+              style="flex:1;"></textarea>
           </div>
+
           <div id="p2y-filename-group" style="display:none; gap:var(--space-xs); align-items:center;">
             <input type="text" id="p2yFileName" class="filter-input" style="width:120px; margin:0; padding:6px 10px;"
               placeholder="config">
-            <span
+            <span id="p2y-file-extension"
               style="color:var(--text-muted); font-size:0.8rem; font-family:var(--font-mono); margin-left:-4px;">.yaml</span>
             <button class="btn btn-success btn-sm" onclick="p2y_doDownload()">DL</button>
             <button class="btn btn-ghost btn-sm" onclick="p2y_cancelDownload()" style="padding:4px 8px;">✕</button>
@@ -399,8 +484,8 @@
 
     <div class="info-box" style="margin-top:var(--space-xl);">
       <span class="info-box-icon">💡</span>
-      <span>The tool automatically converts dotted keys like <code>app.db.host</code> into a nested YAML
-        structure. Line comments starting with <code>#</code> are preserved during input.</span>
+      <span>The tool converts dotted keys like <code>app.db.host</code> into nested YAML. Comment lines are retained
+        at the top of the output when enabled.</span>
     </div>
 
   </div>
@@ -492,14 +577,18 @@
         </details>
         <details class="faq-item">
           <summary>Can I use comments in my properties file?</summary>
-          <div class="faq-answer">Yes. Single line comments starting with <code>#</code> are preserved during input
-            parsing to help you maintain contextual notes in your config configurations.</div>
+          <div class="faq-answer">Comment lines beginning with <code>#</code> or <code>!</code> can be retained at the
+            top of the generated YAML. Their original position relative to properties is not retained.</div>
         </details>
         <details class="faq-item">
           <summary>Does this tool support lists or arrays?</summary>
-          <div class="faq-answer">Currently, properties files representing array elements (e.g.,
-            <code>list[0]=value</code>, <code>list[1]=value</code>) are parsed as standard dotted strings. You can
-            easily adjust the resulting YAML indentation manually if list syntax is required.</div>
+          <div class="faq-answer">Auto mode recognizes bracketed and dotted numeric indexes and converts them to
+            YAML sequences. Use the dropdown to force sequences or preserve indexed keys.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How are property value types inferred?</summary>
+          <div class="faq-answer">MuleSoft-safe mode converts booleans and numbers to YAML scalar types. Null-like
+            values are passed through as text for developers to handle manually. Text mode preserves every value.</div>
         </details>
       </div>
     </div>

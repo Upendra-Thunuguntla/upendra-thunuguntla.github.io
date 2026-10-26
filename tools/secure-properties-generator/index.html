@@ -360,17 +360,6 @@
     <div class="tool-workspace" style="padding-top: var(--space-lg);">
         <div class="container" style="max-width: 900px;">
 
-            <!-- ─── OPERATION MODE (Encrypt/Decrypt) ─── -->
-            <div class="mode-capsule-selector"
-                style="display:flex; justify-content:center; margin-bottom:var(--space-lg);">
-                <div class="mode-capsule">
-                    <button id="mode-encrypt" class="mode-btn active" onclick="setMode('encrypt')"><i
-                            class="fas fa-lock"></i> Encrypt</button>
-                    <button id="mode-decrypt" class="mode-btn" onclick="setMode('decrypt')"><i
-                            class="fas fa-unlock"></i> Decrypt</button>
-                </div>
-            </div>
-
             <!-- ─── CONFIGURATION SECTION ─── -->
             <div class="config-card" style="padding: var(--space-md); margin-bottom: var(--space-lg);">
                 <div class="config-grid">
@@ -510,11 +499,13 @@
                 </div>
             </div>
 
-            <!-- ─── ACTION BUTTON ─── -->
-            <div style="text-align:center; margin: var(--space-md) 0;">
-                <button class="btn btn-primary btn-lg" id="btn-run" onclick="runOperation()"
-                    style="padding: 0.8rem 2.5rem; font-size: 1rem; border-radius:100px;">
-                    <i class="fas fa-lock"></i> Run Encryption
+            <!-- ─── ACTION BUTTONS ─── -->
+            <div class="operation-actions">
+              <button class="btn btn-primary btn-lg" id="mode-encrypt" onclick="runOperation('encrypt')">
+                <i class="fas fa-lock"></i> Encrypt
+              </button>
+              <button class="btn btn-primary btn-lg" id="mode-decrypt" onclick="runOperation('decrypt')">
+                <i class="fas fa-unlock"></i> Decrypt
                 </button>
             </div>
 

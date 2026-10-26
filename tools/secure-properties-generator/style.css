@@ -315,6 +315,16 @@ textarea.code-textarea, textarea.code-output { min-height: 120px; font-size: 0.8
 
 .btn-primary.btn-lg { padding: 0.5rem 2rem !important; font-size: 0.9rem !important; border-radius: 50px !important; }
 
+.operation-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0;
+}
+.operation-actions .btn {
+    flex: 0 1 220px;
+}
+
 /* ─── Switch & Controls ─── */
 .switch-row { height: 36px; gap: 8px; }
 .switch-label { font-size: 0.8rem; font-weight: 600; }
@@ -485,6 +495,10 @@ textarea.code-textarea, textarea.code-output { min-height: 120px; font-size: 0.8
     .config-grid { grid-template-columns: 1fr; }
     .config-item.wide { grid-column: span 1; }
     .panel-flex-header { flex-direction: column; align-items: flex-start !important; gap: var(--space-md); }
+}
+
+@media (max-width: 400px) {
+    .operation-actions .btn { flex: 1; }
 }
 
 /* ─── Pulse Animation ─── */

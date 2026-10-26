@@ -2,10 +2,67 @@
    YAML2Props — YAML → Properties Converter
    ══════════════════════════════════════════════ */
 
-var keyPrefix = "", keySuffix = "", globalY2pOp = "";
+var globalY2pOp = "";
+var globalY2pOutputMode = 'values';
+var globalY2pStripValues = false;
+
+function y2p_getOutputMode() {
+    return globalY2pOutputMode;
+}
+
+function y2p_syncOutputMode() {
+    document.querySelectorAll('.converter-mode-segmented button[data-output-mode]').forEach(button => {
+        const active = button.dataset.outputMode === globalY2pOutputMode;
+        button.setAttribute('aria-pressed', String(active));
+        button.tabIndex = active ? 0 : -1;
+        button.classList.toggle('active', active);
+    });
+}
+
+function y2p_updateModeOptionVisibility() {
+    const outputMode = y2p_getOutputMode();
+    document.querySelectorAll('.converter-mode-option[data-visible-modes]').forEach(option => {
+        option.hidden = !option.dataset.visibleModes.split(',').includes(outputMode);
+    });
+}
+
+function y2p_setOutputMode(mode) {
+    globalY2pOutputMode = mode;
+    y2p_syncOutputMode();
+    y2p_updateOptions();
+}
+
+function y2p_outputModeKeydown(event) {
+    const buttons = [...event.currentTarget.parentElement.querySelectorAll('button[data-output-mode]')];
+    const currentIndex = buttons.indexOf(event.currentTarget);
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % buttons.length;
+    else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = buttons.length - 1;
+    else return;
+    event.preventDefault();
+    buttons[nextIndex].focus();
+    buttons[nextIndex].click();
+}
 
 function y2p_loadExample() {
-    document.getElementById('yamlTextarea').value = "string: Hello, World!\nnumber: 42\nboolean: true\ndatabase:\n  host: \"localhost\"\n  port: 5432\n  name: mydb\napp:\n  name: mule-app\n  version: 1.0.0";
+    document.getElementById('yamlTextarea').value = "# MuleSoft application settings\napp:\n  name: orders-api\n  enabled: true\n  retry-count: 3\nhttp:\n  port: 8081\n  base-path: /api\nfeatures:\n  - inventory\n  - checkout\ndatabase:\n  password: ![demo-cipher]";
+    globalY2pOutputMode = 'values';
+    globalY2pStripValues = false;
+    y2p_syncOutputMode();
+    document.getElementById('keyWrapper').value = 'none';
+    document.getElementById('keyWrapper').disabled = true;
+    document.getElementById('keyPrefixMode').value = 'encrypted';
+    document.getElementById('customKeyPrefix').value = '';
+    y2p_updateOptions();
+    document.getElementById('propertyDelimiter').value = 'auto';
+    document.getElementById('arrayNotation').value = 'auto';
+    document.getElementById('sortKeys').checked = false;
+    document.getElementById('preserveYamlComments').checked = true;
+    document.getElementById('filterProp').value = '';
+    document.getElementById('yaml-file-label').textContent = 'Upload .yaml File';
+    document.getElementById('yamlFileInput').value = '';
     y2p_convert();
     track_event('load_example', { tool: 'yaml2props' });
 }
@@ -19,75 +76,127 @@ function y2p_openFile(event) {
     track_event('file_upload', { tool: 'yaml2props', file_type: 'yaml' });
 }
 
-function checkCheckboxes(data) {
-    const keysOnly = document.getElementById('keysOnly');
-    const addGen = document.getElementById('addGenericProp');
-    const addMule = document.getElementById('addMuleProp');
-    if (data === 'keysOnly') {
-        addGen.disabled = !keysOnly.checked;
-        addMule.disabled = !keysOnly.checked;
-        if (!keysOnly.checked) { addGen.checked = false; addMule.checked = false; }
-    } else if (data === 'addGenericProp') { addMule.checked = false; }
-    else if (data === 'addMuleProp') { addGen.checked = false; }
+function y2p_extractComments(input) {
+    return input.split(/\r?\n/).filter(line => /^\s*#/.test(line)).map(line => line.trim());
 }
 
-function convertYamlToProperties(yamlData, keysOnly) {
-    const data = jsyaml.load(yamlData);
-    let properties = "";
-    for (const key of Object.keys(data)) {
-        function processObject(obj, prefix) {
-            if (typeof obj === "object" && obj !== null) {
-                for (const k of Object.keys(obj)) {
-                    const val = obj[k];
-                    if (typeof val === "object" && val !== null) processObject(val, `${prefix}${k}.`);
-                    else {
-                        const sVal = String(val);
-                        if (keysOnly) properties += (sVal.startsWith('![') ? `${keyPrefix}secure::${prefix}${k}${keySuffix}` : `${keyPrefix}${prefix}${k}${keySuffix}`) + "\n";
-                        else properties += `${prefix}${k}=${sVal}\n`;
-                    }
-                }
-            } else {
-                const sObj = String(obj);
-                if (keysOnly) properties += (sObj.startsWith('![') ? `${keyPrefix}secure::${prefix.slice(0, -1)}${keySuffix}` : `${keyPrefix}${prefix.slice(0, -1)}${keySuffix}`) + "\n";
-                else properties += `${prefix.slice(0, -1)}=${sObj}\n`;
-            }
-        }
-        processObject(data[key], `${key}.`);
+function y2p_pathText(parts, notation) {
+    return parts.reduce((path, part) => {
+        if (typeof part === 'number' && notation === 'bracket') return `${path}[${part}]`;
+        return `${path}${path ? '.' : ''}${part}`;
+    }, '');
+}
+
+function y2p_escapeKey(value) {
+    return String(value).replace(/\\/g, '\\\\').replace(/[\t\f]/g, char => char === '\t' ? '\\t' : '\\f')
+        .replace(/([ :=#!])/g, '\\$1');
+}
+
+function y2p_escapeValue(value) {
+    return String(value).replace(/\\/g, '\\\\').replace(/\r\n?|\n/g, '\\n')
+        .replace(/\t/g, '\\t').replace(/\f/g, '\\f').replace(/^([ \t]+)/, match => match.replace(/ /g, '\\ ').replace(/\t/g, '\\t'));
+}
+
+function convertYamlToProperties(yamlData) {
+    const normalizedYaml = yamlData.replace(/(:\s*)!\[([^\]\r\n]*)\]/g,
+        (_, prefix, encryptedValue) => `${prefix}${JSON.stringify(`![${encryptedValue}]`)}`);
+    const data = jsyaml.load(normalizedYaml);
+    if (!data || typeof data !== 'object' || Array.isArray(data)) {
+        throw new Error('The YAML document must have a mapping at its root.');
     }
-    return properties;
+
+    const keysOnly = y2p_getOutputMode() === 'keys';
+    const wrapper = document.getElementById('keyWrapper').value;
+    const prefixMode = document.getElementById('keyPrefixMode').value;
+    const customPrefix = document.getElementById('customKeyPrefix').value.trim();
+    const delimiterMode = document.getElementById('propertyDelimiter').value;
+    const delimiter = delimiterMode === 'auto' ? '=' : delimiterMode;
+    const notationMode = document.getElementById('arrayNotation').value;
+    const notation = notationMode === 'auto' ? 'dot' : notationMode;
+    const entries = [];
+
+    function addEntry(parts, value) {
+        const originalKey = y2p_pathText(parts, notation);
+        if (!originalKey) return;
+        const hasEncryptedValue = String(value).startsWith('![');
+        const prefix = !keysOnly ? ''
+            : prefixMode === 'all' ? 'secure::'
+                : prefixMode === 'custom' ? customPrefix
+                    : hasEncryptedValue ? 'secure::' : '';
+        const key = `${prefix}${originalKey}`;
+        const wrappedKey = wrapper === 'placeholder' ? `\${${key}}`
+            : wrapper === 'mule' ? `Mule::p("${key}")` : key;
+        const serializedKey = wrapper === 'none' ? `${prefix}${y2p_escapeKey(originalKey)}` : wrappedKey;
+        entries.push(keysOnly ? serializedKey : `${y2p_escapeKey(originalKey)}${delimiter}${globalY2pStripValues ? '' : y2p_escapeValue(value)}`);
+    }
+
+    function visit(value, parts) {
+        if (Array.isArray(value)) {
+            if (!value.length) addEntry(parts, '');
+            else value.forEach((item, index) => visit(item, [...parts, index]));
+        } else if (value && typeof value === 'object') {
+            const keys = Object.keys(value);
+            if (!keys.length) addEntry(parts, '');
+            else keys.forEach(key => visit(value[key], [...parts, key]));
+        } else {
+            addEntry(parts, value === null ? 'null' : value);
+        }
+    }
+
+    Object.keys(data).forEach(key => visit(data[key], [key]));
+    if (document.getElementById('sortKeys').checked) {
+        entries.sort((left, right) => left.localeCompare(right));
+    }
+    return entries.join('\n');
+}
+
+function y2p_updatePrefixOptions() {
+    const keysOnly = y2p_getOutputMode() === 'keys';
+    const prefixMode = document.getElementById('keyPrefixMode');
+    const customPrefix = document.getElementById('customKeyPrefix');
+    prefixMode.disabled = !keysOnly;
+    customPrefix.hidden = !keysOnly || prefixMode.value !== 'custom';
+    customPrefix.disabled = customPrefix.hidden;
+    y2p_convert();
+}
+
+function y2p_updateOptions() {
+    const outputMode = y2p_getOutputMode();
+    const keysOnly = outputMode === 'keys';
+    globalY2pStripValues = outputMode === 'strip';
+    y2p_updateModeOptionVisibility();
+    document.getElementById('keyWrapper').disabled = !keysOnly;
+    y2p_updatePrefixOptions();
+    y2p_convert();
 }
 
 function y2p_convert() {
     const yamlInput = document.getElementById('yamlTextarea').value.trim();
-    if (!yamlInput) { document.getElementById('propertiesOutput').value = ''; return; }
-    const keysOnly = document.getElementById('keysOnly').checked;
-    if (document.getElementById('addGenericProp').checked) { keyPrefix = "${"; keySuffix = "}"; }
-    else if (document.getElementById('addMuleProp').checked) { keyPrefix = 'Mule::p("'; keySuffix = '")'; }
-    else { keyPrefix = ""; keySuffix = ""; }
+    const outputMode = y2p_getOutputMode();
+    const keysOnly = outputMode === 'keys';
+    globalY2pStripValues = outputMode === 'strip';
+    document.getElementById('y2p-output-title').textContent = keysOnly ? 'Output: Property keys'
+        : globalY2pStripValues ? 'Output: Properties (values stripped)' : 'Output: Properties';
+    if (!yamlInput) {
+        document.getElementById('propertiesOutput').value = '';
+        document.getElementById('filterProp').disabled = true;
+        globalY2pOp = '';
+        return;
+    }
     try {
-        const op = convertYamlToProperties(yamlInput, keysOnly);
+        const converted = convertYamlToProperties(yamlInput);
+        const comments = document.getElementById('preserveYamlComments').checked
+            ? y2p_extractComments(yamlInput).join('\n') : '';
+        const op = `${comments ? comments + '\n' : ''}${converted}`;
         document.getElementById('propertiesOutput').value = op;
         document.getElementById('filterProp').disabled = false;
         globalY2pOp = op;
-        track_event('convert', { tool: 'yaml2props', keys_only: keysOnly });
+        track_event('convert', { tool: 'yaml2props', keys_only: keysOnly, strip_values: globalY2pStripValues });
     } catch (e) {
-        document.getElementById('propertiesOutput').value = "❌ Error: " + e.message;
+        document.getElementById('propertiesOutput').value = `Error: ${e.message}`;
         document.getElementById('filterProp').disabled = true;
+        globalY2pOp = '';
     }
-}
-
-function y2p_removeValues() {
-    const yamlInput = document.getElementById('yamlTextarea').value.trim();
-    if (!yamlInput) return;
-    try {
-        const data = jsyaml.load(yamlInput);
-        function clearVals(obj) {
-            for (const k of Object.keys(obj)) { if (typeof obj[k] === "object" && obj[k] !== null) clearVals(obj[k]); else obj[k] = String(obj[k]).startsWith('![') ? "![]" : ""; }
-        }
-        clearVals(data);
-        document.getElementById('propertiesOutput').value = jsyaml.dump(data);
-        track_event('remove_values', { tool: 'yaml2props' });
-    } catch (e) { document.getElementById('propertiesOutput').value = "❌ Error: " + e.message; }
 }
 
 function y2p_filter(q) {
@@ -102,7 +211,12 @@ function y2p_clear() {
     document.getElementById('filterProp').disabled = true;
     document.getElementById('filterProp').value = '';
     document.getElementById('yaml-file-label').textContent = 'Upload .yaml File';
+    document.getElementById('yamlFileInput').value = '';
     document.getElementById('y2p-filename-group').style.display = 'none';
+    globalY2pOutputMode = 'values';
+    globalY2pStripValues = false;
+    y2p_syncOutputMode();
+    y2p_updateOptions();
     globalY2pOp = '';
 }
 

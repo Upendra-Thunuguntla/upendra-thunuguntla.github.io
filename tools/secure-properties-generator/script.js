@@ -25,8 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ─── Mode Toggles (Encrypt / Decrypt) ─── */
 function setMode(m) {
     globalMode = m;
-    document.getElementById('mode-encrypt').classList.toggle('active', m === 'encrypt');
-    document.getElementById('mode-decrypt').classList.toggle('active', m === 'decrypt');
     
     // Toggle Random Key button (only for encrypt)
     const genBtn = document.getElementById('btn-gen-key');
@@ -35,12 +33,6 @@ function setMode(m) {
     const genValBtn = document.getElementById('btn-gen-value');
     if (genValBtn) genValBtn.style.display = (m === 'encrypt' ? 'block' : 'none');
 
-    // Update Run Button
-    const runBtn = document.getElementById('btn-run');
-    if (runBtn) {
-        runBtn.innerHTML = m === 'encrypt' ? '<i class="fas fa-lock"></i> Run Encryption' : '<i class="fas fa-unlock"></i> Run Decryption';
-    }
-    
     updateCopyVisibility();
     updatePlaceholders();
 }
@@ -159,7 +151,12 @@ function toggleKeyVisibility() {
 }
 
 /* ─── Main Execution ─── */
-async function runOperation() {
+async function runOperation(operation) {
+    const encryptBtn = document.getElementById('mode-encrypt');
+    const decryptBtn = document.getElementById('mode-decrypt');
+    if (encryptBtn.disabled || decryptBtn.disabled) return;
+
+    setMode(operation);
     const key = document.getElementById('inp-key').value.trim(); // trimmed key
     const algo = document.getElementById('sel-algo').value;
     const mode_ = document.getElementById('sel-mode').value;
@@ -179,9 +176,10 @@ async function runOperation() {
         return;
     }
 
-    const runBtn = document.getElementById('btn-run');
+    const runBtn = document.getElementById(`mode-${operation}`);
     const oldHtml = runBtn.innerHTML;
-    runBtn.disabled = true;
+    encryptBtn.disabled = true;
+    decryptBtn.disabled = true;
     runBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
     try {
@@ -211,7 +209,8 @@ async function runOperation() {
         showToast(e.message || 'Operation failed', 'error');
         console.error(e);
     } finally {
-        runBtn.disabled = false;
+        encryptBtn.disabled = false;
+        decryptBtn.disabled = false;
         runBtn.innerHTML = oldHtml;
     }
 }
