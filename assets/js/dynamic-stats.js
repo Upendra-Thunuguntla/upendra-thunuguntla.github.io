@@ -5,29 +5,22 @@
 (function() {
     'use strict';
 
-    /** Calculate years since September 2018 */
     function updateExperience() {
-        const startDate = new Date(2018, 8, 1); // September 1st, 2018
         const today = new Date();
-        
-        let years = today.getFullYear() - startDate.getFullYear();
-        let months = today.getMonth() - startDate.getMonth();
-        
-        if (months < 0 || (months === 0 && today.getDate() < startDate.getDate())) {
-            years--;
-        }
+        const experience = [
+            { start: new Date(2018, 8, 1), selector: '#exp-years, .exp-years-dyn, [data-experience="career"]' },
+            { start: new Date(2021, 8, 1), selector: '[data-experience="mulesoft"]' }
+        ];
 
-        const expString = years + '+';
-        
-        // Update elements with the calculated experience
-        const expYearsEl = document.getElementById('exp-years');
-        if (expYearsEl) {
-            expYearsEl.textContent = expString;
-        }
-
-        const dynEls = document.querySelectorAll('.exp-years-dyn');
-        dynEls.forEach(el => {
-            el.textContent = expString;
+        experience.forEach(({ start, selector }) => {
+            let years = today.getFullYear() - start.getFullYear();
+            const months = today.getMonth() - start.getMonth();
+            if (months < 0 || (months === 0 && today.getDate() < start.getDate())) {
+                years--;
+            }
+            document.querySelectorAll(selector).forEach(el => {
+                el.textContent = Math.max(0, years) + '+';
+            });
         });
     }
 

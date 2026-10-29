@@ -550,7 +550,7 @@
         </div>
     </nav>
 
-    <div class="tool-hero">
+    <div class="tool-hero" id="about-tool">
         <div class="container">
             <div class="tool-breadcrumb">
                 <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
@@ -573,8 +573,9 @@
         </div>
     </div>
 
-    <div class="tool-workspace">
+    <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="WhatsApp Read More workspace">
         <div class="container">
+            <a class="workspace-about-link" href="#about-tool">About this tool &uarr;</a>
             <div class="grid grid-2" style="align-items:start; gap:var(--space-xl);">
 
                 <!-- Form Panel -->
@@ -846,25 +847,25 @@
                 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
                 Other Tools</h3>
             <div class="related-tools-grid">
-                <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
+                <a href="/tools/gmail-url/#workspace" class="related-tool-link"><span class="icon">📧</span>
                     <div>
                         <div class="name">Gmail URL Generator</div>
                         <div class="desc">Pre-filled compose links</div>
                     </div>
                 </a>
-                <a href="/tools/salary-calc/" class="related-tool-link"><span class="icon">💰</span>
+                <a href="/tools/salary-calc/#workspace" class="related-tool-link"><span class="icon">💰</span>
                     <div>
                         <div class="name">Salary Hike Calc</div>
                         <div class="desc">Calculate your hike %</div>
                     </div>
                 </a>
-                <a href="/tools/cron-builder/" class="related-tool-link"><span class="icon">⏱️</span>
+                <a href="/tools/cron-builder/#workspace" class="related-tool-link"><span class="icon">⏱️</span>
                     <div>
                         <div class="name">Cron Builder</div>
                         <div class="desc">Build Quartz cron expressions</div>
                     </div>
                 </a>
-                <a href="/tools/secure-properties-generator/" class="related-tool-link"><span class="icon">🔐</span>
+                <a href="/tools/secure-properties-generator/#workspace" class="related-tool-link"><span class="icon">🔐</span>
                     <div>
                         <div class="name">Secure Properties</div>
                         <div class="desc">Encrypt Mule properties</div>

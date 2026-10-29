@@ -41,6 +41,26 @@ upendra.fyi/
 - **Leverage Common CSS (`/assets/css/core.css` and `/assets/css/tool.css`):** Do not write custom styles for standard layouts, page headers, breadcrumbs, inputs, textareas, code blocks, buttons, sections, or footers. The classes are predefined and adapt automatically to themes.
 - **Use Separate CSS (`style.css` in tool folder):** Create a local `style.css` **only** if the tool introduces unique visual elements not represented in the common library (e.g., specific cryptography configuration cards, custom interactive sliders, parsed result breakdown tables, visual nodes). All rules in local files must reference CSS custom variables (tokens) from `core.css` to respect light/dark themes.
 
+### Shared Tool Switcher
+- Keep the navigation's `/#tools` link, `.nav-actions`, shared `home.css`, and `platform.js` in every tool page. The shared script progressively replaces that link with a searchable **All Tools** switcher; without JavaScript, the original link still works.
+- The switcher reuses the embedded `ItemList` JSON-LD catalog. After adding or renaming a tool, run `node scripts/generate-itemlist.js` to update the catalog on the homepage and all tool pages. No separate navigation list is needed.
+- Results are grouped under **Developer Tools** and **The Goofy Zone**, matching the homepage. The `casualPaths` set in `platform.js` identifies Goofy Zone tools; update it when adding or moving a tool into that homepage section. All other catalog tools appear under Developer Tools. Search covers both groups, hides empty groups, and keeps keyboard navigation in displayed order.
+- Each time the switcher opens, it reads the homepage's `dev_tools_order` and `fun_tools_order` localStorage keys. Saved tool IDs take priority within their section; remaining tools follow the homepage default order, not alphabetical or recent-use order. Keep each group's `defaultOrder` in `platform.js` aligned with the homepage card order when adding or moving tools. Invalid or inaccessible saved orders are logged and fall back to defaults.
+- On mobile, the switcher remains visible beside the theme toggle rather than inside the hamburger menu. Search matches names and URL slugs; arrow keys explore results, Enter in search opens the first result, and Escape closes the dialog and restores focus. `Ctrl/Cmd + K` opens it outside editable fields.
+- On desktop, the dialog is centered in the viewport. A fixed **Tools** tab on the right edge opens the same dialog, including when the page is scrolled. The side tab is hidden at mobile widths (768px and below), where the header switcher remains available. Closing restores focus to whichever control opened it; both controls share the dialog's expanded state.
+- The current tool is marked **Current**; choosing it closes the switcher without reloading. Other tools use ordinary same-tab links. The switcher does not save or transfer tool inputs, encryption keys, or navigation history.
+- `platform.js` owns mobile-menu interaction; keep `theme.js` limited to theme and link handling to avoid duplicate menu listeners.
+
+### Shared Experience & FAQ Components
+- Load `/assets/js/dynamic-stats.js` wherever experience is displayed. Use `data-experience="mulesoft"` for completed years since September 2021, or `data-experience="career"` for total career years since September 2018. Keep meaningful fallback text inside the element for visitors without JavaScript; do not use total career years for MuleSoft claims.
+- FAQ accordion styles (`.faq-list`, `.faq-item`, `.faq-answer`) live in `core.css` so both the homepage and tools can reuse native `<details>` / `<summary>` markup.
+- Keep `class="tool-page"` on tool page bodies. The shared file-drop overlay initializes only on tool pages, never on the homepage.
+
+### Workspace Navigation
+- Give the hero `id="about-tool"` and the interactive section `id="workspace"` with `tabindex="-1"` and a descriptive `aria-label`. Include an **About this tool** link back to `#about-tool` at the start of the workspace.
+- Internal tool links (homepage cards, related tools, and the shared switcher) should end in `#workspace`. Shared `tool.css` offsets anchors below the fixed navigation.
+- Use native fragment navigation, not automatic scrolling on page load. Direct visits without a fragment retain the introduction, and existing deep links remain intact. Keep canonical URLs and structured-data URLs fragment-free.
+
 ---
 
 ## 3. HTML Blueprint (`index.html`)
@@ -130,7 +150,7 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
     </nav>
 
     <!-- Tool Hero Banner (Breadcrumbs, Title, Sub-desc, Badge Tags) -->
-    <div class="tool-hero">
+    <div class="tool-hero" id="about-tool">
         <div class="container">
             <nav class="tool-breadcrumb" aria-label="Breadcrumb">
                 <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
@@ -156,8 +176,9 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
     </div>
 
     <!-- Main Workspace Section -->
-    <div class="tool-workspace">
+    <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="[Tool Name] workspace">
         <div class="container">
+            <a class="workspace-about-link" href="#about-tool">About this tool &uarr;</a>
             
             <!-- OPTIONAL: Collapsible Help/Alert Banner -->
             <details class="debug-banner-collapsible" style="margin-bottom: var(--space-lg);">
@@ -352,21 +373,21 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
             </h3>
             <div class="related-tools-grid">
                 <!-- Include 3-4 other tool relative paths -->
-                <a href="/tools/yaml2props/" class="related-tool-link">
+                <a href="/tools/yaml2props/#workspace" class="related-tool-link">
                     <span class="icon" aria-hidden="true">⚙️</span>
                     <div>
                         <div class="name">YAML → Properties</div>
                         <div class="desc">Flatten YAML configurations</div>
                     </div>
                 </a>
-                <a href="/tools/props2yaml/" class="related-tool-link">
+                <a href="/tools/props2yaml/#workspace" class="related-tool-link">
                     <span class="icon" aria-hidden="true">📝</span>
                     <div>
                         <div class="name">Properties → YAML</div>
                         <div class="desc">Build YAML trees from flat property list</div>
                     </div>
                 </a>
-                <a href="/tools/mule2curl/" class="related-tool-link">
+                <a href="/tools/mule2curl/#workspace" class="related-tool-link">
                     <span class="icon" aria-hidden="true">⚡</span>
                     <div>
                         <div class="name">MuleLog to cURL</div>
@@ -390,6 +411,7 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
     <!-- Scripts in order of initialization -->
     <!-- Add external libraries, e.g. js-yaml.min.js here if needed -->
     <script src="/assets/js/platform.js"></script>
+    <script src="/assets/js/dynamic-stats.js"></script>
     <script src="/assets/js/blogs-loader.js"></script>
     <script src="/assets/js/analytics.js"></script>
     <script src="script.js"></script>

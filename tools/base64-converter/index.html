@@ -340,7 +340,7 @@
     </nav>
 
     <!-- Tool Hero Banner -->
-    <div class="tool-hero">
+    <div class="tool-hero" id="about-tool">
         <div class="container">
             <nav class="tool-breadcrumb" aria-label="Breadcrumb">
                 <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
@@ -367,8 +367,9 @@
     </div>
 
     <!-- Main Workspace Section -->
-    <div class="tool-workspace">
+    <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="Base64 converter workspace">
         <div class="container">
+            <a class="workspace-about-link" href="#about-tool">About this tool &uarr;</a>
 
             <!-- OPERATION MODE SELECTOR (Encode/Decode) -->
             <div class="mode-capsule-selector">
@@ -679,21 +680,21 @@
                 Related Tools
             </h3>
             <div class="related-tools-grid">
-                <a href="/tools/secure-properties-generator/" class="related-tool-link">
+                <a href="/tools/secure-properties-generator/#workspace" class="related-tool-link">
                     <span class="icon" aria-hidden="true">🔐</span>
                     <div>
                         <div class="name">Secure Properties</div>
                         <div class="desc">Encrypt properties for MuleSoft</div>
                     </div>
                 </a>
-                <a href="/tools/yaml2props/" class="related-tool-link">
+                <a href="/tools/yaml2props/#workspace" class="related-tool-link">
                     <span class="icon" aria-hidden="true">⚙️</span>
                     <div>
                         <div class="name">YAML → Properties</div>
                         <div class="desc">Flatten YAML configurations</div>
                     </div>
                 </a>
-                <a href="/tools/props2yaml/" class="related-tool-link">
+                <a href="/tools/props2yaml/#workspace" class="related-tool-link">
                     <span class="icon" aria-hidden="true">📝</span>
                     <div>
                         <div class="name">Properties → YAML</div>

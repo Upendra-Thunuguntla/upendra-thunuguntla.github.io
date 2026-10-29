@@ -5,6 +5,8 @@
 
 /* ─── Global Tool Drag & Drop Engine Definition ─── */
 function initGlobalToolDragAndDrop() {
+    if (!document.body.classList.contains('tool-page')) return;
+
     // 1. Prevent default browser behavior (which opens raw file in browser)
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         window.addEventListener(eventName, function (e) {
@@ -229,7 +231,263 @@ function initGlobalToolDragAndDrop() {
 // Export to window object
 window.initGlobalToolDragAndDrop = initGlobalToolDragAndDrop;
 
+function initToolSwitcher() {
+    const catalogLink = document.querySelector('.nav-links a[href="/#tools"], .nav-links a[href="#tools"]');
+    const navActions = document.querySelector('.nav-actions');
+    if (!catalogLink || !navActions || typeof HTMLDialogElement === 'undefined') return;
+
+    const tools = [];
+    document.querySelectorAll('script[type="application/ld+json"]').forEach(script => {
+        let schema;
+        try {
+            schema = JSON.parse(script.textContent);
+        } catch (error) {
+            console.error('[ToolSwitcher] Invalid structured data:', error);
+            return;
+        }
+        if (schema['@type'] !== 'ItemList' || !Array.isArray(schema.itemListElement)) return;
+        schema.itemListElement.forEach(({ item }) => {
+            if (!item || typeof item.name !== 'string' || typeof item.url !== 'string') return;
+            const url = new URL(item.url, location.origin);
+            if (!/^\/tools\/[a-z0-9-]+\/$/.test(url.pathname)) return;
+            if (!tools.some(tool => tool.path === url.pathname)) {
+                tools.push({ name: item.name, path: url.pathname });
+            }
+        });
+    });
+    if (!tools.length) return;
+
+    const slot = catalogLink.parentElement;
+    slot.classList.add('tool-switcher-slot');
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'tool-switcher-trigger';
+    trigger.setAttribute('aria-haspopup', 'dialog');
+    trigger.setAttribute('aria-controls', 'tool-switcher');
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.innerHTML = 'All Tools <span aria-hidden="true">&#9662;</span>';
+    catalogLink.replaceWith(trigger);
+
+    const sideTrigger = trigger.cloneNode(false);
+    sideTrigger.classList.add('tool-switcher-side-trigger');
+    sideTrigger.textContent = 'All Tools';
+    sideTrigger.setAttribute('aria-label', 'Switch tools');
+    document.body.appendChild(sideTrigger);
+    const triggers = [trigger, sideTrigger];
+
+    const dialog = document.createElement('dialog');
+    dialog.id = 'tool-switcher';
+    dialog.className = 'tool-switcher';
+    dialog.setAttribute('aria-labelledby', 'tool-switcher-title');
+    dialog.innerHTML = `
+        <div class="tool-switcher-header">
+            <div>
+                <h2 id="tool-switcher-title">Switch tools</h2>
+                <p>Jump straight to your next tool.</p>
+            </div>
+            <button type="button" class="tool-switcher-close" aria-label="Close tool switcher">&times;</button>
+        </div>
+        <div class="tool-switcher-search">
+            <label for="tool-switcher-search">Search tools</label>
+            <input id="tool-switcher-search" type="search" placeholder="Search by name, e.g. YAML or Base64"
+                autocomplete="off" spellcheck="false" aria-controls="tool-switcher-list" autofocus>
+        </div>
+        <p class="tool-switcher-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <nav id="tool-switcher-list" class="tool-switcher-results" aria-label="Available tools"></nav>
+        <div class="tool-switcher-footer">
+            <a href="${catalogLink.getAttribute('href')}">Browse all tools</a>
+            <span>Arrow keys to explore &middot; Esc to close</span>
+        </div>
+    `;
+    document.body.appendChild(dialog);
+
+    const search = dialog.querySelector('input');
+    const list = dialog.querySelector('#tool-switcher-list');
+    const status = dialog.querySelector('[role="status"]');
+    const currentPath = location.pathname.replace(/\/index\.html$/, '/').replace(/\/?$/, '/');
+    let previousFocus;
+    let previousOverflow;
+    const normalize = value => value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const casualPaths = new Set(['/tools/gmail-url/', '/tools/salary-calc/', '/tools/whatsapp-readmore/']);
+    const groups = [
+        {
+            id: 'developer', title: 'Developer Tools', storageKey: 'dev_tools_order',
+            defaultOrder: [
+                'secure-properties-generator', 'json2raml', 'yaml2props', 'props2yaml',
+                'mule2curl', 'curl2mule', 'xml-sdk', 'cron-builder', 'raml2oas',
+                'base64-converter', 'mule-debug-package-finder'
+            ]
+        },
+        {
+            id: 'casual', title: 'The Goofy Zone', storageKey: 'fun_tools_order',
+            defaultOrder: ['gmail-url', 'salary-calc', 'whatsapp-readmore']
+        }
+    ].map(group => {
+        const section = document.createElement('section');
+        section.className = 'tool-switcher-group';
+        const heading = document.createElement('h3');
+        heading.id = `tool-switcher-group-${group.id}`;
+        heading.textContent = group.title;
+        section.setAttribute('aria-labelledby', heading.id);
+        const groupList = document.createElement('ul');
+        section.append(heading, groupList);
+        list.appendChild(section);
+        return { ...group, section, list: groupList };
+    });
+    const groupFor = tool => groups[casualPaths.has(tool.path) ? 1 : 0];
+    const orderedTools = groups.flatMap(group => tools.filter(tool => groupFor(tool) === group));
+    let entries = orderedTools.map(tool => {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `${tool.path}#workspace`;
+        link.className = 'tool-switcher-link';
+        const name = document.createElement('span');
+        name.textContent = tool.name;
+        link.appendChild(name);
+        const current = tool.path === currentPath;
+        const badge = document.createElement('span');
+        badge.className = 'tool-switcher-badge';
+        badge.textContent = current ? 'Current' : '\u2192';
+        if (current) {
+            link.setAttribute('aria-current', 'page');
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                dialog.close();
+            });
+        } else {
+            badge.setAttribute('aria-hidden', 'true');
+        }
+        link.appendChild(badge);
+        li.appendChild(link);
+        groupFor(tool).list.appendChild(li);
+        return { li, link, id: tool.path.split('/')[2], group: groupFor(tool), terms: normalize(`${tool.name} ${tool.path}`) };
+    });
+
+    function applyToolOrder() {
+        entries = groups.flatMap(group => {
+            let savedOrder = [];
+            try {
+                const stored = localStorage.getItem(group.storageKey);
+                if (stored !== null) {
+                    const parsed = JSON.parse(stored);
+                    if (!Array.isArray(parsed) || !parsed.every(id => typeof id === 'string')) {
+                        throw new TypeError('Tool order must be an array of tool IDs');
+                    }
+                    savedOrder = parsed;
+                }
+            } catch (error) {
+                console.error(`[ToolSwitcher] Failed to read ${group.storageKey}; using homepage default order:`, error);
+            }
+            const order = [...new Set([...savedOrder, ...group.defaultOrder])];
+            const position = entry => {
+                const index = order.indexOf(entry.id);
+                return index === -1 ? order.length : index;
+            };
+            const groupEntries = entries.filter(entry => entry.group === group)
+                .sort((a, b) => position(a) - position(b));
+            groupEntries.forEach(entry => group.list.appendChild(entry.li));
+            return groupEntries;
+        });
+    }
+
+    function filterTools() {
+        const words = normalize(search.value).split(' ').filter(Boolean);
+        let count = 0;
+        entries.forEach(entry => {
+            entry.li.hidden = !words.every(word => entry.terms.includes(word));
+            if (!entry.li.hidden) count++;
+        });
+        groups.forEach(group => {
+            group.section.hidden = !group.list.querySelector('li:not([hidden])');
+        });
+        list.scrollTop = 0;
+        status.textContent = count
+            ? `${count} ${count === 1 ? 'tool' : 'tools'}${words.length ? ' found' : ' available'}`
+            : 'No tools found. Try another name or keyword.';
+    }
+
+    function openSwitcher() {
+        const otherModalOpen = Array.from(document.querySelectorAll('dialog[open], [role="dialog"][aria-modal="true"]'))
+            .some(modal => modal.getClientRects().length > 0 && getComputedStyle(modal).visibility !== 'hidden');
+        if (dialog.open || otherModalOpen) return;
+        previousFocus = document.activeElement;
+        const navLinks = document.getElementById('nav-links');
+        const hamburger = document.getElementById('nav-hamburger');
+        if (navLinks?.classList.contains('open')) {
+            navLinks.classList.remove('open');
+            hamburger?.classList.remove('open');
+            hamburger?.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+        previousOverflow = document.body.style.overflow;
+        search.value = '';
+        applyToolOrder();
+        filterTools();
+        dialog.showModal();
+        document.body.style.overflow = 'hidden';
+        triggers.forEach(button => button.setAttribute('aria-expanded', 'true'));
+        search.focus();
+    }
+
+    triggers.forEach(button => {
+        button.addEventListener('click', openSwitcher);
+        button.title = 'Switch tools (Ctrl/Cmd + K)';
+    });
+    search.addEventListener('input', filterTools);
+    dialog.querySelector('.tool-switcher-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => {
+        if (event.target !== dialog) return;
+        const rect = dialog.getBoundingClientRect();
+        if (event.clientX < rect.left || event.clientX > rect.right ||
+            event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+        document.body.style.overflow = previousOverflow;
+        triggers.forEach(button => button.setAttribute('aria-expanded', 'false'));
+        if (previousFocus instanceof HTMLElement && previousFocus.isConnected) previousFocus.focus();
+    });
+    dialog.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            dialog.close();
+            return;
+        }
+        const visible = entries.filter(entry => !entry.li.hidden);
+        const index = visible.findIndex(entry => entry.link === document.activeElement);
+        if (event.target === search && event.key === 'Enter') {
+            event.preventDefault();
+            visible[0]?.link.click();
+        } else if (event.key === 'ArrowDown' && (event.target === search || index >= 0)) {
+            event.preventDefault();
+            visible[(index + 1) % visible.length]?.link.focus();
+        } else if (event.key === 'ArrowUp' && (event.target === search || index >= 0)) {
+            event.preventDefault();
+            if (index === 0) search.focus();
+            else visible[index < 0 ? visible.length - 1 : index - 1]?.link.focus();
+        }
+    });
+    document.addEventListener('keydown', event => {
+        if (!(event.ctrlKey || event.metaKey) || event.altKey || event.key.toLowerCase() !== 'k') return;
+        const target = event.target;
+        if (!dialog.open && target instanceof HTMLElement &&
+            (target.isContentEditable || target.closest('input, textarea, select, [role="textbox"]'))) return;
+        event.preventDefault();
+        if (dialog.open) dialog.close();
+        else openSwitcher();
+    });
+
+    const mobile = window.matchMedia('(max-width: 768px)');
+    function positionTrigger() {
+        if (mobile.matches) navActions.prepend(trigger);
+        else slot.appendChild(trigger);
+    }
+    mobile.addEventListener('change', positionTrigger);
+    positionTrigger();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+
+    initToolSwitcher();
 
     /* ─── Mobile Navigation ─── */
     const hamburger = document.getElementById('nav-hamburger');
@@ -248,6 +506,7 @@ document.addEventListener('DOMContentLoaded', function () {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('open');
                 hamburger.classList.remove('open');
+                hamburger.setAttribute('aria-expanded', 'false');
                 document.body.style.overflow = '';
             });
         });

@@ -309,7 +309,7 @@
         </div>
     </nav>
 
-    <div class="tool-hero">
+    <div class="tool-hero" id="about-tool">
         <div class="container">
             <div class="tool-breadcrumb">
                 <a href="/">Home</a><span class="tool-breadcrumb-sep">/</span>
@@ -333,8 +333,9 @@
         </div>
     </div>
 
-    <div class="tool-workspace">
+    <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="XML SDK workspace">
         <div class="container">
+            <a class="workspace-about-link" href="#about-tool">About this tool &uarr;</a>
             <div class="workspace-grid" style="grid-template-columns: 380px 1fr; align-items:start;">
 
                 <!-- Left: Form -->
@@ -655,25 +656,25 @@
                 style="margin-bottom:var(--space-lg); font-size:1rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em;">
                 Other Tools</h3>
             <div class="related-tools-grid">
-                <a href="/tools/json2raml/" class="related-tool-link"><span class="icon">🔄</span>
+                <a href="/tools/json2raml/#workspace" class="related-tool-link"><span class="icon">🔄</span>
                     <div>
                         <div class="name">JSON → RAML</div>
                         <div class="desc">MuleSoft DataType converter</div>
                     </div>
                 </a>
-                <a href="/tools/yaml2props/" class="related-tool-link"><span class="icon">⚙️</span>
+                <a href="/tools/yaml2props/#workspace" class="related-tool-link"><span class="icon">⚙️</span>
                     <div>
                         <div class="name">YAML → Properties</div>
                         <div class="desc">Flatten YAML configs</div>
                     </div>
                 </a>
-                <a href="/tools/gmail-url/" class="related-tool-link"><span class="icon">📧</span>
+                <a href="/tools/gmail-url/#workspace" class="related-tool-link"><span class="icon">📧</span>
                     <div>
                         <div class="name">Gmail URL Generator</div>
                         <div class="desc">Pre-filled compose links</div>
                     </div>
                 </a>
-                <a href="/tools/salary-calc/" class="related-tool-link"><span class="icon">💰</span>
+                <a href="/tools/salary-calc/#workspace" class="related-tool-link"><span class="icon">💰</span>
                     <div>
                         <div class="name">Salary Hike Calc</div>
                         <div class="desc">Calculate your hike %</div>

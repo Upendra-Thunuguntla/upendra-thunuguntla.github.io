@@ -93,7 +93,7 @@
         "name": "Why are browser-local tools preferred for enterprise integrations?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Enterprise compliance strictly prohibits sending sensitive API payloads, system logs, security keys, or passwords to external servers. Browser-local utilities run fully in client-side memory using local JavaScript, ensuring zero risk of data leaks or compliance violations."
+          "text": "Browser-local tools process inputs on your device instead of uploading them to a conversion server. This reduces unnecessary data transfer, but does not guarantee compliance or eliminate all risk. Follow your organization's policies and use sanitized examples when possible. This site also uses analytics and external services for features such as articles and resume delivery."
         }
       },
       {
@@ -117,7 +117,7 @@
         "name": "What is the Quartz Scheduler specification in MuleSoft?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "MuleSoft schedulers utilize Quartz cron expressions consisting of 6 or 7 fields (seconds, minutes, hours, day-of-month, month, day-of-week, optional year) to trigger recurring processes at precise enterprise intervals."
+          "text": "MuleSoft schedulers utilize Quartz cron expressions to execute recurring integration tasks. A Quartz cron expression consists of 6 or 7 whitespace-separated fields: seconds, minutes, hours, day-of-month, month, day-of-week, and optional year. This visual builder allows developers to quickly define complex orchestration intervals. Review the expression and execution times for your deployment's time zone."
         }
       }
     ]
@@ -414,7 +414,7 @@
         <div>
           <div id="exp-years"
             style="font-family:var(--font-heading); font-size:2.25rem; font-weight:800; background:var(--grad-primary); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">
-            7+</div>
+            8+</div>
           <div style="font-size:0.8rem; color:var(--text-muted); margin-top:4px; font-weight:500;">Years Experience
           </div>
         </div>
@@ -466,7 +466,7 @@
       <div class="grid grid-auto reveal-stagger" id="dev-tools-grid">
 
         <!-- Tool 5: Secure Properties Generator -->
-        <a href="/tools/secure-properties-generator/" class="card tool-card" data-id="secure-properties-generator">
+        <a href="/tools/secure-properties-generator/#workspace" class="card tool-card" data-id="secure-properties-generator">
           <div class="tool-card-icon">🔐</div>
           <h3 class="tool-card-title">Secure Properties Generator</h3>
           <p class="tool-card-desc">Encrypt and decrypt properties for Mule applications. Supports AES, Blowfish, DES,
@@ -483,7 +483,7 @@
         </a>
 
         <!-- Tool 2: JSON2RAML -->
-        <a href="/tools/json2raml/" class="card tool-card" data-id="json2raml">
+        <a href="/tools/json2raml/#workspace" class="card tool-card" data-id="json2raml">
           <div class="tool-card-icon">🔄</div>
           <h3 class="tool-card-title">JSON to RAML Converter</h3>
           <p class="tool-card-desc">Transform your JSON examples into RAML DataType definitions instantly. Supports
@@ -500,7 +500,7 @@
         </a>
 
         <!-- Tool 3: YAML to Properties -->
-        <a href="/tools/yaml2props/" class="card tool-card" data-id="yaml2props">
+        <a href="/tools/yaml2props/#workspace" class="card tool-card" data-id="yaml2props">
           <div class="tool-card-icon">⚙️</div>
           <h3 class="tool-card-title">YAML to Properties</h3>
           <p class="tool-card-desc">Flatten nested YAML configs into dotted property keys. Get keys in Mule-ready
@@ -517,7 +517,7 @@
         </a>
 
         <!-- Tool 4: Properties to YAML -->
-        <a href="/tools/props2yaml/" class="card tool-card" data-id="props2yaml">
+        <a href="/tools/props2yaml/#workspace" class="card tool-card" data-id="props2yaml">
           <div class="tool-card-icon">📝</div>
           <h3 class="tool-card-title">Properties to YAML</h3>
           <p class="tool-card-desc">Reconstruct nested YAML hierarchy from flat <code>.properties</code> files.
@@ -534,7 +534,7 @@
         </a>
 
         <!-- Tool 1: MuleSoft Log to cURL -->
-        <a href="/tools/mule2curl/" class="card tool-card" data-id="mule2curl">
+        <a href="/tools/mule2curl/#workspace" class="card tool-card" data-id="mule2curl">
           <div class="tool-card-icon">⚡</div>
           <h3 class="tool-card-title">MuleSoft Log to cURL Converter</h3>
           <p class="tool-card-desc">Instantly convert debug logs to cURL for <strong>Direct Postman Import</strong>.
@@ -552,7 +552,7 @@
         </a>
 
         <!-- Tool 9: cURL to Mule -->
-        <a href="/tools/curl2mule/" class="card tool-card" data-id="curl2mule">
+        <a href="/tools/curl2mule/#workspace" class="card tool-card" data-id="curl2mule">
           <div class="tool-card-icon">🔁</div>
           <h3 class="tool-card-title">cURL → Mule HTTP Request</h3>
           <p class="tool-card-desc">Convert cURL commands into MuleSoft HTTP Request Configuration & Processor XML.
@@ -569,7 +569,7 @@
         </a>
 
         <!-- Tool 6: XML SDK Helper -->
-        <a href="/tools/xml-sdk/" class="card tool-card" data-id="xml-sdk">
+        <a href="/tools/xml-sdk/#workspace" class="card tool-card" data-id="xml-sdk">
           <div class="tool-card-icon">🏗️</div>
           <h3 class="tool-card-title">Mule XML SDK Helper</h3>
           <p class="tool-card-desc">GUI-driven XML builder for Mule XML SDK connectors. Generate <code
@@ -587,7 +587,7 @@
         </a>
 
         <!-- Tool 10: Cron Builder -->
-        <a href="/tools/cron-builder/" class="card tool-card" data-id="cron-builder">
+        <a href="/tools/cron-builder/#workspace" class="card tool-card" data-id="cron-builder">
           <div class="tool-card-icon">⏱️</div>
           <h3 class="tool-card-title">Cron Expression Builder</h3>
           <p class="tool-card-desc">Visually build Quartz cron expressions for MuleSoft Schedulers. Preview the
@@ -604,7 +604,7 @@
         </a>
 
         <!-- Tool 11: RAML to OAS -->
-        <a href="/tools/raml2oas/" class="card tool-card" data-id="raml2oas">
+        <a href="/tools/raml2oas/#workspace" class="card tool-card" data-id="raml2oas">
           <div class="tool-card-icon">🔄</div>
           <h3 class="tool-card-title">RAML to OAS Converter</h3>
           <p class="tool-card-desc">Convert RAML 1.0 API specs to OpenAPI 3.0 (OAS 3.0) YAML or JSON. Supports
@@ -621,7 +621,7 @@
         </a>
 
         <!-- Tool 13: Base64 Encoder/Decoder -->
-        <a href="/tools/base64-converter/" class="card tool-card" data-id="base64-converter">
+        <a href="/tools/base64-converter/#workspace" class="card tool-card" data-id="base64-converter">
           <div class="tool-card-icon">🔏</div>
           <h3 class="tool-card-title">Base64 Encoder & Decoder</h3>
           <p class="tool-card-desc">Encode and decode text or files to/from Base64 format. Supports URL-safe mode,
@@ -638,7 +638,7 @@
         </a>
 
         <!-- Tool 14: Mule Debug Package Finder -->
-        <a href="/tools/mule-debug-package-finder/" class="card tool-card" data-id="mule-debug-package-finder">
+        <a href="/tools/mule-debug-package-finder/#workspace" class="card tool-card" data-id="mule-debug-package-finder">
           <div class="tool-card-icon">🪲</div>
           <h3 class="tool-card-title">Mule Debug Package Finder</h3>
           <p class="tool-card-desc">Search 60+ MuleSoft connectors to find their debug logger package names. Copy
@@ -674,7 +674,7 @@
       <div class="grid grid-auto reveal-stagger" id="fun-tools-grid">
 
         <!-- Tool 7: Gmail URL -->
-        <a href="/tools/gmail-url/" class="card tool-card" data-id="gmail-url">
+        <a href="/tools/gmail-url/#workspace" class="card tool-card" data-id="gmail-url">
           <div class="tool-card-icon">📧</div>
           <h3 class="tool-card-title">Gmail Compose URL Generator</h3>
           <p class="tool-card-desc">Generate pre-filled Gmail compose URLs with To, CC, BCC, Subject and Body. Bookmark
@@ -691,7 +691,7 @@
         </a>
 
         <!-- Tool 8: Salary Hike -->
-        <a href="/tools/salary-calc/" class="card tool-card" data-id="salary-calc">
+        <a href="/tools/salary-calc/#workspace" class="card tool-card" data-id="salary-calc">
           <div class="tool-card-icon">💰</div>
           <h3 class="tool-card-title">Salary Hike Calculator</h3>
           <p class="tool-card-desc">Instantly calculate your hike percentage from current and revised CTC. Simple, fast,
@@ -708,7 +708,7 @@
         </a>
 
         <!-- Tool 12: WhatsApp Read More -->
-        <a href="/tools/whatsapp-readmore/" class="card tool-card" data-id="whatsapp-readmore">
+        <a href="/tools/whatsapp-readmore/#workspace" class="card tool-card" data-id="whatsapp-readmore">
           <div class="tool-card-icon">💬</div>
           <h3 class="tool-card-title">WhatsApp Read More Generator</h3>
           <p class="tool-card-desc">Generate WhatsApp messages with hidden content behind the "... Read more" button.
@@ -745,7 +745,7 @@
           </p>
           <p style="margin-bottom:var(--space-lg);">
             Salesforce-certified Architect (MCIA, MCPA) with a proven track record of managing 80+ production APIs
-            handling millions of daily transactions. In my free time, I build zero-backend developer tools for the
+            handling thousands of daily transactions. In my free time, I build zero-backend developer tools for the
             MuleSoft community.
           </p>
           <p style="margin-bottom:var(--space-xl);">
@@ -1032,7 +1032,7 @@
       <div class="section-header reveal">
         <div class="section-label">Work With Me</div>
         <h2>Hire Me for Your Next Project</h2>
-        <p><span class="exp-years-dyn">7+</span> years architecting enterprise integrations. Got a MuleSoft problem that
+        <p><span data-experience="mulesoft">5+</span> years working with MuleSoft integrations. Got a MuleSoft problem that
           needs solving? Let's talk.</p>
       </div>
 
@@ -1052,7 +1052,7 @@
             <div class="service-icon">☕</div>
             <div class="service-body">
               <h4>Java Backend Development</h4>
-              <p>REST APIs, multithreaded batch processing, Spring ecosystem, and Java 17 migrations. 7+ years of
+              <p>REST APIs, multithreaded batch processing, Spring ecosystem, and Java 17 migrations. <span data-experience="career">8+</span> years of
                 hands-on Java across enterprise projects.</p>
             </div>
           </div>
@@ -1127,8 +1127,8 @@
           <!-- Quick Stats -->
           <div class="hire-stat-row">
             <div class="hire-stat">
-              <span class="hire-stat-num exp-years-dyn">7+</span>
-              <span class="hire-stat-label">Years</span>
+              <span class="hire-stat-num" data-experience="mulesoft">5+</span>
+              <span class="hire-stat-label">MuleSoft Years</span>
             </div>
             <div class="hire-stat">
               <span class="hire-stat-num">80+</span>
@@ -1260,57 +1260,40 @@
   </section>
 
   <!-- ═══════════════════════════════════════════
-     SEO & INTEGRATION ARCHITECTURE PERSPECTIVES
+     INTEGRATION FAQ & RESOURCES
   ════════════════════════════════════════════ -->
-  <section class="section" id="faq" style="background:var(--surface); border-top:1px solid var(--border);">
-    <div class="container" style="max-width:800px; margin:0 auto;">
+  <section class="section integration-resources" id="faq" aria-labelledby="faq-title">
+    <div class="container">
       <div class="section-header reveal">
         <div class="section-label">Architecture Insights</div>
-        <h2>Integration FAQ & Resources</h2>
-        <p>Expert insights into modern API design, MuleSoft architecture, secure property management, and enterprise
-          integration patterns.</p>
+        <h2 id="faq-title">Integration FAQ &amp; Resources</h2>
+        <p>Quick answers and practical tools for API design, configuration, and everyday MuleSoft development.</p>
       </div>
 
-      <div class="faq-list">
-        <!-- Section A & D Context -->
-        <div style="margin-bottom:var(--space-xl); line-height:1.7; color:var(--text-subtle); font-size:0.95rem;">
-          <h3 style="color:var(--text); margin-bottom:var(--space-md);">Upendra's Integration Architectural Philosophy
-          </h3>
-          <p style="margin-bottom:var(--space-md);">
-            As a certified <strong>MuleSoft Certified Integration Architect (MCIA)</strong>, Upendra Thunuguntla designs
-            and delivers robust, high-performance integration layers bridging core legacy systems with modern cloud
-            infrastructure. Modern enterprise integration requires a strategic balance of <strong>API-Led
-              Connectivity</strong>, strict credential cryptography, well-structured sitemap and endpoints routing, and
-            modular developer toolchains that accelerate pipeline delivery.
-          </p>
-          <p>
-            This portal hosts zero-backend, browser-local utilities built to address real-world developer friction
-            points, allowing consultants to process sensitive configurations without sending passwords or payloads to
-            unverified third-party servers. All operations happen in-memory for 100% client-side privacy.
-          </p>
-        </div>
+      <div class="integration-resource-grid">
+        <a class="integration-resource-card" href="/tools/secure-properties-generator/#workspace">
+          <span class="integration-resource-category">Configuration</span>
+          <h3>Secure your properties</h3>
+          <p>Encrypt and decrypt MuleSoft configuration values in your browser.</p>
+          <span class="integration-resource-link">Open Secure Properties <span aria-hidden="true">&rarr;</span></span>
+        </a>
+        <a class="integration-resource-card" href="/tools/raml2oas/#workspace">
+          <span class="integration-resource-category">API Design</span>
+          <h3>Move from RAML to OpenAPI</h3>
+          <p>Convert an API specification, then review the output for your target platform.</p>
+          <span class="integration-resource-link">Open RAML to OAS <span aria-hidden="true">&rarr;</span></span>
+        </a>
+        <a class="integration-resource-card" href="/tools/mule2curl/#workspace">
+          <span class="integration-resource-category">Debugging</span>
+          <h3>Replay an HTTP request</h3>
+          <p>Turn MuleSoft request logs into cURL commands for local troubleshooting.</p>
+          <span class="integration-resource-link">Open Log to cURL <span aria-hidden="true">&rarr;</span></span>
+        </a>
+      </div>
 
-        <!-- Section B & C Context -->
-        <div style="margin-bottom:var(--space-xl); line-height:1.7; color:var(--text-subtle); font-size:0.95rem;">
-          <h3 style="color:var(--text); margin-bottom:var(--space-md);">How to Leverage These Tools & Enterprise Use
-            Cases</h3>
-          <p style="margin-bottom:var(--space-md);">
-            To leverage these utilities, simply navigate to the respective tool folder, input your configuration schema,
-            security key, or raw log, and run the client-side parser. Common production integration use cases include:
-          </p>
-          <ul
-            style="margin-left:20px; margin-bottom:var(--space-md); display:flex; flex-direction:column; gap:var(--space-xs);">
-            <li><strong>AES-256 System Encryption:</strong> Safely encrypting database, SMTP, and SFTP credentials
-              inside <code>secure-properties</code> configurations before continuous deployment.</li>
-            <li><strong>API Spec Migration:</strong> Transforming RAML 1.0 specifications into OpenAPI (OAS 3.0) YAML
-              structure to support cross-platform API Gateways.</li>
-            <li><strong>Live Debug Replays:</strong> Converting MuleSoft server request/response debug dumps back into
-              valid Postman cURL commands to isolate HTTP timeouts and headers issues instantly.</li>
-          </ul>
-        </div>
-
-        <h3 style="color:var(--text); margin-bottom:var(--space-md);">Frequently Asked Questions</h3>
-        <div style="display:flex; flex-direction:column; gap:var(--space-sm); margin-bottom:var(--space-xl);">
+      <div class="integration-faq">
+        <h3>Frequently Asked Questions</h3>
+        <div class="faq-list">
           <details class="faq-item">
             <summary>What is API-Led Connectivity in MuleSoft?</summary>
             <div class="faq-answer">
@@ -1323,10 +1306,10 @@
           <details class="faq-item">
             <summary>Why are browser-local tools preferred for enterprise integrations?</summary>
             <div class="faq-answer">
-              Enterprise compliance strictly prohibits sending sensitive API payloads, system logs, security keys, or
-              passwords to external servers. Browser-local utilities run fully in client-side memory using local
-              JavaScript. Since no data ever leaves the local machine, developers can safely perform cryptography,
-              specification conversions, and logs flattening without risk of data leaks or compliance violations.
+              Browser-local tools process inputs on your device instead of uploading them to a conversion server.
+              This reduces unnecessary data transfer, but does not guarantee compliance or eliminate all risk.
+              Follow your organization's policies and use sanitized examples when possible. This site also uses
+              analytics and external services for features such as articles and resume delivery.
             </div>
           </details>
           <details class="faq-item">
@@ -1336,6 +1319,7 @@
               Sensitive strings are encrypted (typically using algorithms like AES with CBC operation mode) and wrapped
               inside <code>![encrypted_value]</code> indicators. A Secure Properties Config element is configured in the
               XML with a global security key, which decrypts values dynamically in-memory at application runtime.
+              <a href="/tools/secure-properties-generator/#workspace">Try the Secure Properties Generator</a>.
             </div>
           </details>
           <details class="faq-item">
@@ -1345,6 +1329,7 @@
               industry standard for REST API specifications. Migrating to OAS 3.0 provides broader toolchain
               compatibility across external developer portals, AWS API Gateway, Azure API Management, Postman, and
               automated Swagger testing utilities.
+              <a href="/tools/raml2oas/#workspace">Convert a RAML specification to OAS</a>.
             </div>
           </details>
           <details class="faq-item">
@@ -1353,7 +1338,8 @@
               MuleSoft schedulers utilize Quartz cron expressions to execute recurring integration tasks. A Quartz cron
               expression consists of 6 or 7 whitespace-separated fields: seconds, minutes, hours, day-of-month, month,
               day-of-week, and optional year. This visual builder allows developers to quickly define complex
-              orchestration intervals without syntax errors.
+              orchestration intervals. Review the expression and execution times for your deployment's time zone.
+              <a href="/tools/cron-builder/#workspace">Open the Cron Expression Builder</a>.
             </div>
           </details>
         </div>
@@ -1366,20 +1352,19 @@
   ════════════════════════════════════════════ -->
   <footer class="footer">
     <div class="container">
-      <div
-        style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--space-md);">
+      <div class="home-footer-main">
         <div>
           <span
             style="font-family:var(--font-heading); font-weight:700; background:var(--grad-primary); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">upendra.fyi</span>
           <span style="font-size:0.8rem; color:var(--text-muted); font-weight:500;">(for your integrations)</span>
           &nbsp;·&nbsp; © 2026 Upendra Venkata Muralidhar Thunuguntla
         </div>
-        <div style="display:flex; gap:var(--space-lg);">
+        <nav class="home-footer-links" aria-label="Footer navigation">
           <a href="#tools">Tools</a>
           <a href="#about">About</a>
           <a href="#contact">Contact</a>
           <a href="https://github.com/Upendra-Thunuguntla" target="_blank" rel="noopener">GitHub</a>
-        </div>
+        </nav>
       </div>
       <div style="margin-top:var(--space-md); color:var(--text-muted); font-size:0.78rem;">
         Built by <a href="https://www.linkedin.com/in/upendra-thunuguntla/" target="_blank" rel="noopener">Upendra
