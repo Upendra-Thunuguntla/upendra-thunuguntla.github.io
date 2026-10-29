@@ -8,6 +8,7 @@
     'use strict';
 
     var STORAGE_KEY = 'upendra_secure_saved_keys';
+    var activeKey = null;
 
     /* ── Storage helpers ── */
     function loadAll() {
@@ -40,36 +41,27 @@
         var btn   = document.getElementById('btn-saved-keys');
         if (!panel) return;
 
-        var opening = !panel.classList.contains('open');
-        panel.classList.toggle('open', opening);
-        btn.setAttribute('aria-expanded', String(opening));
-
-        if (opening) {
-            renderList();
-            // Close on next outside click
-            setTimeout(function () {
-                document.addEventListener('click', closeOnOutside);
-            }, 0);
-        } else {
-            document.removeEventListener('click', closeOnOutside);
+        if (panel.open) {
+            closePanel();
+            return;
         }
+        renderList();
+        panel.showModal();
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('sk-modal-open');
     }
 
     function closePanel() {
         var panel = document.getElementById('saved-keys-panel');
-        var btn   = document.getElementById('btn-saved-keys');
-        if (panel) panel.classList.remove('open');
-        if (btn)   btn.setAttribute('aria-expanded', 'false');
-        document.removeEventListener('click', closeOnOutside);
+        if (panel) panel.close();
     }
 
-    function closeOnOutside(e) {
-        var panel = document.getElementById('saved-keys-panel');
-        var btn   = document.getElementById('btn-saved-keys');
-        if (!panel) return;
-        if (!panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
-            closePanel();
-        }
+    function syncActiveKey() {
+        var status = document.getElementById('sk-active-key');
+        var keyEl = document.getElementById('inp-key');
+        if (activeKey && (!keyEl || keyEl.value.trim() !== activeKey.key)) activeKey = null;
+        status.hidden = !activeKey;
+        status.textContent = activeKey ? 'Using key: ' + activeKey.name : '';
     }
 
     /* ── Render saved-key list ── */
@@ -79,18 +71,18 @@
 
         var keys = loadAll();
         if (keys.length === 0) {
-            list.innerHTML = '<p class="sk-empty">No saved keys yet.<br><span style="font-weight:400;">Enter a name above and click <em>Save current key</em> to store your key + algorithm for quick reuse.</span></p>';
+            list.innerHTML = '<p class="sk-empty">No saved keys yet.</p>';
             return;
         }
 
         list.innerHTML = keys.map(function (k) {
-            return '<div class="sk-item" data-id="' + k.id + '" onclick="savedKeys.load(\'' + k.id + '\')" title="Click to load \'' + escHtml(k.name) + '\'">' +
-                '<div class="sk-item-info">' +
+            return '<div class="sk-item" data-id="' + escHtml(k.id) + '">' +
+                '<button type="button" class="sk-item-info" data-action="load" title="Load ' + escHtml(k.name) + '">' +
                     '<span class="sk-name">' + escHtml(k.name) + '</span>' +
                     '<span class="sk-meta">' + escHtml(k.algo) + ' / ' + escHtml(k.mode) + (k.iv ? ' / Random IV' : '') + '</span>' +
-                '</div>' +
+                '</button>' +
                 '<div class="sk-item-actions">' +
-                    '<button class="sk-btn-del" onclick="event.stopPropagation(); savedKeys.remove(\'' + k.id + '\')" title="Delete \'' + escHtml(k.name) + '\'" aria-label="Delete ' + escHtml(k.name) + '">' +
+                    '<button type="button" class="sk-btn-del" data-action="remove" title="Delete ' + escHtml(k.name) + '" aria-label="Delete ' + escHtml(k.name) + '">' +
                         '<i class="fas fa-trash-alt"></i>' +
                     '</button>' +
                 '</div>' +
@@ -138,6 +130,8 @@
         });
 
         persistAll(keys);
+        activeKey = keys[keys.length - 1];
+        syncActiveKey();
         nameInput.value = '';
         renderList();
         if (typeof showToast === 'function') showToast('"' + name + '" saved');
@@ -162,6 +156,8 @@
         if (typeof onKeyInput   === 'function') onKeyInput();
         if (typeof onAlgoChange === 'function') onAlgoChange();
 
+        activeKey = entry;
+        syncActiveKey();
         closePanel();
         if (typeof showToast === 'function') showToast('"' + entry.name + '" loaded');
     }
@@ -171,13 +167,42 @@
         var keys = loadAll();
         var entry = keys.find(function (k) { return k.id === id; });
         persistAll(keys.filter(function (k) { return k.id !== id; }));
+        if (activeKey && activeKey.id === id) activeKey = null;
+        syncActiveKey();
         renderList();
         if (entry && typeof showToast === 'function') showToast('"' + entry.name + '" removed');
     }
 
+    var panel = document.getElementById('saved-keys-panel');
+    panel.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closePanel();
+        }
+    });
+    panel.addEventListener('close', function () {
+        document.getElementById('btn-saved-keys').setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('sk-modal-open');
+    });
+    panel.addEventListener('click', function (event) {
+        if (event.target !== panel) return;
+        var bounds = panel.getBoundingClientRect();
+        if (event.clientX < bounds.left || event.clientX > bounds.right ||
+            event.clientY < bounds.top || event.clientY > bounds.bottom) closePanel();
+    });
+    document.getElementById('sk-list').addEventListener('click', function (event) {
+        var button = event.target.closest('button[data-action]');
+        if (!button) return;
+        var id = button.closest('.sk-item').dataset.id;
+        if (button.dataset.action === 'load') loadKey(id);
+        else removeKey(id);
+    });
+
     /* ── Public API ── */
     window.savedKeys = {
         toggle: togglePanel,
+        close:  closePanel,
+        sync:   syncActiveKey,
         save:   saveCurrentKey,
         load:   loadKey,
         remove: removeKey

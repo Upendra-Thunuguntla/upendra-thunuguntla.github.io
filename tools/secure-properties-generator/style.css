@@ -33,18 +33,47 @@
 }
 
 .sk-panel {
-    display: none;
-    margin-top: var(--space-sm);
+    margin: auto;
     background: var(--surface-2);
+    color: var(--text);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: var(--space-md);
-    animation: skFadeIn 0.15s ease;
+    border-radius: 8px;
+    padding: var(--space-lg);
     box-sizing: border-box;
-    width: 100%;
+    width: min(580px, calc(100% - 32px));
+    max-height: calc(100dvh - 32px);
+    box-shadow: var(--shadow-sm);
     overflow-x: hidden;
 }
-.sk-panel.open { display: block; }
+.sk-panel[open] { animation: skFadeIn 0.15s ease; }
+.sk-panel::backdrop { background: rgba(0, 0, 0, 0.5); }
+body.sk-modal-open { overflow: hidden; }
+
+.sk-active-key {
+    margin: var(--space-sm) 0 0;
+    font-size: 0.8rem;
+    color: var(--accent);
+    overflow-wrap: anywhere;
+}
+
+.sk-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+}
+.sk-close-btn:hover { color: var(--text); }
+
+@media (prefers-reduced-motion: reduce) {
+    .sk-panel[open] { animation: none; }
+}
 
 @keyframes skFadeIn {
     from { opacity: 0; transform: translateY(-4px); }
@@ -52,14 +81,18 @@
 }
 
 .sk-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
     margin-bottom: var(--space-md);
 }
 .sk-panel-title {
     display: block;
-    font-size: 0.85rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text);
-    margin-bottom: 4px;
+    margin: 0;
 }
 .sk-panel-hint {
     display: block;
@@ -76,6 +109,8 @@
 
 .sk-name-field {
     flex: 1;
+    min-width: 0;
+    box-sizing: border-box;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
@@ -148,11 +183,19 @@
 .sk-item-info {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    font-family: var(--font-body);
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    cursor: pointer;
     min-width: 0;
     flex: 1;
 }
 
 .sk-name {
+    max-width: 100%;
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--text);
@@ -200,9 +243,7 @@
 .sk-btn-del:hover { background: rgba(239, 68, 68, 0.1); }
 
 .sk-disclaimer {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    display: block;
     font-size: 0.7rem;
     color: var(--text-muted);
     margin: var(--space-sm) 0 0;

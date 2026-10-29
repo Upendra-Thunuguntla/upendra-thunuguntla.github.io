@@ -375,7 +375,7 @@
                                         class="fas fa-dice"></i></button>
                                 <button id="btn-saved-keys" class="sk-toggle-btn"
                                     title="Saved Keys" onclick="savedKeys.toggle()"
-                                    aria-expanded="false" aria-controls="saved-keys-panel">
+                                  aria-expanded="false" aria-haspopup="dialog" aria-controls="saved-keys-panel">
                                     <i class="fas fa-save"></i> Save / Load
                                 </button>
                             </div>
@@ -386,27 +386,27 @@
                                 placeholder="Your encryption key..." oninput="onKeyInput()">
                             <i id="eye-key" class="fas fa-eye icon-right" onclick="toggleKeyVisibility()"></i>
                         </div>
-                        <!-- Saved keys panel — opens below key input -->
-                        <div id="saved-keys-panel" class="sk-panel" role="dialog" aria-label="Saved Keys">
+                        <p id="sk-active-key" class="sk-active-key" role="status" hidden></p>
+                        <dialog id="saved-keys-panel" class="sk-panel" aria-labelledby="sk-dialog-title">
                             <div class="sk-panel-header">
-                                <span class="sk-panel-title"><i class="fas fa-bookmark"></i> Saved Keys</span>
-                                <span class="sk-panel-hint">Save your key + algorithm settings so you don't retype them next time.</span>
+                            <h2 id="sk-dialog-title" class="sk-panel-title"><i class="fas fa-bookmark" aria-hidden="true"></i> Saved Keys</h2>
+                            <button type="button" class="sk-close-btn" onclick="savedKeys.close()" title="Close saved keys" aria-label="Close saved keys"><i class="fas fa-times" aria-hidden="true"></i></button>
                             </div>
                             <div class="sk-save-row">
                                 <input type="text" id="sk-name-input" class="sk-name-field"
-                                    placeholder="Give this key a name — e.g. &quot;Prod AES&quot; or &quot;Dev Project&quot;"
-                                    maxlength="40"
+                              placeholder="Key name, e.g. Prod AES"
+                              aria-label="Key name" maxlength="40" autofocus
                                     onkeydown="if(event.key==='Enter') savedKeys.save()">
                                 <button class="sk-save-btn" onclick="savedKeys.save()" title="Save current key, algorithm and mode">
                                     <i class="fas fa-save"></i> Save current key
                                 </button>
                             </div>
-                            <div id="sk-list"></div>
+                            <div id="sk-list" class="sk-list"></div>
                             <p class="sk-disclaimer">
                                 <i class="fas fa-lock"></i>
                                 Stored in <strong>your browser only</strong> (localStorage) - NEVER uploaded, synced, or transmitted anywhere.
                             </p>
-                        </div>
+                        </dialog>
                     </div>
 
                     <!-- Algorithm Select -->

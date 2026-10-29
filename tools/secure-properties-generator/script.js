@@ -111,6 +111,7 @@ function onAlgoChange() {
 }
 
 function onKeyInput() {
+    if (window.savedKeys) window.savedKeys.sync();
     const key = document.getElementById('inp-key').value.trim();
     const algo = document.getElementById('sel-algo').value;
     const info = getKeyInfo(key, algo);
