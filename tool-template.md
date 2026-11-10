@@ -19,6 +19,7 @@ upendra.fyi/
 │       ├── theme.js           # Theme engine (Light/Dark toggle, local link overrides)
 │       ├── platform.js        # Shared utilities (copyToClipboard, showToast, downloadFile)
 │       ├── blogs-loader.js    # Dynamic blog loading framework
+│       ├── tracking.js        # Shared GA4 and Microsoft Clarity initialization
 │       └── analytics.js       # Global event tracking helper
 ├── tools/
 │   └── [tool-slug]/           # Tool-specific folder
@@ -102,14 +103,8 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         crossorigin="anonymous">
         
-    <!-- Google Analytics (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9YH1D05QCJ"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-9YH1D05QCJ');
-    </script>
+    <!-- Shared GA4 and Microsoft Clarity tracking -->
+    <script src="/assets/js/tracking.js"></script>
 
     <!-- Schema.org JSON-LD Structured Data for Rich Snippets & LLM Query Engines (AEO) -->
     <script type="application/ld+json">
