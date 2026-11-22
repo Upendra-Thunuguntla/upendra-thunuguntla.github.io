@@ -57,7 +57,7 @@ function p2y_isKeysOnly() {
 function p2y_loadExample() {
     p2yFileLoadToken++;
     p2y_cancelDownload();
-    document.getElementById('propTextarea').value = "# MuleSoft application settings\napp.name=orders-api\napp.enabled=true\napp.retry-count=3\napp.optional=null\nmule.home=${MULE_HOME}\nhttp.port:8081\nhttp.base-path=/api\ndatabase.password=![demo-cipher]\nfeatures[0]=inventory\nfeatures[1]=checkout";
+    document.getElementById('propTextarea').value = "# Upendra's integration toolkit\napp.name=upendra-tools\napp.enabled=true\napp.retry-count=3\napp.motto=Keep calm and integrate on!\napp.optional=null\nmule.home=${MULE_HOME}\nhttp.port:8081\nhttp.base-path=/api\ndatabase.password=![demo-cipher]\nfeatures[0]=api-design\nfeatures[1]=tool-building";
     document.getElementById('p2y-separator').value = 'auto';
     document.getElementById('p2y-nest-dotted').checked = true;
     document.getElementById('p2y-array-mode').value = 'auto';

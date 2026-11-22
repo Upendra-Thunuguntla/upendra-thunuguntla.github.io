@@ -45,8 +45,8 @@ function copyURL() {
 
 function loadTestValues() {
     document.getElementById('gmail-to').value = 'upendra.thunuguntla@gmail.com';
-    document.getElementById('gmail-subject').value = 'Sending Mail from Gmail Compose URL Generator';
-    document.getElementById('gmail-body').value = 'Hi Upendra,\n\nYour tool is so helpful ❤️\n\nThanks!';
+    document.getElementById('gmail-subject').value = 'Upendra, API whisperer';
+    document.getElementById('gmail-body').value = 'Hi Upendra,\n\nYour developer tools make integrations a little less dramatic. Nice work!\n\nThanks!';
     generateURL();
     track_event('load_example', { tool: 'gmail_url' });
 }

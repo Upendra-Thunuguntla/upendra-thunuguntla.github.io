@@ -377,17 +377,13 @@ function clearAll() {
 
 function loadExample() {
     logInput.value = `2024-03-11 14:23:45.123 DEBUG [processor-1] org.mule.service.http.impl.service.HttpMessageLogger - 
-POST /api/v1/orders?status=active&page=1 HTTP/1.1
-Host: api.acme-corp.com:8443
+POST /api/v1/tools?status=active&page=1 HTTP/1.1
+Host: api.example.com:8443
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature
 Accept: application/json
-x-correlation-id: 8f14e45f-ceea-367a-a92e-4427f2d1a3b7
-x-client-id: mule-order-service
-Cache-Control: no-cache
-Content-Length: 82
+x-client-id: upendra-toolkit
 
-{"customerId": "CUST-2024-001", "items": [{"sku": "PROD-100", "quantity": 3}]}`;
+{"builder":"Upendra","mission":"Make integrations less grumpy"}`;
     parseAndConvert();
     showToast('Example loaded!');
     track_event('load_example', { tool: 'mule2curl' });

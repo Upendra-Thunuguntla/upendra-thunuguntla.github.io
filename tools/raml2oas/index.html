@@ -356,20 +356,20 @@
           </div>
           <div class="editor-wrapper">
             <textarea id="raml-input" class="code-textarea" style="min-height:500px;" placeholder="#%RAML 1.0
-title: My API
+title: Upendra's Toolkit API
 version: v1
 baseUri: https://api.example.com/{version}
 
 types:
-  Order:
+  Tool:
     type: object
     properties:
-      id: string
-      amount: number
+      name: string
+      builder: string
 
-/orders:
+/tools:
   get:
-    description: Get all orders
+    description: Find Upendra's developer tools
     queryParameters:
       page:
         type: integer
@@ -378,17 +378,17 @@ types:
       200:
         body:
           application/json:
-            type: Order[]
+            type: Tool[]
   post:
-    description: Create order
+    description: Add another tool to the toolbox
     body:
       application/json:
-        type: Order
+        type: Tool
     responses:
       201:
         body:
           application/json:
-            type: Order
+            type: Tool
 "></textarea>
           </div>
         </div>

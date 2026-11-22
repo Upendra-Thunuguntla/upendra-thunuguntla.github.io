@@ -553,13 +553,11 @@ function clearAll() {
 }
 
 function loadExample() {
-    curlInput.value = `curl --location --request POST 'https://api.acme-corp.com:8443/api/v1/orders?status=active&page=1' \\
+    curlInput.value = `curl --location --request POST 'https://api.example.com:8443/api/v1/tools?status=active&page=1' \\
   --header 'Content-Type: application/json' \\
-  --header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature' \\
   --header 'Accept: application/json' \\
-  --header 'x-correlation-id: 8f14e45f-ceea-367a-a92e-4427f2d1a3b7' \\
-  --header 'x-client-id: mule-order-service' \\
-  --data '{"customerId": "CUST-2024-001", "items": [{"sku": "PROD-100", "quantity": 3}]}'`;
+  --header 'x-client-id: upendra-toolkit' \\
+  --data '{"builder":"Upendra","mission":"Make integrations less grumpy"}'`;
     parseAndConvert();
     showToast('Example loaded!');
     if (typeof track_event === 'function') track_event('load_example', { tool: 'curl2mule' });

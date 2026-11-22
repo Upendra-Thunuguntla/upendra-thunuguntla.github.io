@@ -468,74 +468,44 @@ function clearAll() {
 function loadExample() {
     clearTimeout(debounceTimer);
     document.getElementById('raml-input').value = `#%RAML 1.0
-title: Orders API
+title: Upendra's Toolkit API
 version: v1
 baseUri: https://api.example.com/{version}
 
 types:
-  Order:
+  Tool:
     type: object
     properties:
-      id:
+      name: string
+      builder:
         type: string
-        description: Unique order identifier
-      customerId:
+        example: Upendra
+      mission:
         type: string
-      amount:
-        type: number
-      status:
-        type: string
-        enum: [pending, confirmed, shipped, delivered]
-      createdAt:
-        type: datetime
+        example: Make integrations less grumpy
 
-/orders:
+/tools:
   get:
-    description: Retrieve a list of orders
+    description: Find Upendra's developer tools
     queryParameters:
       page:
         type: integer
         default: 1
-        description: Page number
-      pageSize:
-        type: integer
-        default: 20
-      status:
-        type: string
-        required: false
     responses:
       200:
         body:
           application/json:
-            type: Order[]
+            type: Tool[]
   post:
-    description: Create a new order
+    description: Add another tool to the toolbox
     body:
       application/json:
-        type: Order
+        type: Tool
     responses:
       201:
         body:
           application/json:
-            type: Order
-      400:
-        description: Invalid request payload
-
-  /{orderId}:
-    get:
-      description: Get a specific order by ID
-      responses:
-        200:
-          body:
-            application/json:
-              type: Order
-        404:
-          description: Order not found
-    delete:
-      description: Cancel an order
-      responses:
-        204:
-          description: Order cancelled`;
+            type: Tool`;
     convertRaml();
     if (typeof track_event === 'function') track_event('load_example');
 }

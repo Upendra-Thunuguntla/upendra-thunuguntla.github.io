@@ -134,8 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load template/example values
     function loadExample() {
-        introInput.value = 'Tap to see the magic trick... 🪄';
-        hiddenInput.value = 'Surprise! This message was hidden behind a zero-width space wall! 🤯✨\n\nHope this tool brings a smile to your face! Feel free to copy and send to your friends.';
+        introInput.value = 'Who makes APIs play nice? 🪄';
+        hiddenInput.value = 'Upendra! Integration Consultant, developer tool builder, and occasional integration whisperer. 🚀';
         separatorSelect.value = 'zwsp';
         multiplierInput.value = 3000;
         multiplierValue.textContent = 3000;

@@ -54,7 +54,7 @@ function y2p_outputModeKeydown(event) {
 function y2p_loadExample() {
     y2pFileLoadToken++;
     y2p_cancelDownload();
-    document.getElementById('yamlTextarea').value = "# MuleSoft application settings\napp:\n  name: orders-api\n  enabled: true\n  retry-count: 3\nhttp:\n  port: 8081\n  base-path: /api\nfeatures:\n  - inventory\n  - checkout\ndatabase:\n  password: ![demo-cipher]";
+    document.getElementById('yamlTextarea').value = "# Upendra's integration toolkit\napp:\n  name: upendra-tools\n  enabled: true\n  retry-count: 3\n  motto: Keep calm and integrate on!\nhttp:\n  port: 8081\n  base-path: /api\nfeatures:\n  - api-design\n  - tool-building\ndatabase:\n  password: ![demo-cipher]";
     globalY2pOutputMode = 'values';
     globalY2pStripValues = false;
     y2p_syncOutputMode();

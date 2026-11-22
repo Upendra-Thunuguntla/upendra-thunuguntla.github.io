@@ -12,7 +12,7 @@ document.getElementById('json-input').addEventListener('input', () => {
 
 function loadExample() {
     jsonFileLoadToken++;
-    document.getElementById('json-input').value = '{\n  "string": "Hello, World!",\n  "number": 42,\n  "boolean": true,\n  "nullValue": null,\n  "array": [1, 2, 3],\n  "object": {\n    "nested": "value"\n  }\n}';
+    document.getElementById('json-input').value = '{\n  "name": "Upendra",\n  "role": "Integration Consultant",\n  "productionApisAtLeast": 80,\n  "buildsTools": true,\n  "skills": ["integrations", "tool building"],\n  "secretWeapon": null,\n  "motto": { "message": "Keep calm and integrate on!" }\n}';
     convert();
     track_event('load_example', { tool: 'json2raml' });
 }

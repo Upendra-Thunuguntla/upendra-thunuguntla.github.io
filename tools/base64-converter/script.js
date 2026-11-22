@@ -360,10 +360,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. Global Actions
     window.loadExample = function() {
         fileReadToken++;
+        const example = "Upendra builds MuleSoft tools. APIs beware!";
         if (activeMode === 'encode') {
-            sourceEl.value = "Hello, World! 👋 Base64 encoding allows standard binary structures to be encapsulated safely inside text formats. Emojis work fine, too! 🚀🔥";
+            sourceEl.value = example;
         } else {
-            sourceEl.value = "SGVsbG8sIFdvcmxkISAgQmFzZTY0IGVuY29kaW5nIGFsbG93cyBzdGFuZGFyZCBiaW5hcnkgc3RydWN0dXJlcyB0byBiZSBlbmNhcHN1bGF0ZWQgc2FmZWx5IGluc2lkZCB0ZXh0IGZvcm1hdHMuIEVtb2ppcyB3b3JrIGZpbmUsIHRvbyEg8J+ZhfCfmYUg";
+            sourceEl.value = btoa(example);
         }
         
         if (inputType === 'file') {
