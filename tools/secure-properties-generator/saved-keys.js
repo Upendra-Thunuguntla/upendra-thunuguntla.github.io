@@ -1,26 +1,106 @@
 /* ══════════════════════════════════════════════
-   Saved Keys — browser localStorage only.
-   Keys are stored in the user's own browser;
-   nothing is ever sent to any server.
+    Saved Keys — encrypted browser-local storage.
    ══════════════════════════════════════════════ */
 
 (function () {
     'use strict';
 
     var STORAGE_KEY = 'upendra_secure_saved_keys';
+    var DATABASE_NAME = 'upendra_secure_saved_keys_crypto';
     var activeKey = null;
+    var operationQueue = Promise.resolve();
 
     /* ── Storage helpers ── */
-    function loadAll() {
-        try {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        } catch (e) {
-            return [];
-        }
+    function openKeyDatabase() {
+        return new Promise(function (resolve, reject) {
+            var request = indexedDB.open(DATABASE_NAME, 1);
+            request.onupgradeneeded = function () {
+                request.result.createObjectStore('keys');
+            };
+            request.onsuccess = function () { resolve(request.result); };
+            request.onerror = function () { reject(request.error); };
+            request.onblocked = function () { reject(new Error('Browser key storage is blocked')); };
+        });
     }
 
-    function persistAll(keys) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(keys));
+    async function getStorageKey(create) {
+        var candidate = create ? await crypto.subtle.generateKey(
+            { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+        ) : null;
+        var database = await openKeyDatabase();
+        return new Promise(function (resolve, reject) {
+            var transaction = database.transaction('keys', create ? 'readwrite' : 'readonly');
+            var store = transaction.objectStore('keys');
+            var request = store.get('storage-key');
+            var key;
+            request.onsuccess = function () {
+                key = request.result;
+                if (!key && candidate) {
+                    key = candidate;
+                    store.put(key, 'storage-key');
+                }
+            };
+            transaction.oncomplete = function () {
+                database.close();
+                if (key) resolve(key);
+                else reject(new Error('Browser encryption key is missing'));
+            };
+            transaction.onerror = transaction.onabort = function () {
+                database.close();
+                reject(transaction.error || new Error('Browser key storage failed'));
+            };
+        });
+    }
+
+    function encodeBytes(bytes) {
+        var binary = '';
+        bytes.forEach(function (byte) { binary += String.fromCharCode(byte); });
+        return btoa(binary);
+    }
+
+    function decodeBytes(value) {
+        var binary = atob(value);
+        return Uint8Array.from(binary, function (character) { return character.charCodeAt(0); });
+    }
+
+    async function loadAll() {
+        var stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return [];
+        var data = JSON.parse(stored);
+        if (Array.isArray(data)) {
+            if (data.length) await persistAll(data);
+            return data;
+        }
+        if (!data || data.version !== 1 || typeof data.iv !== 'string' || typeof data.ciphertext !== 'string') {
+            throw new Error('Invalid saved key data');
+        }
+        var key = await getStorageKey(false);
+        var plaintext = await crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: decodeBytes(data.iv) }, key, decodeBytes(data.ciphertext)
+        );
+        var keys = JSON.parse(new TextDecoder().decode(plaintext));
+        if (!Array.isArray(keys)) throw new Error('Invalid saved key data');
+        return keys;
+    }
+
+    async function persistAll(keys) {
+        var key = await getStorageKey(true);
+        var iv = crypto.getRandomValues(new Uint8Array(12));
+        var plaintext = new TextEncoder().encode(JSON.stringify(keys));
+        var ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, plaintext);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            version: 1,
+            iv: encodeBytes(iv),
+            ciphertext: encodeBytes(new Uint8Array(ciphertext))
+        }));
+    }
+
+    function enqueue(operation) {
+        operationQueue = operationQueue.then(operation).catch(function (error) {
+            console.error('Saved keys error:', error);
+            if (typeof showToast === 'function') showToast('Could not access saved keys in this browser', 'error');
+        });
+        return operationQueue;
     }
 
     function genId() {
@@ -45,7 +125,7 @@
             closePanel();
             return;
         }
-        renderList();
+        enqueue(renderList);
         panel.showModal();
         btn.setAttribute('aria-expanded', 'true');
         document.body.classList.add('sk-modal-open');
@@ -65,11 +145,11 @@
     }
 
     /* ── Render saved-key list ── */
-    function renderList() {
+    async function renderList() {
         var list = document.getElementById('sk-list');
         if (!list) return;
 
-        var keys = loadAll();
+        var keys = await loadAll();
         if (keys.length === 0) {
             list.innerHTML = '<p class="sk-empty">No saved keys yet.</p>';
             return;
@@ -91,7 +171,7 @@
     }
 
     /* ── Save current key ── */
-    function saveCurrentKey() {
+    async function saveCurrentKey() {
         var nameInput = document.getElementById('sk-name-input');
         var keyEl     = document.getElementById('inp-key');
         var algoEl    = document.getElementById('sel-algo');
@@ -111,7 +191,7 @@
             return;
         }
 
-        var keys = loadAll();
+        var keys = await loadAll();
 
         // Prevent duplicate names
         if (keys.some(function (k) { return k.name.toLowerCase() === name.toLowerCase(); })) {
@@ -129,17 +209,18 @@
             savedAt: new Date().toISOString()
         });
 
-        persistAll(keys);
+        await persistAll(keys);
+        if (typeof track_event === 'function') track_event('key_save');
         activeKey = keys[keys.length - 1];
         syncActiveKey();
         nameInput.value = '';
-        renderList();
+        await renderList();
         if (typeof showToast === 'function') showToast('"' + name + '" saved');
     }
 
     /* ── Load a saved key into the form ── */
-    function loadKey(id) {
-        var entry = loadAll().find(function (k) { return k.id === id; });
+    async function loadKey(id) {
+        var entry = (await loadAll()).find(function (k) { return k.id === id; });
         if (!entry) return;
 
         var keyEl  = document.getElementById('inp-key');
@@ -150,26 +231,28 @@
         if (keyEl)  keyEl.value    = entry.key;
         if (algoEl) algoEl.value   = entry.algo;
         if (modeEl) modeEl.value   = entry.mode;
-        if (ivEl)   ivEl.checked   = entry.iv;
+        if (ivEl) setRandomIV(entry.iv);
 
         // Trigger existing script.js callbacks so UI stays consistent
         if (typeof onKeyInput   === 'function') onKeyInput();
         if (typeof onAlgoChange === 'function') onAlgoChange();
 
         activeKey = entry;
+        if (typeof track_event === 'function') track_event('key_load');
         syncActiveKey();
         closePanel();
         if (typeof showToast === 'function') showToast('"' + entry.name + '" loaded');
     }
 
     /* ── Delete a saved key ── */
-    function removeKey(id) {
-        var keys = loadAll();
+    async function removeKey(id) {
+        var keys = await loadAll();
         var entry = keys.find(function (k) { return k.id === id; });
-        persistAll(keys.filter(function (k) { return k.id !== id; }));
+        await persistAll(keys.filter(function (k) { return k.id !== id; }));
+        if (entry && typeof track_event === 'function') track_event('key_delete');
         if (activeKey && activeKey.id === id) activeKey = null;
         syncActiveKey();
-        renderList();
+        await renderList();
         if (entry && typeof showToast === 'function') showToast('"' + entry.name + '" removed');
     }
 
@@ -194,8 +277,8 @@
         var button = event.target.closest('button[data-action]');
         if (!button) return;
         var id = button.closest('.sk-item').dataset.id;
-        if (button.dataset.action === 'load') loadKey(id);
-        else removeKey(id);
+        if (button.dataset.action === 'load') enqueue(function () { return loadKey(id); });
+        else enqueue(function () { return removeKey(id); });
     });
 
     /* ── Public API ── */
@@ -203,8 +286,9 @@
         toggle: togglePanel,
         close:  closePanel,
         sync:   syncActiveKey,
-        save:   saveCurrentKey,
-        load:   loadKey,
-        remove: removeKey
+        save:   function () { return enqueue(saveCurrentKey); },
+        load:   function (id) { return enqueue(function () { return loadKey(id); }); },
+        remove: function (id) { return enqueue(function () { return removeKey(id); }); }
     };
+    enqueue(loadAll);
 })();

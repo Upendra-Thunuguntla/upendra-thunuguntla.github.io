@@ -852,6 +852,8 @@
     let currentToolsList = [...ALL_TOOLS];
     let activeCategory = 'all';
     let searchQuery = '';
+    let warpProgressTimer = null;
+    let warpRedirectTimer = null;
 
     // Fisher-Yates Shuffle Algorithm
     function shuffleArray(array) {
@@ -936,6 +938,8 @@
 
     // Warp to Random Tool Modal & Redirect
     function warpToRandomTool() {
+      clearTimeout(warpProgressTimer);
+      clearTimeout(warpRedirectTimer);
       const randomTool = ALL_TOOLS[Math.floor(Math.random() * ALL_TOOLS.length)];
       const modal = document.getElementById('warp-modal');
       const titleEl = document.getElementById('warp-modal-title');
@@ -951,11 +955,13 @@
       modal.classList.add('active');
       addTerminalLog(`Warping user to random target: ${randomTool.name} (${randomTool.path})`, 'highlight');
 
-      setTimeout(() => {
+      warpProgressTimer = setTimeout(() => {
+        warpProgressTimer = null;
         progressEl.style.width = '100%';
       }, 50);
 
-      setTimeout(() => {
+      warpRedirectTimer = setTimeout(() => {
+        warpRedirectTimer = null;
         window.location.href = randomTool.path;
       }, 1100);
     }

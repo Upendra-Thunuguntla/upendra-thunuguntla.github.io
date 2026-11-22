@@ -119,6 +119,7 @@ function applyFilter() {
 function copyChipPackage(chip) {
     // Don't let the shared helper overwrite the chip's label — just flash its border.
     copyToClipboard(chip.dataset.package, null);
+    if (typeof track_event === 'function') track_event('copy');
     chip.classList.add('pkg-chip-copied');
     clearTimeout(chip._copiedTimer);
     chip._copiedTimer = setTimeout(() => chip.classList.remove('pkg-chip-copied'), 1200);
@@ -134,5 +135,6 @@ function copyLog4j(btn) {
         .map(p => `<AsyncLogger name="${p}" level="${level}"/>`)
         .join('\n');
     copyToClipboard(snippet, btn);
+    if (typeof track_event === 'function') track_event('copy');
     packages.forEach(trackCopy);
 }

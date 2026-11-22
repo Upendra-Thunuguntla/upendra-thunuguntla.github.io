@@ -5,27 +5,42 @@
 const TAB = "  ";
 const LE = "\n";
 const RAML_HEADER = "#%RAML 1.0 DataType" + LE;
+let jsonFileLoadToken = 0;
+document.getElementById('json-input').addEventListener('input', () => {
+    jsonFileLoadToken++;
+});
 
 function loadExample() {
+    jsonFileLoadToken++;
     document.getElementById('json-input').value = '{\n  "string": "Hello, World!",\n  "number": 42,\n  "boolean": true,\n  "nullValue": null,\n  "array": [1, 2, 3],\n  "object": {\n    "nested": "value"\n  }\n}';
+    convert();
     track_event('load_example', { tool: 'json2raml' });
 }
 
 function clearContents() {
+    jsonFileLoadToken++;
     document.getElementById('json-input').value = '';
     document.getElementById('raml-output').value = '';
     document.getElementById('filename-wrap').style.display = 'none';
+    document.getElementById('raml-filename').value = '';
+    document.getElementById('json-file-input').value = '';
     track_event('clear', { tool: 'json2raml' });
 }
 
 function loadJSONFile(event) {
     const file = event.target.files[0];
     if (!file) return;
+    const requestToken = ++jsonFileLoadToken;
     const reader = new FileReader();
     reader.onload = function (e) {
+        if (requestToken !== jsonFileLoadToken) return;
         document.getElementById('json-input').value = e.target.result;
         convert();
-        track_event('upload_file', { tool: 'json2raml' });
+    };
+    reader.onerror = function () {
+        if (requestToken !== jsonFileLoadToken) return;
+        document.getElementById('json-file-input').value = '';
+        showToast('Could not read the selected JSON file.', 'error');
     };
     reader.readAsText(file);
 }
@@ -113,5 +128,5 @@ function doDownload() {
     const content = document.getElementById('raml-output').value;
     if (!content.startsWith(RAML_HEADER)) { showToast('Nothing to download!', 'error'); return; }
     downloadFile(content, name + '.raml', 'text/plain;charset=utf-8');
-    track_event('download', { tool: 'json2raml', file_type: 'raml', filename: name });
+    track_event('download');
 }

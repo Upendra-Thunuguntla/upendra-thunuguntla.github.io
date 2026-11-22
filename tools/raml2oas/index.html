@@ -325,7 +325,7 @@
     </div>
   </div>
 
-  <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="RAML to OpenAPI workspace">
+  <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="RAML to OpenAPI workspace" data-clarity-mask="True">
     <div class="container">
       <a class="workspace-about-link" href="#about-tool">About this tool &uarr;</a>
 
@@ -334,8 +334,8 @@
         <div style="display:flex; align-items:center; gap:var(--space-sm);">
           <span class="config-name-label">Output Format:</span>
           <div class="mode-toggle">
-            <button class="mode-toggle-btn active" id="btn-yaml" onclick="setOutputFormat('yaml')">YAML</button>
-            <button class="mode-toggle-btn" id="btn-json" onclick="setOutputFormat('json')">JSON</button>
+            <button class="mode-toggle-btn active" id="btn-yaml" aria-pressed="true" onclick="setOutputFormat('yaml')">YAML</button>
+            <button class="mode-toggle-btn" id="btn-json" aria-pressed="false" onclick="setOutputFormat('json')">JSON</button>
           </div>
         </div>
         <div id="convert-status" class="convert-status idle">

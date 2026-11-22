@@ -5,6 +5,11 @@
 var globalY2pOp = "";
 var globalY2pOutputMode = 'values';
 var globalY2pStripValues = false;
+let y2pFileLoadToken = 0;
+
+document.getElementById('yamlTextarea').addEventListener('input', () => {
+    y2pFileLoadToken++;
+});
 
 function y2p_getOutputMode() {
     return globalY2pOutputMode;
@@ -47,6 +52,8 @@ function y2p_outputModeKeydown(event) {
 }
 
 function y2p_loadExample() {
+    y2pFileLoadToken++;
+    y2p_cancelDownload();
     document.getElementById('yamlTextarea').value = "# MuleSoft application settings\napp:\n  name: orders-api\n  enabled: true\n  retry-count: 3\nhttp:\n  port: 8081\n  base-path: /api\nfeatures:\n  - inventory\n  - checkout\ndatabase:\n  password: ![demo-cipher]";
     globalY2pOutputMode = 'values';
     globalY2pStripValues = false;
@@ -69,11 +76,21 @@ function y2p_loadExample() {
 
 function y2p_openFile(event) {
     const file = event.target.files[0]; if (!file) return;
+    const requestToken = ++y2pFileLoadToken;
     document.getElementById('yaml-file-label').textContent = file.name;
     const reader = new FileReader();
-    reader.onload = e => { document.getElementById('yamlTextarea').value = e.target.result; y2p_convert(); };
+    reader.onload = e => {
+        if (requestToken !== y2pFileLoadToken) return;
+        document.getElementById('yamlTextarea').value = e.target.result;
+        y2p_convert();
+    };
+    reader.onerror = () => {
+        if (requestToken !== y2pFileLoadToken) return;
+        document.getElementById('yaml-file-label').textContent = 'Upload .yaml File';
+        document.getElementById('yamlFileInput').value = '';
+        showToast('Could not read the selected YAML file.', 'error');
+    };
     reader.readAsText(file);
-    track_event('file_upload', { tool: 'yaml2props', file_type: 'yaml' });
 }
 
 function y2p_extractComments(input) {
@@ -206,6 +223,8 @@ function y2p_filter(q) {
 }
 
 function y2p_clear() {
+    y2pFileLoadToken++;
+    y2p_cancelDownload();
     document.getElementById('yamlTextarea').value = '';
     document.getElementById('propertiesOutput').value = '';
     document.getElementById('filterProp').disabled = true;
@@ -218,9 +237,14 @@ function y2p_clear() {
     y2p_syncOutputMode();
     y2p_updateOptions();
     globalY2pOp = '';
+    if (typeof track_event === 'function') track_event('clear');
 }
 
-function y2p_copy() { copyToClipboard(document.getElementById('propertiesOutput').value, document.getElementById('y2p-copy-btn')); }
+function y2p_copy() {
+    const output = document.getElementById('propertiesOutput').value;
+    copyToClipboard(output, document.getElementById('y2p-copy-btn'));
+    if (output.trim() && typeof track_event === 'function') track_event('copy');
+}
 
 function y2p_downloadPrompt() {
     if (!document.getElementById('propertiesOutput').value.trim()) { showToast('Nothing to download!', 'error'); return; }

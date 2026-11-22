@@ -4,7 +4,7 @@
    Strategy: Stale-While-Revalidate
    ══════════════════════════════════════════ */
 
-const CACHE_NAME = 'upendra-dev-cache-v1.0.20';
+const CACHE_NAME = 'upendra-dev-cache-v1.0.21';
 
 // ─── Assets to pre-cache on install ───
 const PRE_CACHE_ASSETS = [

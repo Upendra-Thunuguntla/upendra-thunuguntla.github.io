@@ -2,15 +2,66 @@
    Secure Properties — Engine (Modernized)
    ══════════════════════════════════════════════ */
 
-let globalMode = 'encrypt';      // encrypt | decrypt
-let inputType = 'string';        // string | file | whole-file
-let useRandomIV = false;
-let fileSource = 'paste';      // upload | paste
+const initialToolState = {
+    mode: 'encrypt',
+    inputType: 'string',
+    fileSource: 'paste',
+    useRandomIV: false,
+    status: 'idle'
+};
+let toolState = { ...initialToolState };
+let keyVisibilityTimeout = null;
+let fileReadToken = 0;
+
+function reduceToolState(state, action) {
+    if (state.status === 'running' && action.type !== 'operation-succeeded' &&
+        action.type !== 'operation-failed') return state;
+
+    switch (action.type) {
+        case 'mode-changed':
+            if (!['encrypt', 'decrypt'].includes(action.mode) || state.mode === action.mode) return state;
+            return { ...state, mode: action.mode };
+        case 'input-type-changed':
+            if (!['string', 'file', 'whole-file'].includes(action.inputType) ||
+                state.inputType === action.inputType) return state;
+            return { ...state, inputType: action.inputType };
+        case 'file-source-changed':
+            if (!['upload', 'paste'].includes(action.fileSource) ||
+                state.fileSource === action.fileSource) return state;
+            return { ...state, fileSource: action.fileSource };
+        case 'random-iv-changed':
+            if (state.useRandomIV === action.enabled) return state;
+            return { ...state, useRandomIV: action.enabled };
+        case 'operation-started':
+            if (state.status === 'running' || !['encrypt', 'decrypt'].includes(action.mode)) return state;
+            return { ...state, mode: action.mode, status: 'running' };
+        case 'operation-succeeded':
+        case 'operation-failed':
+            if (state.status !== 'running') return state;
+            return { ...state, status: action.type === 'operation-succeeded' ? 'succeeded' : 'failed' };
+        default:
+            return state;
+    }
+}
+
+function transitionToolState(action) {
+    const nextState = reduceToolState(toolState, action);
+    if (nextState === toolState) return false;
+    toolState = nextState;
+    renderToolState();
+    return true;
+}
 
 /* ─── Initialization ─── */
 document.addEventListener('DOMContentLoaded', () => {
-    setMode('encrypt');
-    setInputType('string');
+    renderToolState();
+
+    document.getElementById('inp-value').addEventListener('input', () => {
+        fileReadToken++;
+    });
+    document.getElementById('iv-toggle-check').addEventListener('change', (event) => {
+        setRandomIV(event.target.checked);
+    });
 
     // Auto-trim spaces on key input blur event
     const keyInput = document.getElementById('inp-key');
@@ -23,90 +74,82 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ─── Mode Toggles (Encrypt / Decrypt) ─── */
-function setMode(m) {
-    globalMode = m;
-    
-    // Toggle Random Key button (only for encrypt)
-    const genBtn = document.getElementById('btn-gen-key');
-    if (genBtn) genBtn.style.display = (m === 'encrypt' ? 'block' : 'none');
-
-    const genValBtn = document.getElementById('btn-gen-value');
-    if (genValBtn) genValBtn.style.display = (m === 'encrypt' ? 'block' : 'none');
-
-    updateCopyVisibility();
-    updatePlaceholders();
+function setMode(mode) {
+    transitionToolState({ type: 'mode-changed', mode });
 }
 
 /* ─── Input Type Toggles (String | File | Whole File) ─── */
-function setInputType(type) {
-    inputType = type;
-    
-    // Update Tabs UI
-    document.querySelectorAll('.type-tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.type === type);
+function setInputType(inputType) {
+    transitionToolState({ type: 'input-type-changed', inputType });
+}
+
+function setFileSource(fileSource) {
+    transitionToolState({ type: 'file-source-changed', fileSource });
+}
+
+function setRandomIV(enabled) {
+    transitionToolState({ type: 'random-iv-changed', enabled: Boolean(enabled) });
+}
+
+function renderToolState() {
+    const isBusy = toolState.status === 'running';
+    const isStringInput = toolState.inputType === 'string';
+    const isRca = document.getElementById('sel-algo').value === 'RCA';
+
+    document.querySelectorAll('.type-tab').forEach((tab) => {
+        tab.classList.toggle('active', tab.dataset.type === toolState.inputType);
     });
+    document.getElementById('string-input-container').style.display = isStringInput ? 'block' : 'none';
+    document.getElementById('source-switcher').style.display = isStringInput ? 'none' : 'flex';
+    document.getElementById('upload-container').style.display =
+        !isStringInput && toolState.fileSource === 'upload' ? 'block' : 'none';
+    document.getElementById('paste-container').style.display =
+        !isStringInput && toolState.fileSource === 'paste' ? 'block' : 'none';
+    document.getElementById('src-upload').classList.toggle('active', toolState.fileSource === 'upload');
+    document.getElementById('src-paste').classList.toggle('active', toolState.fileSource === 'paste');
 
-    // Toggle containers
-    document.getElementById('string-input-container').style.display = (type === 'string') ? 'block' : 'none';
-    document.getElementById('source-switcher').style.display = (type === 'string') ? 'none' : 'flex';
-    
-    if (type === 'string') {
-        document.getElementById('upload-container').style.display = 'none';
-        document.getElementById('paste-container').style.display = 'none';
-    } else {
-        setFileSource(fileSource); // Refresh visibility based on current fileSource
+    const generateKeyButton = document.getElementById('btn-gen-key');
+    const generateValueButton = document.getElementById('btn-gen-value');
+    if (generateKeyButton) generateKeyButton.style.display = toolState.mode === 'encrypt' ? 'block' : 'none';
+    if (generateValueButton) generateValueButton.style.display = toolState.mode === 'encrypt' ? 'block' : 'none';
+
+    const wrappedButton = document.getElementById('btn-copy-wrapped');
+    if (wrappedButton) {
+        wrappedButton.style.display =
+            toolState.mode === 'encrypt' && isStringInput ? 'inline-flex' : 'none';
     }
-    
-    updateCopyVisibility();
-    updatePlaceholders();
-}
+    document.getElementById('inp-string').placeholder = toolState.mode === 'encrypt'
+        ? 'Enter value to encrypt...'
+        : '![AbC123...] or raw base64';
+    document.getElementById('inp-value').placeholder = toolState.mode === 'encrypt'
+        ? 'Paste YAML/Properties content here...'
+        : 'Paste content containing ![secrets] to decrypt...';
 
-function updateCopyVisibility() {
-    const wrappedBtn = document.getElementById('btn-copy-wrapped');
-    if (wrappedBtn) {
-        wrappedBtn.style.display = (globalMode === 'encrypt' && inputType === 'string') ? 'inline-flex' : 'none';
-    }
-}
+    const modeField = document.getElementById('mode-field');
+    const ivRow = document.getElementById('iv-toggle-row');
+    const modeSelect = document.getElementById('sel-mode');
+    const ivCheckbox = document.getElementById('iv-toggle-check');
+    modeField.style.opacity = isRca ? '0.35' : '';
+    modeField.style.pointerEvents = isRca ? 'none' : '';
+    ivRow.style.opacity = isRca ? '0.35' : '';
+    ivRow.style.pointerEvents = isRca ? 'none' : '';
+    ivCheckbox.checked = toolState.useRandomIV;
 
-function setFileSource(src) {
-    fileSource = src;
-    document.getElementById('src-upload').classList.toggle('active', src === 'upload');
-    document.getElementById('src-paste').classList.toggle('active', src === 'paste');
-
-    document.getElementById('upload-container').style.display = (src === 'upload') ? 'block' : 'none';
-    document.getElementById('paste-container').style.display = (src === 'paste') ? 'block' : 'none';
-}
-
-function updatePlaceholders() {
-    const stringInp = document.getElementById('inp-string');
-    const pasteArea = document.getElementById('inp-value');
-    
-    if (globalMode === 'encrypt') {
-        stringInp.placeholder = "Enter value to encrypt...";
-        pasteArea.placeholder = "Paste YAML/Properties content here...";
-    } else {
-        stringInp.placeholder = "![AbC123...] or raw base64";
-        pasteArea.placeholder = "Paste content containing ![secrets] to decrypt...";
-    }
+    document.querySelectorAll(
+        '.config-card button, .config-card input, .config-card select, .type-tabs button, ' +
+        '.source-toggle button, #string-input-container input, #string-input-container button, ' +
+        '#upload-container input, #paste-container textarea, #paste-container button, .operation-actions button'
+    ).forEach((control) => {
+        control.disabled = isBusy;
+    });
+    modeSelect.disabled = isBusy || isRca;
+    ivCheckbox.disabled = isBusy || isRca;
+    document.getElementById('workspace').setAttribute('aria-busy', String(isBusy));
 }
 
 /* ─── Key & Algo Logic ─── */
 function onAlgoChange() {
-    const algo = document.getElementById('sel-algo').value;
-    const modeField = document.getElementById('mode-field');
-    const ivRow = document.getElementById('iv-toggle-row');
-
-    if (algo === 'RCA') {
-        modeField.style.opacity = '0.35';
-        modeField.style.pointerEvents = 'none';
-        ivRow.style.opacity = '0.35';
-        ivRow.style.pointerEvents = 'none';
-    } else {
-        modeField.style.opacity = '';
-        modeField.style.pointerEvents = '';
-        ivRow.style.opacity = '';
-        ivRow.style.pointerEvents = '';
-    }
+    renderToolState();
     onKeyInput();
 }
 
@@ -122,53 +165,47 @@ function onKeyInput() {
     }
 }
 
-function toggleIV() {
-    useRandomIV = !useRandomIV;
-    document.getElementById('iv-toggle-check').checked = useRandomIV;
-}
-
 function toggleKeyVisibility() {
     const inp = document.getElementById('inp-key');
+    if (toolState.status === 'running') return;
+    setKeyVisibility(inp.type === 'password');
+}
+
+function setKeyVisibility(visible) {
+    const inp = document.getElementById('inp-key');
     const eye = document.getElementById('eye-key');
-    if (inp.type === 'password') {
-        inp.type = 'text';
-        if (eye) {
-            eye.classList.replace('fa-eye', 'fa-eye-slash');
-        }
-        setTimeout(() => {
-            if (inp.type === 'text') {
-                inp.type = 'password';
-                if (eye) {
-                    eye.classList.replace('fa-eye-slash', 'fa-eye');
-                }
-            }
-        }, 5000); // 5s mask timeout
-    } else {
-        inp.type = 'password';
-        if (eye) {
-            eye.classList.replace('fa-eye-slash', 'fa-eye');
-        }
+    if (keyVisibilityTimeout !== null) {
+        clearTimeout(keyVisibilityTimeout);
+        keyVisibilityTimeout = null;
     }
+    inp.type = visible ? 'text' : 'password';
+    if (eye) {
+        eye.classList.toggle('fa-eye', !visible);
+        eye.classList.toggle('fa-eye-slash', visible);
+    }
+    if (visible) keyVisibilityTimeout = setTimeout(() => setKeyVisibility(false), 5000);
 }
 
 /* ─── Main Execution ─── */
 async function runOperation(operation) {
-    const encryptBtn = document.getElementById('mode-encrypt');
-    const decryptBtn = document.getElementById('mode-decrypt');
-    if (encryptBtn.disabled || decryptBtn.disabled) return;
+    if (toolState.status === 'running') return;
+    if (!['encrypt', 'decrypt'].includes(operation)) return;
 
-    setMode(operation);
-    const key = document.getElementById('inp-key').value.trim(); // trimmed key
-    const algo = document.getElementById('sel-algo').value;
-    const mode_ = document.getElementById('sel-mode').value;
-    
-    let input = (inputType === 'string') 
-        ? document.getElementById('inp-string').value 
+    const snapshot = {
+        mode: operation,
+        inputType: toolState.inputType,
+        useRandomIV: toolState.useRandomIV,
+        key: document.getElementById('inp-key').value.trim(),
+        algorithm: document.getElementById('sel-algo').value,
+        cipherMode: document.getElementById('sel-mode').value
+    };
+    let input = snapshot.inputType === 'string'
+        ? document.getElementById('inp-string').value
         : document.getElementById('inp-value').value;
     
     input = input.trim();
 
-    if (!key) {
+    if (!snapshot.key) {
         if (typeof showToast === 'function') showToast('Please enter an encryption key', 'error');
         return;
     }
@@ -177,41 +214,37 @@ async function runOperation(operation) {
         return;
     }
 
-    const runBtn = document.getElementById(`mode-${operation}`);
+    const runBtn = document.getElementById(`mode-${snapshot.mode}`);
     const oldHtml = runBtn.innerHTML;
-    encryptBtn.disabled = true;
-    decryptBtn.disabled = true;
+    if (!transitionToolState({ type: 'operation-started', mode: snapshot.mode })) return;
     runBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
     try {
-        let result = '';
-        
-        if (inputType === 'string') {
-            result = globalMode === 'encrypt' 
-                ? await muleEncrypt(input, key, algo, mode_, useRandomIV)
-                : await muleDecrypt(input, key, algo, mode_, useRandomIV);
-        } 
-        else if (inputType === 'whole-file') {
-            result = globalMode === 'encrypt'
-                ? await muleEncrypt(input, key, algo, mode_, useRandomIV)
-                : await muleDecrypt(input, key, algo, mode_, useRandomIV);
-        }
-        else if (inputType === 'file') {
-            // Process YAML/Properties line by line or via regex
-            result = await processFileContent(input, key, algo, mode_, useRandomIV, globalMode);
+        let result;
+        if (snapshot.inputType === 'file') {
+            result = await processFileContent(
+                input, snapshot.key, snapshot.algorithm, snapshot.cipherMode,
+                snapshot.useRandomIV, snapshot.mode
+            );
+        } else {
+            const cipher = snapshot.mode === 'encrypt' ? muleEncrypt : muleDecrypt;
+            result = await cipher(
+                input, snapshot.key, snapshot.algorithm, snapshot.cipherMode, snapshot.useRandomIV
+            );
         }
 
         document.getElementById('result-box').value = result;
-        showToast('Success!');
-        if (globalMode === 'encrypt') {
+        transitionToolState({ type: 'operation-succeeded' });
+        if (typeof track_event === 'function') track_event(snapshot.mode);
+        if (typeof showToast === 'function') showToast('Success!');
+        if (snapshot.mode === 'encrypt') {
             showCopyHint();
         }
     } catch (e) {
-        showToast(e.message || 'Operation failed', 'error');
+        transitionToolState({ type: 'operation-failed' });
+        if (typeof showToast === 'function') showToast(e.message || 'Operation failed', 'error');
         console.error(e);
     } finally {
-        encryptBtn.disabled = false;
-        decryptBtn.disabled = false;
         runBtn.innerHTML = oldHtml;
     }
 }
@@ -274,13 +307,15 @@ async function encryptAllValues(content, key, algo, encryptMode, randomIV) {
 
         // Try both YAML (key: value) and Properties (key=value)
         // Match key [separator] [optional space] [value]
-        const match = line.match(/^(\s*)([^#!=:\s][^=:]*)\s*([=:])\s*(.*)$/);
+        const match = line.match(/^(\s*)([^#!=:\s][^=:]*?)(\s*[=:]\s*)(.*)$/);
         
         if (match) {
             const indent = match[1];
             const k = match[2];
             const sep = match[3];
-            const v = match[4].trim();
+            const rawValue = match[4];
+            const v = rawValue.trim();
+            const trailingWhitespace = rawValue.slice(v.length);
             
             // Skip if it's already a secret or looks like a JSON block starting
             if (v && !v.startsWith('![') && !v.startsWith('{') && !v.startsWith('[')) {
@@ -288,7 +323,7 @@ async function encryptAllValues(content, key, algo, encryptMode, randomIV) {
                 try {
                     const secret = await muleEncrypt(v, key, algo, encryptMode, randomIV);
                     // Encrypted values in the file MUST be wrapped in ![] wrapper
-                    processedLines.push(`${indent}${k}${sep} ![${secret}]`);
+                    processedLines.push(`${indent}${k}${sep}![${secret}]${trailingWhitespace}`);
                     successCount++;
                     continue;
                 } catch(e) {
@@ -314,13 +349,20 @@ async function encryptAllValues(content, key, algo, encryptMode, randomIV) {
 
 /* ─── File Upload Logic ─── */
 function handleFileUpload(event) {
+    if (toolState.status === 'running') return;
     const file = event.target.files[0];
     if (!file) return;
 
+    const requestToken = ++fileReadToken;
     const reader = new FileReader();
     reader.onload = (e) => {
+        if (requestToken !== fileReadToken) return;
         document.getElementById('inp-value').value = e.target.result;
         showToast(`Loaded: ${file.name}`);
+    };
+    reader.onerror = () => {
+        if (requestToken !== fileReadToken) return;
+        if (typeof showToast === 'function') showToast(`Could not read ${file.name}.`, 'error');
     };
     reader.readAsText(file);
 }
@@ -329,7 +371,7 @@ function copyResult(withWrapper = true) {
     let res = document.getElementById('result-box').value;
     if (!res) return;
 
-    if (globalMode === 'encrypt' && inputType === 'string') {
+    if (toolState.mode === 'encrypt' && toolState.inputType === 'string') {
         if (withWrapper) {
             // Add wrapper if missing
             if (!res.startsWith('![')) res = '![' + res + ']';
@@ -340,6 +382,7 @@ function copyResult(withWrapper = true) {
     }
 
     navigator.clipboard.writeText(res).then(() => {
+        if (typeof track_event === 'function') track_event('copy');
         if (withWrapper) sessionStorage.setItem('wrapped_hint_shown', 'true');
         hideCopyHint();
 
@@ -353,7 +396,7 @@ function showCopyHint() {
     const hint = document.getElementById('wrapped-copy-hint');
     if (!hint) return;
     const shown = sessionStorage.getItem('wrapped_hint_shown');
-    if (!shown && globalMode === 'encrypt' && inputType === 'string') {
+    if (!shown && toolState.mode === 'encrypt' && toolState.inputType === 'string') {
         hint.style.display = 'block';
     }
 }
@@ -370,7 +413,7 @@ function downloadResult() {
         return;
     }
     
-    const ext = (inputType === 'string') ? 'txt' : 'yaml';
+    const ext = (toolState.inputType === 'string') ? 'txt' : 'yaml';
     const blob = new Blob([res], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -380,17 +423,23 @@ function downloadResult() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    if (typeof track_event === 'function') track_event('download');
     
     if (typeof showToast === 'function') showToast('File download started');
 }
 
 function clearAll() {
+    if (toolState.status === 'running') return;
+    fileReadToken++;
     if (document.getElementById('inp-string')) document.getElementById('inp-string').value = '';
     if (document.getElementById('inp-value')) document.getElementById('inp-value').value = '';
+    if (document.getElementById('file-upload')) document.getElementById('file-upload').value = '';
     if (document.getElementById('result-box')) document.getElementById('result-box').value = '';
+    if (typeof track_event === 'function') track_event('clear');
 }
 
 function generateRandomKey() {
+    if (toolState.status === 'running') return;
     const prefixes = ['Mule', 'Anypoint', 'Secure', 'Secret', 'Vault', 'Shadow', 'Frost', 'Iron', 'Zenith', 'Titan'];
     const suffixes = ['Key', 'Prop', 'Node', 'Core', 'Vortex', 'Sentinel', 'Pulse', 'Edge', 'Base', 'Host'];
     
@@ -402,16 +451,14 @@ function generateRandomKey() {
     const keyInput = document.getElementById('inp-key');
     if (keyInput) {
         keyInput.value = newKey;
-        if (keyInput.type === 'password') {
-            keyInput.type = 'text';
-            setTimeout(() => { if (keyInput.type === 'text') keyInput.type = 'password'; }, 5000); // 5s mask timeout
-        }
+        setKeyVisibility(true);
         onKeyInput();
         if (typeof showToast === 'function') showToast('Random key generated!');
     }
 }
 
 function generateRandomValue() {
+    if (toolState.status === 'running') return;
     const list = ['mulesoft_client_secret', 'anypoint_prod_db_pwd', 'secure_payload_auth', 'api_gateway_internal_key', 'sfdc_org_id_secret', 'aws_access_key_alias'];
     const val = list[Math.floor(Math.random() * list.length)];
     const randomHex = Array.from(crypto.getRandomValues(new Uint8Array(2))).map(b => b.toString(16).padStart(2, '0')).join('');

@@ -327,6 +327,7 @@ function generateMuleXml(expr) {
 function copyCron() {
     const expr = document.getElementById('cron-expression').textContent;
     navigator.clipboard.writeText(expr).then(() => {
+        if (typeof track_event === 'function') track_event('copy');
         const btn = document.getElementById('copy-cron-btn');
         const original = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
@@ -341,6 +342,7 @@ function copyCron() {
 function copyMuleXml() {
     const xml = document.getElementById('mule-xml-output').value;
     navigator.clipboard.writeText(xml).then(() => {
+        if (typeof track_event === 'function') track_event('copy');
         showToast('Mule XML copied!');
     });
 }
@@ -352,6 +354,7 @@ function downloadXml() {
     a.href = URL.createObjectURL(blob);
     a.download = 'scheduler-flow.xml';
     a.click();
+    if (typeof track_event === 'function') track_event('download');
 }
 
 function resetFields() {
@@ -364,6 +367,7 @@ function resetFields() {
     document.getElementById('f-year').value = '';
     document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
     update();
+    if (typeof track_event === 'function') track_event('clear');
 }
 
 function showToast(msg) {
@@ -399,6 +403,7 @@ document.querySelectorAll('.preset-btn').forEach(btn => {
         document.getElementById('f-year').value = parts[6] || '';
 
         update();
+        if (typeof track_event === 'function') track_event('build');
     });
 });
 
@@ -408,6 +413,7 @@ FIELDS.forEach(id => {
     if (el) el.addEventListener('input', () => {
         document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
         update();
+        if (typeof track_event === 'function') track_event('build');
     });
 });
 
@@ -628,6 +634,7 @@ function explainCron() {
         document.getElementById('checker-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
         resultEl.style.display = 'flex';
+        if (typeof track_event === 'function') track_event('check');
 
         // Scroll into view
         resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

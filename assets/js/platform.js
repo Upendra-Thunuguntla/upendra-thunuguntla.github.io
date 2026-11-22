@@ -172,16 +172,7 @@ function initGlobalToolDragAndDrop() {
                 hiddenFileInput.files = dt.files;
 
                 hiddenFileInput.dispatchEvent(new Event('change', { bubbles: true }));
-
-                if (typeof handleFileUpload === 'function') {
-                    handleFileUpload({ target: hiddenFileInput });
-                } else if (typeof y2p_openFile === 'function') {
-                    y2p_openFile({ target: hiddenFileInput });
-                } else if (typeof p2y_openFile === 'function') {
-                    p2y_openFile({ target: hiddenFileInput });
-                } else if (typeof loadJSONFile === 'function') {
-                    loadJSONFile({ target: hiddenFileInput });
-                }
+                return;
             } catch (err) {
                 console.warn('[DragNDrop] FileInput assignment fallback:', err);
             }
@@ -308,6 +299,22 @@ function initToolSwitcher() {
     let previousFocus;
     let previousOverflow;
     const normalize = value => value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const toolIcons = {
+        'secure-properties-generator': '🔐',
+        'json2raml': '🔄',
+        'yaml2props': '⚙️',
+        'props2yaml': '📝',
+        'mule2curl': '⚡',
+        'curl2mule': '🔁',
+        'xml-sdk': '🏗️',
+        'cron-builder': '⏱️',
+        'raml2oas': '🔄',
+        'base64-converter': '🔏',
+        'mule-debug-package-finder': '🪲',
+        'gmail-url': '📧',
+        'salary-calc': '💰',
+        'whatsapp-readmore': '💬'
+    };
     const casualPaths = new Set(['/tools/gmail-url/', '/tools/salary-calc/', '/tools/whatsapp-readmore/']);
     const groups = [
         {
@@ -337,13 +344,21 @@ function initToolSwitcher() {
     const groupFor = tool => groups[casualPaths.has(tool.path) ? 1 : 0];
     const orderedTools = groups.flatMap(group => tools.filter(tool => groupFor(tool) === group));
     let entries = orderedTools.map(tool => {
+        const id = tool.path.split('/')[2];
         const li = document.createElement('li');
         const link = document.createElement('a');
         link.href = `${tool.path}#workspace`;
         link.className = 'tool-switcher-link';
+        const label = document.createElement('span');
+        label.className = 'tool-switcher-label';
+        const icon = document.createElement('span');
+        icon.className = 'tool-switcher-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = toolIcons[id] || '🛠️';
         const name = document.createElement('span');
         name.textContent = tool.name;
-        link.appendChild(name);
+        label.append(icon, name);
+        link.appendChild(label);
         const current = tool.path === currentPath;
         const badge = document.createElement('span');
         badge.className = 'tool-switcher-badge';
@@ -360,7 +375,7 @@ function initToolSwitcher() {
         link.appendChild(badge);
         li.appendChild(link);
         groupFor(tool).list.appendChild(li);
-        return { li, link, id: tool.path.split('/')[2], group: groupFor(tool), terms: normalize(`${tool.name} ${tool.path}`) };
+        return { li, link, id, group: groupFor(tool), terms: normalize(`${tool.name} ${tool.path}`) };
     });
 
     function applyToolOrder() {
@@ -565,6 +580,7 @@ function initResumeGate() {
     const emailInput = document.getElementById('resume-input-email');
     const statusDiv = document.getElementById('resume-form-status');
     const submitBtn = document.getElementById('resume-submit-btn');
+    let autoCloseTimer = null;
 
     if (!modal || !form) return;
 
@@ -600,18 +616,18 @@ function initResumeGate() {
     }
 
     function openModal() {
+        clearTimeout(autoCloseTimer);
+        autoCloseTimer = null;
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         if (emailInput) setTimeout(() => emailInput.focus(), 150);
 
-        if (typeof gtag === 'function') {
-            gtag('event', 'resume_modal_open', {
-                page_path: window.location.pathname
-            });
-        }
+        if (typeof track_page_event === 'function') track_page_event('resume_open');
     }
 
     function closeModal() {
+        clearTimeout(autoCloseTimer);
+        autoCloseTimer = null;
         modal.classList.remove('active');
         document.body.style.overflow = '';
     }
@@ -668,15 +684,11 @@ function initResumeGate() {
                 showStatus('✨ Success! Resume sent to your inbox. Check your email shortly.', 'success');
                 form.reset();
 
-                if (typeof gtag === 'function') {
-                    gtag('event', 'resume_request_success', {
-                        email_domain: email.split('@')[1] || 'unknown',
-                        company: company || 'none'
-                    });
-                }
+                if (typeof track_page_event === 'function') track_page_event('resume_success');
 
                 // Auto close modal after 4 seconds
-                setTimeout(() => {
+                autoCloseTimer = setTimeout(() => {
+                    autoCloseTimer = null;
                     closeModal();
                     hideStatus();
                 }, 4000);
@@ -685,18 +697,14 @@ function initResumeGate() {
                 const errMsg = data.error || 'Unable to send email right now. Please try again or contact me directly.';
                 showStatus(`❌ ${errMsg}`, 'error');
 
-                if (typeof gtag === 'function') {
-                    gtag('event', 'resume_request_error', { error: errMsg });
-                }
+                if (typeof track_page_event === 'function') track_page_event('resume_error');
             }
         } catch (err) {
             console.error('[ResumeGate] Fetch error:', err);
 
             showStatus('❌ Connection error. Could not reach server. Please contact upendra.thunuguntla@gmail.com directly.', 'error');
 
-            if (typeof gtag === 'function') {
-                gtag('event', 'resume_request_error', { error: err.message || 'network_error' });
-            }
+            if (typeof track_page_event === 'function') track_page_event('resume_error');
         } finally {
             setSubmitting(false);
         }
@@ -783,12 +791,7 @@ function checkDomainRedirectNotice() {
         document.body.appendChild(banner);
 
         // Track GA4 Impression Event
-        if (typeof gtag === 'function') {
-            gtag('event', 'domain_banner_impression', {
-                source_host: currentHost,
-                page_path: window.location.pathname
-            });
-        }
+        if (typeof track_page_event === 'function') track_page_event('domain_view');
 
         // Animate in smoothly after page render
         setTimeout(() => {
@@ -802,13 +805,7 @@ function checkDomainRedirectNotice() {
                 const targetUrl = 'https://upendra.fyi' + window.location.pathname + window.location.search + window.location.hash;
 
                 // Track GA4 Switch Event
-                if (typeof gtag === 'function') {
-                    gtag('event', 'domain_banner_switch_click', {
-                        source_host: currentHost,
-                        target_url: targetUrl,
-                        page_path: window.location.pathname
-                    });
-                }
+                if (typeof track_page_event === 'function') track_page_event('domain_switch');
 
                 window.location.href = targetUrl;
             });
@@ -819,13 +816,7 @@ function checkDomainRedirectNotice() {
         if (dismissBtn) {
             dismissBtn.addEventListener('click', function () {
                 // Track GA4 Dismiss Event
-                if (typeof gtag === 'function') {
-                    gtag('event', 'domain_banner_dismiss_click', {
-                        source_host: currentHost,
-                        suppression_days: 15,
-                        page_path: window.location.pathname
-                    });
-                }
+                if (typeof track_page_event === 'function') track_page_event('domain_dismiss');
 
                 try {
                     localStorage.setItem(STORAGE_KEY, Date.now().toString());
@@ -859,6 +850,7 @@ function showToast(message, type = 'success') {
         toast.className = 'toast';
         document.body.appendChild(toast);
     }
+    toast.setAttribute('data-clarity-mask', 'True');
     toast.textContent = message;
     toast.className = 'toast toast-' + type + ' show';
     clearTimeout(toast._timer);

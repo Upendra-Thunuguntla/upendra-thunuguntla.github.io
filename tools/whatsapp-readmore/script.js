@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Render preview content
         renderPreview(introText, hiddenText, separatorString);
+        if (typeof track_event === 'function') track_event('generate');
     }
 
     // Helper to escape HTML characters to prevent XSS in mock bubble

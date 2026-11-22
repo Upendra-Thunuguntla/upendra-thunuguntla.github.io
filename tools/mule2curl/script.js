@@ -352,7 +352,7 @@ function parseAndConvert() {
    ══════════════════════════════════════════════ */
 function copyCurl() {
     copyToClipboard(curlOutput.value, document.getElementById('curl-copy-btn'));
-    track_event('copy', { tool: 'mule2curl', content_type: 'curl' });
+    if (curlOutput.value.trim() && typeof track_event === 'function') track_event('copy');
 }
 
 function downloadCurl() {
@@ -372,6 +372,7 @@ function clearAll() {
     requestCol.innerHTML = '';
     headersCol.innerHTML = '';
     showToast('Cleared.');
+    if (typeof track_event === 'function') track_event('clear');
 }
 
 function loadExample() {

@@ -519,18 +519,18 @@ function parseAndConvert() {
    ══════════════════════════════════════════════ */
 function copyConfig() {
     copyToClipboard(configOutput.value, document.getElementById('config-copy-btn'));
-    if (typeof track_event === 'function') track_event('copy', { tool: 'curl2mule', content_type: 'config' });
+    if (configOutput.value.trim() && typeof track_event === 'function') track_event('copy');
 }
 
 function copyProcessor() {
     copyToClipboard(processorOutput.value, document.getElementById('processor-copy-btn'));
-    if (typeof track_event === 'function') track_event('copy', { tool: 'curl2mule', content_type: 'processor' });
+    if (processorOutput.value.trim() && typeof track_event === 'function') track_event('copy');
 }
 
 function copyAll() {
     const all = (configOutput.value ? configOutput.value + '\n\n' : '') + processorOutput.value;
     copyToClipboard(all);
-    if (typeof track_event === 'function') track_event('copy', { tool: 'curl2mule', content_type: 'all' });
+    if (all.trim() && typeof track_event === 'function') track_event('copy');
 }
 
 function downloadXml() {
@@ -549,6 +549,7 @@ function clearAll() {
     processorOutput.value = '';
     if (breakdownEl) breakdownEl.style.display = 'none';
     showToast('Cleared.');
+    if (typeof track_event === 'function') track_event('clear');
 }
 
 function loadExample() {

@@ -4,6 +4,11 @@
 
 var globalP2yStripValues = false;
 var globalP2yOutputMode = 'values';
+let p2yFileLoadToken = 0;
+
+document.getElementById('propTextarea').addEventListener('input', () => {
+    p2yFileLoadToken++;
+});
 
 function p2y_getOutputMode() {
     return globalP2yOutputMode;
@@ -50,6 +55,8 @@ function p2y_isKeysOnly() {
 }
 
 function p2y_loadExample() {
+    p2yFileLoadToken++;
+    p2y_cancelDownload();
     document.getElementById('propTextarea').value = "# MuleSoft application settings\napp.name=orders-api\napp.enabled=true\napp.retry-count=3\napp.optional=null\nmule.home=${MULE_HOME}\nhttp.port:8081\nhttp.base-path=/api\ndatabase.password=![demo-cipher]\nfeatures[0]=inventory\nfeatures[1]=checkout";
     document.getElementById('p2y-separator').value = 'auto';
     document.getElementById('p2y-nest-dotted').checked = true;
@@ -73,11 +80,21 @@ function p2y_loadExample() {
 
 function p2y_openFile(event) {
     const file = event.target.files[0]; if (!file) return;
+    const requestToken = ++p2yFileLoadToken;
     document.getElementById('prop-file-label').textContent = file.name;
     const reader = new FileReader();
-    reader.onload = e => { document.getElementById('propTextarea').value = e.target.result; p2y_convert(); };
+    reader.onload = e => {
+        if (requestToken !== p2yFileLoadToken) return;
+        document.getElementById('propTextarea').value = e.target.result;
+        p2y_convert();
+    };
+    reader.onerror = () => {
+        if (requestToken !== p2yFileLoadToken) return;
+        document.getElementById('prop-file-label').textContent = 'Upload .properties File';
+        document.getElementById('propFileInput').value = '';
+        showToast('Could not read the selected properties file.', 'error');
+    };
     reader.readAsText(file);
-    track_event('file_upload', { tool: 'props2yaml', file_type: 'properties' });
 }
 
 function p2y_getOption(id, fallback) {
@@ -317,19 +334,27 @@ function p2y_convert() {
 }
 
 function p2y_clear() {
+    p2yFileLoadToken++;
+    p2y_cancelDownload();
     document.getElementById('propTextarea').value = '';
     document.getElementById('yamlOutput').value = '';
     document.getElementById('filterYaml').value = '';
     document.getElementById('filterYaml').disabled = true;
     document.getElementById('prop-file-label').textContent = 'Upload .properties File';
     document.getElementById('propFileInput').value = '';
+    document.getElementById('propFileInput').value = '';
     globalP2yOutputMode = 'values';
     p2y_syncOutputMode();
     globalP2yStripValues = false;
     p2y_updateOptions();
+    if (typeof track_event === 'function') track_event('clear');
 }
 
-function p2y_copy() { copyToClipboard(document.getElementById('yamlOutput').value, document.getElementById('p2y-copy-btn')); }
+function p2y_copy() {
+    const output = document.getElementById('yamlOutput').value;
+    copyToClipboard(output, document.getElementById('p2y-copy-btn'));
+    if (output.trim() && typeof track_event === 'function') track_event('copy');
+}
 
 function p2y_downloadPrompt() {
     if (!document.getElementById('yamlOutput').value.trim()) { showToast('Nothing to download!', 'error'); return; }

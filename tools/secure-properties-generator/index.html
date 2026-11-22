@@ -85,7 +85,7 @@
           "name": "Can I save and load my encryption keys and configurations?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes! Click the Save / Load button next to the Security Key input. You can save your key, algorithm, operation mode, and Random IV setting under a custom label (e.g. 'Prod AES' or 'Dev Project') for quick 1-click retrieval. All saved configurations are stored exclusively in your browser's local storage (localStorage) and are never uploaded or transmitted anywhere."
+            "text": "Yes! Click Save / Load next to the Security Key input to save and retrieve a configuration. Saved configurations are encrypted using a key stored in your browser. Clearing site data removes them. This is a convenience feature, not a secure vault; use a password manager or secret manager for sensitive production keys."
           }
         },
         {
@@ -356,7 +356,7 @@
         </div>
     </div>
 
-    <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="Secure Properties workspace" style="padding-top: var(--space-lg);">
+    <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="Secure Properties workspace" data-clarity-mask="True" style="padding-top: var(--space-lg);">
         <div class="container" style="max-width: 900px;">
             <a class="workspace-about-link" href="#about-tool">About this tool &uarr;</a>
 
@@ -404,7 +404,7 @@
                             <div id="sk-list" class="sk-list"></div>
                             <p class="sk-disclaimer">
                                 <i class="fas fa-lock"></i>
-                                Stored in <strong>your browser only</strong> (localStorage) - NEVER uploaded, synced, or transmitted anywhere.
+                                Saved keys are encrypted in this browser for convenience. Clearing site data removes them. This is not a secure vault; use a password manager or secret manager for sensitive production keys.
                             </p>
                         </dialog>
                     </div>
@@ -435,9 +435,9 @@
                     <!-- Random IV Switch -->
                     <div class="config-item" id="iv-toggle-row">
                         <label>Random IV</label>
-                        <div class="switch-row" onclick="toggleIV()" style="margin-top: 4px;">
+                        <div class="switch-row" style="margin-top: 4px;">
                             <label class="switch">
-                                <input type="checkbox" id="iv-toggle-check">
+                                <input type="checkbox" id="iv-toggle-check" aria-label="Use random initialization vector">
                                 <span class="slider"></span>
                             </label>
                         </div>
@@ -635,7 +635,7 @@
                 </details>
                 <details class="faq-item">
                     <summary>Can I save and load my encryption keys and configurations?</summary>
-                    <div class="faq-answer">Yes! Click the <strong>Save / Load</strong> button next to the Security Key input. You can save your key, algorithm, mode, and Random IV setting under a custom name (e.g., "Prod AES" or "Dev Project") for instant 1-click loading in future sessions. All saved profiles are stored strictly in your browser's <code>localStorage</code>—never uploaded, synced, or sent to any server.</div>
+                    <div class="faq-answer">Yes! Click <strong>Save / Load</strong> next to the Security Key input to save and retrieve a configuration. Saved configurations are encrypted using a key stored in your browser. Clearing site data removes them. This is a convenience feature, not a secure vault; use a password manager or secret manager for sensitive production keys.</div>
                 </details>
                 <details class="faq-item">
                     <summary>Can I encrypt or decrypt an entire YAML or Properties file at once?</summary>

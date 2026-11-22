@@ -38,6 +38,33 @@ upendra.fyi/
 - **Data Privacy Compliance:** Emphasize to the user and in structured data that operations run 100% locally.
 - **Storage Policy:** Use local state variables. If caching settings or keys is requested, store them locally in `localStorage` under a prefixed key specific to the tool (e.g., `upendra-tool-[tool-slug]-key`).
 
+### Analytics
+- Load `tracking.js` in the head and `analytics.js` before the tool script. Register each new tool's slug and unique short prefix in `analytics.js`.
+- Custom event names are `<prefix>_<action>`; for example, `j2r_convert` and `y2p_convert` are separate events. The `page_tool` parameter contains the fixed tool slug. GA4's automatic events, such as `page_view`, keep their standard names.
+- Prefixes and primary events:
+
+  | Tool | Prefix | Primary event |
+  | --- | --- | --- |
+  | Base64 | `b64` | `b64_encode`, `b64_decode` |
+  | Cron builder | `cron` | `cron_build`, `cron_check` |
+  | cURL to Mule | `c2m` | `c2m_convert` |
+  | Gmail URL | `gmail` | `gmail_generate` |
+  | JSON to RAML | `j2r` | `j2r_convert` |
+  | Debug package finder | `debug` | `debug_copy` |
+  | Mule to cURL | `m2c` | `m2c_convert` |
+  | Properties to YAML | `p2y` | `p2y_convert` |
+  | RAML to OpenAPI | `r2o` | `r2o_convert` |
+  | Salary calculator | `salary` | `salary_calc` |
+  | Secure properties | `secure` | `secure_encrypt`, `secure_decrypt` |
+  | WhatsApp read more | `wa` | `wa_generate` |
+  | XML SDK | `xml` | `xml_add_param` |
+  | YAML to properties | `y2p` | `y2p_convert` |
+
+- Tool scripts call `track_event` with an allowed action from `analytics.js` when the action occurs. Conversion, generation, calculation, Base64 processing and cron building are debounced by 800 ms; pending events are flushed on page hide. These measure interactions or completed processing, not unique users. Copy events can represent attempts where the shared clipboard helper cannot report completion.
+- Tool event parameters are deliberately discarded. Never add user input, output, filenames, saved-key names, salary amounts, email addresses, or arbitrary error messages to analytics. Tool workspaces and shared toast messages use Clarity's `data-clarity-mask` attribute; retain it when changing markup. Review GA4 automatic collection, enhanced measurement, consent and Clarity settings separately.
+- Homepage tool-card navigation emits `home_open_<prefix>`. Dynamic article links are tracked through event delegation. Existing reports, key events and custom definitions using old names must be updated; historic data is not renamed. To report on `page_tool` as a dimension, register it in GA4.
+- After deployment, test representative actions in GA4 DebugView and confirm each expected event appears once with no sensitive parameters. DebugView and property settings cannot be verified from the repository alone.
+
 ### CSS Strategy: Common vs. Separate CSS
 - **Leverage Common CSS (`/assets/css/core.css` and `/assets/css/tool.css`):** Do not write custom styles for standard layouts, page headers, breadcrumbs, inputs, textareas, code blocks, buttons, sections, or footers. The classes are predefined and adapt automatically to themes.
 - **Use Separate CSS (`style.css` in tool folder):** Create a local `style.css` **only** if the tool introduces unique visual elements not represented in the common library (e.g., specific cryptography configuration cards, custom interactive sliders, parsed result breakdown tables, visual nodes). All rules in local files must reference CSS custom variables (tokens) from `core.css` to respect light/dark themes.
@@ -171,7 +198,7 @@ Below is the complete boilerplate for a tool. It handles SEO, structured schemas
     </div>
 
     <!-- Main Workspace Section -->
-    <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="[Tool Name] workspace">
+    <div class="tool-workspace" id="workspace" tabindex="-1" aria-label="[Tool Name] workspace" data-clarity-mask="True">
         <div class="container">
             <a class="workspace-about-link" href="#about-tool">About this tool &uarr;</a>
             

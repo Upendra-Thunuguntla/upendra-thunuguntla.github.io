@@ -8,6 +8,7 @@ const xmlDoc = document.implementation.createDocument("", "", null);
 const operation = xmlDoc.createElement("operation");
 const params = xmlDoc.createElement("parameters");
 operation.appendChild(params);
+let errorTimeout = null;
 
 /* ══ Helpers ══ */
 function toKebab(s) { return v ? v.kebabCase(s) : s.replace(/\s+/g, '-').toLowerCase(); }
@@ -94,14 +95,20 @@ function clearCustomType() {
 }
 
 function param_disable_default(val) {
-    document.getElementById('param_defaultValue').disabled = (val === 'REQUIRED');
+    const defaultValue = document.getElementById('param_defaultValue');
+    defaultValue.disabled = (val === 'REQUIRED');
+    if (defaultValue.disabled) defaultValue.value = '';
 }
 
 function showError(msg) {
     const el = document.getElementById('xml-error');
+    clearTimeout(errorTimeout);
     el.textContent = '⚠️ ' + msg;
     el.style.display = 'block';
-    setTimeout(() => el.style.display = 'none', 3000);
+    errorTimeout = setTimeout(() => {
+        el.style.display = 'none';
+        errorTimeout = null;
+    }, 3000);
 }
 
 function param_convert() {
@@ -137,10 +144,13 @@ function param_convert() {
 }
 
 function param_clear() {
+    clearTimeout(errorTimeout);
+    errorTimeout = null;
     param_fields.forEach(f => {
         const el = document.getElementById(f.id);
         if (el) el.value = '';
     });
+    param_disable_default(document.getElementById('param_use').value);
     document.getElementById('param_type_text').value = '';
     clearCustomType();
     document.getElementById('xml-error').style.display = 'none';
@@ -150,10 +160,15 @@ function resetAll() {
     op_reset();
     param_clear();
     showToast('Reset complete.');
+    if (typeof track_event === 'function') track_event('clear');
 }
 
 /* ══ Actions ══ */
-function copyXML() { copyToClipboard(document.getElementById('xml-output').value, document.getElementById('xml-copy-btn')); }
+function copyXML() {
+    const output = document.getElementById('xml-output').value;
+    copyToClipboard(output, document.getElementById('xml-copy-btn'));
+    if (output.trim() && typeof track_event === 'function') track_event('copy');
+}
 function downloadXML() {
     const content = document.getElementById('xml-output').value;
     if (!content.trim()) { showToast('Nothing to download!', 'error'); return; }

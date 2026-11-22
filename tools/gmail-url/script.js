@@ -40,13 +40,14 @@ function openGmail() {
 
 function copyURL() {
     copyToClipboard(generatedURL, document.getElementById('copy-url-btn'));
-    track_event('copy', { tool: 'gmail_url', content_type: 'url' });
+    if (generatedURL && typeof track_event === 'function') track_event('copy');
 }
 
 function loadTestValues() {
     document.getElementById('gmail-to').value = 'upendra.thunuguntla@gmail.com';
     document.getElementById('gmail-subject').value = 'Sending Mail from Gmail Compose URL Generator';
     document.getElementById('gmail-body').value = 'Hi Upendra,\n\nYour tool is so helpful ❤️\n\nThanks!';
+    generateURL();
     track_event('load_example', { tool: 'gmail_url' });
 }
 
@@ -55,6 +56,7 @@ function clearForm() {
     document.getElementById('result-area').style.display = 'none';
     document.getElementById('placeholder-area').style.display = 'block';
     generatedURL = '';
+    if (typeof track_event === 'function') track_event('clear');
 }
 
 ['gmail-to', 'gmail-cc', 'gmail-bcc', 'gmail-subject', 'gmail-body'].forEach(id => {

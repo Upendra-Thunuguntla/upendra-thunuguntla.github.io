@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeMode = 'encode'; // 'encode' or 'decode'
     let inputType = 'text'; // 'text' or 'file'
     let loadedFileName = '';
+    let fileReadToken = 0;
 
     // Initialize inputs
     if (sourceEl) {
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.setInputType = function(type) {
         if (inputType === type) return;
+        if (type !== 'file') fileReadToken++;
         inputType = type;
 
         const tabText = document.getElementById('tab-text');
@@ -357,6 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Global Actions
     window.loadExample = function() {
+        fileReadToken++;
         if (activeMode === 'encode') {
             sourceEl.value = "Hello, World! 👋 Base64 encoding allows standard binary structures to be encapsulated safely inside text formats. Emojis work fine, too! 🚀🔥";
         } else {
@@ -368,18 +371,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         processData();
+        if (typeof track_event === 'function') track_event('load_example');
         if (typeof showToast === 'function') {
             showToast('Example data loaded!');
         }
     };
 
     window.clearAll = function() {
+        fileReadToken++;
         sourceEl.value = '';
         resultEl.value = '';
         fileUploadEl.value = '';
         fileNameDisplay.textContent = '';
         loadedFileName = '';
         updateStats(0, 0, 0, 0, 0, 'Ready');
+        if (typeof track_event === 'function') track_event('clear');
         
         if (typeof showToast === 'function') {
             showToast('Cleared inputs and outputs.');
@@ -391,6 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const btn = document.getElementById('btn-copy');
         if (typeof copyToClipboard === 'function') {
             copyToClipboard(text, btn);
+            if (text.trim() && !text.startsWith('// Error:') && typeof track_event === 'function') track_event('copy');
         }
     };
 
@@ -436,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = event.target.files[0];
         if (!file) return;
 
+        const requestToken = ++fileReadToken;
         loadedFileName = file.name;
         fileNameDisplay.textContent = `${file.name} (${formatBytes(file.size)})`;
 
@@ -443,6 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const reader = new FileReader();
 
         reader.onload = function(e) {
+            if (requestToken !== fileReadToken) return;
             if (selectedEncoding === 'HEX') {
                 // Read binary array buffer and convert to hex
                 const buffer = e.target.result;
@@ -460,6 +469,15 @@ document.addEventListener('DOMContentLoaded', () => {
             processData();
             if (typeof showToast === 'function') {
                 showToast(`Loaded ${file.name} successfully.`);
+            }
+        };
+        reader.onerror = function() {
+            if (requestToken !== fileReadToken) return;
+            loadedFileName = '';
+            fileNameDisplay.textContent = '';
+            fileUploadEl.value = '';
+            if (typeof showToast === 'function') {
+                showToast(`Could not read ${file.name}.`, 'error');
             }
         };
 

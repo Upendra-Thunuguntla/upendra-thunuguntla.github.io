@@ -87,13 +87,7 @@ function calc() {
     resultEl.style.backgroundClip = 'text';
     resultEl.style.webkitTextFillColor = 'transparent';
 
-    track_event('calculate', {
-        tool: 'salary_calc',
-        hike_pct: calculatedPct.toFixed(2),
-        direction: calculatedPct > 0 ? 'increase' : calculatedPct < 0 ? 'decrease' : 'flat',
-        current_salary: cur,
-        revised_salary: isNaN(rev) ? calculatedRev : rev,
-    });
+    track_event('calculate');
 }
 
 currentEl.addEventListener('input', calc);

@@ -6,12 +6,13 @@
 let outputFormat = 'yaml';
 
 function setOutputFormat(fmt) {
+    if (fmt !== 'yaml' && fmt !== 'json') return;
     outputFormat = fmt;
     document.getElementById('btn-yaml').classList.toggle('active', fmt === 'yaml');
     document.getElementById('btn-json').classList.toggle('active', fmt === 'json');
-    // Re-run if there's already output
-    const out = document.getElementById('oas-output').value;
-    if (out) convertRaml();
+    document.getElementById('btn-yaml').setAttribute('aria-pressed', String(fmt === 'yaml'));
+    document.getElementById('btn-json').setAttribute('aria-pressed', String(fmt === 'json'));
+    if (document.getElementById('raml-input').value.trim()) convertRaml();
 }
 
 // ── Simple RAML Parser ──────────────────────────────────────────────────────
@@ -381,8 +382,12 @@ function convertRaml() {
     const warningsEl = document.getElementById('warnings-panel');
 
     if (!input) {
-        statusEl.className = 'convert-status error';
-        statusEl.innerHTML = '<i class="fas fa-circle-exclamation"></i> Please paste a RAML 1.0 spec first.';
+        document.getElementById('oas-output').value = '';
+        summaryEl.style.display = 'none';
+        warningsEl.style.display = 'none';
+        document.getElementById('warnings-list').innerHTML = '';
+        statusEl.className = 'convert-status idle';
+        statusEl.innerHTML = '<i class="fas fa-circle-dot"></i> Paste RAML to begin';
         return;
     }
 
@@ -419,10 +424,14 @@ function convertRaml() {
             warningsEl.style.display = 'none';
         }
 
+        if (typeof track_event === 'function') track_event('convert');
     } catch (e) {
+        document.getElementById('oas-output').value = '';
         statusEl.className = 'convert-status error';
         statusEl.innerHTML = `<i class="fas fa-circle-exclamation"></i> Error: ${e.message}`;
         summaryEl.style.display = 'none';
+        warningsEl.style.display = 'none';
+        document.getElementById('warnings-list').innerHTML = '';
     }
 }
 
@@ -430,6 +439,7 @@ function copyOutput() {
     const val = document.getElementById('oas-output').value;
     if (!val) return;
     navigator.clipboard.writeText(val).then(() => {
+        if (typeof track_event === 'function') track_event('copy');
         const btn = document.getElementById('copy-oas-btn');
         btn.innerHTML = '<i class="fas fa-check"></i>';
         setTimeout(() => btn.innerHTML = '<i class="fas fa-copy"></i>', 2000);
@@ -445,19 +455,18 @@ function downloadOutput() {
     a.href = URL.createObjectURL(blob);
     a.download = `openapi.${ext}`;
     a.click();
+    if (typeof track_event === 'function') track_event('download');
 }
 
 function clearAll() {
+    clearTimeout(debounceTimer);
     document.getElementById('raml-input').value = '';
-    document.getElementById('oas-output').value = '';
-    document.getElementById('conversion-summary').style.display = 'none';
-    document.getElementById('warnings-panel').style.display = 'none';
-    const statusEl = document.getElementById('convert-status');
-    statusEl.className = 'convert-status idle';
-    statusEl.innerHTML = '<i class="fas fa-circle-dot"></i> Paste RAML to begin';
+    convertRaml();
+    if (typeof track_event === 'function') track_event('clear');
 }
 
 function loadExample() {
+    clearTimeout(debounceTimer);
     document.getElementById('raml-input').value = `#%RAML 1.0
 title: Orders API
 version: v1
@@ -527,13 +536,14 @@ types:
       responses:
         204:
           description: Order cancelled`;
+    convertRaml();
+    if (typeof track_event === 'function') track_event('load_example');
 }
 
-// Auto-convert on input change (debounced)
 let debounceTimer;
 document.getElementById('raml-input').addEventListener('input', () => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-        if (document.getElementById('raml-input').value.trim()) convertRaml();
+        convertRaml();
     }, 800);
 });

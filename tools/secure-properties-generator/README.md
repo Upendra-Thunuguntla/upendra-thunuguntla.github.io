@@ -9,5 +9,5 @@ Free MuleSoft Secure Properties generator. Encrypt and decrypt configuration pro
 ## Key Features
 - **Encryption & Decryption**: Supports basic property protection algorithms matching the MuleSoft Secure Properties Tool.
 - **Multiple Algorithms/Modes**: Provides options for Blowfish, AES, CBC, CFB, etc.
-- **Save & Load Configs**: Save and reload key + algorithm presets locally via browser `localStorage` for fast 1-click reuse across sessions.
-- **Safe & Local**: Cryptographic operations occur 100% locally in your browser so secret keys and properties are never exposed.
+- **Save & Load Configs**: Save and reload encrypted key + algorithm presets in your browser for fast 1-click reuse across sessions. Clearing site data removes the saved configurations and their encryption key.
+- **Local Processing**: Cryptographic operations occur in your browser. Saved configurations are a convenience, not a secure vault; use a password manager or secret manager for sensitive production keys.
